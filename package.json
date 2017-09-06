@@ -1,0 +1,25 @@
+{
+  "name": "codekraft-react-frontend",
+  "version": "1.0.0",
+  "description": "The react frontend from CodeKraft Corporation",
+  "main": "./src",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheRealCodeKraft/codekraft-react-frontend.git"
+  },
+  "keywords": [
+    "Frontend",
+    "React",
+    "\"Code",
+    "base\""
+  ],
+  "author": "CodeKraft",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheRealCodeKraft/codekraft-react-frontend/issues"
+  },
+  "homepage": "https://github.com/TheRealCodeKraft/codekraft-react-frontend#readme"
+}
