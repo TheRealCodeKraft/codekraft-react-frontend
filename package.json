@@ -1,10 +1,12 @@
 {
   "name": "codekraft-react-frontend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The react frontend from CodeKraft Corporation",
   "main": "./src",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel src --out-dir dist-modules && webpack --colors --progress -p",
+    "dev": "webpack --watch",
+    "lint": "eslint src example/src"
   },
   "repository": {
     "type": "git",
@@ -37,10 +39,5 @@
     "react-dom": ">=0.14.0",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
-  },
-  "scripts": {
-    "build": "babel src --out-dir dist-modules && webpack --colors --progress -p",
-    "dev": "webpack --watch",
-    "lint": "eslint src example/src"
   }
 }
