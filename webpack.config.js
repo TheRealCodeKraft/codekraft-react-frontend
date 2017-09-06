@@ -2,8 +2,6 @@ var path = require('path');
 
 module.exports = {
   entry: {
-    'example/compiled/index': './example/src/index',
-    'example/compiled/responsive_example': './example/src/responsive_example',
   },
 
   output: {
@@ -17,15 +15,15 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel',
-      },
-    ],
+        loader: 'babel-loader',
+      }
+    ]
   },
 
   devServer: {
     contentBase: './example',
     host: 'localhost',
     inline: true,
-    info: false,
-  },
+    info: false
+  }
 };

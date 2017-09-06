@@ -2,7 +2,7 @@
   "name": "codekraft-react-frontend",
   "version": "1.0.1",
   "description": "The react frontend from CodeKraft Corporation",
-  "main": "./src",
+  "main": "dist-modules/index.js",
   "scripts": {
     "build": "babel src --out-dir dist-modules && webpack --colors --progress -p",
     "dev": "webpack --watch",
@@ -15,15 +15,16 @@
   "keywords": [
     "Frontend",
     "React",
-    "\"Code",
-    "base\""
+    "Code base"
   ],
   "author": "CodeKraft",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/TheRealCodeKraft/codekraft-react-frontend/issues"
   },
   "homepage": "https://github.com/TheRealCodeKraft/codekraft-react-frontend#readme",
+  "main": "dist-modules/index.js",
+  "jsnest:main": "src/index.js",
   "devDependencies": {
     "babel-cli": "^6.3.17",
     "babel-core": "^6.3.26",
