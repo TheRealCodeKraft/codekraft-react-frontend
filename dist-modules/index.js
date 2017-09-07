@@ -6,6 +6,10 @@ var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _createStore2 = require("./api/client/reducer/create-store");
+
+var _createStore3 = _interopRequireDefault(_createStore2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29,7 +33,7 @@ var Index = function (_React$Component) {
       return _react2.default.createElement(
         "span",
         null,
-        "PAF"
+        "PAF POUF PUF"
       );
     }
   }]);
@@ -37,4 +41,5 @@ var Index = function (_React$Component) {
   return Index;
 }(_react2.default.Component);
 
-module.exports = Index;
+exports.Index = Index;
+exports.createStore = _createStore3.default;

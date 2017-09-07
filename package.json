@@ -1,6 +1,6 @@
 {
   "name": "codekraft-react-frontend",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "The react frontend from CodeKraft Corporation",
   "main": "dist-modules/index.js",
   "scripts": {
@@ -23,7 +23,6 @@
     "url": "https://github.com/TheRealCodeKraft/codekraft-react-frontend/issues"
   },
   "homepage": "https://github.com/TheRealCodeKraft/codekraft-react-frontend#readme",
-  "main": "dist-modules/index.js",
   "jsnest:main": "src/index.js",
   "devDependencies": {
     "babel-cli": "^6.3.17",
@@ -40,5 +39,12 @@
     "react-dom": ">=0.14.0",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
+  },
+  "dependencies": {
+    "babel-preset-stage-2": "^6.24.1",
+    "react-redux": "^5.0.6",
+    "react-router": "^4.2.0",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
   }
 }
