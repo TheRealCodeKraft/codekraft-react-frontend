@@ -1,6 +1,6 @@
 {
   "name": "codekraft-react-frontend",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "The react frontend from CodeKraft Corporation",
   "main": "dist-modules/index.js",
   "scripts": {
@@ -41,7 +41,9 @@
     "webpack-dev-server": "^1.14.0"
   },
   "dependencies": {
+    "amdefine": "^1.0.1",
     "babel-preset-stage-2": "^6.24.1",
+    "has-flag": "^2.0.0",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "redux": "^3.7.2",
