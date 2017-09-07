@@ -1,6 +1,6 @@
 {
   "name": "codekraft-react-frontend",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "The react frontend from CodeKraft Corporation",
   "main": "dist-modules/index.js",
   "scripts": {
@@ -25,7 +25,7 @@
   "homepage": "https://github.com/TheRealCodeKraft/codekraft-react-frontend#readme",
   "jsnest:main": "src/index.js",
   "devDependencies": {
-    "babel-cli": "^6.3.17",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.3.26",
     "babel-eslint": "^5.0.0",
     "babel-loader": "^6.2.0",
@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "amdefine": "^1.0.1",
+    "babel": "^6.23.0",
     "babel-preset-stage-2": "^6.24.1",
     "has-flag": "^2.0.0",
     "react-redux": "^5.0.6",

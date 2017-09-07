@@ -43,7 +43,6 @@ var _userReducer = function _userReducer() {
       newState["notFound"] = false;
       break;
     case 'ME':
-      console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
       newState["me"] = action.user;
       newState["authenticated"] = true;
       newState["notFound"] = false;
@@ -59,7 +58,7 @@ var _userReducer = function _userReducer() {
 
   var keys = Object.keys(state);
   if (keys.length > 0) {
-    return Object.assign({}, state, newState);
+    //return Object.assign({}, state, newState)
     for (var key in keys) {
       key = keys[key];
       if (newState[key] === undefined) {
@@ -67,7 +66,6 @@ var _userReducer = function _userReducer() {
       }
     }
   }
-  console.dir(newState);
 
   return newState;
 };
