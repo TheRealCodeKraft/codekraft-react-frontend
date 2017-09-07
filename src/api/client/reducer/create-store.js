@@ -98,7 +98,18 @@ module.exports = function createStore(config) {
           break
       }
 
-      return Object.assign({}, state, newState)
+      var keys = Object.keys(state)
+      if (keys.length > 0) {
+        //return Object.assign({}, state, newState)
+        for(var key in keys) {
+          key = keys[key]
+          if (newState[key] === undefined) {
+            newState[key] = state[key]
+          }
+        }
+      }
+
+      return newState
     }})(reducerName, plural)
   }
 
