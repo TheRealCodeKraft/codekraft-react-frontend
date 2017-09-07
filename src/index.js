@@ -10,4 +10,4 @@ class Index extends React.Component {
 
 }
 
-export default Index
+exports.Index = Index
