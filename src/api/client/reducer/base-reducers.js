@@ -50,7 +50,7 @@ const _userReducer = function(state = {}, action) {
 
   var keys = Object.keys(state)
   if (keys.length > 0) {
-    return Object.assign({}, state, newState)
+    //return Object.assign({}, state, newState)
     for(var key in keys) {
       key = keys[key]
       if (newState[key] === undefined) {
