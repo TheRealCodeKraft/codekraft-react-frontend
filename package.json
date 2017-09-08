@@ -1,12 +1,11 @@
 {
   "name": "codekraft-react-frontend",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "The react frontend from CodeKraft Corporation",
   "main": "dist-modules/index.js",
   "scripts": {
     "build": "babel src --out-dir dist-modules && webpack --colors --progress -p",
-    "dev": "webpack --watch",
-    "lint": "eslint src example/src"
+    "dev": "webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -44,10 +43,26 @@
     "amdefine": "^1.0.1",
     "babel": "^6.23.0",
     "babel-preset-stage-2": "^6.24.1",
+    "dotenv": "^4.0.0",
     "has-flag": "^2.0.0",
+    "jquery": "^3.2.1",
+    "js-logger": "^1.4.1",
+    "json-loader": "^0.5.7",
+    "moment": "^2.18.1",
+    "react-actioncable-provider": "^1.0.0",
+    "react-bootstrap": "^0.31.3",
+    "react-bootstrap-switch": "^15.5.1",
+    "react-datetime": "^2.10.1",
+    "react-file-input": "^0.2.5",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-select2-wrapper": "^1.0.4-beta5",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0"
+  },
+  "eslintConfig": {
+    "extends": "react-app",
+    "no-script-url": 0
   }
 }

@@ -1,14 +1,9 @@
-import BaseClient from './base'
+import ApiClient from './api-client'
 
-import store from 'reducers/index';
-
-import StorageService from 'clients/storage/storage'
+import StorageService from './storage/storage'
 const STORAGE_KEY_FOR_TOKEN = "token";
 
-//import UserClient from 'clients/user'
-
-var Auth = function() {
-
+var Auth = function(store) {
   var getToken = function() {
     var storageToken = StorageService.get(STORAGE_KEY_FOR_TOKEN)
     var token = null
@@ -33,12 +28,11 @@ var Auth = function() {
 
   var refreshToken = function(callback) {
     var refresh_token = getToken().refresh_token
-    BaseClient.post("oauth/token", { grant_type: "refresh_token", refresh_token: refresh_token}, function(data) {
+    ApiClient.post("oauth/token", { grant_type: "refresh_token", refresh_token: refresh_token}, function(data) {
       if (data.error) {
         if (callback) callback(data)
       } else {
-        Auth.storeToken(data, callback)
-        //UserClient.me()
+        storeToken(data, callback)
       }
    });
   }
@@ -55,11 +49,11 @@ var Auth = function() {
       })
     } else {
       params["grant_type"] = "password"
-      BaseClient.post("oauth/token", params, function(data) {
+      ApiClient.post("oauth/token", params, function(data) {
         if (data.error) {
           if (callback) callback(data)
         } else {
-          Auth.storeToken(data, callback)
+          storeToken(data, callback)
         }
       }, false, true)
     }
@@ -68,16 +62,7 @@ var Auth = function() {
   var checkForToken = function() {
     var token = StorageService.get(STORAGE_KEY_FOR_TOKEN)
     if (token) {
-    /*  
-      var currentTimestamp = parseInt(new Date().getTime() / 1000);
-      var  expireTimestamp = token.created_at + (token.expires_in / 2);
-
-      if(currentTimestamp >= expireTimestamp) {
-        return "toRefresh";
-      }
-*/
       return true
-
     } else { return false }
   }
 
@@ -102,6 +87,6 @@ var Auth = function() {
     login: login,
     logout: logout
   }
-}()
+}
 
 export default Auth

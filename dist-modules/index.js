@@ -1,9 +1,14 @@
 'use strict';
 
-var _createStore2 = require('./api/client/reducer/create-store');
+var _bootstrap = require('./bootstrap');
 
-var _createStore3 = _interopRequireDefault(_createStore2);
+var _bootstrap2 = _interopRequireDefault(_bootstrap);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.createStore = _createStore3.default;
+console.log(_bootstrap2.default); /*
+                                  import _createStore from './api/client/reducer/create-store'
+                                  exports.createStore = _createStore
+                                  */
+
+exports.Bootstrap = _bootstrap2.default;

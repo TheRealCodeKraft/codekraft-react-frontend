@@ -1,0 +1,212 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _config = require("config");
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AdminPageListRow = function (_React$Component) {
+  _inherits(AdminPageListRow, _React$Component);
+
+  function AdminPageListRow(props) {
+    _classCallCheck(this, AdminPageListRow);
+
+    var _this = _possibleConstructorReturn(this, (AdminPageListRow.__proto__ || Object.getPrototypeOf(AdminPageListRow)).call(this, props));
+
+    _this.handleDelete = _this.handleDelete.bind(_this);
+    _this.handleSee = _this.handleSee.bind(_this);
+    _this.handleEdit = _this.handleEdit.bind(_this);
+
+    _this.tableRowStyles = {
+      display: "table-row"
+    };
+
+    _this.tableCellStyles = {
+      display: "table-cell",
+      padding: 5,
+      verticalAlign: "middle"
+    };
+    return _this;
+  }
+
+  _createClass(AdminPageListRow, [{
+    key: "render",
+    value: function render() {
+      var row = [],
+          attribute = undefined,
+          name = undefined;
+      for (var attrIndex in this.props.attributes) {
+        attribute = this.props.attributes[attrIndex];
+        if (attribute instanceof Object) {
+          if (attribute.hidden) continue;
+          name = attribute.name;
+        } else {
+          name = attribute;
+        }
+        if (this.props.attributes[attrIndex]) {
+          row.push(_react2.default.createElement(
+            "div",
+            { key: "row-" + this.props.item.id + "-attr-" + attrIndex, style: this.tableCellStyles },
+            this.buildDisplayValue(name, attribute)
+          ));
+        }
+      }
+      row.push(this.buildActions(this.props.item));
+
+      return _react2.default.createElement(
+        "div",
+        { style: this.tableRowStyles },
+        row
+      );
+    }
+  }, {
+    key: "buildDisplayValue",
+    value: function buildDisplayValue(name, attribute) {
+      var value = undefined;
+      if (name.indexOf(".") !== -1) {
+        var splitted = name.split('.');
+        value = this.props.item[splitted[0]];
+        for (var i = 1; i < splitted.length; i++) {
+          if (value) {
+            value = value[splitted[i]];
+          } else {
+            console.log("Subproperty error for '" + name + "' at '" + splitted[i]);
+            break;
+          }
+        }
+      } else {
+        value = this.props.item[name];
+      }
+
+      if (attribute instanceof Object) {
+        if (attribute.link) {
+          var link = attribute.link.replace("[[VALUE]]", value);
+          if (link.indexOf("[[MOODLE_URL]]") !== -1) {
+            link = link.replace("[[MOODLE_URL]]", _config2.default.moodle.url);
+          }
+          value = _react2.default.createElement(
+            "a",
+            { href: link, target: "_blank" },
+            value
+          );
+        }
+        if (attribute.type === "image") {
+          value = _react2.default.createElement("img", { src: value, style: { height: 50 }, className: "img-rounded", alt: value });
+        }
+      }
+
+      return value;
+    }
+  }, {
+    key: "buildActions",
+    value: function buildActions() {
+      var _this2 = this;
+
+      var actions = [];
+      if (!this.props.actions) {
+        actions.push(_react2.default.createElement("a", { key: "action-delete-" + this.props.item.id, href: "#", onClick: this.handleDelete, className: "admin-action-button pe pe-7s-junk", alt: "Supprimer", title: "Supprimer" }));
+        actions.push(_react2.default.createElement("a", { key: "action-see-" + this.props.item.id, href: "#", onClick: this.handleSee, className: "admin-action-button pe pe-7s-look", alt: "Afficher", title: "Afficher" }));
+        actions.push(_react2.default.createElement("a", { key: "action-edit-" + this.props.item.id, href: "#", onClick: this.handleEdit, className: "admin-action-button pe pe-7s-pen", alt: "Modifier", title: "Modifier" }));
+      } else {
+        this.props.actions.map(function (action) {
+          if (action instanceof Object) {
+            if (_this2.acceptCustomAction(action)) {
+              actions.push(_react2.default.createElement(
+                "a",
+                { key: "action-" + action.action + "-" + _this2.props.item.id, onClick: _this2.handleCustomAction.bind(_this2, action), className: "admin-action-button" + (action.icon ? " pe pe-7s-" + action.icon : ""), alt: action.label, title: action.label },
+                action.icon ? "" : action.label
+              ));
+            }
+          } else {
+            switch (action) {
+              case "delete":
+                actions.push(_react2.default.createElement("a", { key: "action-delete-" + _this2.props.item.id, href: "#", onClick: _this2.handleDelete, className: "admin-action-button pe pe-7s-junk", alt: "Supprimer", title: "Supprimer" }));
+                break;
+              case "see":
+                actions.push(_react2.default.createElement("a", { key: "action-see-" + _this2.props.item.id, href: "#", onClick: _this2.handleSee, className: "admin-action-button pe pe-7s-look", alt: "Afficher", title: "Afficher" }));
+                break;
+              case "edit":
+                actions.push(_react2.default.createElement("a", { key: "action-edit-" + _this2.props.item.id, href: "#", onClick: _this2.handleEdit, className: "admin-action-button pe pe-7s-pen", alt: "Modifier", title: "Modifier" }));
+                break;
+              default:
+                break;
+            }
+          }
+          return true;
+        });
+      }
+
+      return _react2.default.createElement(
+        "div",
+        { key: "actions-" + this.props.item.id, style: { textAlign: "right", whiteSpace: "nowrap" } },
+        actions
+      );
+    }
+  }, {
+    key: "acceptCustomAction",
+    value: function acceptCustomAction(action) {
+      var result = !action.displayIf;
+      if (!result) {
+        if (action.displayIf.diff) {
+          if (action.displayIf.values) {
+            result = action.displayIf.values.indexOf(this.props.item[action.displayIf.property].toString()) === -1;
+          } else {
+            result = this.props.item[action.displayIf.property].toString() !== action.displayIf.value.toString();
+          }
+        } else {
+          if (action.displayIf.values) {
+            result = action.displayIf.values.indexOf(this.props.item[action.displayIf.property]) !== -1;
+          } else {
+            result = this.props.item[action.displayIf.property].toString() === action.displayIf.value.toString();
+          }
+        }
+      }
+      return result;
+    }
+  }, {
+    key: "handleDelete",
+    value: function handleDelete(e) {
+      e.preventDefault();
+      if (this.props.onDelete) this.props.onDelete(this.props.item.id);
+    }
+  }, {
+    key: "handleSee",
+    value: function handleSee(e) {
+      e.preventDefault();
+      if (this.props.onSee) this.props.onSee(this.props.item.id);
+    }
+  }, {
+    key: "handleEdit",
+    value: function handleEdit(e) {
+      e.preventDefault();
+      if (this.props.onEdit) this.props.onEdit(this.props.item.id);
+    }
+  }, {
+    key: "handleCustomAction",
+    value: function handleCustomAction(action, e) {
+      e.preventDefault();
+      if (this.props.onCustomAction) this.props.onCustomAction(this.props.item.id, action);
+    }
+  }]);
+
+  return AdminPageListRow;
+}(_react2.default.Component);
+
+exports.default = AdminPageListRow;

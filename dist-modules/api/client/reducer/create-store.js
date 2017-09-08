@@ -62,6 +62,7 @@ function capitalizeFirstLetter(string) {
 
 module.exports = function createStore(config) {
   var coreReducers = {
+    "bootstrap": _baseReducers.bootstrapReducer,
     "authState": _baseReducers.authReducer,
     "userState": _baseReducers.userReducer
   };

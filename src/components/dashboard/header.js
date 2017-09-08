@@ -1,0 +1,104 @@
+import React from 'react'
+
+import { NavLink, Link, Redirect } from 'react-router-dom'
+import ShowForAcls from '../utils/show-for-acls'
+import { Navbar } from 'react-bootstrap';
+
+class Header extends React.Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      logout: false,
+      menu: false
+    }
+
+    this.handleLogout = this.handleLogout.bind(this)
+    this.handleHamburgerClick = this.handleHamburgerClick.bind(this)
+  }
+
+  render() {
+    if (this.state.logout) return <Redirect to="/" />
+    return (
+      <header id="header">   
+
+          <Navbar fixedTop fluid>
+                  <Navbar.Header>
+                      <div id="mobile-menu">
+                          <div className={"left-nav-toggle"}>
+                              <a href="#" onClick={this.handleHamburgerClick}>
+                                  <i className={"stroke-hamburgermenu"}></i>
+                              </a>
+                          </div>
+                      </div>
+                      <Link to="/" className={"navbar-brand"}>
+                          <img src="/assets/images/logo-obl-mini.png" alt="Open Business Labs" /> <span>OBL</span>
+                      </Link>
+                  </Navbar.Header>
+                  {this.props.showAside
+                   ? <Navbar.Collapse id="navbar">
+                       <div className={"left-nav-toggle"}>
+                         <a href="#" onClick={this.handleHamburgerClick}>
+                           <i className={"stroke-hamburgermenu"}></i>
+                         </a>
+                       </div>
+                     </Navbar.Collapse>
+                   : null}
+          </Navbar>
+
+          {this.props.showAside
+           ? <aside className={"navigation"}>
+              <nav>
+                  <ul className={"nav luna-nav"}>
+                      <li className={"nav-category"}>
+                          Navigation
+                      </li>
+{/*
+                      <li className={this.props.location.pathname === "/dashboard" ? "active" : ""}><NavLink exact to="/dashboard">Accueil</NavLink></li>
+                      <li className={this.props.location.pathname === "/dashboard/profile" ? "active" : ""}>
+                        <NavLink exact to="/dashboard/profile">Profil</NavLink>
+                      </li>
+
+                      <li className={(this.props.location.pathname.indexOf("/dashboard/sessions") > 0) ? "active" : ""}>
+                        <NavLink exact to="/dashboard/sessions">Jeux</NavLink>
+                      </li>
+
+                      <ShowForAcls grants={["admin"]}>
+                        <li><NavLink exact to="/admin">Administration</NavLink></li>
+                      </ShowForAcls>
+*/}
+                      <li><a href="#" onClick={this.handleLogout}>Déconnexion</a></li>
+                  </ul>
+               </nav>
+             </aside>
+           : null}
+
+      </header>
+    );
+
+  }
+
+  handleHamburgerClick(e) {
+    e.preventDefault()
+    this.setState({menu: !this.state.menu}, function() {
+      if (this.state.menu) {
+        document.body.className += " nav-toggle"
+      } else {
+        document.body.className -= " nav-toggle"
+      }
+    })
+  }
+
+  handleLogout(e) {
+    e.preventDefault()
+    var self = this
+    this.props.clients.AuthClient.logout(function() {
+      self.props.history.push("/")
+      self.setState({logout: true})
+    })
+  }
+
+}
+
+export default Header

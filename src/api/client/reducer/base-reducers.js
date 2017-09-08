@@ -1,3 +1,27 @@
+const _bootstrapReducer = function(state = {}, action) {
+  var newState = {}
+  switch(action.type) {
+    case "CLIENTS":
+      newState["clients"] = action.clients
+      break
+    default:
+      break
+  }
+
+   var keys = Object.keys(state)
+  if (keys.length > 0) {
+    //return Object.assign({}, state, newState)
+    for(var key in keys) {
+      key = keys[key]
+      if (newState[key] === undefined) {
+        newState[key] = state[key]
+      }
+    }
+  }
+
+  return newState
+}
+
 const _authReducer = function(state = {}, action) {
   var newState = {}
   switch(action.type) {
@@ -62,5 +86,6 @@ const _userReducer = function(state = {}, action) {
   return newState
 }
 
+exports.bootstrapReducer = _bootstrapReducer
 exports.authReducer = _authReducer
 exports.userReducer = _userReducer

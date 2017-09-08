@@ -1,4 +1,4 @@
-import {authReducer, userReducer} from './base-reducers'
+import {bootstrapReducer, authReducer, userReducer} from './base-reducers'
 var {Provider} = require('react-redux')
 var {render} = require('react-dom')
 var {Router} = require('react-router')
@@ -52,6 +52,7 @@ function capitalizeFirstLetter(string) {
 
 module.exports = function createStore(config) {
   var coreReducers = {
+    "bootstrap": bootstrapReducer,
     "authState": authReducer,
     "userState": userReducer
   }

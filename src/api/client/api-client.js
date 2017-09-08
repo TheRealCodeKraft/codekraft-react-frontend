@@ -1,4 +1,3 @@
-import configs from 'config'
 
 import Logger from 'js-logger'
 
@@ -17,11 +16,11 @@ var ApiClient = function() {
     }
 
     if (offline) {
-        headers['Authorization'] = 'bearer ' + configs.api.app_token
+        headers['Authorization'] = 'bearer ' + process.env.APP_TOKEN
     } else {
       if (defaultParams) {
-        params['client_id'] = configs.api.clientId
-        params['client_secret'] = configs.api.clientSecret
+        params['client_id'] = process.env.CLIENT_ID
+        params['client_secret'] = process.env.CLIENT_SECRET
         params['grant_type'] = 'password'
       } else {
         var token = JSON.parse(StorageService.get(STORAGE_KEY_FOR_TOKEN)).access_token
@@ -63,7 +62,7 @@ var ApiClient = function() {
       data: params
     })
 
-    fetch(configs.api.url + endpoint, fetchParams)
+    fetch(process.env.API_URL + endpoint, fetchParams)
     .then(promise => {
       promise.json().then(response => {
 
@@ -132,4 +131,4 @@ var ApiClient = function() {
   }
 }();
 
-export default BaseClient;
+export default ApiClient;
