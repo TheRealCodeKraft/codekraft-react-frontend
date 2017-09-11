@@ -9,6 +9,9 @@ var _bootstrapReducer = function _bootstrapReducer() {
     case "CLIENTS":
       newState["clients"] = action.clients;
       break;
+    case "NAVIGATION":
+      newState["navigation"] = action.navigation;
+      break;
     default:
       break;
   }
@@ -64,12 +67,16 @@ var _userReducer = function _userReducer() {
     case "USERS":
       newState["users"] = action.users;
       break;
+    case "SIGNUP":
+      newState["newUser"] = action.user;
+      break;
     case 'RESET_ME':
       newState["me"] = null;
       newState["authenticated"] = false;
       newState["notFound"] = false;
       break;
     case 'ME':
+      newState["newUser"] = null;
       newState["me"] = action.user;
       newState["authenticated"] = true;
       newState["notFound"] = false;

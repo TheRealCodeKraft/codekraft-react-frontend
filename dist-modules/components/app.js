@@ -96,6 +96,7 @@ var App = function (_React$Component) {
 function mapStateToProps(state) {
   return {
     //me: state.userState.me || null,
+    clients: state.bootstrap.clients,
     token: state.authState.token || null
   };
 }

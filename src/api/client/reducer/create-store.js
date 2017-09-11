@@ -60,8 +60,8 @@ module.exports = function createStore(config) {
   for (var index in config) {
 
     if (config[index] instanceof Object) {
-      reducerName = config[index].singular
-      plural = config[index].plural
+      reducerName = config[index].name
+      plural = config[index].plural ? config[index].plural : reducerName + "s"
     } else {
       reducerName = config[index]
       plural = reducerName + "s"

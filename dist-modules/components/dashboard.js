@@ -71,7 +71,13 @@ var Dashboard = function (_React$Component) {
         ) : _react2.default.createElement(
           _reactRouter.Switch,
           null,
-          _react2.default.createElement(_reactRouter.Route, { exact: true, path: "/dashboard", component: (0, _authChecker2.default)(_home2.default, false, this.props.clients) })
+          this.props.navigation.dashboard.items.map(function (menu) {
+            return menu.items.map(function (item) {
+              var path = "/dashboard" + (item.path && item.path !== "" ? "/" + item.path : "");
+              console.log(item.component);
+              return _react2.default.createElement(_reactRouter.Route, { exact: true, path: path, component: (0, _authChecker2.default)(item.component) });
+            });
+          })
         )
       );
     }
@@ -82,7 +88,8 @@ var Dashboard = function (_React$Component) {
 
 function mapStateToProps(state) {
   return {
-    clients: state.bootstrap.clients || {}
+    clients: state.bootstrap.clients || {},
+    navigation: state.bootstrap.navigation || { dashboard: { items: [] } }
   };
 }
 

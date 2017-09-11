@@ -32,12 +32,13 @@ class Dashboard extends React.Component {
           {this.state.me && this.state.me.firstname === null
            ? <span>Profile filler</span>
            : <Switch>
-               <Route exact path="/dashboard" component={AuthChecker(Home, false, this.props.clients)} />
-{/*
-               <Route exact path="/dashboard/profile" component={AuthChecker(Profile)} />
-               <Route exact path="/dashboard/sessions/:identifier" component={AuthChecker(Playground)} />
-               <Route exact path="/dashboard/sessions" component={AuthChecker(Sessions)} />
-*/}
+               {this.props.navigation.dashboard.items.map(menu => {
+                 return menu.items.map(item => {
+                   var path = "/dashboard" + ((item.path && item.path !== "") ? ("/" + item.path) : "")
+console.log(item.component)
+                   return <Route exact path={path} component={AuthChecker(item.component)} />
+                 })
+               })}
              </Switch>}
         </div>
     );
@@ -47,7 +48,8 @@ class Dashboard extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    clients: state.bootstrap.clients || {}
+    clients: state.bootstrap.clients || {},
+    navigation: state.bootstrap.navigation || {dashboard: {items: []}}
   }
 }
 

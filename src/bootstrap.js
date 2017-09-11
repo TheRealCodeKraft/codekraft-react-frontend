@@ -1,7 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+var React = require('react')
+var ReactDOM = require('react-dom')
 
-import Logger from 'js-logger';
+var Logger = require('js-logger')
 Logger.useDefaults();
 
 import { Provider } from 'react-redux';
@@ -15,19 +15,23 @@ import App from './components/app'
 
 var Bootstrap = function() {
   var launch = function(config) {
-    const store = createStore(config.reducers)
+    const store = createStore(config.clients)
     const clients = createClients(config.clients, store)
+
     store.dispatch({
       type: "CLIENTS",
       clients: clients
     })
+
+    store.dispatch({
+      type: "NAVIGATION",
+      navigation: config.navigation
+    })
   
     document.addEventListener('DOMContentLoaded', function() {
-console.log("ROOT")
-console.log(clients)
       ReactDOM.render(
         <Provider store={store}>
-          <App clients={clients} />
+          <App />
         </Provider>,
         document.getElementById('app-root')
       );

@@ -18,6 +18,14 @@ var UserClient = function(store) {
 
   var signup = function(params, callback) {
     ApiClient.post("users", params, callback, true)
+    ApiClient.post("users", params, function(data) {
+      store.dispatch({
+        type: "SIGNUP",
+        user: data
+      })
+      if (callback) callback(data)
+    }, true)
+
   }
 
   var me = function(callback) {

@@ -3,7 +3,6 @@ import thunkMiddleware from 'redux-thunk'
 
 import configureReducers from './reducers-config'
 
-console.log(thunkMiddleware)
 var createStoreWithMiddleware = applyMiddleware(thunkMiddleware)(createStore)
 
 module.exports = function configureStore(reducerRegistry) {

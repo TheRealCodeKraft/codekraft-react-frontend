@@ -31,6 +31,13 @@ var UserClient = function UserClient(store) {
 
   var signup = function signup(params, callback) {
     _apiClient2.default.post("users", params, callback, true);
+    _apiClient2.default.post("users", params, function (data) {
+      store.dispatch({
+        type: "SIGNUP",
+        user: data
+      });
+      if (callback) callback(data);
+    }, true);
   };
 
   var me = function me(callback) {

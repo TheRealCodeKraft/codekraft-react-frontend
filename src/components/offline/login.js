@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { Redirect } from "react-router-dom"
 
-import Form from '..//utils/form'
+import Form from '../utils/form'
 import { Link } from 'react-router-dom'
 
 import { Grid } from 'react-bootstrap';
@@ -61,6 +61,15 @@ class Login extends React.Component {
                 </div>
             </Row>
 
+            {this.props.newUser
+             ? <Row>
+                 <div className="alert alert-success" style={{marginTop: 0, display: "flex", alignItems: "center"}}>
+                   <i className="pe pe-7s-door-lock" style={{fontSize: "3em", marginRight: 15}}></i>
+                   Votre compte a été créé, vous pouvez maintenant vous connecter.
+                 </div>
+               </Row>
+             : null}
+
             <Panel className="panel panel-filled">
                     
                     <Form id="login-form" 
@@ -94,7 +103,8 @@ class Login extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    clients: state.bootstrap.clients
+    clients: state.bootstrap.clients,
+    newUser: state.userState.newUser || null
   }
 }
 

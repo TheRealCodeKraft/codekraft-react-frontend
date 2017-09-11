@@ -1,10 +1,7 @@
 import React from "react"
 import { connect } from 'react-redux'
 
-export default function(ComposedComponent, offline=false, clients={}) {
-
-  const Auth = clients.AuthClient
-  const UserClient = clients.UserClient
+export default function(ComposedComponent, offline=false) {
 
   class AuthChecker extends React.Component {
 
@@ -22,6 +19,10 @@ export default function(ComposedComponent, offline=false, clients={}) {
     }
 
     componentWillMount() {
+
+      const Auth = this.props.clients.AuthClient
+      const UserClient = this.props.clients.UserClient
+
       if (this.props.location.search.indexOf("stamp") !== -1) {
         var self = this
         this.setState({loggingIn: true}, function() {
@@ -82,6 +83,9 @@ export default function(ComposedComponent, offline=false, clients={}) {
     }
 
     componentWillReceiveProps(props) {
+      const Auth = this.props.clients.AuthClient
+      const UserClient = this.props.clients.UserClient
+
       if (this.state.resetting && props.me == null) {
         // SESSION HAS BEEN RESET
         this.setState({resetting: false, checking: true}, function() {
@@ -118,11 +122,12 @@ export default function(ComposedComponent, offline=false, clients={}) {
         
       }
 
-      return <ComposedComponent clients={clients} {...this.props} />
+      return <ComposedComponent {...this.props} />
     }
 
     handleRefresh(data) {
       if (data.error) {
+        const Auth = this.props.clients.AuthClient
         Auth.logout()
       }
       this.setState({refreshing: false})
@@ -137,6 +142,7 @@ function mapStateToProps(state) {
   return {
     me: state.userState.me,
     notFound: state.userState.notFound || false,
-    token: state.authState.token || null
+    token: state.authState.token || null,
+    clients: state.bootstrap.clients || {}
   }
 }

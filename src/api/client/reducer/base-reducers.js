@@ -4,11 +4,14 @@ const _bootstrapReducer = function(state = {}, action) {
     case "CLIENTS":
       newState["clients"] = action.clients
       break
+    case "NAVIGATION":
+      newState["navigation"] = action.navigation
+      break
     default:
       break
   }
 
-   var keys = Object.keys(state)
+  var keys = Object.keys(state)
   if (keys.length > 0) {
     //return Object.assign({}, state, newState)
     for(var key in keys) {
@@ -53,12 +56,16 @@ const _userReducer = function(state = {}, action) {
     case "USERS":
       newState["users"] = action.users
       break
+    case "SIGNUP":
+      newState["newUser"] = action.user
+      break
     case 'RESET_ME':
       newState["me"] = null
       newState["authenticated"] = false
       newState["notFound"] = false
       break
     case 'ME':
+      newState["newUser"] = null
       newState["me"] = action.user
       newState["authenticated"] = true
       newState["notFound"] = false

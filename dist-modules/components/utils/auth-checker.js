@@ -4,17 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 exports.default = function (ComposedComponent) {
   var offline = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-  var clients = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-
-  var Auth = clients.AuthClient;
-  var UserClient = clients.UserClient;
 
   var AuthChecker = function (_React$Component) {
     _inherits(AuthChecker, _React$Component);
@@ -39,6 +32,10 @@ exports.default = function (ComposedComponent) {
     _createClass(AuthChecker, [{
       key: "componentWillMount",
       value: function componentWillMount() {
+
+        var Auth = this.props.clients.AuthClient;
+        var UserClient = this.props.clients.UserClient;
+
         if (this.props.location.search.indexOf("stamp") !== -1) {
           var self = this;
           this.setState({ loggingIn: true }, function () {
@@ -98,6 +95,9 @@ exports.default = function (ComposedComponent) {
     }, {
       key: "componentWillReceiveProps",
       value: function componentWillReceiveProps(props) {
+        var Auth = this.props.clients.AuthClient;
+        var UserClient = this.props.clients.UserClient;
+
         if (this.state.resetting && props.me == null) {
           // SESSION HAS BEEN RESET
           this.setState({ resetting: false, checking: true }, function () {
@@ -134,12 +134,13 @@ exports.default = function (ComposedComponent) {
           );
         }
 
-        return _react2.default.createElement(ComposedComponent, _extends({ clients: clients }, this.props));
+        return _react2.default.createElement(ComposedComponent, this.props);
       }
     }, {
       key: "handleRefresh",
       value: function handleRefresh(data) {
         if (data.error) {
+          var Auth = this.props.clients.AuthClient;
           Auth.logout();
         }
         this.setState({ refreshing: false });
@@ -170,6 +171,7 @@ function mapStateToProps(state) {
   return {
     me: state.userState.me,
     notFound: state.userState.notFound || false,
-    token: state.authState.token || null
+    token: state.authState.token || null,
+    clients: state.bootstrap.clients || {}
   };
 }

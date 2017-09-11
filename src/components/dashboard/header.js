@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 import { NavLink, Link, Redirect } from 'react-router-dom'
 import ShowForAcls from '../utils/show-for-acls'
@@ -51,24 +52,22 @@ class Header extends React.Component {
            ? <aside className={"navigation"}>
               <nav>
                   <ul className={"nav luna-nav"}>
-                      <li className={"nav-category"}>
-                          Navigation
-                      </li>
-{/*
-                      <li className={this.props.location.pathname === "/dashboard" ? "active" : ""}><NavLink exact to="/dashboard">Accueil</NavLink></li>
-                      <li className={this.props.location.pathname === "/dashboard/profile" ? "active" : ""}>
-                        <NavLink exact to="/dashboard/profile">Profil</NavLink>
-                      </li>
+                    {this.props.navigation.dashboard.items.map(menu => {
+                      return [
+                        <li className={"nav-category"}>{menu.label}</li>,
+                        menu.items.map(item => {
+                          var path = "/dashboard" + ((item.path && item.path !== "") ? ("/" + item.path) : "")
+                          return (
+                            <li className={this.props.location.pathname === path ? "active" : ""}>
+                              <NavLink exact to={path}>{item.label}</NavLink>
+                            </li>
+                          )
+                        })
+                      ]
+                    })}
 
-                      <li className={(this.props.location.pathname.indexOf("/dashboard/sessions") > 0) ? "active" : ""}>
-                        <NavLink exact to="/dashboard/sessions">Jeux</NavLink>
-                      </li>
+                    <li><a href="#" onClick={this.handleLogout}>Déconnexion</a></li>
 
-                      <ShowForAcls grants={["admin"]}>
-                        <li><NavLink exact to="/admin">Administration</NavLink></li>
-                      </ShowForAcls>
-*/}
-                      <li><a href="#" onClick={this.handleLogout}>Déconnexion</a></li>
                   </ul>
                </nav>
              </aside>
@@ -101,4 +100,10 @@ class Header extends React.Component {
 
 }
 
-export default Header
+function mapStateToProps(state) {
+  return {
+    navigation: state.bootstrap.navigation || {dashboard: { items: [] }}
+  }
+}
+
+export default connect(mapStateToProps)(Header)

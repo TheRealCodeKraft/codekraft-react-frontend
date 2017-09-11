@@ -4,18 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _jsLogger = require('js-logger');
-
-var _jsLogger2 = _interopRequireDefault(_jsLogger);
-
 var _reactRedux = require('react-redux');
 
 var _createStore = require('./api/client/reducer/create-store');
@@ -32,26 +20,34 @@ var _app2 = _interopRequireDefault(_app);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_jsLogger2.default.useDefaults();
+var React = require('react');
+var ReactDOM = require('react-dom');
+
+var Logger = require('js-logger');
+Logger.useDefaults();
 
 require('dotenv').config();
 
 var Bootstrap = function () {
   var launch = function launch(config) {
-    var store = (0, _createStore2.default)(config.reducers);
+    var store = (0, _createStore2.default)(config.clients);
     var clients = (0, _createClients2.default)(config.clients, store);
+
     store.dispatch({
       type: "CLIENTS",
       clients: clients
     });
 
+    store.dispatch({
+      type: "NAVIGATION",
+      navigation: config.navigation
+    });
+
     document.addEventListener('DOMContentLoaded', function () {
-      console.log("ROOT");
-      console.log(clients);
-      _reactDom2.default.render(_react2.default.createElement(
+      ReactDOM.render(React.createElement(
         _reactRedux.Provider,
         { store: store },
-        _react2.default.createElement(_app2.default, { clients: clients })
+        React.createElement(_app2.default, null)
       ), document.getElementById('app-root'));
     });
   };

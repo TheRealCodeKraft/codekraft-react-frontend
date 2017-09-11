@@ -14,7 +14,7 @@ var _reactRedux = require("react-redux");
 
 var _reactRouterDom = require("react-router-dom");
 
-var _form = require("..//utils/form");
+var _form = require("../utils/form");
 
 var _form2 = _interopRequireDefault(_form);
 
@@ -92,6 +92,16 @@ var Login = function (_React$Component) {
             )
           )
         ),
+        this.props.newUser ? _react2.default.createElement(
+          _reactBootstrap.Row,
+          null,
+          _react2.default.createElement(
+            "div",
+            { className: "alert alert-success", style: { marginTop: 0, display: "flex", alignItems: "center" } },
+            _react2.default.createElement("i", { className: "pe pe-7s-door-lock", style: { fontSize: "3em", marginRight: 15 } }),
+            "Votre compte a \xE9t\xE9 cr\xE9\xE9, vous pouvez maintenant vous connecter."
+          )
+        ) : null,
         _react2.default.createElement(
           _reactBootstrap.Panel,
           { className: "panel panel-filled" },
@@ -136,7 +146,8 @@ var Login = function (_React$Component) {
 
 function mapStateToProps(state) {
   return {
-    clients: state.bootstrap.clients
+    clients: state.bootstrap.clients,
+    newUser: state.userState.newUser || null
   };
 }
 

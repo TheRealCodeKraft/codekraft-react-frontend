@@ -59,6 +59,7 @@ class App extends React.Component {
 function mapStateToProps(state) {
   return {
     //me: state.userState.me || null,
+    clients: state.bootstrap.clients,
     token: state.authState.token || null
   }
 }

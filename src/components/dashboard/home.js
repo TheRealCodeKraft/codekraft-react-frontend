@@ -60,7 +60,8 @@ class Home extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    me: state.userState.me || null
+    me: state.userState.me || null,
+    clients: state.bootstrap.clients
   }
 }
 

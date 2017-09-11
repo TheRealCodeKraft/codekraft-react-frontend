@@ -10,6 +10,8 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = require('react-redux');
+
 var _reactRouterDom = require('react-router-dom');
 
 var _showForAcls = require('../utils/show-for-acls');
@@ -47,6 +49,8 @@ var Header = function (_React$Component) {
   _createClass(Header, [{
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       if (this.state.logout) return _react2.default.createElement(_reactRouterDom.Redirect, { to: '/' });
       return _react2.default.createElement(
         'header',
@@ -105,11 +109,24 @@ var Header = function (_React$Component) {
             _react2.default.createElement(
               'ul',
               { className: "nav luna-nav" },
-              _react2.default.createElement(
-                'li',
-                { className: "nav-category" },
-                'Navigation'
-              ),
+              this.props.navigation.dashboard.items.map(function (menu) {
+                return [_react2.default.createElement(
+                  'li',
+                  { className: "nav-category" },
+                  menu.label
+                ), menu.items.map(function (item) {
+                  var path = "/dashboard" + (item.path && item.path !== "" ? "/" + item.path : "");
+                  return _react2.default.createElement(
+                    'li',
+                    { className: _this2.props.location.pathname === path ? "active" : "" },
+                    _react2.default.createElement(
+                      _reactRouterDom.NavLink,
+                      { exact: true, to: path },
+                      item.label
+                    )
+                  );
+                })];
+              }),
               _react2.default.createElement(
                 'li',
                 null,
@@ -151,4 +168,10 @@ var Header = function (_React$Component) {
   return Header;
 }(_react2.default.Component);
 
-exports.default = Header;
+function mapStateToProps(state) {
+  return {
+    navigation: state.bootstrap.navigation || { dashboard: { items: [] } }
+  };
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(Header);
