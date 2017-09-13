@@ -16,6 +16,8 @@ class Home extends React.Component {
     return (
       <Grid fluid>
         {groups.map(group => {
+          if (group.hiddenOnHome) return null
+
           return [<Row>
                     <Col xs={12}>
                       <h1><i className={"pe pe-7s-tools text-warning"}></i> {group.label}</h1>

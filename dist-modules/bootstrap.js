@@ -14,6 +14,10 @@ var _createClients = require('./api/client/create-clients');
 
 var _createClients2 = _interopRequireDefault(_createClients);
 
+var _createNavigation = require('./navigation/create-navigation');
+
+var _createNavigation2 = _interopRequireDefault(_createNavigation);
+
 var _reactRouterDom = require('react-router-dom');
 
 var _app = require('./components/app');
@@ -42,7 +46,7 @@ var Bootstrap = function () {
 
     store.dispatch({
       type: "NAVIGATION",
-      navigation: config.navigation
+      navigation: (0, _createNavigation2.default)(config.navigation)
     });
 
     document.addEventListener('DOMContentLoaded', function () {

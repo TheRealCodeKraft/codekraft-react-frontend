@@ -34,86 +34,82 @@ var Home = function (_React$Component) {
     value: function render() {
 
       return React.createElement(
-        "section",
-        { className: "content" },
+        _reactBootstrap.Grid,
+        { fluid: true },
         React.createElement(
-          _reactBootstrap.Grid,
-          { fluid: true },
+          _reactBootstrap.Row,
+          null,
           React.createElement(
-            _reactBootstrap.Row,
-            null,
+            _reactBootstrap.Col,
+            { xs: 12 },
             React.createElement(
-              _reactBootstrap.Col,
-              { xs: 12 },
+              "h1",
+              null,
+              React.createElement("i", { className: "pe pe-7s-home text-warning" }),
+              " Accueil"
+            ),
+            React.createElement(
+              "h2",
+              null,
               React.createElement(
-                "h1",
+                "small",
                 null,
-                React.createElement("i", { className: "pe pe-7s-home text-warning" }),
-                " Accueil"
-              ),
-              React.createElement(
-                "h2",
-                null,
+                "Bienvenue sur ton compte Open Business Labs ",
                 React.createElement(
-                  "small",
+                  "span",
+                  { className: "c-white" },
+                  this.props.me.firstname
+                ),
+                " !"
+              )
+            )
+          )
+        ),
+        React.createElement(
+          _reactBootstrap.Row,
+          null,
+          React.createElement(
+            _reactBootstrap.Col,
+            { md: 6 },
+            React.createElement(
+              _reactRouterDom.Link,
+              { to: "/dashboard/profile", className: "panel-home-student" },
+              React.createElement(
+                _reactBootstrap.Panel,
+                { className: "panel-filled" },
+                React.createElement(
+                  "h2",
                   null,
-                  "Bienvenue sur ton compte Open Business Labs ",
-                  React.createElement(
-                    "span",
-                    { className: "c-white" },
-                    this.props.me.firstname
-                  ),
-                  " !"
+                  React.createElement("i", { className: "pe pe-7s-user pe-3x pe-va text-warning" }),
+                  " Profil"
+                ),
+                React.createElement(
+                  "div",
+                  null,
+                  "Compl\xE9ter ton profil et tes infos personnelles."
                 )
               )
             )
           ),
           React.createElement(
-            _reactBootstrap.Row,
-            null,
+            _reactBootstrap.Col,
+            { md: 6 },
             React.createElement(
-              _reactBootstrap.Col,
-              { md: 6 },
+              _reactRouterDom.Link,
+              { to: "/dashboard/sessions", className: "panel-home-student" },
               React.createElement(
-                _reactRouterDom.Link,
-                { to: "/dashboard/profile", className: "panel-home-student" },
+                _reactBootstrap.Panel,
+                { className: "panel-filled" },
                 React.createElement(
-                  _reactBootstrap.Panel,
-                  { className: "panel-filled" },
-                  React.createElement(
-                    "h2",
-                    null,
-                    React.createElement("i", { className: "pe pe-7s-user pe-3x pe-va text-warning" }),
-                    " Profil"
-                  ),
-                  React.createElement(
-                    "div",
-                    null,
-                    "Compl\xE9ter ton profil et tes infos personnelles."
-                  )
-                )
-              )
-            ),
-            React.createElement(
-              _reactBootstrap.Col,
-              { md: 6 },
-              React.createElement(
-                _reactRouterDom.Link,
-                { to: "/dashboard/sessions", className: "panel-home-student" },
+                  "h2",
+                  null,
+                  React.createElement("i", { className: "pe pe-7s-joy pe-3x pe-va text-warning" }),
+                  " Jeux"
+                ),
                 React.createElement(
-                  _reactBootstrap.Panel,
-                  { className: "panel-filled" },
-                  React.createElement(
-                    "h2",
-                    null,
-                    React.createElement("i", { className: "pe pe-7s-joy pe-3x pe-va text-warning" }),
-                    " Jeux"
-                  ),
-                  React.createElement(
-                    "div",
-                    null,
-                    "Consulter les jeux auxquels tu es inscrit et les r\xE9sultats de ceux auxquels tu as particip\xE9."
-                  )
+                  "div",
+                  null,
+                  "Consulter les jeux auxquels tu es inscrit et les r\xE9sultats de ceux auxquels tu as particip\xE9."
                 )
               )
             )

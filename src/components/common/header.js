@@ -1,5 +1,7 @@
 var React = require("react")
 import { connect } from 'react-redux'
+
+import { withRouter } from 'react-router'
 import { NavLink, Link, Redirect } from 'react-router-dom'
 
 import { Navbar } from 'react-bootstrap';
@@ -25,7 +27,9 @@ class Header extends React.Component {
     var menu_entries = [], menu_entry, menu, item, route
     for (var key in this.props.menu) {
       menu = this.props.menu[key]
-      menu_entries.push(<li className={"nav-category"}>{menu.label}</li>)
+      if (menu.label) {
+        menu_entries.push(<li className={"nav-category"}>{menu.label}</li>)
+      }
       for (var index in menu.items) {  
         item = menu.items[index]
         if (item.display !== false) {
@@ -34,13 +38,12 @@ class Header extends React.Component {
               case "logout":
                 route = "/logout"
                 break
-              case "dashboard":
-                route = "/dashboard"
-                break
-              case "admin":
-                route = "/admin"
-                break
             }
+
+          } else if (item.root === true) {
+            route = this.props.root 
+          } else if (item.switch) {
+            route = item.switch
           } else {
             route = this.props.root + (item.route ? "/" + item.route : "")
           }
@@ -120,4 +123,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Header)
+export default withRouter(connect(mapStateToProps)(Header))

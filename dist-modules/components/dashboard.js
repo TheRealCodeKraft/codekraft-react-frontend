@@ -75,8 +75,7 @@ var Dashboard = function (_React$Component) {
       return React.createElement(
         "div",
         { className: "dashboard" },
-        React.createElement(_header2.default, { location: this.props.location,
-          menu: this.props.navigation.dashboard.menu,
+        React.createElement(_header2.default, { menu: this.props.navigation.dashboard.menu,
           root: "/dashboard" }),
         this.state.me && this.state.me.firstname === null ? React.createElement(
           "span",

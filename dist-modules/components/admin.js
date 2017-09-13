@@ -73,8 +73,7 @@ var Admin = function (_React$Component) {
       return React.createElement(
         "div",
         null,
-        React.createElement(_header2.default, { location: this.props.location,
-          menu: this.props.navigation.admin.menu,
+        React.createElement(_header2.default, { menu: this.props.navigation.admin.menu,
           root: "/admin" }),
         React.createElement(
           "section",

@@ -36,8 +36,7 @@ class Admin extends React.Component {
 
     return (
       <div>
-        <Header location={this.props.location} 
-                menu={this.props.navigation.admin.menu} 
+        <Header menu={this.props.navigation.admin.menu} 
                 root="/admin" />
         <section className="content">
           <Switch>

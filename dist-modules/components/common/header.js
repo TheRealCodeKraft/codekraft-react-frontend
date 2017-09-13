@@ -8,6 +8,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _reactRedux = require('react-redux');
 
+var _reactRouter = require('react-router');
+
 var _reactRouterDom = require('react-router-dom');
 
 var _reactBootstrap = require('react-bootstrap');
@@ -56,11 +58,13 @@ var Header = function (_React$Component) {
           route;
       for (var key in this.props.menu) {
         menu = this.props.menu[key];
-        menu_entries.push(React.createElement(
-          'li',
-          { className: "nav-category" },
-          menu.label
-        ));
+        if (menu.label) {
+          menu_entries.push(React.createElement(
+            'li',
+            { className: "nav-category" },
+            menu.label
+          ));
+        }
         for (var index in menu.items) {
           item = menu.items[index];
           if (item.display !== false) {
@@ -69,13 +73,11 @@ var Header = function (_React$Component) {
                 case "logout":
                   route = "/logout";
                   break;
-                case "dashboard":
-                  route = "/dashboard";
-                  break;
-                case "admin":
-                  route = "/admin";
-                  break;
               }
+            } else if (item.root === true) {
+              route = this.props.root;
+            } else if (item.switch) {
+              route = item.switch;
             } else {
               route = this.props.root + (item.route ? "/" + item.route : "");
             }
@@ -195,4 +197,4 @@ function mapStateToProps(state) {
   };
 }
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(Header);
+exports.default = (0, _reactRouter.withRouter)((0, _reactRedux.connect)(mapStateToProps)(Header));

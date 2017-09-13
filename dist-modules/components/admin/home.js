@@ -41,6 +41,8 @@ var Home = function (_React$Component) {
         _reactBootstrap.Grid,
         { fluid: true },
         groups.map(function (group) {
+          if (group.hiddenOnHome) return null;
+
           return [React.createElement(
             _reactBootstrap.Row,
             null,

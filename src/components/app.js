@@ -7,6 +7,7 @@ import { Route, Switch } from 'react-router-dom'
 import ActionCableProvider from 'react-actioncable-provider'
 
 import Offline from './offline'
+import Root from './common/root'
 import Dashboard from './dashboard'
 import Admin from './admin'
 
@@ -42,14 +43,14 @@ class App extends React.Component {
           {this.props.token
            ? <ActionCableProvider url={process.env.CABLE_URL + "/?token=" + this.props.token.access_token}>
                <Switch>
-                 <Route path="/dashboard" component={Dashboard} />
-                 <Route path="/admin" component={Admin} />
+                 <Route path="/dashboard" component={Root(this.props.navigation.dashboard)} />
+                 <Route path="/admin" component={Root(this.props.navigation.admin)} />
                  <Route path="/" component={Offline} />
                </Switch>
              </ActionCableProvider>
            : <Switch>
-               <Route path="/dashboard" component={Dashboard} />
-               <Route path="/admin" component={Admin} />
+               <Route path="/dashboard" component={Root(this.props.navigation.dashboard)} />
+               <Route path="/admin" component={Root(this.props.navigation.admin)} />
                <Route path="/" component={Offline} />
              </Switch>}
         </div>
@@ -61,7 +62,8 @@ function mapStateToProps(state) {
   return {
     //me: state.userState.me || null,
     clients: state.bootstrap.clients,
-    token: state.authState.token || null
+    token: state.authState.token || null,
+    navigation: state.bootstrap.navigation
   }
 }
 

@@ -10,6 +10,7 @@ require('dotenv').config()
 
 import createStore from './api/client/reducer/create-store'
 import createClients from './api/client/create-clients'
+import createNavigation from './navigation/create-navigation'
 
 import { BrowserRouter } from 'react-router-dom'
 
@@ -27,7 +28,7 @@ var Bootstrap = function() {
 
     store.dispatch({
       type: "NAVIGATION",
-      navigation: config.navigation
+      navigation: createNavigation(config.navigation)
     })
   
     document.addEventListener('DOMContentLoaded', function() {

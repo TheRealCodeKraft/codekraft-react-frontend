@@ -42,8 +42,7 @@ class Dashboard extends React.Component {
 
     return (
         <div className="dashboard">
-          <Header location={this.props.location} 
-                  menu={this.props.navigation.dashboard.menu} 
+          <Header menu={this.props.navigation.dashboard.menu} 
                   root="/dashboard" />
           {this.state.me && this.state.me.firstname === null
            ? <span>Profile filler</span>
