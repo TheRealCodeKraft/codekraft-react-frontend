@@ -113,6 +113,8 @@ module.exports = function (config, store) {
           }
         }
 
+        if (name == "session") console.dir(functions);
+
         return functions;
       }();
     }(clientName, plural, store, ApiClient);
