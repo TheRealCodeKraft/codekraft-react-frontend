@@ -97,12 +97,11 @@ module.exports = function(config, store) {
       }
 
       if (localConfig.client) {
-        var funx = localConfig.client(name, plural, store)
+        var funx = localConfig.client(name, plural, store, ApiClient)
         var key
         for(var key in funx) {
           functions[key] = funx[key]
         }
-console.dir(functions)
       }
 
       return functions
