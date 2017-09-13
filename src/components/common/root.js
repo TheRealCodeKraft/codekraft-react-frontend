@@ -47,14 +47,17 @@ export default function(config) {
 
       return (
           <div className="dashboard">
-            <Header menu={config.menu} 
-                    root={config.root} />
-            <section className="content">
+            {config.header
+             ? <config.header />
+             : <Header menu={config.menu} 
+                       root={config.root} />
+            }
+            <section className={"content"}>
             {this.state.me && this.state.me.temp
              ? this.buildProfileFiller()
              : <Switch>
                  {this.state.pages.map(item => {
-                   var url = config.root + ((item.route && item.route !== "") ? ("/" + item.route) : "")
+                   var url = config.root + ((item.route && item.route !== "") ? ((config.root !== "/" ? "/" : "") + item.route) : "")
                    var component = null
                    if (item.component) {
                      component = item.component
@@ -62,14 +65,19 @@ export default function(config) {
                      component = AdminPage(item)
                    }
 
+console.dir(component)
                    if (component) {
 
                      if (config.grants) {
                        component = CheckForAcls(config.grants, component)
                      }
 
-                     if (config.restricted) {
+                     if (config.restricted && !item.discardOnLogin) {
                        component = AuthChecker(component)
+                     }
+
+                     if (item.discardOnLogin) {
+                       component = AuthChecker(component, true)
                      }
 
                      return <Route key={url} exact path={url} component={component} />

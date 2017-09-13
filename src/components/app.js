@@ -6,10 +6,7 @@ import { Route, Switch } from 'react-router-dom'
 
 import ActionCableProvider from 'react-actioncable-provider'
 
-import Offline from './offline'
 import Root from './common/root'
-import Dashboard from './dashboard'
-import Admin from './admin'
 
 /**
  * OBL Main App Container
@@ -45,13 +42,13 @@ class App extends React.Component {
                <Switch>
                  <Route path="/dashboard" component={Root(this.props.navigation.dashboard)} />
                  <Route path="/admin" component={Root(this.props.navigation.admin)} />
-                 <Route path="/" component={Offline} />
+                 <Route path="/" component={Root(this.props.navigation.offline)} />
                </Switch>
              </ActionCableProvider>
            : <Switch>
                <Route path="/dashboard" component={Root(this.props.navigation.dashboard)} />
                <Route path="/admin" component={Root(this.props.navigation.admin)} />
-               <Route path="/" component={Offline} />
+               <Route path="/" component={Root(this.props.navigation.offline)} />
              </Switch>}
         </div>
     );

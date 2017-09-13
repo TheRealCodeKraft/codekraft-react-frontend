@@ -50,7 +50,7 @@ exports.default = function (config) {
         return React.createElement(
           "div",
           { className: "dashboard" },
-          React.createElement(_header2.default, { menu: config.menu,
+          config.header ? React.createElement(config.header, null) : React.createElement(_header2.default, { menu: config.menu,
             root: config.root }),
           React.createElement(
             "section",
@@ -59,7 +59,7 @@ exports.default = function (config) {
               _reactRouter.Switch,
               null,
               this.state.pages.map(function (item) {
-                var url = config.root + (item.route && item.route !== "" ? "/" + item.route : "");
+                var url = config.root + (item.route && item.route !== "" ? (config.root !== "/" ? "/" : "") + item.route : "");
                 var component = null;
                 if (item.component) {
                   component = item.component;
@@ -67,15 +67,22 @@ exports.default = function (config) {
                   component = (0, _adminPage2.default)(item);
                 }
 
+                console.dir(component);
                 if (component) {
 
                   if (config.grants) {
                     component = (0, _checkForAcls2.default)(config.grants, component);
                   }
 
-                  if (config.restricted) {
+                  if (config.restricted && !item.discardOnLogin) {
                     component = (0, _authChecker2.default)(component);
                   }
+
+                  if (item.discardOnLogin) {
+                    component = (0, _authChecker2.default)(component, true);
+                  }
+                  console.log(url);
+                  console.dir(component);
 
                   return React.createElement(_reactRouter.Route, { key: url, exact: true, path: url, component: component });
                 } else {

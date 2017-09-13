@@ -20,21 +20,9 @@ var _reactActioncableProvider = require('react-actioncable-provider');
 
 var _reactActioncableProvider2 = _interopRequireDefault(_reactActioncableProvider);
 
-var _offline = require('./offline');
-
-var _offline2 = _interopRequireDefault(_offline);
-
 var _root = require('./common/root');
 
 var _root2 = _interopRequireDefault(_root);
-
-var _dashboard = require('./dashboard');
-
-var _dashboard2 = _interopRequireDefault(_dashboard);
-
-var _admin = require('./admin');
-
-var _admin2 = _interopRequireDefault(_admin);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -91,14 +79,14 @@ var App = function (_React$Component) {
             null,
             _react2.default.createElement(_reactRouterDom.Route, { path: '/dashboard', component: (0, _root2.default)(this.props.navigation.dashboard) }),
             _react2.default.createElement(_reactRouterDom.Route, { path: '/admin', component: (0, _root2.default)(this.props.navigation.admin) }),
-            _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: _offline2.default })
+            _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: (0, _root2.default)(this.props.navigation.offline) })
           )
         ) : _react2.default.createElement(
           _reactRouterDom.Switch,
           null,
           _react2.default.createElement(_reactRouterDom.Route, { path: '/dashboard', component: (0, _root2.default)(this.props.navigation.dashboard) }),
           _react2.default.createElement(_reactRouterDom.Route, { path: '/admin', component: (0, _root2.default)(this.props.navigation.admin) }),
-          _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: _offline2.default })
+          _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: (0, _root2.default)(this.props.navigation.offline) })
         )
       );
     }

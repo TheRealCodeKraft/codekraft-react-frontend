@@ -1,12 +1,95 @@
+import OfflineHome from '../components/offline/home'
 import DashboardHome from '../components/dashboard/home'
 import AdminHome from '../components/admin/home'
 
+import Login from '../components/offline/login'
+import Signup from '../components/offline/signup'
+
 module.exports = function(config) {
 
+  config.offline = manageOffline(config.offline)
   config.dashboard = manageDashboard(config.dashboard)
   config.admin = manageAdmin(config.admin)
 
   return config 
+}
+
+function manageOffline(config) {
+  var rootFound = false, rootElem
+  var loginFound = false, loginElem
+  var signupFound = false, signupElem
+
+  for (var key in config.menu) { 
+
+    if (!rootFound) {
+      rootElem = config.menu[key].items.filter(item => { return item.root === true })[0]
+      if (rootElem) {
+        rootFound=true
+        if (!rootElem.component) {
+          rootElem.component = OfflineHome
+        }
+      }
+    }
+
+    if (!loginFound) {
+      loginElem = config.menu[key].items.filter(item => { return item.route === "login"})[0]
+      if (loginElem) {
+        loginFound = true
+        if (!loginElem.component) {
+          loginElem.component = Login
+        }
+      }
+    }
+
+    if (!signupFound) {
+      signupElem = config.menu[key].items.filter(item => { return item.route === "signup" })[0]
+      if (signupElem) {
+        signupFound = true
+        if (!signupElem.component) {
+          signupElem.component = Signup
+        }
+      }
+    }
+
+    if (rootFound && loginFound && signupFound) break;
+  }
+
+  var newItems = []
+  if (!rootFound) {
+    newItems.push(
+      {
+        title: "Accueil",
+        root: true,
+        component: OfflineHome
+      }
+    )
+  }
+
+  if (!loginFound) {
+    newItems.push(
+      {
+        title: "Connexion",
+        route: "login",
+        component: Login
+      }
+    )
+  }
+
+  if (!signupFound) {
+    newItems.push(
+      {
+        title: "Inscription",
+        route: "signup",
+        component: Signup
+      }
+    )
+  }
+
+  if (newItems.length > 0) {
+    config.menu = insertFirst("default", {items: newItems}, config.menu) 
+  }
+
+  return config
 }
 
 function manageDashboard(config) {

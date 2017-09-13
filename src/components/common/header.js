@@ -45,7 +45,7 @@ class Header extends React.Component {
           } else if (item.switch) {
             route = item.switch
           } else {
-            route = this.props.root + (item.route ? "/" + item.route : "")
+            route = this.props.root + (item.route ? (this.props.root !== "/" ? "/" : "") + item.route : "")
           }
           
           menu_entry = <li className={this.props.location.pathname === route ? "active" : ""}>
