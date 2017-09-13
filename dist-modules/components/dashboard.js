@@ -14,7 +14,7 @@ var _authChecker = require("./utils/auth-checker");
 
 var _authChecker2 = _interopRequireDefault(_authChecker);
 
-var _header = require("./dashboard/header");
+var _header = require("./common/header");
 
 var _header2 = _interopRequireDefault(_header);
 
@@ -53,6 +53,20 @@ var Dashboard = function (_React$Component) {
           self.setState({ me: me });
         }
       });
+
+      var groups = this.props.navigation.dashboard.menu;
+      var pages = [],
+          pageIndex = 0;
+      for (var index in groups) {
+        for (var pIndex in groups[index].items) {
+          pages.push(groups[index].items[pIndex]);
+          if (!(pages[pageIndex].client instanceof Object)) {
+            pages[pageIndex].client = this.props.clients[pages[pageIndex].client];
+          }
+          pageIndex++;
+        }
+      }
+      this.setState({ pages: pages });
     }
   }, {
     key: "render",
@@ -61,7 +75,9 @@ var Dashboard = function (_React$Component) {
       return React.createElement(
         "div",
         { className: "dashboard" },
-        React.createElement(_header2.default, { location: this.props.location, history: this.props.history, showAside: true, clients: this.props.clients }),
+        React.createElement(_header2.default, { location: this.props.location,
+          menu: this.props.navigation.dashboard.menu,
+          root: "/dashboard" }),
         this.state.me && this.state.me.firstname === null ? React.createElement(
           "span",
           null,
@@ -69,12 +85,13 @@ var Dashboard = function (_React$Component) {
         ) : React.createElement(
           _reactRouter.Switch,
           null,
-          this.props.navigation.dashboard.items.map(function (menu) {
-            return menu.items.map(function (item) {
-              var path = "/dashboard" + (item.path && item.path !== "" ? "/" + item.path : "");
-              console.log(item.component);
-              return React.createElement(_reactRouter.Route, { exact: true, path: path, component: (0, _authChecker2.default)(item.component) });
-            });
+          this.state.pages.map(function (item) {
+            if (item.component) {
+              var route = "/dashboard" + (item.route && item.route !== "" ? "/" + item.route : "");
+              return React.createElement(_reactRouter.Route, { exact: true, path: route, component: (0, _authChecker2.default)(item.component) });
+            } else {
+              return null;
+            }
           })
         )
       );

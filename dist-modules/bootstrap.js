@@ -14,6 +14,8 @@ var _createClients = require('./api/client/create-clients');
 
 var _createClients2 = _interopRequireDefault(_createClients);
 
+var _reactRouterDom = require('react-router-dom');
+
 var _app = require('./components/app');
 
 var _app2 = _interopRequireDefault(_app);
@@ -47,7 +49,11 @@ var Bootstrap = function () {
       ReactDOM.render(React.createElement(
         _reactRedux.Provider,
         { store: store },
-        React.createElement(_app2.default, null)
+        React.createElement(
+          _reactRouterDom.BrowserRouter,
+          null,
+          React.createElement(_app2.default, null)
+        )
       ), document.getElementById('app-root'));
     });
   };

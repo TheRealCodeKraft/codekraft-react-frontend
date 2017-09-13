@@ -18,7 +18,7 @@ var _checkForAcls = require("./utils/check-for-acls");
 
 var _checkForAcls2 = _interopRequireDefault(_checkForAcls);
 
-var _header = require("./admin/header");
+var _header = require("./common/header");
 
 var _header2 = _interopRequireDefault(_header);
 
@@ -73,7 +73,9 @@ var Admin = function (_React$Component) {
       return React.createElement(
         "div",
         null,
-        React.createElement(_header2.default, { location: this.props.location }),
+        React.createElement(_header2.default, { location: this.props.location,
+          menu: this.props.navigation.admin.menu,
+          root: "/admin" }),
         React.createElement(
           "section",
           { className: "content" },

@@ -177,7 +177,7 @@ var ApiClient = function(store) {
       })
     } else {
       params["grant_type"] = "password"
-      ApiClient.post("oauth/token", params, function(data) {
+      post("oauth/token", params, function(data) {
         if (data.error) {
           if (callback) callback(data)
         } else {

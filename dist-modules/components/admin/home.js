@@ -41,7 +41,6 @@ var Home = function (_React$Component) {
         _reactBootstrap.Grid,
         { fluid: true },
         groups.map(function (group) {
-          console.dir(group);
           return [React.createElement(
             _reactBootstrap.Row,
             null,
@@ -62,7 +61,7 @@ var Home = function (_React$Component) {
             group.items.map(function (item) {
               return React.createElement(
                 _reactBootstrap.Col,
-                { md: 6, lg: 4 },
+                { md: 6 },
                 React.createElement(
                   _reactRouterDom.Link,
                   { to: "/admin/" + item.route, className: "panel-home-student" },

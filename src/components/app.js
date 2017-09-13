@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
 
-import { BrowserRouter } from 'react-router-dom'
 import { Route, Switch } from 'react-router-dom'
 
 import ActionCableProvider from 'react-actioncable-provider'
@@ -26,10 +26,18 @@ class App extends React.Component {
     this.props.clients.ApiClient.getToken()
   }
 
+  componentWillReceiveProps(props) {
+    if (props.location.pathname === '/logout' || this.props.location.pathname === '/logout') {
+      var self = this
+      this.props.clients.ApiClient.logout(function(data) {
+        self.props.history.push("/")
+      })
+    }
+  }
+
   render() {
 
     return (
-      <BrowserRouter>
         <div id="main-container" className={"wrapper"}>
           {this.props.token
            ? <ActionCableProvider url={process.env.CABLE_URL + "/?token=" + this.props.token.access_token}>
@@ -41,13 +49,10 @@ class App extends React.Component {
              </ActionCableProvider>
            : <Switch>
                <Route path="/dashboard" component={Dashboard} />
-{/*
                <Route path="/admin" component={Admin} />
-*/}
                <Route path="/" component={Offline} />
              </Switch>}
         </div>
-      </BrowserRouter>
     );
   }
 }
@@ -60,4 +65,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(App);
+export default withRouter(connect(mapStateToProps)(App))

@@ -11,6 +11,8 @@ require('dotenv').config()
 import createStore from './api/client/reducer/create-store'
 import createClients from './api/client/create-clients'
 
+import { BrowserRouter } from 'react-router-dom'
+
 import App from './components/app'
 
 var Bootstrap = function() {
@@ -31,7 +33,9 @@ var Bootstrap = function() {
     document.addEventListener('DOMContentLoaded', function() {
       ReactDOM.render(
         <Provider store={store}>
-          <App />
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
         </Provider>,
         document.getElementById('app-root')
       );

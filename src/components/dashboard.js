@@ -5,7 +5,7 @@ import {Switch, Route} from "react-router"
 
 import AuthChecker from './utils/auth-checker'
 
-import Header from './dashboard/header'
+import Header from './common/header'
 import Home from './dashboard/home'
 
 class Dashboard extends React.Component {
@@ -22,22 +22,39 @@ class Dashboard extends React.Component {
         self.setState({me: me})
       }
     })
+
+    var groups = this.props.navigation.dashboard.menu
+    var pages = [], pageIndex=0
+    for (var index in groups) {
+      for (var pIndex in groups[index].items) {
+        pages.push(groups[index].items[pIndex])
+        if (!(pages[pageIndex].client instanceof Object)) {
+          pages[pageIndex].client = this.props.clients[pages[pageIndex].client]
+        }
+        pageIndex++
+      }
+    }
+    this.setState({pages: pages})
+
   }
 
   render() {
 
     return (
         <div className="dashboard">
-          <Header location={this.props.location} history={this.props.history} showAside={true} clients={this.props.clients} />
+          <Header location={this.props.location} 
+                  menu={this.props.navigation.dashboard.menu} 
+                  root="/dashboard" />
           {this.state.me && this.state.me.firstname === null
            ? <span>Profile filler</span>
            : <Switch>
-               {this.props.navigation.dashboard.items.map(menu => {
-                 return menu.items.map(item => {
-                   var path = "/dashboard" + ((item.path && item.path !== "") ? ("/" + item.path) : "")
-console.log(item.component)
-                   return <Route exact path={path} component={AuthChecker(item.component)} />
-                 })
+               {this.state.pages.map(item => {
+                 if (item.component) {
+                   var route = "/dashboard" + ((item.route && item.route !== "") ? ("/" + item.route) : "")
+                   return <Route exact path={route} component={AuthChecker(item.component)} />
+                 } else {
+                   return null
+                 }
                })}
              </Switch>}
         </div>

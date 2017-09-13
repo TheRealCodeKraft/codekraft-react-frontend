@@ -12,6 +12,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = require('react-redux');
 
+var _reactRouter = require('react-router');
+
 var _reactRouterDom = require('react-router-dom');
 
 var _reactActioncableProvider = require('react-actioncable-provider');
@@ -61,31 +63,38 @@ var App = function (_React$Component) {
       this.props.clients.ApiClient.getToken();
     }
   }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(props) {
+      if (props.location.pathname === '/logout' || this.props.location.pathname === '/logout') {
+        var self = this;
+        this.props.clients.ApiClient.logout(function (data) {
+          self.props.history.push("/");
+        });
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
 
       return _react2.default.createElement(
-        _reactRouterDom.BrowserRouter,
-        null,
-        _react2.default.createElement(
-          'div',
-          { id: 'main-container', className: "wrapper" },
-          this.props.token ? _react2.default.createElement(
-            _reactActioncableProvider2.default,
-            { url: process.env.CABLE_URL + "/?token=" + this.props.token.access_token },
-            _react2.default.createElement(
-              _reactRouterDom.Switch,
-              null,
-              _react2.default.createElement(_reactRouterDom.Route, { path: '/dashboard', component: _dashboard2.default }),
-              _react2.default.createElement(_reactRouterDom.Route, { path: '/admin', component: _admin2.default }),
-              _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: _offline2.default })
-            )
-          ) : _react2.default.createElement(
+        'div',
+        { id: 'main-container', className: "wrapper" },
+        this.props.token ? _react2.default.createElement(
+          _reactActioncableProvider2.default,
+          { url: process.env.CABLE_URL + "/?token=" + this.props.token.access_token },
+          _react2.default.createElement(
             _reactRouterDom.Switch,
             null,
             _react2.default.createElement(_reactRouterDom.Route, { path: '/dashboard', component: _dashboard2.default }),
+            _react2.default.createElement(_reactRouterDom.Route, { path: '/admin', component: _admin2.default }),
             _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: _offline2.default })
           )
+        ) : _react2.default.createElement(
+          _reactRouterDom.Switch,
+          null,
+          _react2.default.createElement(_reactRouterDom.Route, { path: '/dashboard', component: _dashboard2.default }),
+          _react2.default.createElement(_reactRouterDom.Route, { path: '/admin', component: _admin2.default }),
+          _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: _offline2.default })
         )
       );
     }
@@ -102,4 +111,4 @@ function mapStateToProps(state) {
   };
 }
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(App);
+exports.default = (0, _reactRouter.withRouter)((0, _reactRedux.connect)(mapStateToProps)(App));
