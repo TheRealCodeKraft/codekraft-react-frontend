@@ -115,6 +115,7 @@ var Header = function (_React$Component) {
                   { className: "nav-category" },
                   menu.label
                 ), menu.items.map(function (item) {
+                  if (item.display === false) return null;
                   var path = "/dashboard" + (item.path && item.path !== "" ? "/" + item.path : "");
                   return _react2.default.createElement(
                     'li',
@@ -127,6 +128,19 @@ var Header = function (_React$Component) {
                   );
                 })];
               }),
+              _react2.default.createElement(
+                _showForAcls2.default,
+                { grants: ["admin"] },
+                _react2.default.createElement(
+                  'li',
+                  null,
+                  _react2.default.createElement(
+                    _reactRouterDom.NavLink,
+                    { exact: true, to: '/admin' },
+                    'Administration'
+                  )
+                )
+              ),
               _react2.default.createElement(
                 'li',
                 null,
@@ -158,7 +172,7 @@ var Header = function (_React$Component) {
     value: function handleLogout(e) {
       e.preventDefault();
       var self = this;
-      this.props.clients.AuthClient.logout(function () {
+      this.props.clients.ApiClient.logout(function () {
         self.props.history.push("/");
         self.setState({ logout: true });
       });

@@ -33,7 +33,7 @@ exports.default = function (ComposedComponent) {
       key: "componentWillMount",
       value: function componentWillMount() {
 
-        var Auth = this.props.clients.AuthClient;
+        var Auth = this.props.clients.ApiClient;
         var UserClient = this.props.clients.UserClient;
 
         if (this.props.location.search.indexOf("stamp") !== -1) {
@@ -95,7 +95,7 @@ exports.default = function (ComposedComponent) {
     }, {
       key: "componentWillReceiveProps",
       value: function componentWillReceiveProps(props) {
-        var Auth = this.props.clients.AuthClient;
+        var Auth = this.props.clients.ApiClient;
         var UserClient = this.props.clients.UserClient;
 
         if (this.state.resetting && props.me == null) {
@@ -127,20 +127,20 @@ exports.default = function (ComposedComponent) {
       key: "render",
       value: function render() {
         if (!this.state.connectionOk || this.state.loggingIn === true) {
-          return _react2.default.createElement(
+          return React.createElement(
             "section",
             { className: "content" },
-            _react2.default.createElement("div", { className: "loader-dots" })
+            React.createElement("div", { className: "loader-dots" })
           );
         }
 
-        return _react2.default.createElement(ComposedComponent, this.props);
+        return React.createElement(ComposedComponent, this.props);
       }
     }, {
       key: "handleRefresh",
       value: function handleRefresh(data) {
         if (data.error) {
-          var Auth = this.props.clients.AuthClient;
+          var Auth = this.props.clients.ApiClient;
           Auth.logout();
         }
         this.setState({ refreshing: false });
@@ -148,24 +148,21 @@ exports.default = function (ComposedComponent) {
     }]);
 
     return AuthChecker;
-  }(_react2.default.Component);
+  }(React.Component);
 
   return (0, _reactRedux.connect)(mapStateToProps)(AuthChecker);
 };
 
-var _react = require("react");
-
-var _react2 = _interopRequireDefault(_react);
-
 var _reactRedux = require("react-redux");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
+
 
 function mapStateToProps(state) {
   return {

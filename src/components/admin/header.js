@@ -1,7 +1,6 @@
-import React from "react"
-
+var React = require("react")
+import { connect } from 'react-redux'
 import { NavLink, Link, Redirect } from 'react-router-dom'
-import Auth from 'clients/auth'
 
 import { Navbar } from 'react-bootstrap';
 
@@ -123,10 +122,16 @@ class Header extends React.Component {
 
   handleLogout(e) {
     e.preventDefault()
-    Auth.logout()
+    this.props.clients.ApiClient.logout()
     this.setState({logout: true})
   }
 
 }
 
-export default Header
+function mapStateToProps(state) {
+  return {
+    clients: state.bootstrap.clients || {}
+  }
+}
+
+export default connect(mapStateToProps)(Header)

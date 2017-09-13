@@ -1,14 +1,10 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _apiClient = require('./api-client');
-
-var _apiClient2 = _interopRequireDefault(_apiClient);
-
-var _storage = require('./storage/storage');
+var _storage = require("./storage/storage");
 
 var _storage2 = _interopRequireDefault(_storage);
 
@@ -16,7 +12,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var STORAGE_KEY_FOR_TOKEN = "token";
 
-var Auth = function Auth(store) {
+var Auth = function Auth(store, ApiClient) {
   var getToken = function getToken() {
     var storageToken = _storage2.default.get(STORAGE_KEY_FOR_TOKEN);
     var token = null;
@@ -39,17 +35,6 @@ var Auth = function Auth(store) {
     });
   };
 
-  var refreshToken = function refreshToken(callback) {
-    var refresh_token = getToken().refresh_token;
-    _apiClient2.default.post("oauth/token", { grant_type: "refresh_token", refresh_token: refresh_token }, function (data) {
-      if (data.error) {
-        if (callback) callback(data);
-      } else {
-        storeToken(data, callback);
-      }
-    });
-  };
-
   var storeToken = function storeToken(data, callback) {
     setToken(data);
     callback(data);
@@ -62,7 +47,7 @@ var Auth = function Auth(store) {
       });
     } else {
       params["grant_type"] = "password";
-      _apiClient2.default.post("oauth/token", params, function (data) {
+      ApiClient.post("oauth/token", params, function (data) {
         if (data.error) {
           if (callback) callback(data);
         } else {
@@ -81,26 +66,11 @@ var Auth = function Auth(store) {
     }
   };
 
-  var logout = function logout(callback) {
-    _storage2.default.delete(STORAGE_KEY_FOR_TOKEN);
-    store.dispatch({
-      type: "TOKEN",
-      token: null
-    });
-
-    store.dispatch({
-      type: "USER_NOT_FOUND"
-    });
-    if (callback) callback();
-  };
-
   return {
     getToken: getToken,
-    refreshToken: refreshToken,
     storeToken: storeToken,
     checkForToken: checkForToken,
-    login: login,
-    logout: logout
+    login: login
   };
 };
 

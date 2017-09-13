@@ -1,5 +1,4 @@
-import React from "react"
-import configs from 'config'
+var React = require("react")
 
 class AdminPageListRow extends React.Component {
 
@@ -60,9 +59,6 @@ class AdminPageListRow extends React.Component {
    if (attribute instanceof Object) {
      if (attribute.link) {
        var link = attribute.link.replace("[[VALUE]]", value)
-       if (link.indexOf("[[MOODLE_URL]]") !== -1) {
-         link = link.replace("[[MOODLE_URL]]", configs.moodle.url)
-       }
        value = <a href={link} target="_blank">{value}</a>
      }
      if (attribute.type === "image") {

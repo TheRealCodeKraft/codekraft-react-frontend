@@ -26,6 +26,10 @@ var _dashboard = require('./dashboard');
 
 var _dashboard2 = _interopRequireDefault(_dashboard);
 
+var _admin = require('./admin');
+
+var _admin2 = _interopRequireDefault(_admin);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33,10 +37,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/*
-import Admin from './admin'
-*/
 
 /**
  * OBL Main App Container
@@ -58,7 +58,7 @@ var App = function (_React$Component) {
   _createClass(App, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
-      this.props.clients.AuthClient.getToken();
+      this.props.clients.ApiClient.getToken();
     }
   }, {
     key: 'render',
@@ -77,6 +77,7 @@ var App = function (_React$Component) {
               _reactRouterDom.Switch,
               null,
               _react2.default.createElement(_reactRouterDom.Route, { path: '/dashboard', component: _dashboard2.default }),
+              _react2.default.createElement(_reactRouterDom.Route, { path: '/admin', component: _admin2.default }),
               _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: _offline2.default })
             )
           ) : _react2.default.createElement(

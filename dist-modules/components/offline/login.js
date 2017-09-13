@@ -6,10 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require("react");
-
-var _react2 = _interopRequireDefault(_react);
-
 var _reactRedux = require("react-redux");
 
 var _reactRouterDom = require("react-router-dom");
@@ -27,6 +23,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
 
 var Login = function (_React$Component) {
   _inherits(Login, _React$Component);
@@ -65,65 +63,65 @@ var Login = function (_React$Component) {
   _createClass(Login, [{
     key: "render",
     value: function render() {
-      if (this.state.loggedIn) return _react2.default.createElement(_reactRouterDom.Redirect, { to: "/dashboard" });
-      return _react2.default.createElement(
+      if (this.state.loggedIn) return React.createElement(_reactRouterDom.Redirect, { to: "/dashboard" });
+      return React.createElement(
         _reactBootstrap.Grid,
         { className: "container-center animated slideInDown" },
-        _react2.default.createElement(
+        React.createElement(
           _reactBootstrap.Row,
           { className: "view-header" },
-          _react2.default.createElement(
+          React.createElement(
             "div",
             { className: "header-icon" },
-            _react2.default.createElement("i", { className: "pe page-header-icon pe-7s-unlock" })
+            React.createElement("i", { className: "pe page-header-icon pe-7s-unlock" })
           ),
-          _react2.default.createElement(
+          React.createElement(
             "div",
             { className: "header-title" },
-            _react2.default.createElement(
+            React.createElement(
               "h3",
               null,
               "Login"
             ),
-            _react2.default.createElement(
+            React.createElement(
               "small",
               null,
               "Entrez vos identifiants pour vous connecter."
             )
           )
         ),
-        this.props.newUser ? _react2.default.createElement(
+        this.props.newUser ? React.createElement(
           _reactBootstrap.Row,
           null,
-          _react2.default.createElement(
+          React.createElement(
             "div",
             { className: "alert alert-success", style: { marginTop: 0, display: "flex", alignItems: "center" } },
-            _react2.default.createElement("i", { className: "pe pe-7s-door-lock", style: { fontSize: "3em", marginRight: 15 } }),
+            React.createElement("i", { className: "pe pe-7s-door-lock", style: { fontSize: "3em", marginRight: 15 } }),
             "Votre compte a \xE9t\xE9 cr\xE9\xE9, vous pouvez maintenant vous connecter."
           )
         ) : null,
-        _react2.default.createElement(
+        React.createElement(
           _reactBootstrap.Panel,
           { className: "panel panel-filled" },
-          _react2.default.createElement(_form2.default, { id: "login-form",
+          React.createElement(_form2.default, { id: "login-form",
             clients: this.props.clients,
             fields: this.fields,
             submitLabel: "Me connecter",
             onSubmit: this.handleSubmit,
             submitClass: "btn btn-accent btn-signup",
-            service: { client: this.props.clients.AuthClient, func: "login" },
+            service: { client: this.props.clients.ApiClient, func: "login" },
             onSubmitComplete: this.handleSubmitComplete
           }),
-          _react2.default.createElement(
+          React.createElement(
             _reactRouterDom.Link,
             { className: "btn btn-default btn-signup", to: "/signup" },
             "Cr\xE9er un compte"
           )
         ),
-        _react2.default.createElement(
+        React.createElement(
           "div",
           { className: "text-center small" },
-          _react2.default.createElement(
+          React.createElement(
             _reactRouterDom.Link,
             { to: "/" },
             "Mot de passe oubli\xE9"
@@ -142,7 +140,7 @@ var Login = function (_React$Component) {
   }]);
 
   return Login;
-}(_react2.default.Component);
+}(React.Component);
 
 function mapStateToProps(state) {
   return {

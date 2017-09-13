@@ -6,25 +6,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
+var _reactRedux = require('react-redux');
 
 var _reactRouterDom = require('react-router-dom');
 
-var _auth = require('clients/auth');
-
-var _auth2 = _interopRequireDefault(_auth);
-
 var _reactBootstrap = require('react-bootstrap');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
 
 var Header = function (_React$Component) {
   _inherits(Header, _React$Component);
@@ -47,211 +41,211 @@ var Header = function (_React$Component) {
   _createClass(Header, [{
     key: 'render',
     value: function render() {
-      if (this.state.logout) return _react2.default.createElement(_reactRouterDom.Redirect, { to: '/' });
+      if (this.state.logout) return React.createElement(_reactRouterDom.Redirect, { to: '/' });
 
-      return _react2.default.createElement(
+      return React.createElement(
         'header',
         { id: 'header' },
-        _react2.default.createElement(
+        React.createElement(
           _reactBootstrap.Navbar,
           { fixedTop: true, fluid: true },
-          _react2.default.createElement(
+          React.createElement(
             _reactBootstrap.Navbar.Header,
             null,
-            _react2.default.createElement(
+            React.createElement(
               'div',
               { id: 'mobile-menu' },
-              _react2.default.createElement(
+              React.createElement(
                 'div',
                 { className: "left-nav-toggle" },
-                _react2.default.createElement(
+                React.createElement(
                   'a',
                   { href: '#', onClick: this.handleHamburgerClick },
-                  _react2.default.createElement('i', { className: "stroke-hamburgermenu" })
+                  React.createElement('i', { className: "stroke-hamburgermenu" })
                 )
               )
             ),
-            _react2.default.createElement(
+            React.createElement(
               _reactRouterDom.Link,
               { to: '/admin', className: "navbar-brand navbar-admin" },
-              _react2.default.createElement('img', { src: '/assets/images/logo-obl-mini.png', alt: 'Open Business Labs' }),
+              React.createElement('img', { src: '/assets/images/logo-obl-mini.png', alt: 'Open Business Labs' }),
               ' ',
-              _react2.default.createElement(
+              React.createElement(
                 'span',
                 null,
                 'OBL'
               )
             )
           ),
-          _react2.default.createElement(
+          React.createElement(
             _reactBootstrap.Navbar.Collapse,
             { id: 'navbar' },
-            _react2.default.createElement(
+            React.createElement(
               'div',
               { className: "left-nav-toggle" },
-              _react2.default.createElement(
+              React.createElement(
                 'a',
                 { href: '#', onClick: this.handleHamburgerClick },
-                _react2.default.createElement('i', { className: "stroke-hamburgermenu" })
+                React.createElement('i', { className: "stroke-hamburgermenu" })
               )
             )
           )
         ),
-        _react2.default.createElement(
+        React.createElement(
           'aside',
           { className: "navigation" },
-          _react2.default.createElement(
+          React.createElement(
             'nav',
             null,
-            _react2.default.createElement(
+            React.createElement(
               'ul',
               { className: "nav luna-nav" },
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 { className: "nav-category" },
                 'G\xE9n\xE9ral'
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 { className: this.props.location.pathname === "/admin" ? "active" : "" },
-                _react2.default.createElement(
+                React.createElement(
                   _reactRouterDom.NavLink,
                   { exact: true, to: '/admin' },
                   'Tableau de bord admin'
                 )
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 null,
-                _react2.default.createElement(
+                React.createElement(
                   _reactRouterDom.NavLink,
                   { exact: true, to: '/dashboard' },
                   'Retour au site'
                 )
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 { className: "nav-category" },
                 'Utilisateurs'
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 { className: this.props.location.pathname === "/admin/users" ? "active" : "" },
-                _react2.default.createElement(
+                React.createElement(
                   _reactRouterDom.NavLink,
                   { exact: true, to: '/admin/users' },
                   'Liste des utilisateurs'
                 )
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 { className: this.props.location.pathname === "/admin/areas" ? "active" : "" },
-                _react2.default.createElement(
+                React.createElement(
                   _reactRouterDom.NavLink,
                   { exact: true, to: '/admin/areas' },
                   'Zones g\xE9o.'
                 )
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 { className: this.props.location.pathname === "/admin/schools" ? "active" : "" },
-                _react2.default.createElement(
+                React.createElement(
                   _reactRouterDom.NavLink,
                   { exact: true, to: '/admin/schools' },
                   'Ecoles'
                 )
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 { className: this.props.location.pathname === "/admin/specialities" ? "active" : "" },
-                _react2.default.createElement(
+                React.createElement(
                   _reactRouterDom.NavLink,
                   { exact: true, to: '/admin/specialities' },
                   'Sp\xE9cialit\xE9s'
                 )
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 { className: "nav-category" },
                 'Jeux'
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 { className: this.props.location.pathname === "/admin/games" ? "active" : "" },
-                _react2.default.createElement(
+                React.createElement(
                   _reactRouterDom.NavLink,
                   { exact: true, to: '/admin/games' },
                   'Liste des jeux'
                 )
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 { className: this.props.location.pathname === "/admin/objectives" ? "active" : "" },
-                _react2.default.createElement(
+                React.createElement(
                   _reactRouterDom.NavLink,
                   { exact: true, to: '/admin/objectives' },
                   'Objectifs'
                 )
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 { className: this.props.location.pathname === "/admin/scenarios" ? "active" : "" },
-                _react2.default.createElement(
+                React.createElement(
                   _reactRouterDom.NavLink,
                   { exact: true, to: '/admin/scenarios' },
                   'Scenarii'
                 )
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 { className: this.props.location.pathname === "/admin/clues" ? "active" : "" },
-                _react2.default.createElement(
+                React.createElement(
                   _reactRouterDom.NavLink,
                   { exact: true, to: '/admin/clues' },
                   'Indices'
                 )
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 { className: this.props.location.pathname === "/admin/decision_makers" ? "active" : "" },
-                _react2.default.createElement(
+                React.createElement(
                   _reactRouterDom.NavLink,
                   { exact: true, to: '/admin/decision_makers' },
                   'D\xE9cideurs'
                 )
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 { className: "nav-category" },
                 'Sessions'
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 { className: this.props.location.pathname === "/admin/sessions" ? "active" : "" },
-                _react2.default.createElement(
+                React.createElement(
                   _reactRouterDom.NavLink,
                   { exact: true, to: '/admin/sessions' },
                   'Liste des sessions'
                 )
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 { className: this.props.location.pathname === "/admin/rooms" ? "active" : "" },
-                _react2.default.createElement(
+                React.createElement(
                   _reactRouterDom.NavLink,
                   { exact: true, to: '/admin/rooms' },
                   'Salles'
                 )
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 { className: "nav-category" },
                 'D\xE9connexion'
               ),
-              _react2.default.createElement(
+              React.createElement(
                 'li',
                 null,
-                _react2.default.createElement(
+                React.createElement(
                   'a',
                   { href: '#', onClick: this.handleLogout },
                   'Se d\xE9connecter'
@@ -278,12 +272,18 @@ var Header = function (_React$Component) {
     key: 'handleLogout',
     value: function handleLogout(e) {
       e.preventDefault();
-      _auth2.default.logout();
+      this.props.clients.ApiClient.logout();
       this.setState({ logout: true });
     }
   }]);
 
   return Header;
-}(_react2.default.Component);
+}(React.Component);
 
-exports.default = Header;
+function mapStateToProps(state) {
+  return {
+    clients: state.bootstrap.clients || {}
+  };
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(Header);

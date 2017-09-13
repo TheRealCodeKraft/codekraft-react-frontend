@@ -4,7 +4,6 @@ var {render} = require('react-dom')
 var {Router} = require('react-router')
 
 var configureStore = require('./store-config')
-//var coreReducers = require('./ducks/core')
 var ReducerRegistry = require('./registry')
 
 function pushNewEntityToState(entity, state, name) {

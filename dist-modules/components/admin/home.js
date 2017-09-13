@@ -6,21 +6,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require("react");
-
-var _react2 = _interopRequireDefault(_react);
-
 var _reactRouterDom = require("react-router-dom");
 
 var _reactBootstrap = require("react-bootstrap");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
 
 var Home = function (_React$Component) {
     _inherits(Home, _React$Component);
@@ -34,42 +30,42 @@ var Home = function (_React$Component) {
     _createClass(Home, [{
         key: "render",
         value: function render() {
-            return _react2.default.createElement(
+            return React.createElement(
                 _reactBootstrap.Grid,
                 { fluid: true },
-                _react2.default.createElement(
+                React.createElement(
                     _reactBootstrap.Row,
                     null,
-                    _react2.default.createElement(
+                    React.createElement(
                         _reactBootstrap.Col,
                         { xs: 12 },
-                        _react2.default.createElement(
+                        React.createElement(
                             "h1",
                             null,
-                            _react2.default.createElement("i", { className: "pe pe-7s-tools text-warning" }),
+                            React.createElement("i", { className: "pe pe-7s-tools text-warning" }),
                             " Administration"
                         )
                     )
                 ),
-                _react2.default.createElement(
+                React.createElement(
                     _reactBootstrap.Row,
                     null,
-                    _react2.default.createElement(
+                    React.createElement(
                         _reactBootstrap.Col,
                         { md: 6 },
-                        _react2.default.createElement(
+                        React.createElement(
                             _reactRouterDom.Link,
                             { to: "/admin/sessions", className: "panel-home-student" },
-                            _react2.default.createElement(
+                            React.createElement(
                                 _reactBootstrap.Panel,
                                 { className: "panel-filled" },
-                                _react2.default.createElement(
+                                React.createElement(
                                     "h2",
                                     null,
-                                    _react2.default.createElement("i", { className: "pe-7s-date pe-3x pe-va text-warning" }),
+                                    React.createElement("i", { className: "pe-7s-date pe-3x pe-va text-warning" }),
                                     " Sessions"
                                 ),
-                                _react2.default.createElement(
+                                React.createElement(
                                     "div",
                                     null,
                                     "Voir les sessions de jeu."
@@ -77,22 +73,22 @@ var Home = function (_React$Component) {
                             )
                         )
                     ),
-                    _react2.default.createElement(
+                    React.createElement(
                         _reactBootstrap.Col,
                         { md: 6 },
-                        _react2.default.createElement(
+                        React.createElement(
                             _reactRouterDom.Link,
                             { to: "/admin/users", className: "panel-home-student" },
-                            _react2.default.createElement(
+                            React.createElement(
                                 _reactBootstrap.Panel,
                                 { className: "panel-filled" },
-                                _react2.default.createElement(
+                                React.createElement(
                                     "h2",
                                     null,
-                                    _react2.default.createElement("i", { className: "pe pe-7s-users pe-3x pe-va text-warning" }),
+                                    React.createElement("i", { className: "pe pe-7s-users pe-3x pe-va text-warning" }),
                                     " Utilisateurs"
                                 ),
-                                _react2.default.createElement(
+                                React.createElement(
                                     "div",
                                     null,
                                     "Voir les utilisateurs."
@@ -106,6 +102,6 @@ var Home = function (_React$Component) {
     }]);
 
     return Home;
-}(_react2.default.Component);
+}(React.Component);
 
 exports.default = Home;

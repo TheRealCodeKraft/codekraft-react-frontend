@@ -1,4 +1,4 @@
-import React from "react"
+var React = require("react")
 import { connect } from 'react-redux'
 
 import { Redirect } from "react-router-dom"
@@ -78,7 +78,7 @@ class Login extends React.Component {
                         submitLabel="Me connecter" 
                         onSubmit={this.handleSubmit}
                         submitClass={"btn btn-accent btn-signup"} 
-                        service={{client: this.props.clients.AuthClient, func: "login"}}
+                        service={{client: this.props.clients.ApiClient, func: "login"}}
                         onSubmitComplete={this.handleSubmitComplete}
                     />
                     <Link className={"btn btn-default btn-signup"} to="/signup">Créer un compte</Link>

@@ -1,4 +1,4 @@
-import React from "react"
+var React = require("react")
 import { connect } from 'react-redux';
 
 import AdminPageList from './admin-page/list'
@@ -13,7 +13,9 @@ import { Grid } from 'react-bootstrap';
 import { Row } from 'react-bootstrap';
 import { Col } from 'react-bootstrap';
 
+/*
 import * as CustomComponents from "../custom"
+*/
 
 export default function(config) {
 
@@ -152,8 +154,8 @@ export default function(config) {
           break
         default:
           if (this.state.currentAction !== undefined) {
-            if (CustomComponents[config.client.name] && CustomComponents[config.client.name][this.state.currentAction.component]) {
-              var Component = CustomComponents[config.client.name][this.state.currentAction.component]
+            if (this.state.currentAction.component) {
+              var Component = this.state.currentAction.component
               content = <Component {...config} entity={entity} action={this.state.currentAction.action} onFinished={this.handleCustomActionFinished} />
             }
           }

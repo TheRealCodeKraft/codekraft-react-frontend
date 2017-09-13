@@ -1,4 +1,4 @@
-import React from "react"
+var React = require("react")
 
 import Select2 from 'react-select2-wrapper'
 

@@ -1,4 +1,4 @@
-import React from "react"
+var React = require("react")
 import { connect } from 'react-redux'
 
 export default function(ComposedComponent, offline=false) {
@@ -20,7 +20,7 @@ export default function(ComposedComponent, offline=false) {
 
     componentWillMount() {
 
-      const Auth = this.props.clients.AuthClient
+      const Auth = this.props.clients.ApiClient
       const UserClient = this.props.clients.UserClient
 
       if (this.props.location.search.indexOf("stamp") !== -1) {
@@ -83,7 +83,7 @@ export default function(ComposedComponent, offline=false) {
     }
 
     componentWillReceiveProps(props) {
-      const Auth = this.props.clients.AuthClient
+      const Auth = this.props.clients.ApiClient
       const UserClient = this.props.clients.UserClient
 
       if (this.state.resetting && props.me == null) {
@@ -127,7 +127,7 @@ export default function(ComposedComponent, offline=false) {
 
     handleRefresh(data) {
       if (data.error) {
-        const Auth = this.props.clients.AuthClient
+        const Auth = this.props.clients.ApiClient
         Auth.logout()
       }
       this.setState({refreshing: false})

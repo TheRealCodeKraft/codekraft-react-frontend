@@ -1,4 +1,4 @@
-import React from "react"
+var React = require("react")
 
 import AdminPageListHeader from './list/header'
 import AdminPageListRow from './list/row'

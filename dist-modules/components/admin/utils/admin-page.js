@@ -53,39 +53,39 @@ exports.default = function (config) {
       value: function render() {
         var pluralName = getPluralName();
 
-        return _react2.default.createElement(
+        return React.createElement(
           _reactBootstrap.Grid,
           { fluid: true },
-          _react2.default.createElement(
+          React.createElement(
             _reactBootstrap.Row,
             null,
-            _react2.default.createElement(
+            React.createElement(
               _reactBootstrap.Col,
               { xs: 10 },
-              _react2.default.createElement(
+              React.createElement(
                 'h1',
                 null,
-                _react2.default.createElement('i', { className: "pe pe-7s-" + (config.icon ? config.icon : "pin") + " text-warning" }),
+                React.createElement('i', { className: "pe pe-7s-" + (config.icon ? config.icon : "pin") + " text-warning" }),
                 ' ',
                 config.title
               )
             ),
-            config.list.actions.indexOf("new") !== -1 ? _react2.default.createElement(
+            config.list.actions.indexOf("new") !== -1 ? React.createElement(
               _reactBootstrap.Col,
               { xs: 12, className: 'admin-new-button-row' },
-              _react2.default.createElement(
+              React.createElement(
                 'a',
                 { href: '#', onClick: this.handleNew, className: 'admin-new-button' },
-                _react2.default.createElement('i', { className: 'pe pe-7s-plus' }),
+                React.createElement('i', { className: 'pe pe-7s-plus' }),
                 ' Nouveau'
               )
             ) : null
           ),
           this.buildWatchers(),
-          _react2.default.createElement(
+          React.createElement(
             'div',
             null,
-            _react2.default.createElement(_list2.default, { attributes: config.list.attributes,
+            React.createElement(_list2.default, { attributes: config.list.attributes,
               actions: config.list.actions,
               items: this.props[pluralName],
               onDelete: this.handleDelete,
@@ -93,7 +93,7 @@ exports.default = function (config) {
               onEdit: this.handleEdit,
               onCustomAction: this.handleCustomAction
             }),
-            _react2.default.createElement(
+            React.createElement(
               _sidebar2.default,
               { ref: 'sidebar',
                 onClose: this.handleCloseSidebar,
@@ -115,10 +115,10 @@ exports.default = function (config) {
             this.props[getPluralName()].map(function (entity) {
               if (config.watcher.if) {
                 if (entity[config.watcher.if.property] === config.watcher.if.value) {
-                  watchers.push(_react2.default.createElement(_reactActioncableProvider.ActionCable, { channel: { channel: config.watcher.channel, session: entity.id }, onReceived: _this2.handleCableReceived }));
+                  watchers.push(React.createElement(_reactActioncableProvider.ActionCable, { channel: { channel: config.watcher.channel, session: entity.id }, onReceived: _this2.handleCableReceived }));
                 }
               } else {
-                watchers.push(_react2.default.createElement(_reactActioncableProvider.ActionCable, { channel: { channel: config.watcher, session: entity.id }, onReceived: _this2.handleCableReceived }));
+                watchers.push(React.createElement(_reactActioncableProvider.ActionCable, { channel: { channel: config.watcher, session: entity.id }, onReceived: _this2.handleCableReceived }));
               }
             });
           }
@@ -167,16 +167,16 @@ exports.default = function (config) {
             break;
           case "create":
           case "edit":
-            content = _react2.default.createElement(_createEdit2.default, _extends({}, config, { entity: entity, mode: this.state.mode, onSubmitComplete: this.handleSubmitComplete }));
+            content = React.createElement(_createEdit2.default, _extends({}, config, { entity: entity, mode: this.state.mode, onSubmitComplete: this.handleSubmitComplete }));
             break;
           case "delete":
-            content = _react2.default.createElement(_delete2.default, _extends({}, config, { entity: entity, onDeleted: this.handleDeleted }));
+            content = React.createElement(_delete2.default, _extends({}, config, { entity: entity, onDeleted: this.handleDeleted }));
             break;
           default:
             if (this.state.currentAction !== undefined) {
-              if (CustomComponents[config.client.name] && CustomComponents[config.client.name][this.state.currentAction.component]) {
-                var Component = CustomComponents[config.client.name][this.state.currentAction.component];
-                content = _react2.default.createElement(Component, _extends({}, config, { entity: entity, action: this.state.currentAction.action, onFinished: this.handleCustomActionFinished }));
+              if (this.state.currentAction.component) {
+                var Component = this.state.currentAction.component;
+                content = React.createElement(Component, _extends({}, config, { entity: entity, action: this.state.currentAction.action, onFinished: this.handleCustomActionFinished }));
               }
             }
             break;
@@ -252,7 +252,7 @@ exports.default = function (config) {
     }]);
 
     return AdminPage;
-  }(_react2.default.Component);
+  }(React.Component);
 
   function getPluralName() {
     return config.client.plural ? config.client.plural : config.client.name + "s";
@@ -268,10 +268,6 @@ exports.default = function (config) {
 
   return (0, _reactRedux.connect)(mapStateToProps)(AdminPage);
 };
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = require('react-redux');
 
@@ -295,12 +291,6 @@ var _reactActioncableProvider = require('react-actioncable-provider');
 
 var _reactBootstrap = require('react-bootstrap');
 
-var _custom = require('../custom');
-
-var CustomComponents = _interopRequireWildcard(_custom);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -308,3 +298,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
+
+/*
+import * as CustomComponents from "../custom"
+*/

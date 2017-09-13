@@ -1,9 +1,5 @@
-import ApiClient from './api-client'
+var UserClient = function(store, ApiClient) {
 
-import _AuthClient from './auth'
-
-var UserClient = function(store) {
-  const AuthClient = _AuthClient(store)
   var name = "user", plural = "users"
 
   var fetchAll = function(params, callback) {
@@ -29,7 +25,7 @@ var UserClient = function(store) {
   }
 
   var me = function(callback) {
-    if (AuthClient.checkForToken()) {
+    if (ApiClient.checkForToken()) {
       ApiClient.get("users/me", {}, function(data) {
         if (data.error) {
           if (callback) callback(data)

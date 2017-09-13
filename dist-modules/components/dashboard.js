@@ -6,10 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require("react");
-
-var _react2 = _interopRequireDefault(_react);
-
 var _reactRedux = require("react-redux");
 
 var _reactRouter = require("react-router");
@@ -33,6 +29,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
 
 var Dashboard = function (_React$Component) {
   _inherits(Dashboard, _React$Component);
@@ -60,22 +58,22 @@ var Dashboard = function (_React$Component) {
     key: "render",
     value: function render() {
 
-      return _react2.default.createElement(
+      return React.createElement(
         "div",
         { className: "dashboard" },
-        _react2.default.createElement(_header2.default, { location: this.props.location, history: this.props.history, showAside: true, clients: this.props.clients }),
-        this.state.me && this.state.me.firstname === null ? _react2.default.createElement(
+        React.createElement(_header2.default, { location: this.props.location, history: this.props.history, showAside: true, clients: this.props.clients }),
+        this.state.me && this.state.me.firstname === null ? React.createElement(
           "span",
           null,
           "Profile filler"
-        ) : _react2.default.createElement(
+        ) : React.createElement(
           _reactRouter.Switch,
           null,
           this.props.navigation.dashboard.items.map(function (menu) {
             return menu.items.map(function (item) {
               var path = "/dashboard" + (item.path && item.path !== "" ? "/" + item.path : "");
               console.log(item.component);
-              return _react2.default.createElement(_reactRouter.Route, { exact: true, path: path, component: (0, _authChecker2.default)(item.component) });
+              return React.createElement(_reactRouter.Route, { exact: true, path: path, component: (0, _authChecker2.default)(item.component) });
             });
           })
         )
@@ -84,7 +82,7 @@ var Dashboard = function (_React$Component) {
   }]);
 
   return Dashboard;
-}(_react2.default.Component);
+}(React.Component);
 
 function mapStateToProps(state) {
   return {

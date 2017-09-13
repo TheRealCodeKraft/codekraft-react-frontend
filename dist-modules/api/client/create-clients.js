@@ -4,10 +4,6 @@ var _apiClient = require('./api-client');
 
 var _apiClient2 = _interopRequireDefault(_apiClient);
 
-var _auth = require('./auth');
-
-var _auth2 = _interopRequireDefault(_auth);
-
 var _user = require('./user');
 
 var _user2 = _interopRequireDefault(_user);
@@ -19,9 +15,12 @@ function capitalizeFirstLetter(string) {
 }
 
 module.exports = function (config, store) {
+
+  var ApiClient = (0, _apiClient2.default)(store);
+
   var coreClients = {
-    AuthClient: (0, _auth2.default)(store),
-    UserClient: (0, _user2.default)(store)
+    ApiClient: ApiClient,
+    UserClient: (0, _user2.default)(store, ApiClient)
   };
 
   for (var index in config) {
@@ -36,11 +35,11 @@ module.exports = function (config, store) {
       plural = clientName + "s";
     }
 
-    coreClients[capitalizeFirstLetter(clientName) + "Client"] = function (name, plural, store) {
+    coreClients[capitalizeFirstLetter(clientName) + "Client"] = function (name, plural, store, ApiClient) {
       return function () {
 
         var fetchAll = function fetchAll(params, callback) {
-          _apiClient2.default.get(plural, params, function (data) {
+          ApiClient.get(plural, params, function (data) {
             var toDispatch = {
               type: plural.toUpperCase()
             };
@@ -51,7 +50,7 @@ module.exports = function (config, store) {
         };
 
         var fetchOne = function fetchOne(id, callback) {
-          _apiClient2.default.get(plural + "/" + id, {}, function (data) {
+          ApiClient.get(plural + "/" + id, {}, function (data) {
             var toDispatch = {
               type: name.toUpperCase()
             };
@@ -62,7 +61,7 @@ module.exports = function (config, store) {
         };
 
         var create = function create(params, callback) {
-          _apiClient2.default.post(plural, params, function (data) {
+          ApiClient.post(plural, params, function (data) {
             if (!data.error) {
               var toDispatch = {
                 type: "NEW_" + name.toUpperCase()
@@ -75,7 +74,7 @@ module.exports = function (config, store) {
         };
 
         var update = function update(id, params, callback) {
-          _apiClient2.default.put(plural, id, params, function (data) {
+          ApiClient.put(plural, id, params, function (data) {
             var toDispatch = {
               type: "UPDATE_" + name.toUpperCase()
             };
@@ -86,7 +85,7 @@ module.exports = function (config, store) {
         };
 
         var destroy = function destroy(id, callback) {
-          _apiClient2.default.destroy(plural, id, function (data) {
+          ApiClient.destroy(plural, id, function (data) {
             store.dispatch({
               type: "DESTROY_" + name.toUpperCase(),
               id: data.id
@@ -106,18 +105,18 @@ module.exports = function (config, store) {
           destroy: destroy
         };
 
-        if (config.client) {
-          var funx = config.client(name, plural, store);
+        if (localConfig.client) {
+          var funx = localConfig.client(name, plural, store);
           var key;
-          for (var i in funcs) {
-            key = Object.keys(funx)[i];
-            functions[key] = funx[i];
+          for (var key in funx) {
+            functions[key] = funx[key];
           }
+          console.dir(functions);
         }
 
         return functions;
       }();
-    }(clientName, plural, store);
+    }(clientName, plural, store, ApiClient);
   }
 
   return coreClients;

@@ -1,32 +1,30 @@
-import React from "react"
+var React = require("react")
+import { connect } from 'react-redux'
 
 import {Switch, Route} from "react-router"
 
 import AuthChecker from './utils/auth-checker'
-import CheckForAcls from 'components/utils/auth/check-for-acls'
+import CheckForAcls from './utils/check-for-acls'
 
 import Header from './admin/header'
 import Home from './admin/home'
 
-import AdminConfig from 'config/admin-config'
 import AdminPage from './admin/utils/admin-page'
-
-import * as Clients from 'clients'
 
 class Admin extends React.Component {
 
   constructor(props) {
     super(props)
-
-    this.pages = AdminConfig
   }
 
   componentWillMount() {
-    for (var index in this.pages) {
-      if (!(this.pages[index].client instanceof Object)) {
-        this.pages[index].client = Clients[this.pages[index].client]
+    var pages = this.props.navigation.admin
+    for (var index in pages) {
+      if (!(pages[index].client instanceof Object)) {
+        pages[index].client = this.props.clients[pages[index].client]
       }
     }
+    this.setState({pages: pages})
   }
 
   render() {
@@ -37,7 +35,7 @@ class Admin extends React.Component {
         <section className="content">
           <Switch>
             <Route exact path="/admin" component={AuthChecker(CheckForAcls(["admin"], Home))} />
-            {this.pages.map(page => {
+            {this.state.pages.map(page => {
               return <Route key={page.route} exact path={page.route} component={AuthChecker(CheckForAcls(["admin"], AdminPage(page)))} />
             })}
           </Switch>
@@ -48,4 +46,11 @@ class Admin extends React.Component {
 
 }
 
-export default Admin
+function mapStateToProps(state) {
+  return {
+    clients: state.bootstrap.clients || {},
+    navigation: state.bootstrap.navigation || {admin: {items: []}}
+  }
+}
+
+export default connect(mapStateToProps)(Admin)

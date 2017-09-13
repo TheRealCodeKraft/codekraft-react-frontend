@@ -4,9 +4,7 @@ import Logger from 'js-logger'
 import StorageService from './storage/storage'
 const STORAGE_KEY_FOR_TOKEN = "token";
 
-import Auth from './auth'
-
-var ApiClient = function() {
+var ApiClient = function(store) {
   var call = function(method, endpoint, params, callback, offline=false, defaultParams=false) {
     var headers = {
     }
@@ -44,7 +42,7 @@ var ApiClient = function() {
         break
       case "get":
         if (params !== undefined && params.length > 0) {
-          var keys = Object.getKeys(params)
+          var keys = Object.keys(params)
           for(var paramIndex in keys) {
             endpoint += (paramIndex === 0 ? "?" : "&")
             endpoint += keys[paramIndex] + "=" + params[keys[paramIndex]]
@@ -74,9 +72,9 @@ var ApiClient = function() {
 
         if (response.error) {
           if (response.error === "The access token expired") {
-            Auth.refreshToken(callback)
+            refreshToken(callback)
           } else if (response.error === "The access token is invalid") {
-            Auth.logout(callback)
+            logout(callback)
           } else {
             callback(response)
           }
@@ -121,14 +119,96 @@ var ApiClient = function() {
     return call("put", endpoint, data, callback)
   }
 
+  var refreshToken = function(callback) {
+    var refresh_token = getToken().refresh_token
+    post("oauth/token", { grant_type: "refresh_token", refresh_token: refresh_token}, function(data) {
+      if (data.error) {
+        if (callback) callback(data)
+      } else {
+        storeToken(data, callback)
+      }
+   });
+  }
+
+  var logout = function(callback) {
+    StorageService.delete(STORAGE_KEY_FOR_TOKEN)
+    store.dispatch({
+      type: "TOKEN",
+      token: null
+    })
+
+    store.dispatch({
+      type: "USER_NOT_FOUND"
+    })
+    if (callback) callback()
+  }
+
+  var getToken = function() {
+    var storageToken = StorageService.get(STORAGE_KEY_FOR_TOKEN)
+    var token = null
+    if (storageToken) token = JSON.parse(storageToken)
+
+    store.dispatch({
+      type: "TOKEN",
+      token: token
+    })
+
+    return token
+  }
+
+  var setToken = function(token) {
+    StorageService.set(STORAGE_KEY_FOR_TOKEN, JSON.stringify(token));
+
+    store.dispatch({
+      type: "TOKEN",
+      token: token
+    })
+  }
+
+  var storeToken = function(data, callback) {
+    setToken(data)
+    callback(data)
+  }
+
+  var login = function(params, callback) {
+    if (checkForToken()) {
+      logout(function() {
+        login(params, callback)
+      })
+    } else {
+      params["grant_type"] = "password"
+      ApiClient.post("oauth/token", params, function(data) {
+        if (data.error) {
+          if (callback) callback(data)
+        } else {
+          storeToken(data, callback)
+        }
+      }, false, true)
+    }
+  }
+
+  var checkForToken = function() {
+    var token = StorageService.get(STORAGE_KEY_FOR_TOKEN)
+    if (token) {
+      return true
+    } else { return false }
+  }
+
   return {
     get: get,
     post: post,
     put: put,
     patch: patch,
     destroy: destroy,
-    upload: upload
+    upload: upload,
+
+    refreshToken: refreshToken,
+    logout: logout,
+    getToken: getToken,
+    storeToken: storeToken,
+    checkForToken: checkForToken,
+    login: login,
   }
-}();
+}
 
 export default ApiClient;

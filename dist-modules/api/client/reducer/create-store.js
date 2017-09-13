@@ -12,7 +12,6 @@ var _require3 = require('react-router'),
     Router = _require3.Router;
 
 var configureStore = require('./store-config');
-//var coreReducers = require('./ducks/core')
 var ReducerRegistry = require('./registry');
 
 function pushNewEntityToState(entity, state, name) {

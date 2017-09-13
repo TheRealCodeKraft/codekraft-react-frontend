@@ -8,9 +8,7 @@ import ActionCableProvider from 'react-actioncable-provider'
 
 import Offline from './offline'
 import Dashboard from './dashboard'
-/*
 import Admin from './admin'
-*/
 
 /**
  * OBL Main App Container
@@ -25,7 +23,7 @@ class App extends React.Component {
   }
 
   componentWillMount() {
-    this.props.clients.AuthClient.getToken()
+    this.props.clients.ApiClient.getToken()
   }
 
   render() {
@@ -37,9 +35,7 @@ class App extends React.Component {
            ? <ActionCableProvider url={process.env.CABLE_URL + "/?token=" + this.props.token.access_token}>
                <Switch>
                  <Route path="/dashboard" component={Dashboard} />
-{/*
                  <Route path="/admin" component={Admin} />
-*/}
                  <Route path="/" component={Offline} />
                </Switch>
              </ActionCableProvider>

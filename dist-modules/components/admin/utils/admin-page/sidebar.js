@@ -6,10 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require("react");
-
-var _react2 = _interopRequireDefault(_react);
-
 var _reactSidebar = require("react-sidebar");
 
 var _reactSidebar2 = _interopRequireDefault(_reactSidebar);
@@ -21,6 +17,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
 
 var AdminSidebar = function (_React$Component) {
   _inherits(AdminSidebar, _React$Component);
@@ -42,7 +40,7 @@ var AdminSidebar = function (_React$Component) {
   _createClass(AdminSidebar, [{
     key: "render",
     value: function render() {
-      return _react2.default.createElement(
+      return React.createElement(
         _reactSidebar2.default,
         { sidebar: this.getSidebarContent(),
           open: this.state.sidebarOpen,
@@ -51,30 +49,30 @@ var AdminSidebar = function (_React$Component) {
           sidebarClassName: "admin-sidebar-container" + (this.props.tinify ? " tiny-sidebar" : ""),
           overlayClassName: "admin-sidebar-overlay",
           pullRight: true },
-        _react2.default.createElement("span", null)
+        React.createElement("span", null)
       );
     }
   }, {
     key: "getSidebarContent",
     value: function getSidebarContent() {
-      return _react2.default.createElement(
+      return React.createElement(
         "div",
         { style: { display: "flex", flexDirection: "column", height: "100%" } },
-        _react2.default.createElement(
+        React.createElement(
           "div",
           { style: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: 20, background: "#b53c3c", marginBottom: 20 } },
-          _react2.default.createElement(
+          React.createElement(
             "h3",
             { style: { textTransform: "uppercase" } },
             this.props.title
           ),
-          _react2.default.createElement(
+          React.createElement(
             "a",
             { href: "#", onClick: this.handleClose },
-            _react2.default.createElement("i", { className: "fa fa-times text-warning", style: { color: "#ffffff", fontSize: "2em" } })
+            React.createElement("i", { className: "fa fa-times text-warning", style: { color: "#ffffff", fontSize: "2em" } })
           )
         ),
-        _react2.default.createElement(
+        React.createElement(
           "div",
           { style: { flex: 1, height: "100%", overflow: "auto", padding: 20 } },
           this.props.children
@@ -107,6 +105,6 @@ var AdminSidebar = function (_React$Component) {
   }]);
 
   return AdminSidebar;
-}(_react2.default.Component);
+}(React.Component);
 
 exports.default = AdminSidebar;

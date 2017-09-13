@@ -1,4 +1,4 @@
-import React from "react";
+var React = require("react");
 import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
@@ -23,7 +23,7 @@ class Header extends React.Component {
 
   handleLogout(e) {
     e.preventDefault()
-    this.props.clients.AuthClient.logout()
+    this.props.clients.ApiClient.logout()
     this.setState({logout: true})
   }
 

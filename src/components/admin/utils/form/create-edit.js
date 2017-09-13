@@ -1,6 +1,6 @@
-import React from "react"
+var React = require("react")
 
-import Form from 'components/utils/form'
+import Form from '../../../utils/form'
 
 class CreateEditForm extends React.Component {
 

@@ -6,10 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require("react");
-
-var _react2 = _interopRequireDefault(_react);
-
 var _reactRedux = require("react-redux");
 
 var _reactRouterDom = require("react-router-dom");
@@ -27,6 +23,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
 
 var Signup = function (_React$Component) {
   _inherits(Signup, _React$Component);
@@ -104,29 +102,29 @@ var Signup = function (_React$Component) {
     key: "render",
     value: function render() {
       if (this.state.submitted) {
-        return _react2.default.createElement(
+        return React.createElement(
           "div",
           null,
-          _react2.default.createElement(
+          React.createElement(
             "span",
             null,
             "Inscription R\xE9ussi"
           ),
-          _react2.default.createElement(
+          React.createElement(
             "p",
             null,
             "Votre inscription a bien \xE9t\xE9 prise en compte. Vous pouvez maintenant acc\xE9der \xE0 votre compte en vous connectant gr\xE2ce au formulaire disponible ",
-            _react2.default.createElement(
+            React.createElement(
               _reactRouterDom.Link,
               { to: "/login" },
               "ICI"
             )
           ),
-          _react2.default.createElement(
+          React.createElement(
             "p",
             null,
             "Si vous souhaitez proc\xE9der \xE0 une autre inscription, cliquez ",
-            _react2.default.createElement(
+            React.createElement(
               "a",
               { href: "#", onClick: this.resetForm },
               "LA"
@@ -134,36 +132,36 @@ var Signup = function (_React$Component) {
           )
         );
       } else {
-        return _react2.default.createElement(
+        return React.createElement(
           _reactBootstrap.Grid,
           { className: "container-center animated slideInDown" },
-          _react2.default.createElement(
+          React.createElement(
             _reactBootstrap.Row,
             { className: "view-header" },
-            _react2.default.createElement(
+            React.createElement(
               "div",
               { className: "header-icon" },
-              _react2.default.createElement("i", { className: "page-header-icon pe pe-7s-user" })
+              React.createElement("i", { className: "page-header-icon pe pe-7s-user" })
             ),
-            _react2.default.createElement(
+            React.createElement(
               "div",
               { className: "header-title" },
-              _react2.default.createElement(
+              React.createElement(
                 "h3",
                 null,
                 "Cr\xE9er un compte"
               ),
-              _react2.default.createElement(
+              React.createElement(
                 "small",
                 null,
                 "Entrez les infos suivantes pour cr\xE9er votre compte Open Business Labs."
               )
             )
           ),
-          _react2.default.createElement(
+          React.createElement(
             _reactBootstrap.Panel,
             { className: "panel panel-filled" },
-            _react2.default.createElement(_form2.default, { id: "signup-form",
+            React.createElement(_form2.default, { id: "signup-form",
               fields: this.fields,
               submitLabel: "M'enregistrer",
               submitClass: "btn btn-accent btn-signup",
@@ -199,7 +197,7 @@ var Signup = function (_React$Component) {
   }]);
 
   return Signup;
-}(_react2.default.Component);
+}(React.Component);
 
 function mapStateToProps(state) {
   return {

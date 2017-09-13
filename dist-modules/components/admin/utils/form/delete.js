@@ -6,17 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
 
 var DeleteForm = function (_React$Component) {
   _inherits(DeleteForm, _React$Component);
@@ -43,11 +39,11 @@ var DeleteForm = function (_React$Component) {
       var content = null;
       if (this.props.entity) {
         if (this.state.deleting) {
-          content = _react2.default.createElement(
+          content = React.createElement(
             "div",
             { style: { padding: 20 } },
             "Suppression de ",
-            _react2.default.createElement(
+            React.createElement(
               "strong",
               null,
               this.props.entity[this.props.delete.labels.identifier]
@@ -55,31 +51,31 @@ var DeleteForm = function (_React$Component) {
             " en cours ..."
           );
         } else {
-          content = _react2.default.createElement(
+          content = React.createElement(
             "div",
             { style: { padding: 20, display: "flex", flexDirection: "column" } },
-            _react2.default.createElement(
+            React.createElement(
               "span",
               null,
               "\xCAtes-vous s\xFBr de vouloir supprimer ",
               this.props.delete.labels.entity,
               " ",
-              _react2.default.createElement(
+              React.createElement(
                 "strong",
                 null,
                 this.props.entity[this.props.delete.labels.identifier]
               ),
               " ?"
             ),
-            _react2.default.createElement(
+            React.createElement(
               "div",
               null,
-              _react2.default.createElement(
+              React.createElement(
                 "button",
                 { onClick: this.handleCancel, className: "btn btn-danger" },
                 "Non"
               ),
-              _react2.default.createElement(
+              React.createElement(
                 "button",
                 { onClick: this.handleConfirm, className: "btn btn-accent" },
                 "Oui"
@@ -115,6 +111,6 @@ var DeleteForm = function (_React$Component) {
   }]);
 
   return DeleteForm;
-}(_react2.default.Component);
+}(React.Component);
 
 exports.default = DeleteForm;

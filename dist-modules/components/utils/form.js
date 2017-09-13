@@ -8,10 +8,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require("react");
-
-var _react2 = _interopRequireDefault(_react);
-
 var _reactRedux = require("react-redux");
 
 var _reactBootstrapSwitch = require("react-bootstrap-switch");
@@ -37,6 +33,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
+
 
 var moment = require("moment");
 
@@ -150,21 +149,21 @@ var Form = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      var submitButton = this.state.submitting ? _react2.default.createElement("div", { className: "loader-dots" }) : [_react2.default.createElement(
+      var submitButton = this.state.submitting ? React.createElement("div", { className: "loader-dots" }) : [React.createElement(
         "button",
         { type: "submit", className: this.props.submitClass },
         this.props.submitLabel ? this.props.submitLabel : "Enregistrer"
-      ), this.props.cancelButton === true ? _react2.default.createElement(
+      ), this.props.cancelButton === true ? React.createElement(
         "button",
         { className: this.props.submitClass, onClick: this.handleCancelButton },
         "Ignorer"
       ) : null];
 
-      return _react2.default.createElement(
+      return React.createElement(
         "div",
         { className: "form-container" },
         this.props.entityId ? this.buildImageUploaders() : null,
-        _react2.default.createElement(
+        React.createElement(
           "form",
           { id: this.props.id, onSubmit: this.handleFormSubmit },
           this.props.fields.map(function (field) {
@@ -181,7 +180,7 @@ var Form = function (_React$Component) {
 
             return _this2.getInputs(field);
           }),
-          this.state.submitError ? [_react2.default.createElement(
+          this.state.submitError ? [React.createElement(
             "span",
             null,
             this.state.submitError
@@ -198,18 +197,18 @@ var Form = function (_React$Component) {
       return this.props.fields.filter(function (field) {
         return field.type === "image-uploader";
       }).map(function (field) {
-        return _react2.default.createElement(
+        return React.createElement(
           "form",
           { encType: "multipart/form-data", className: "upload-form" },
-          field.showImage === undefined || field.showImage ? _react2.default.createElement("img", { src: _this3.state.values[field.name], className: "img-rounded", style: { width: 100 }, alt: _this3.state.values[field.name] }) : null,
-          _this3.state.uploading[field.name] ? _react2.default.createElement(
+          field.showImage === undefined || field.showImage ? React.createElement("img", { src: _this3.state.values[field.name], className: "img-rounded", style: { width: 100 }, alt: _this3.state.values[field.name] }) : null,
+          _this3.state.uploading[field.name] ? React.createElement(
             "span",
             { className: "upload-file" },
             "T\xE9l\xE9chargement en cours"
-          ) : _react2.default.createElement(
+          ) : React.createElement(
             "div",
             { className: "upload-file" },
-            _react2.default.createElement(_reactFileInput2.default, { name: "sheet",
+            React.createElement(_reactFileInput2.default, { name: "sheet",
               accept: field.accept !== undefined ? field.accept : ".png",
               placeholder: "Cliquer ici pour choisir un fichier",
               className: "form-control",
@@ -299,7 +298,7 @@ var Form = function (_React$Component) {
 
       switch (field.type) {
         case "checkbox":
-          input = _react2.default.createElement("input", { className: field.inputClass, title: field.title, name: field.name, type: field.type, value: value === true ? "on" : "off", placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field) });
+          input = React.createElement("input", { className: field.inputClass, title: field.title, name: field.name, type: field.type, value: value === true ? "on" : "off", placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field) });
           break;
         case "radio":
           var radios = [];
@@ -309,8 +308,8 @@ var Form = function (_React$Component) {
             for (var index in field.values) {
               val = field.values[index];
               radioId = this.props.id + "-" + field.name + "-" + index;
-              radios.push(_react2.default.createElement("input", { key: radioId, id: radioId, title: field.title, name: field.name, type: field.type, value: val.value, onChange: this.handleInputChange.bind(this, field), checked: value === val.value ? "checked" : "" }));
-              radios.push(_react2.default.createElement(
+              radios.push(React.createElement("input", { key: radioId, id: radioId, title: field.title, name: field.name, type: field.type, value: val.value, onChange: this.handleInputChange.bind(this, field), checked: value === val.value ? "checked" : "" }));
+              radios.push(React.createElement(
                 "label",
                 { key: radioId + "_label", htmlFor: radioId },
                 val.label
@@ -320,7 +319,7 @@ var Form = function (_React$Component) {
           input = radios;
           break;
         case "switch":
-          input = _react2.default.createElement(_reactBootstrapSwitch2.default, { title: field.title, name: field.name, onChange: this.handleInputChange.bind(this, field, !this.state.values[field.name]), onText: "OUI", offText: "NON", defaultValue: value, bsSize: "mini" });
+          input = React.createElement(_reactBootstrapSwitch2.default, { title: field.title, name: field.name, onChange: this.handleInputChange.bind(this, field, !this.state.values[field.name]), onText: "OUI", offText: "NON", defaultValue: value, bsSize: "mini" });
           break;
         case "select":
           if (field.values instanceof Array) {
@@ -328,10 +327,10 @@ var Form = function (_React$Component) {
           } else if (field.values instanceof Object) {
             options = this.state.loadedData[field.name] || [];
           }
-          input = _react2.default.createElement(
+          input = React.createElement(
             "select",
             { className: "form-control", title: field.title, name: field.name, onChange: this.handleInputChange.bind(this, field), defaultValue: value },
-            field.placeholder ? _react2.default.createElement(
+            field.placeholder ? React.createElement(
               "option",
               { value: "-1" },
               field.placeholder
@@ -341,7 +340,7 @@ var Form = function (_React$Component) {
               if (val[field.key] === value) {
                 properties.selected = "selected";
               }
-              return _react2.default.createElement(
+              return React.createElement(
                 "option",
                 _extends({ value: val[field.key] }, properties),
                 val[field.value]
@@ -355,24 +354,24 @@ var Form = function (_React$Component) {
           } else if (field.values instanceof Object) {
             options = this.state.loadedData[field.name] || [];
           }
-          input = _react2.default.createElement(_listSelector2.default, { className: "form-control", field: field, defaultValue: value, options: options, tags: field.tags ? field.tags : false, onChange: this.handleInputChange.bind(this, field) });
+          input = React.createElement(_listSelector2.default, { className: "form-control", field: field, defaultValue: value, options: options, tags: field.tags ? field.tags : false, onChange: this.handleInputChange.bind(this, field) });
           break;
         case "textarea":
           if (value == null) value = "";
-          input = _react2.default.createElement("textarea", { className: "form-control", title: field.title, name: field.name, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field), rows: 5 });
+          input = React.createElement("textarea", { className: "form-control", title: field.title, name: field.name, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field), rows: 5 });
           break;
         case "date":
           if (!value) value = "";else if (value !== "") {
             value = moment(value).format("DD/MM/YYYY");
           }
-          input = _react2.default.createElement(_reactDatetime2.default, { value: value,
+          input = React.createElement(_reactDatetime2.default, { value: value,
             dateFormat: "DD/MM/YYYY",
             onChange: this.handleInputChange.bind(this, field)
           });
           break;
         default:
           if (value == null) value = "";
-          input = _react2.default.createElement("input", { className: "form-control", title: field.title, name: field.name, type: field.type, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field) });
+          input = React.createElement("input", { className: "form-control", title: field.title, name: field.name, type: field.type, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field) });
           break;
       }
 
@@ -381,16 +380,16 @@ var Form = function (_React$Component) {
   }, {
     key: "decorateInput",
     value: function decorateInput(input, field) {
-      input = _react2.default.createElement(
+      input = React.createElement(
         "div",
         { className: "form-group", key: this.props.id + "-field-" + field.name },
-        field.label !== undefined ? _react2.default.createElement(
+        field.label !== undefined ? React.createElement(
           "label",
           { className: "control-label", "for": field.name },
           field.label
         ) : null,
         input,
-        this.state.errors[field.name] !== undefined ? _react2.default.createElement(
+        this.state.errors[field.name] !== undefined ? React.createElement(
           "span",
           null,
           this.state.errors[field.name]
@@ -510,7 +509,7 @@ var Form = function (_React$Component) {
   }]);
 
   return Form;
-}(_react2.default.Component);
+}(React.Component);
 
 function mapStateToProps(state) {
   return {

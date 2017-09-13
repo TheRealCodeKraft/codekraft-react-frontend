@@ -56,6 +56,7 @@ class Header extends React.Component {
                       return [
                         <li className={"nav-category"}>{menu.label}</li>,
                         menu.items.map(item => {
+                          if (item.display === false) return null
                           var path = "/dashboard" + ((item.path && item.path !== "") ? ("/" + item.path) : "")
                           return (
                             <li className={this.props.location.pathname === path ? "active" : ""}>
@@ -66,6 +67,9 @@ class Header extends React.Component {
                       ]
                     })}
 
+                    <ShowForAcls grants={["admin"]}>
+                      <li><NavLink exact to="/admin">Administration</NavLink></li>
+                    </ShowForAcls>
                     <li><a href="#" onClick={this.handleLogout}>Déconnexion</a></li>
 
                   </ul>
@@ -92,7 +96,7 @@ class Header extends React.Component {
   handleLogout(e) {
     e.preventDefault()
     var self = this
-    this.props.clients.AuthClient.logout(function() {
+    this.props.clients.ApiClient.logout(function() {
       self.props.history.push("/")
       self.setState({logout: true})
     })

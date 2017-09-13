@@ -1,6 +1,5 @@
-import ApiClient from './api-client'
+import _ApiClient from './api-client'
 
-import AuthClient from './auth'
 import UserClient from './user'
 
 function capitalizeFirstLetter(string) {
@@ -8,9 +7,12 @@ function capitalizeFirstLetter(string) {
 }
 
 module.exports = function(config, store) {
+
+  const ApiClient = _ApiClient(store)
+
   var coreClients = {
-    AuthClient: AuthClient(store),
-    UserClient: UserClient(store)
+    ApiClient: ApiClient,
+    UserClient: UserClient(store, ApiClient)
   }
 
   for (var index in config) {
@@ -25,7 +27,7 @@ module.exports = function(config, store) {
       plural = clientName + "s"
     }
 
-    coreClients[capitalizeFirstLetter(clientName) + "Client"] = (function(name, plural, store) { return function() {
+    coreClients[capitalizeFirstLetter(clientName) + "Client"] = (function(name, plural, store, ApiClient) { return function() {
 
       var fetchAll = function(params, callback) {
         ApiClient.get(plural, params, function(data) {
@@ -94,18 +96,18 @@ module.exports = function(config, store) {
         destroy: destroy,
       }
 
-      if (config.client) {
-        var funx = config.client(name, plural, store)
+      if (localConfig.client) {
+        var funx = localConfig.client(name, plural, store)
         var key
-        for(var i in funcs) {
-          key = Object.keys(funx)[i]
-          functions[key] = funx[i]
+        for(var key in funx) {
+          functions[key] = funx[key]
         }
+console.dir(functions)
       }
 
       return functions
 
-    }()})(clientName, plural, store)
+    }()})(clientName, plural, store, ApiClient)
   }
 
   return coreClients
