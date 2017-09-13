@@ -55,11 +55,7 @@ exports.default = function (config) {
           React.createElement(
             "section",
             { className: "content" },
-            this.state.me && this.state.me.firstname === null ? React.createElement(
-              "span",
-              null,
-              "Profile filler"
-            ) : React.createElement(
+            this.state.me && this.state.me.temp ? this.buildProfileFiller() : React.createElement(
               _reactRouter.Switch,
               null,
               this.state.pages.map(function (item) {
@@ -90,6 +86,16 @@ exports.default = function (config) {
           )
         );
       }
+    }, {
+      key: "buildProfileFiller",
+      value: function buildProfileFiller() {
+        var Component = config.profileFiller;
+        if (Component) {
+          return React.createElement(Component, null);
+        } else {
+          return React.createElement(_profileFiller2.default, null);
+        }
+      }
     }]);
 
     return Root;
@@ -113,6 +119,10 @@ var _checkForAcls2 = _interopRequireDefault(_checkForAcls);
 var _header = require("./header");
 
 var _header2 = _interopRequireDefault(_header);
+
+var _profileFiller = require("../common/profile-filler");
+
+var _profileFiller2 = _interopRequireDefault(_profileFiller);
 
 var _adminPage = require("../admin/utils/admin-page");
 

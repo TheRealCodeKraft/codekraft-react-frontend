@@ -8,6 +8,7 @@ import CheckForAcls from '../utils/check-for-acls'
 
 import Header from './header'
 
+import ProfileFiller from '../common/profile-filler'
 import AdminPage from '../admin/utils/admin-page'
 
 export default function(config) {
@@ -49,8 +50,8 @@ export default function(config) {
             <Header menu={config.menu} 
                     root={config.root} />
             <section className="content">
-            {this.state.me && this.state.me.firstname === null
-             ? <span>Profile filler</span>
+            {this.state.me && this.state.me.temp
+             ? this.buildProfileFiller()
              : <Switch>
                  {this.state.pages.map(item => {
                    var url = config.root + ((item.route && item.route !== "") ? ("/" + item.route) : "")
@@ -81,6 +82,15 @@ export default function(config) {
             </section>
           </div>
       );
+    }
+
+    buildProfileFiller() {
+      var Component = config.profileFiller
+      if (Component) {
+        return <Component />
+      } else {
+        return <ProfileFiller />
+      }
     }
   }
 
