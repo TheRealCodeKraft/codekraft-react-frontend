@@ -3,7 +3,17 @@ import _ApiClient from './api-client'
 import UserClient from './user'
 
 function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+  string = string.charAt(0).toUpperCase() + string.slice(1)
+  var index, str
+  while((index = string.indexOf('_')) !== -1) {
+    if (index < string.length - 1) {
+      str = string[index] + string[index + 1]
+      string = string.replace(str, string[index + 1].toUpperCase())
+    } else {
+      string = string.replace('_', '')
+    }
+  }
+  return string
 }
 
 module.exports = function(config, store) {

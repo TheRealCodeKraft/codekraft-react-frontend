@@ -21,6 +21,16 @@ class Header extends React.Component {
   render() {
     if (this.state.logout) return <Redirect to="/" />
 
+    var menu_entries = [], menu, item
+    for (var key in this.props.navigation.admin.menu) {
+      menu = this.props.navigation.admin.menu[key]
+      menu_entries.push(<li className={"nav-category"}>{menu.label}</li>)
+      for (var index in menu.items) {  
+        item = menu.items[index]
+        menu_entries.push(<li className={this.props.location.pathname === ("/admin/" + item.route) ? "active" : ""}><NavLink exact to={"/admin/" + item.route}>{item.title}</NavLink></li>)
+      }
+    }
+
     return (
       <header id="header">   
           <Navbar fixedTop fluid>
@@ -44,7 +54,7 @@ class Header extends React.Component {
                       </div>
                   </Navbar.Collapse>
           </Navbar>
-          <aside className={"navigation"}>
+          <aside className={"navigation"} style={{height: "auto"}}>
               <nav>
                   <ul className={"nav luna-nav"}>
                       <li className={"nav-category"}>
@@ -54,52 +64,8 @@ class Header extends React.Component {
                         <NavLink exact to="/admin">Tableau de bord admin</NavLink>
                       </li>
                       <li><NavLink exact to="/dashboard">Retour au site</NavLink></li>
-                      <li className={"nav-category"}>
-                        Utilisateurs
-                      </li>
-                      <li className={this.props.location.pathname === "/admin/users" ? "active" : ""}>
-                        <NavLink exact to="/admin/users">Liste des utilisateurs</NavLink>
-                      </li>
-                      <li className={this.props.location.pathname === "/admin/areas" ? "active" : ""}>
-                        <NavLink exact to="/admin/areas">Zones géo.</NavLink>
-                      </li>
-                      <li className={this.props.location.pathname === "/admin/schools" ? "active" : ""}>
-                        <NavLink exact to="/admin/schools">Ecoles</NavLink>
-                      </li>
-                      <li className={this.props.location.pathname === "/admin/specialities" ? "active" : ""}>
-                        <NavLink exact to="/admin/specialities">Spécialités</NavLink>
-                      </li>
-                      <li className={"nav-category"}>
-                        Jeux
-                      </li>
-                      <li className={this.props.location.pathname === "/admin/games" ? "active" : ""}>
-                        <NavLink exact to="/admin/games">Liste des jeux</NavLink>
-                      </li>
-                      <li className={this.props.location.pathname === "/admin/objectives" ? "active" : ""}>
-                        <NavLink exact to="/admin/objectives">Objectifs</NavLink>
-                      </li>
-                      <li className={this.props.location.pathname === "/admin/scenarios" ? "active" : ""}>
-                        <NavLink exact to="/admin/scenarios">Scenarii</NavLink>
-                      </li>
-                      <li className={this.props.location.pathname === "/admin/clues" ? "active" : ""}>
-                        <NavLink exact to="/admin/clues">Indices</NavLink>
-                      </li>
-                      <li className={this.props.location.pathname === "/admin/decision_makers" ? "active" : ""}>
-                        <NavLink exact to="/admin/decision_makers">Décideurs</NavLink>
-                      </li>
-                      <li className={"nav-category"}>
-                        Sessions
-                      </li>
-                      <li className={this.props.location.pathname === "/admin/sessions" ? "active" : ""}>
-                        <NavLink exact to="/admin/sessions">Liste des sessions</NavLink>
-                      </li>
-                      <li className={this.props.location.pathname === "/admin/rooms" ? "active" : ""}>
-                        <NavLink exact to="/admin/rooms">Salles</NavLink>
-                      </li>
-                      <li className={"nav-category"}>
-                        Déconnexion
-                      </li>
                       <li><a href="#" onClick={this.handleLogout}>Se déconnecter</a></li>
+                      {menu_entries}
                   </ul>
               </nav>
           </aside>
@@ -130,7 +96,8 @@ class Header extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    clients: state.bootstrap.clients || {}
+    clients: state.bootstrap.clients || {},
+    navigation: state.bootstrap.navigation
   }
 }
 

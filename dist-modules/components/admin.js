@@ -52,10 +52,16 @@ var Admin = function (_React$Component) {
   _createClass(Admin, [{
     key: "componentWillMount",
     value: function componentWillMount() {
-      var pages = this.props.navigation.admin;
-      for (var index in pages) {
-        if (!(pages[index].client instanceof Object)) {
-          pages[index].client = this.props.clients[pages[index].client];
+      var groups = this.props.navigation.admin.menu;
+      var pages = [],
+          pageIndex = 0;
+      for (var index in groups) {
+        for (var pIndex in groups[index].items) {
+          pages.push(groups[index].items[pIndex]);
+          if (!(pages[pageIndex].client instanceof Object)) {
+            pages[pageIndex].client = this.props.clients[pages[pageIndex].client];
+          }
+          pageIndex++;
         }
       }
       this.setState({ pages: pages });
@@ -76,7 +82,15 @@ var Admin = function (_React$Component) {
             null,
             React.createElement(_reactRouter.Route, { exact: true, path: "/admin", component: (0, _authChecker2.default)((0, _checkForAcls2.default)(["admin"], _home2.default)) }),
             this.state.pages.map(function (page) {
-              return React.createElement(_reactRouter.Route, { key: page.route, exact: true, path: page.route, component: (0, _authChecker2.default)((0, _checkForAcls2.default)(["admin"], (0, _adminPage2.default)(page))) });
+              if (page.client) {
+                return React.createElement(_reactRouter.Route, { key: page.route, exact: true, path: "/admin/" + page.route, component: (0, _authChecker2.default)((0, _checkForAcls2.default)(["admin"], (0, _adminPage2.default)(page))) });
+              } else {
+                if (page.component) {
+                  return React.createElement(_reactRouter.Route, { key: page.route, exact: true, path: "/admin/" + page.route, component: (0, _authChecker2.default)(checkForAcls(["admin"], page.component)) });
+                } else {
+                  return null;
+                }
+              }
             })
           )
         )

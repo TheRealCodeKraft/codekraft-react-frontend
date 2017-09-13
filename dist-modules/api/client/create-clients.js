@@ -11,7 +11,17 @@ var _user2 = _interopRequireDefault(_user);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+  string = string.charAt(0).toUpperCase() + string.slice(1);
+  var index, str;
+  while ((index = string.indexOf('_')) !== -1) {
+    if (index < string.length - 1) {
+      str = string[index] + string[index + 1];
+      string = string.replace(str, string[index + 1].toUpperCase());
+    } else {
+      string = string.replace('_', '');
+    }
+  }
+  return string;
 }
 
 module.exports = function (config, store) {
@@ -112,8 +122,6 @@ module.exports = function (config, store) {
             functions[key] = funx[key];
           }
         }
-
-        if (name == "session") console.dir(functions);
 
         return functions;
       }();
