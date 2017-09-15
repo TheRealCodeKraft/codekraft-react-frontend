@@ -4,15 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _jsLogger = require('js-logger');
-
-var _jsLogger2 = _interopRequireDefault(_jsLogger);
-
 var _storage = require('./storage/storage');
 
 var _storage2 = _interopRequireDefault(_storage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Logger = require('js-logger');
 
 var STORAGE_KEY_FOR_TOKEN = "token";
 
@@ -67,7 +65,7 @@ var ApiClient = function ApiClient(store) {
         break;
     }
 
-    _jsLogger2.default.debug({
+    Logger.debug({
       method: method,
       request: endpoint,
       headers: headers,
@@ -77,7 +75,7 @@ var ApiClient = function ApiClient(store) {
     fetch(process.env.API_URL + endpoint, fetchParams).then(function (promise) {
       promise.json().then(function (response) {
 
-        _jsLogger2.default.debug({
+        Logger.debug({
           method: method,
           response: endpoint,
           data: response
@@ -95,7 +93,7 @@ var ApiClient = function ApiClient(store) {
       });
     }).catch(function (exception) {
 
-      _jsLogger2.default.debug({
+      Logger.debug({
         method: method,
         response: endpoint,
         exception: exception

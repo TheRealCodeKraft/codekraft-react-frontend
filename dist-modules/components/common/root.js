@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-exports.default = function (config) {
+exports.default = function (name, config) {
   var Root = function (_React$Component) {
     _inherits(Root, _React$Component);
 
@@ -47,51 +47,57 @@ exports.default = function (config) {
       key: "render",
       value: function render() {
 
-        return React.createElement(
-          "div",
-          { className: "dashboard" },
-          config.header ? React.createElement(config.header, null) : React.createElement(_header2.default, { menu: config.menu,
-            root: config.root }),
-          React.createElement(
-            "section",
-            { className: "content" },
-            this.state.me && this.state.me.temp ? this.buildProfileFiller() : React.createElement(
-              _reactRouter.Switch,
-              null,
-              this.state.pages.map(function (item) {
-                var url = config.root + (item.route && item.route !== "" ? (config.root !== "/" ? "/" : "") + item.route : "");
-                var component = null;
-                if (item.component) {
-                  component = item.component;
-                } else if (item.client) {
-                  component = (0, _adminPage2.default)(item);
+        var content = null;
+        if (this.state.me && this.state.me.temp) {
+          content = this.buildProfileFiller();
+        } else {
+          content = React.createElement(
+            _reactRouter.Switch,
+            null,
+            this.state.pages.map(function (item) {
+              var url = config.root + (item.route && item.route !== "" ? (config.root !== "/" ? "/" : "") + item.route : "");
+              var component = null;
+              if (item.component) {
+                component = item.component;
+              } else if (item.client) {
+                component = (0, _adminPage2.default)(item);
+              }
+
+              if (component) {
+
+                if (config.grants) {
+                  component = (0, _checkForAcls2.default)(config.grants, component);
                 }
 
-                console.dir(component);
-                if (component) {
-
-                  if (config.grants) {
-                    component = (0, _checkForAcls2.default)(config.grants, component);
-                  }
-
-                  if (config.restricted && !item.discardOnLogin) {
-                    component = (0, _authChecker2.default)(component);
-                  }
-
-                  if (item.discardOnLogin) {
-                    component = (0, _authChecker2.default)(component, true);
-                  }
-                  console.log(url);
-                  console.dir(component);
-
-                  return React.createElement(_reactRouter.Route, { key: url, exact: true, path: url, component: component });
-                } else {
-                  return null;
+                if (config.restricted && !item.discardOnLogin) {
+                  component = (0, _authChecker2.default)(component);
                 }
-              })
-            )
-          )
-        );
+
+                if (item.discardOnLogin) {
+                  component = (0, _authChecker2.default)(component, true);
+                }
+
+                return React.createElement(_reactRouter.Route, { key: url, exact: true, path: url, component: component });
+              } else {
+                return null;
+              }
+            })
+          );
+        }
+
+        if (config.wrapper) {
+          return React.createElement(
+            config.wrapper.component,
+            { config: config.wrapper.config },
+            content
+          );
+        } else {
+          return React.createElement(
+            "div",
+            { className: "Page" },
+            content
+          );
+        }
       }
     }, {
       key: "buildProfileFiller",
@@ -122,10 +128,6 @@ var _authChecker2 = _interopRequireDefault(_authChecker);
 var _checkForAcls = require("../utils/check-for-acls");
 
 var _checkForAcls2 = _interopRequireDefault(_checkForAcls);
-
-var _header = require("./header");
-
-var _header2 = _interopRequireDefault(_header);
 
 var _profileFiller = require("../common/profile-filler");
 

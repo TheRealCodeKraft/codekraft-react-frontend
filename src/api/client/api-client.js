@@ -1,5 +1,5 @@
 
-import Logger from 'js-logger'
+var Logger = require('js-logger')
 
 import StorageService from './storage/storage'
 const STORAGE_KEY_FOR_TOKEN = "token";

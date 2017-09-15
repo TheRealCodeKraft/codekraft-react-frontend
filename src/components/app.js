@@ -6,6 +6,7 @@ import { Route, Switch } from 'react-router-dom'
 
 import ActionCableProvider from 'react-actioncable-provider'
 
+import Header from './common/header'
 import Root from './common/root'
 
 /**
@@ -36,19 +37,25 @@ class App extends React.Component {
   render() {
 
     return (
-        <div id="main-container" className={"wrapper"}>
+      <div id="main-container" className={"wrapper"}>
+        <Switch>
+           <Route path="/dashboard" render={() => <Header menu={this.props.navigation.dashboard.menu} root={this.props.navigation.dashboard.root} custom={this.props.navigation.dashboard.header} />} />
+           <Route path="/admin" render={() => <Header menu={this.props.navigation.admin.menu} root={this.props.navigation.admin.root} custom={this.props.navigation.admin.header} />} />
+           <Route path="/" render={() => <Header menu={this.props.navigation.offline.menu} root={this.props.navigation.offline.root} custom={this.props.navigation.offline.header} />} />
+        </Switch>
+ 
           {this.props.token
            ? <ActionCableProvider url={process.env.CABLE_URL + "/?token=" + this.props.token.access_token}>
                <Switch>
-                 <Route path="/dashboard" component={Root(this.props.navigation.dashboard)} />
-                 <Route path="/admin" component={Root(this.props.navigation.admin)} />
-                 <Route path="/" component={Root(this.props.navigation.offline)} />
+                 <Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />
+                 <Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
+                 <Route path="/" component={Root("offline", this.props.navigation.offline)} />
                </Switch>
              </ActionCableProvider>
            : <Switch>
-               <Route path="/dashboard" component={Root(this.props.navigation.dashboard)} />
-               <Route path="/admin" component={Root(this.props.navigation.admin)} />
-               <Route path="/" component={Root(this.props.navigation.offline)} />
+               <Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />
+               <Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
+               <Route path="/" component={Root("offline", this.props.navigation.offline)} />
              </Switch>}
         </div>
     );
@@ -57,7 +64,6 @@ class App extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    //me: state.userState.me || null,
     clients: state.bootstrap.clients,
     token: state.authState.token || null,
     navigation: state.bootstrap.navigation

@@ -56,13 +56,6 @@ var Signup = function (_React$Component) {
       type: "email",
       required: true
     }, {
-      name: "pseudo",
-      label: "Pseudo",
-      title: "Choississez un pseudo",
-      placeholder: "Pseudo",
-      type: "text",
-      required: true
-    }, {
       name: "password",
       label: "Mot de passe",
       title: "Entrez votre mot de passe",
@@ -181,7 +174,6 @@ var Signup = function (_React$Component) {
     key: "handleSubmitComplete",
     value: function handleSubmitComplete(data) {
       this.props.history.push("/login");
-      //this.setState({submitted: true})
     }
   }, {
     key: "handleSubmitError",

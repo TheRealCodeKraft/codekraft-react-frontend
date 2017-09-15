@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactRedux = require('react-redux');
-
 var _createStore = require('./api/client/reducer/create-store');
 
 var _createStore2 = _interopRequireDefault(_createStore);
@@ -17,8 +15,6 @@ var _createClients2 = _interopRequireDefault(_createClients);
 var _createNavigation = require('./navigation/create-navigation');
 
 var _createNavigation2 = _interopRequireDefault(_createNavigation);
-
-var _reactRouterDom = require('react-router-dom');
 
 var _app = require('./components/app');
 
@@ -32,7 +28,11 @@ var ReactDOM = require('react-dom');
 var Logger = require('js-logger');
 Logger.useDefaults();
 
+var Provider = require('react-redux').Provider;
+
 require('dotenv').config();
+
+var BrowserRouter = require('react-router-dom').BrowserRouter;
 
 var Bootstrap = function () {
   var launch = function launch(config) {
@@ -51,10 +51,10 @@ var Bootstrap = function () {
 
     document.addEventListener('DOMContentLoaded', function () {
       ReactDOM.render(React.createElement(
-        _reactRedux.Provider,
+        Provider,
         { store: store },
         React.createElement(
-          _reactRouterDom.BrowserRouter,
+          BrowserRouter,
           null,
           React.createElement(_app2.default, null)
         )

@@ -20,6 +20,10 @@ var _reactActioncableProvider = require('react-actioncable-provider');
 
 var _reactActioncableProvider2 = _interopRequireDefault(_reactActioncableProvider);
 
+var _header = require('./common/header');
+
+var _header2 = _interopRequireDefault(_header);
+
 var _root = require('./common/root');
 
 var _root2 = _interopRequireDefault(_root);
@@ -67,26 +71,40 @@ var App = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
 
       return _react2.default.createElement(
         'div',
         { id: 'main-container', className: "wrapper" },
+        _react2.default.createElement(
+          _reactRouterDom.Switch,
+          null,
+          _react2.default.createElement(_reactRouterDom.Route, { path: '/dashboard', render: function render() {
+              return _react2.default.createElement(_header2.default, { menu: _this2.props.navigation.dashboard.menu, root: _this2.props.navigation.dashboard.root, custom: _this2.props.navigation.dashboard.header });
+            } }),
+          _react2.default.createElement(_reactRouterDom.Route, { path: '/admin', render: function render() {
+              return _react2.default.createElement(_header2.default, { menu: _this2.props.navigation.admin.menu, root: _this2.props.navigation.admin.root, custom: _this2.props.navigation.admin.header });
+            } }),
+          _react2.default.createElement(_reactRouterDom.Route, { path: '/', render: function render() {
+              return _react2.default.createElement(_header2.default, { menu: _this2.props.navigation.offline.menu, root: _this2.props.navigation.offline.root, custom: _this2.props.navigation.offline.header });
+            } })
+        ),
         this.props.token ? _react2.default.createElement(
           _reactActioncableProvider2.default,
           { url: process.env.CABLE_URL + "/?token=" + this.props.token.access_token },
           _react2.default.createElement(
             _reactRouterDom.Switch,
             null,
-            _react2.default.createElement(_reactRouterDom.Route, { path: '/dashboard', component: (0, _root2.default)(this.props.navigation.dashboard) }),
-            _react2.default.createElement(_reactRouterDom.Route, { path: '/admin', component: (0, _root2.default)(this.props.navigation.admin) }),
-            _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: (0, _root2.default)(this.props.navigation.offline) })
+            _react2.default.createElement(_reactRouterDom.Route, { path: '/dashboard', component: (0, _root2.default)("dashboard", this.props.navigation.dashboard) }),
+            _react2.default.createElement(_reactRouterDom.Route, { path: '/admin', component: (0, _root2.default)("admin", this.props.navigation.admin) }),
+            _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: (0, _root2.default)("offline", this.props.navigation.offline) })
           )
         ) : _react2.default.createElement(
           _reactRouterDom.Switch,
           null,
-          _react2.default.createElement(_reactRouterDom.Route, { path: '/dashboard', component: (0, _root2.default)(this.props.navigation.dashboard) }),
-          _react2.default.createElement(_reactRouterDom.Route, { path: '/admin', component: (0, _root2.default)(this.props.navigation.admin) }),
-          _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: (0, _root2.default)(this.props.navigation.offline) })
+          _react2.default.createElement(_reactRouterDom.Route, { path: '/dashboard', component: (0, _root2.default)("dashboard", this.props.navigation.dashboard) }),
+          _react2.default.createElement(_reactRouterDom.Route, { path: '/admin', component: (0, _root2.default)("admin", this.props.navigation.admin) }),
+          _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: (0, _root2.default)("offline", this.props.navigation.offline) })
         )
       );
     }
@@ -97,7 +115,6 @@ var App = function (_React$Component) {
 
 function mapStateToProps(state) {
   return {
-    //me: state.userState.me || null,
     clients: state.bootstrap.clients,
     token: state.authState.token || null,
     navigation: state.bootstrap.navigation

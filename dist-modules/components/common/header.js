@@ -31,25 +31,20 @@ var React = require("react");
 var Header = function (_React$Component) {
   _inherits(Header, _React$Component);
 
-  function Header(props) {
+  function Header() {
     _classCallCheck(this, Header);
 
-    var _this = _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).call(this, props));
-
-    _this.state = {
-      logout: false,
-      menu: false
-    };
-
-    _this.handleLogout = _this.handleLogout.bind(_this);
-    _this.handleHamburgerClick = _this.handleHamburgerClick.bind(_this);
-    return _this;
+    return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
   }
 
   _createClass(Header, [{
     key: 'render',
     value: function render() {
-      if (this.state.logout) return React.createElement(_reactRouterDom.Redirect, { to: '/' });
+      if (this.props.custom !== undefined) {
+        if (this.props.custom !== null) {
+          return React.createElement(this.props.custom, { menu: this.props.menu, root: this.props.root });
+        } else return null;
+      }
 
       var menu_entries = [],
           menu_entry,
@@ -83,13 +78,9 @@ var Header = function (_React$Component) {
             }
 
             menu_entry = React.createElement(
-              'li',
-              { className: this.props.location.pathname === route ? "active" : "" },
-              React.createElement(
-                _reactRouterDom.NavLink,
-                { exact: true, to: route },
-                item.title
-              )
+              _reactRouterDom.NavLink,
+              { exact: true, to: route, className: "Menu-link" + (this.props.location.pathname === route ? " Menu-link--active" : "") },
+              item.title
             );
 
             if (item.grants) {
@@ -105,86 +96,19 @@ var Header = function (_React$Component) {
       }
 
       return React.createElement(
-        'header',
-        { id: 'header' },
+        'div',
+        { className: 'Menu' },
         React.createElement(
-          _reactBootstrap.Navbar,
-          { fixedTop: true, fluid: true },
-          React.createElement(
-            _reactBootstrap.Navbar.Header,
-            null,
-            React.createElement(
-              'div',
-              { id: 'mobile-menu' },
-              React.createElement(
-                'div',
-                { className: "left-nav-toggle" },
-                React.createElement(
-                  'a',
-                  { href: '#', onClick: this.handleHamburgerClick },
-                  React.createElement('i', { className: "stroke-hamburgermenu" })
-                )
-              )
-            ),
-            React.createElement(
-              _reactRouterDom.Link,
-              { to: this.props.root, className: "navbar-brand navbar-admin" },
-              React.createElement('img', { src: '/assets/images/logo-obl-mini.png', alt: 'Open Business Labs' }),
-              ' ',
-              React.createElement(
-                'span',
-                null,
-                'OBL'
-              )
-            )
-          ),
-          React.createElement(
-            _reactBootstrap.Navbar.Collapse,
-            { id: 'navbar' },
-            React.createElement(
-              'div',
-              { className: "left-nav-toggle" },
-              React.createElement(
-                'a',
-                { href: '#', onClick: this.handleHamburgerClick },
-                React.createElement('i', { className: "stroke-hamburgermenu" })
-              )
-            )
-          )
+          'div',
+          { className: 'Menu-logo' },
+          React.createElement('img', { src: '/assets/img/logo-skeleton.png', alt: 'CodeKraft Skeleton logo' })
         ),
         React.createElement(
-          'aside',
-          { className: "navigation", style: { height: "auto" } },
-          React.createElement(
-            'nav',
-            null,
-            React.createElement(
-              'ul',
-              { className: "nav luna-nav" },
-              menu_entries
-            )
-          )
+          'div',
+          { className: 'Menu-links' },
+          menu_entries
         )
       );
-    }
-  }, {
-    key: 'handleHamburgerClick',
-    value: function handleHamburgerClick(e) {
-      e.preventDefault();
-      this.setState({ menu: !this.state.menu }, function () {
-        if (this.state.menu) {
-          document.body.className += " nav-toggle";
-        } else {
-          document.body.className -= " nav-toggle";
-        }
-      });
-    }
-  }, {
-    key: 'handleLogout',
-    value: function handleLogout(e) {
-      e.preventDefault();
-      this.props.clients.ApiClient.logout();
-      this.setState({ logout: true });
     }
   }]);
 

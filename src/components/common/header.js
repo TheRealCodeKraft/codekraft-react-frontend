@@ -9,20 +9,12 @@ import ShowForAcls from '../utils/show-for-acls'
 
 class Header extends React.Component {
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      logout: false,
-      menu: false
-    }
-
-    this.handleLogout = this.handleLogout.bind(this)
-    this.handleHamburgerClick = this.handleHamburgerClick.bind(this)
-  }
-
   render() {
-    if (this.state.logout) return <Redirect to="/" />
+    if (this.props.custom !== undefined) {
+      if (this.props.custom !== null) {
+         return <this.props.custom menu={this.props.menu} root={this.props.root} />
+      } else return null
+    }
 
     var menu_entries = [], menu_entry, menu, item, route
     for (var key in this.props.menu) {
@@ -48,11 +40,9 @@ class Header extends React.Component {
             route = this.props.root + (item.route ? (this.props.root !== "/" ? "/" : "") + item.route : "")
           }
           
-          menu_entry = <li className={this.props.location.pathname === route ? "active" : ""}>
-                          <NavLink exact to={route}>
-                            {item.title}
-                          </NavLink>
-                        </li>
+          menu_entry = <NavLink exact to={route} className={"Menu-link" + (this.props.location.pathname === route ? " Menu-link--active" : "")}>
+                         {item.title}
+                       </NavLink>
 
           if (item.grants) {
             menu_entry = <ShowForAcls grants={item.grants}>{menu_entry}</ShowForAcls>
@@ -63,56 +53,15 @@ class Header extends React.Component {
     }
 
     return (
-      <header id="header">   
-          <Navbar fixedTop fluid>
-                  <Navbar.Header>
-                      <div id="mobile-menu">
-                          <div className={"left-nav-toggle"}>
-                              <a href="#" onClick={this.handleHamburgerClick}>
-                                  <i className={"stroke-hamburgermenu"}></i>
-                              </a>
-                          </div>
-                      </div>
-                      <Link to={this.props.root} className={"navbar-brand navbar-admin"}>
-                          <img src="/assets/images/logo-obl-mini.png" alt="Open Business Labs" /> <span>OBL</span>
-                      </Link>
-                  </Navbar.Header>
-                  <Navbar.Collapse id="navbar">
-                      <div className={"left-nav-toggle"}>
-                          <a href="#" onClick={this.handleHamburgerClick}>
-                              <i className={"stroke-hamburgermenu"}></i>
-                          </a>
-                      </div>
-                  </Navbar.Collapse>
-          </Navbar>
-          <aside className={"navigation"} style={{height: "auto"}}>
-              <nav>
-                  <ul className={"nav luna-nav"}>
-                      {menu_entries}
-                  </ul>
-              </nav>
-          </aside>
-
-      </header>
-    );
-
-  }
-
-  handleHamburgerClick(e) {
-    e.preventDefault()
-    this.setState({menu: !this.state.menu}, function() {
-      if (this.state.menu) {
-        document.body.className += " nav-toggle"
-      } else {
-        document.body.className -= " nav-toggle"
-      }
-    })
-  }
-
-  handleLogout(e) {
-    e.preventDefault()
-    this.props.clients.ApiClient.logout()
-    this.setState({logout: true})
+      <div className="Menu">
+        <div className="Menu-logo">
+          <img src="/assets/img/logo-skeleton.png" alt="CodeKraft Skeleton logo" />
+        </div>
+        <div className="Menu-links">
+          {menu_entries}
+        </div>
+      </div>
+    )
   }
 
 }

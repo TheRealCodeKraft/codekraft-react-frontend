@@ -40,14 +40,6 @@ class Signup extends React.Component {
         required: true
       },
       {
-        name: "pseudo",
-        label: "Pseudo",
-        title: "Choississez un pseudo",
-        placeholder: "Pseudo",
-        type: "text",
-        required: true
-      },
-      {
         name: "password",
         label: "Mot de passe",
         title: "Entrez votre mot de passe",
@@ -135,7 +127,6 @@ class Signup extends React.Component {
 
   handleSubmitComplete(data) {
     this.props.history.push("/login")
-    //this.setState({submitted: true})
   }
 
   handleSubmitError(data) {

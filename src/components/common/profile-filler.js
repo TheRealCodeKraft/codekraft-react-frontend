@@ -1,4 +1,4 @@
-import React from "react"
+var React = require("react")
 import { connect } from 'react-redux'
 
 import {withRouter} from 'react-router'

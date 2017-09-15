@@ -6,12 +6,10 @@ import {Switch, Route} from "react-router"
 import AuthChecker from '../utils/auth-checker'
 import CheckForAcls from '../utils/check-for-acls'
 
-import Header from './header'
-
 import ProfileFiller from '../common/profile-filler'
 import AdminPage from '../admin/utils/admin-page'
 
-export default function(config) {
+export default function(name, config) {
 
   class Root extends React.Component {
 
@@ -45,51 +43,58 @@ export default function(config) {
 
     render() {
 
-      return (
-          <div className="dashboard">
-            {config.header
-             ? <config.header />
-             : <Header menu={config.menu} 
-                       root={config.root} />
-            }
-            <section className={"content"}>
-            {this.state.me && this.state.me.temp
-             ? this.buildProfileFiller()
-             : <Switch>
-                 {this.state.pages.map(item => {
-                   var url = config.root + ((item.route && item.route !== "") ? ((config.root !== "/" ? "/" : "") + item.route) : "")
-                   var component = null
-                   if (item.component) {
-                     component = item.component
-                   } else if (item.client) {
-                     component = AdminPage(item)
-                   }
-
-console.dir(component)
-                   if (component) {
-
-                     if (config.grants) {
-                       component = CheckForAcls(config.grants, component)
+      var content = null
+      if (this.state.me && this.state.me.temp) {
+        content = this.buildProfileFiller()
+      } else {
+        content = <Switch>
+                   {this.state.pages.map(item => {
+                     var url = config.root + ((item.route && item.route !== "") ? ((config.root !== "/" ? "/" : "") + item.route) : "")
+                     var component = null
+                     if (item.component) {
+                       component = item.component
+                     } else if (item.client) {
+                       component = AdminPage(item)
                      }
+ 
+                     if (component) {
+  
+                       if (config.grants) {
+                         component = CheckForAcls(config.grants, component)
+                       }
+ 
+                       if (config.restricted && !item.discardOnLogin) {
+                         component = AuthChecker(component)
+                       }
 
-                     if (config.restricted && !item.discardOnLogin) {
-                       component = AuthChecker(component)
+                       if (item.discardOnLogin) {
+                         component = AuthChecker(component, true)
+                       }
+
+                       return <Route key={url} exact path={url} component={component} />
+
+                     } else {
+                       return null
                      }
+                   })}
+                 </Switch>
+      }
 
-                     if (item.discardOnLogin) {
-                       component = AuthChecker(component, true)
-                     }
-
-                     return <Route key={url} exact path={url} component={component} />
-
-                   } else {
-                     return null
-                   }
-                 })}
-               </Switch>}
-            </section>
+      if (config.wrapper) {
+        return (
+          <config.wrapper.component config={config.wrapper.config}>
+            {content}
+          </config.wrapper.component>
+        )
+      } else {
+        return (
+          <div className="Page">
+          {/*<section className={config.mainSectionClass ? config.mainSectionClass : "content"}>*/}
+            {content}
+          {/*</section>*/}
           </div>
-      );
+        );
+      }
     }
 
     buildProfileFiller() {

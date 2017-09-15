@@ -4,7 +4,7 @@ var ReactDOM = require('react-dom')
 var Logger = require('js-logger')
 Logger.useDefaults();
 
-import { Provider } from 'react-redux';
+var Provider = require('react-redux').Provider
 
 require('dotenv').config()
 
@@ -12,7 +12,7 @@ import createStore from './api/client/reducer/create-store'
 import createClients from './api/client/create-clients'
 import createNavigation from './navigation/create-navigation'
 
-import { BrowserRouter } from 'react-router-dom'
+var BrowserRouter = require('react-router-dom').BrowserRouter
 
 import App from './components/app'
 
@@ -35,7 +35,7 @@ var Bootstrap = function() {
       ReactDOM.render(
         <Provider store={store}>
           <BrowserRouter>
-            <App />
+              <App />
           </BrowserRouter>
         </Provider>,
         document.getElementById('app-root')

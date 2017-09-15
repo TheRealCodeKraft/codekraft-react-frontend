@@ -6,10 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
 var _reactRedux = require('react-redux');
 
 var _reactRouter = require('react-router');
@@ -31,6 +27,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
 
 var ProfileFiller = function (_React$Component) {
   _inherits(ProfileFiller, _React$Component);
@@ -97,34 +95,34 @@ var ProfileFiller = function (_React$Component) {
   _createClass(ProfileFiller, [{
     key: 'render',
     value: function render() {
-      return _react2.default.createElement(
+      return React.createElement(
         _reactBootstrap.Grid,
         { fluid: true },
-        _react2.default.createElement(
+        React.createElement(
           _reactBootstrap.Row,
           null,
-          _react2.default.createElement(
+          React.createElement(
             _reactBootstrap.Col,
             { xs: 12 },
-            _react2.default.createElement(
+            React.createElement(
               'h1',
               null,
               'Bienvenue sur Open Business Labs !'
             ),
-            _react2.default.createElement(
+            React.createElement(
               'p',
               null,
               'Avant de participer \xE0 votre session de jeu, veuillez compl\xE9ter votre profile en remplissant le formulaire suivant : '
             )
           )
         ),
-        _react2.default.createElement(
+        React.createElement(
           _reactBootstrap.Row,
           null,
-          _react2.default.createElement(
+          React.createElement(
             _reactBootstrap.Col,
             { xs: 12 },
-            _react2.default.createElement(_form2.default, { id: 'profile-filler-form',
+            React.createElement(_form2.default, { id: 'profile-filler-form',
               entityId: this.props.me.id,
               fields: this.fields,
               submitLabel: 'M\'enregistrer',
@@ -163,7 +161,7 @@ var ProfileFiller = function (_React$Component) {
   }]);
 
   return ProfileFiller;
-}(_react2.default.Component);
+}(React.Component);
 
 function mapStateToProps(state) {
   return {
