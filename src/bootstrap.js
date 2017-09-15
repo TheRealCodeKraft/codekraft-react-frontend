@@ -6,8 +6,6 @@ Logger.useDefaults();
 
 var Provider = require('react-redux').Provider
 
-require('dotenv').config()
-
 import createStore from './api/client/reducer/create-store'
 import createClients from './api/client/create-clients'
 import createNavigation from './navigation/create-navigation'
@@ -17,6 +15,7 @@ var BrowserRouter = require('react-router-dom').BrowserRouter
 import App from './components/app'
 
 var Bootstrap = function() {
+
   var launch = function(config) {
     const store = createStore(config.clients)
     const clients = createClients(config.clients, store)

@@ -30,11 +30,10 @@ Logger.useDefaults();
 
 var Provider = require('react-redux').Provider;
 
-require('dotenv').config();
-
 var BrowserRouter = require('react-router-dom').BrowserRouter;
 
 var Bootstrap = function () {
+
   var launch = function launch(config) {
     var store = (0, _createStore2.default)(config.clients);
     var clients = (0, _createClients2.default)(config.clients, store);
