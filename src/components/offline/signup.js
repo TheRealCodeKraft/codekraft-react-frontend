@@ -5,10 +5,6 @@ import { Link } from "react-router-dom"
 
 import Form from '../utils/form'
 
-import { Grid } from 'react-bootstrap';
-import { Row } from 'react-bootstrap';
-import { Panel } from 'react-bootstrap';
-
 class Signup extends React.Component {
 
   constructor(props) {
@@ -78,33 +74,7 @@ class Signup extends React.Component {
   }
 
   render() {
-    if (this.state.submitted) {
       return (
-        <div>
-          <span>Inscription Réussi</span>
-          <p>Votre inscription a bien été prise en compte. Vous pouvez maintenant accéder à votre compte en vous connectant grâce au formulaire disponible <Link to='/login'>ICI</Link></p>
-          <p>Si vous souhaitez procéder à une autre inscription, cliquez <a href="#" onClick={this.resetForm}>LA</a></p>
-        </div>
-      )
-    } else {
-      return (
-        
-
-        <Grid className={"container-center animated slideInDown"}>
-
-            <Row className={"view-header"}>
-                <div className={"header-icon"}>
-                    <i className={"page-header-icon pe pe-7s-user"}></i>
-                </div>
-                <div className={"header-title"}>
-                    <h3>Créer un compte</h3>
-                    <small>
-                        Entrez les infos suivantes pour créer votre compte Open Business Labs.
-                    </small>
-                </div>
-            </Row>
-
-            <Panel className="panel panel-filled">
                         <Form id="signup-form" 
                               fields={this.fields} 
                               submitLabel="M'enregistrer"
@@ -114,12 +84,7 @@ class Signup extends React.Component {
                               onSubmitComplete={this.handleSubmitComplete}
                               onSubmitError={this.handleSubmitError}
                         />
-            </Panel>
-
-        </Grid>
-
       )
-    }
   }
 
   handleSubmit(values) {

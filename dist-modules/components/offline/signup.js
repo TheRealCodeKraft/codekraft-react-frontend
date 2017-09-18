@@ -14,8 +14,6 @@ var _form = require("../utils/form");
 
 var _form2 = _interopRequireDefault(_form);
 
-var _reactBootstrap = require("react-bootstrap");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -94,78 +92,15 @@ var Signup = function (_React$Component) {
   _createClass(Signup, [{
     key: "render",
     value: function render() {
-      if (this.state.submitted) {
-        return React.createElement(
-          "div",
-          null,
-          React.createElement(
-            "span",
-            null,
-            "Inscription R\xE9ussi"
-          ),
-          React.createElement(
-            "p",
-            null,
-            "Votre inscription a bien \xE9t\xE9 prise en compte. Vous pouvez maintenant acc\xE9der \xE0 votre compte en vous connectant gr\xE2ce au formulaire disponible ",
-            React.createElement(
-              _reactRouterDom.Link,
-              { to: "/login" },
-              "ICI"
-            )
-          ),
-          React.createElement(
-            "p",
-            null,
-            "Si vous souhaitez proc\xE9der \xE0 une autre inscription, cliquez ",
-            React.createElement(
-              "a",
-              { href: "#", onClick: this.resetForm },
-              "LA"
-            )
-          )
-        );
-      } else {
-        return React.createElement(
-          _reactBootstrap.Grid,
-          { className: "container-center animated slideInDown" },
-          React.createElement(
-            _reactBootstrap.Row,
-            { className: "view-header" },
-            React.createElement(
-              "div",
-              { className: "header-icon" },
-              React.createElement("i", { className: "page-header-icon pe pe-7s-user" })
-            ),
-            React.createElement(
-              "div",
-              { className: "header-title" },
-              React.createElement(
-                "h3",
-                null,
-                "Cr\xE9er un compte"
-              ),
-              React.createElement(
-                "small",
-                null,
-                "Entrez les infos suivantes pour cr\xE9er votre compte Open Business Labs."
-              )
-            )
-          ),
-          React.createElement(
-            _reactBootstrap.Panel,
-            { className: "panel panel-filled" },
-            React.createElement(_form2.default, { id: "signup-form",
-              fields: this.fields,
-              submitLabel: "M'enregistrer",
-              submitClass: "btn btn-accent btn-signup",
-              onSubmit: this.handleSubmit,
-              service: { client: this.props.clients.UserClient, func: "signup" },
-              onSubmitComplete: this.handleSubmitComplete,
-              onSubmitError: this.handleSubmitError
-            })
-          )
-        );
-      }
+      return React.createElement(_form2.default, { id: "signup-form",
+        fields: this.fields,
+        submitLabel: "M'enregistrer",
+        submitClass: "btn btn-accent btn-signup",
+        onSubmit: this.handleSubmit,
+        service: { client: this.props.clients.UserClient, func: "signup" },
+        onSubmitComplete: this.handleSubmitComplete,
+        onSubmitError: this.handleSubmitError
+      });
     }
   }, {
     key: "handleSubmit",

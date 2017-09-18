@@ -14,8 +14,6 @@ var _form = require("../utils/form");
 
 var _form2 = _interopRequireDefault(_form);
 
-var _reactBootstrap = require("react-bootstrap");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -65,58 +63,27 @@ var Login = function (_React$Component) {
     value: function render() {
       if (this.state.loggedIn) return React.createElement(_reactRouterDom.Redirect, { to: "/dashboard" });
       return React.createElement(
-        _reactBootstrap.Grid,
-        { className: "container-center animated slideInDown" },
-        React.createElement(
-          _reactBootstrap.Row,
-          { className: "view-header" },
-          React.createElement(
-            "div",
-            { className: "header-icon" },
-            React.createElement("i", { className: "pe page-header-icon pe-7s-unlock" })
-          ),
-          React.createElement(
-            "div",
-            { className: "header-title" },
-            React.createElement(
-              "h3",
-              null,
-              "Login"
-            ),
-            React.createElement(
-              "small",
-              null,
-              "Entrez vos identifiants pour vous connecter."
-            )
-          )
-        ),
+        "div",
+        null,
         this.props.newUser ? React.createElement(
-          _reactBootstrap.Row,
-          null,
-          React.createElement(
-            "div",
-            { className: "alert alert-success", style: { marginTop: 0, display: "flex", alignItems: "center" } },
-            React.createElement("i", { className: "pe pe-7s-door-lock", style: { fontSize: "3em", marginRight: 15 } }),
-            "Votre compte a \xE9t\xE9 cr\xE9\xE9, vous pouvez maintenant vous connecter."
-          )
+          "div",
+          { className: "alert alert-success", style: { marginTop: 0, display: "flex", alignItems: "center" } },
+          React.createElement("i", { className: "pe pe-7s-door-lock", style: { fontSize: "3em", marginRight: 15 } }),
+          "Votre compte a \xE9t\xE9 cr\xE9\xE9, vous pouvez maintenant vous connecter."
         ) : null,
+        React.createElement(_form2.default, { id: "login-form",
+          clients: this.props.clients,
+          fields: this.fields,
+          submitLabel: "Me connecter",
+          onSubmit: this.handleSubmit,
+          submitClass: "btn btn-accent btn-signup",
+          service: { client: this.props.clients.ApiClient, func: "login" },
+          onSubmitComplete: this.handleSubmitComplete
+        }),
         React.createElement(
-          _reactBootstrap.Panel,
-          { className: "panel panel-filled" },
-          React.createElement(_form2.default, { id: "login-form",
-            clients: this.props.clients,
-            fields: this.fields,
-            submitLabel: "Me connecter",
-            onSubmit: this.handleSubmit,
-            submitClass: "btn btn-accent btn-signup",
-            service: { client: this.props.clients.ApiClient, func: "login" },
-            onSubmitComplete: this.handleSubmitComplete
-          }),
-          React.createElement(
-            _reactRouterDom.Link,
-            { className: "btn btn-default btn-signup", to: "/signup" },
-            "Cr\xE9er un compte"
-          )
+          _reactRouterDom.Link,
+          { className: "btn btn-default btn-signup", to: "/signup" },
+          "Cr\xE9er un compte"
         ),
         React.createElement(
           "div",

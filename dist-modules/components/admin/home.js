@@ -37,56 +37,56 @@ var Home = function (_React$Component) {
       for (var key in this.props.navigation.admin.menu) {
         groups.push(this.props.navigation.admin.menu[key]);
       }
+
+      if (groups.filter(function (group) {
+        return group.hiddenOnHome === true;
+      }).length === groups.length) {
+        return React.createElement(
+          "section",
+          { className: "Example" },
+          React.createElement(
+            "h1",
+            null,
+            "Bienvenue dans l'administration !"
+          ),
+          React.createElement(
+            "p",
+            null,
+            "Vous n'avez aucun entit\xE9 encore configur\xE9e dans votre application"
+          ),
+          React.createElement(
+            "p",
+            null,
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vitae nulla tortor. Fusce laoreet dolor at blandit placerat. Quisque a venenatis turpis. Sed a turpis magna. Aliquam imperdiet sollicitudin nulla, a sagittis est bibendum varius. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum sed lectus a arcu dignissim cursus."
+          )
+        );
+      }
+
       return React.createElement(
-        _reactBootstrap.Grid,
-        { fluid: true },
+        "section",
+        null,
         groups.map(function (group) {
           if (group.hiddenOnHome) return null;
-
           return [React.createElement(
-            _reactBootstrap.Row,
+            "h1",
             null,
-            React.createElement(
-              _reactBootstrap.Col,
-              { xs: 12 },
+            group.label
+          ), group.items.map(function (item) {
+            return React.createElement(
+              _reactRouterDom.Link,
+              { to: "/admin/" + item.route },
               React.createElement(
-                "h1",
+                "h2",
                 null,
-                React.createElement("i", { className: "pe pe-7s-tools text-warning" }),
-                " ",
-                group.label
+                item.title
+              ),
+              React.createElement(
+                "div",
+                null,
+                item.description ? item.description : ""
               )
-            )
-          ), React.createElement(
-            _reactBootstrap.Row,
-            null,
-            group.items.map(function (item) {
-              return React.createElement(
-                _reactBootstrap.Col,
-                { md: 6 },
-                React.createElement(
-                  _reactRouterDom.Link,
-                  { to: "/admin/" + item.route, className: "panel-home-student" },
-                  React.createElement(
-                    _reactBootstrap.Panel,
-                    { className: "panel-filled" },
-                    React.createElement(
-                      "h2",
-                      null,
-                      React.createElement("i", { className: "pe-7s-" + (item.icon ? item.icon : "pin") + " pe-3x pe-va text-warning" }),
-                      " ",
-                      item.title
-                    ),
-                    React.createElement(
-                      "div",
-                      null,
-                      item.description ? item.description : ""
-                    )
-                  )
-                )
-              );
-            })
-          )];
+            );
+          })];
         })
       );
     }

@@ -10,8 +10,6 @@ var _reactRedux = require("react-redux");
 
 var _reactRouterDom = require("react-router-dom");
 
-var _reactBootstrap = require("react-bootstrap");
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -34,86 +32,19 @@ var Home = function (_React$Component) {
     value: function render() {
 
       return React.createElement(
-        _reactBootstrap.Grid,
-        { fluid: true },
+        "section",
+        { className: "Example" },
         React.createElement(
-          _reactBootstrap.Row,
+          "h1",
           null,
-          React.createElement(
-            _reactBootstrap.Col,
-            { xs: 12 },
-            React.createElement(
-              "h1",
-              null,
-              React.createElement("i", { className: "pe pe-7s-home text-warning" }),
-              " Accueil"
-            ),
-            React.createElement(
-              "h2",
-              null,
-              React.createElement(
-                "small",
-                null,
-                "Bienvenue sur ton compte Open Business Labs ",
-                React.createElement(
-                  "span",
-                  { className: "c-white" },
-                  this.props.me.firstname
-                ),
-                " !"
-              )
-            )
-          )
+          "Bonjour ",
+          this.props.me.firstname,
+          " !"
         ),
         React.createElement(
-          _reactBootstrap.Row,
+          "p",
           null,
-          React.createElement(
-            _reactBootstrap.Col,
-            { md: 6 },
-            React.createElement(
-              _reactRouterDom.Link,
-              { to: "/dashboard/profile", className: "panel-home-student" },
-              React.createElement(
-                _reactBootstrap.Panel,
-                { className: "panel-filled" },
-                React.createElement(
-                  "h2",
-                  null,
-                  React.createElement("i", { className: "pe pe-7s-user pe-3x pe-va text-warning" }),
-                  " Profil"
-                ),
-                React.createElement(
-                  "div",
-                  null,
-                  "Compl\xE9ter ton profil et tes infos personnelles."
-                )
-              )
-            )
-          ),
-          React.createElement(
-            _reactBootstrap.Col,
-            { md: 6 },
-            React.createElement(
-              _reactRouterDom.Link,
-              { to: "/dashboard/sessions", className: "panel-home-student" },
-              React.createElement(
-                _reactBootstrap.Panel,
-                { className: "panel-filled" },
-                React.createElement(
-                  "h2",
-                  null,
-                  React.createElement("i", { className: "pe pe-7s-joy pe-3x pe-va text-warning" }),
-                  " Jeux"
-                ),
-                React.createElement(
-                  "div",
-                  null,
-                  "Consulter les jeux auxquels tu es inscrit et les r\xE9sultats de ceux auxquels tu as particip\xE9."
-                )
-              )
-            )
-          )
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vitae nulla tortor. Fusce laoreet dolor at blandit placerat. Quisque a venenatis turpis. Sed a turpis magna. Aliquam imperdiet sollicitudin nulla, a sagittis est bibendum varius. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum sed lectus a arcu dignissim cursus."
         )
       );
     }

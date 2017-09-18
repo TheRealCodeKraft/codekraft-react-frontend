@@ -28,7 +28,7 @@ var Home = function (_React$Component) {
     value: function render() {
       return React.createElement(
         "section",
-        null,
+        { className: "Example" },
         React.createElement(
           "h1",
           null,

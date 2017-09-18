@@ -60,7 +60,8 @@ function manageOffline(config) {
       {
         title: "Accueil",
         root: true,
-        component: OfflineHome
+        component: OfflineHome,
+        discardOnLogin: true
       }
     )
   }
@@ -70,7 +71,9 @@ function manageOffline(config) {
       {
         title: "Connexion",
         route: "login",
-        component: Login
+        component: Login,
+        discardOnLogin: true
+
       }
     )
   }
@@ -80,7 +83,9 @@ function manageOffline(config) {
       {
         title: "Inscription",
         route: "signup",
-        component: Signup
+        component: Signup,
+        discardOnLogin: true
+
       }
     )
   }
@@ -199,7 +204,8 @@ function manageAdmin(config) {
       {
         title: "Tableau de bord",
         root: true,
-        component: AdminHome
+        component: AdminHome,
+        hiddenOnHome: true,
       }
     )
   }
@@ -207,6 +213,7 @@ function manageAdmin(config) {
   if (!backFound) {
     newItems.push({ 
       title: "Retour au site",
+      hiddenOnHome: true,
       switch: "/dashboard"
     })
   }
@@ -214,6 +221,7 @@ function manageAdmin(config) {
   if (!logoutFound) {
     newItems.push({
       title: "Se déconnecter",
+      hiddenOnHome: true,
       type: "logout"
     })
   }

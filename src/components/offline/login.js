@@ -6,10 +6,6 @@ import { Redirect } from "react-router-dom"
 import Form from '../utils/form'
 import { Link } from 'react-router-dom'
 
-import { Grid } from 'react-bootstrap';
-import { Row } from 'react-bootstrap';
-import { Panel } from 'react-bootstrap';
-
 class Login extends React.Component {
 
   constructor(props) {
@@ -46,32 +42,14 @@ class Login extends React.Component {
   render() {
     if (this.state.loggedIn) return <Redirect to="/dashboard" />
     return (
-      
-      <Grid className="container-center animated slideInDown">
-
-            <Row className="view-header">
-                <div className={"header-icon"}>
-                    <i className={"pe page-header-icon pe-7s-unlock"}></i>
-                </div>
-                <div className={"header-title"}>
-                    <h3>Login</h3>
-                    <small>
-                        Entrez vos identifiants pour vous connecter.
-                    </small>
-                </div>
-            </Row>
-
+      <div>  
             {this.props.newUser
-             ? <Row>
-                 <div className="alert alert-success" style={{marginTop: 0, display: "flex", alignItems: "center"}}>
+             ? <div className="alert alert-success" style={{marginTop: 0, display: "flex", alignItems: "center"}}>
                    <i className="pe pe-7s-door-lock" style={{fontSize: "3em", marginRight: 15}}></i>
                    Votre compte a été créé, vous pouvez maintenant vous connecter.
                  </div>
-               </Row>
              : null}
 
-            <Panel className="panel panel-filled">
-                    
                     <Form id="login-form" 
                         clients={this.props.clients}
                         fields={this.fields} 
@@ -82,14 +60,11 @@ class Login extends React.Component {
                         onSubmitComplete={this.handleSubmitComplete}
                     />
                     <Link className={"btn btn-default btn-signup"} to="/signup">Créer un compte</Link>
-                
-            </Panel>
-
             <div className="text-center small">
                     <Link to="/">Mot de passe oublié</Link>
             </div>
 
-        </Grid>
+        </div>
     )
   }
 
