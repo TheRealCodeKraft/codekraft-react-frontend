@@ -15,9 +15,12 @@ import _Signup from './components/offline/signup'
 
 import _ShowForAcls from './components/utils/show-for-acls'
 
+import _Header from './components/common/header'
+
 exports.Bootstrap = _Bootstrap
 exports.Form = _Form
 exports.ApiClient = _ApiClient
 exports.Login = _Login
 exports.Signup = _Signup
 exports.ShowForAcls = _ShowForAcls
+exports.Header = _Header

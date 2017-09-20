@@ -80,13 +80,13 @@ var App = function (_React$Component) {
           _reactRouterDom.Switch,
           null,
           _react2.default.createElement(_reactRouterDom.Route, { path: '/dashboard', render: function render() {
-              return _react2.default.createElement(_header2.default, { menu: _this2.props.navigation.dashboard.menu, root: _this2.props.navigation.dashboard.root, custom: _this2.props.navigation.dashboard.header });
+              return _react2.default.createElement(_header2.default, { menu: _this2.props.navigation.dashboard.menu, root: _this2.props.navigation.dashboard.root, custom: _this2.props.navigation.dashboard.header, location: _this2.props.location });
             } }),
           _react2.default.createElement(_reactRouterDom.Route, { path: '/admin', render: function render() {
-              return _react2.default.createElement(_header2.default, { menu: _this2.props.navigation.admin.menu, root: _this2.props.navigation.admin.root, custom: _this2.props.navigation.admin.header });
+              return _react2.default.createElement(_header2.default, { menu: _this2.props.navigation.admin.menu, root: _this2.props.navigation.admin.root, custom: _this2.props.navigation.admin.header, location: _this2.props.location });
             } }),
           _react2.default.createElement(_reactRouterDom.Route, { path: '/', render: function render() {
-              return _react2.default.createElement(_header2.default, { menu: _this2.props.navigation.offline.menu, root: _this2.props.navigation.offline.root, custom: _this2.props.navigation.offline.header });
+              return _react2.default.createElement(_header2.default, { menu: _this2.props.navigation.offline.menu, root: _this2.props.navigation.offline.root, custom: _this2.props.navigation.offline.header, location: _this2.props.location });
             } })
         ),
         this.props.token ? _react2.default.createElement(

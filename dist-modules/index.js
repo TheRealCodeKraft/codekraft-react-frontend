@@ -28,15 +28,21 @@ var _showForAcls = require('./components/utils/show-for-acls');
 
 var _showForAcls2 = _interopRequireDefault(_showForAcls);
 
+var _header = require('./components/common/header');
+
+var _header2 = _interopRequireDefault(_header);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.Bootstrap = _bootstrap2.default; /*
-                                         import _createStore from './api/client/reducer/create-store'
-                                         exports.createStore = _createStore
-                                         */
+/*
+import _createStore from './api/client/reducer/create-store'
+exports.createStore = _createStore
+*/
 
+exports.Bootstrap = _bootstrap2.default;
 exports.Form = _form2.default;
 exports.ApiClient = _apiClient2.default;
 exports.Login = _login2.default;
 exports.Signup = _signup2.default;
 exports.ShowForAcls = _showForAcls2.default;
+exports.Header = _header2.default;

@@ -58,8 +58,9 @@ function manageOffline(config) {
   if (!rootFound) {
     newItems.push(
       {
-        title: "Accueil",
+        title: "Accueilb",
         root: true,
+        faIcon: "home",
         component: OfflineHome,
         discardOnLogin: true
       }
@@ -71,6 +72,7 @@ function manageOffline(config) {
       {
         title: "Connexion",
         route: "login",
+        faIcon: "user",
         component: Login,
         discardOnLogin: true
 
@@ -83,6 +85,7 @@ function manageOffline(config) {
       {
         title: "Inscription",
         route: "signup",
+        faIcon: "user-plus",
         component: Signup,
         discardOnLogin: true
 

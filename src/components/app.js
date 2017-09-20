@@ -39,9 +39,9 @@ class App extends React.Component {
     return (
       <div id="main-container" className={"wrapper"}>
         <Switch>
-           <Route path="/dashboard" render={() => <Header menu={this.props.navigation.dashboard.menu} root={this.props.navigation.dashboard.root} custom={this.props.navigation.dashboard.header} />} />
-           <Route path="/admin" render={() => <Header menu={this.props.navigation.admin.menu} root={this.props.navigation.admin.root} custom={this.props.navigation.admin.header} />} />
-           <Route path="/" render={() => <Header menu={this.props.navigation.offline.menu} root={this.props.navigation.offline.root} custom={this.props.navigation.offline.header} />} />
+           <Route path="/dashboard" render={() => <Header menu={this.props.navigation.dashboard.menu} root={this.props.navigation.dashboard.root} custom={this.props.navigation.dashboard.header} location={this.props.location} />} />
+           <Route path="/admin" render={() => <Header menu={this.props.navigation.admin.menu} root={this.props.navigation.admin.root} custom={this.props.navigation.admin.header} location={this.props.location} />} />
+           <Route path="/" render={() => <Header menu={this.props.navigation.offline.menu} root={this.props.navigation.offline.root} custom={this.props.navigation.offline.header} location={this.props.location} />} />
         </Switch>
  
           {this.props.token

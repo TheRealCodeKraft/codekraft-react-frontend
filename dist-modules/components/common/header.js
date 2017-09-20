@@ -6,13 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _reactRedux = require('react-redux');
+var _link = require('./header/link');
 
-var _reactRouter = require('react-router');
-
-var _reactRouterDom = require('react-router-dom');
-
-var _reactBootstrap = require('react-bootstrap');
+var _link2 = _interopRequireDefault(_link);
 
 var _showForAcls = require('../utils/show-for-acls');
 
@@ -31,10 +27,17 @@ var React = require("react");
 var Header = function (_React$Component) {
   _inherits(Header, _React$Component);
 
-  function Header() {
+  function Header(props) {
     _classCallCheck(this, Header);
 
-    return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).call(this, props));
+
+    _this.state = {
+      menu: false
+    };
+
+    _this.handleHamburgerClick = _this.handleHamburgerClick.bind(_this);
+    return _this;
   }
 
   _createClass(Header, [{
@@ -46,22 +49,45 @@ var Header = function (_React$Component) {
         } else return null;
       }
 
-      var menu_entries = [],
-          menu_entry,
-          menu,
-          item,
-          route;
-      for (var key in this.props.menu) {
-        menu = this.props.menu[key];
-        if (menu.label) {
+      var default_menu_entries = this.buildItemsFor(this.props.menu.default);
+      default_menu_entries = this.embedSandwich(default_menu_entries);
+      var side_menu_entries = this.buildItemsFor(this.props.menu.side);
+
+      return React.createElement(
+        'div',
+        { className: 'Menu' },
+        React.createElement(
+          'div',
+          { className: 'Menu-logo' },
+          React.createElement('img', { src: '/assets/img/logo-skeleton.png', alt: 'CodeKraft Skeleton logo' }),
+          React.createElement(
+            'div',
+            { className: 'Side-Menu' },
+            side_menu_entries
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'Menu-links' },
+          default_menu_entries
+        )
+      );
+    }
+  }, {
+    key: 'buildItemsFor',
+    value: function buildItemsFor(nav) {
+      var menu_entries = [];
+      if (nav) {
+        var menu_entry, menu, item, route;
+        if (nav.label) {
           menu_entries.push(React.createElement(
             'li',
             { className: "nav-category" },
-            menu.label
+            nav.label
           ));
         }
-        for (var index in menu.items) {
-          item = menu.items[index];
+        for (var index in nav.items) {
+          item = nav.items[index];
           if (item.display !== false) {
             if (item.type) {
               switch (item.type) {
@@ -77,11 +103,7 @@ var Header = function (_React$Component) {
               route = this.props.root + (item.route ? (this.props.root !== "/" ? "/" : "") + item.route : "");
             }
 
-            menu_entry = React.createElement(
-              _reactRouterDom.NavLink,
-              { exact: true, to: route, className: "Menu-link" + (this.props.location.pathname === route ? " Menu-link--active" : "") },
-              item.title
-            );
+            menu_entry = this.buildItem(nav, item, route);
 
             if (item.grants) {
               menu_entry = React.createElement(
@@ -94,31 +116,38 @@ var Header = function (_React$Component) {
           }
         }
       }
-
-      return React.createElement(
-        'div',
-        { className: 'Menu' },
-        React.createElement(
-          'div',
-          { className: 'Menu-logo' },
-          React.createElement('img', { src: '/assets/img/logo-skeleton.png', alt: 'CodeKraft Skeleton logo' })
-        ),
-        React.createElement(
-          'div',
-          { className: 'Menu-links' },
-          menu_entries
-        )
-      );
+      return menu_entries;
+    }
+  }, {
+    key: 'buildItem',
+    value: function buildItem(nav, item, route) {
+      var LinkComponent = nav.navLink ? nav.navLink : _link2.default;
+      return React.createElement(LinkComponent, { item: item, pathname: this.props.location.pathname, route: route });
+    }
+  }, {
+    key: 'embedSandwich',
+    value: function embedSandwich(items) {
+      items = [React.createElement('a', { href: '#', onClick: this.handleHamburgerClick, className: 'Menu-link toggle-sidebar fa fa-bars' })].concat(items);
+      if (!this.state.menu) {
+        items = [React.createElement('img', { src: '/assets/img/logo-skeleton.png', alt: 'CodeKraft Skeleton logo' })].concat(items);
+      }
+      return items;
+    }
+  }, {
+    key: 'handleHamburgerClick',
+    value: function handleHamburgerClick(e) {
+      e.preventDefault();
+      this.setState({ menu: !this.state.menu }, function () {
+        if (this.state.menu) {
+          document.body.className += " nav-toggle";
+        } else {
+          document.body.className -= " nav-toggle";
+        }
+      });
     }
   }]);
 
   return Header;
 }(React.Component);
 
-function mapStateToProps(state) {
-  return {
-    clients: state.bootstrap.clients || {}
-  };
-}
-
-exports.default = (0, _reactRouter.withRouter)((0, _reactRedux.connect)(mapStateToProps)(Header));
+exports.default = Header;
