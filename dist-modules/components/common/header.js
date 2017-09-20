@@ -100,7 +100,7 @@ var Header = function (_React$Component) {
             } else if (item.switch) {
               route = item.switch;
             } else {
-              route = this.props.root + (item.route ? (this.props.root !== "/" ? "/" : "") + item.route : "");
+              route = (item.route[0] !== "/" ? this.props.root : "") + (item.route ? (item.route[0] !== "/" && this.props.root !== "/" ? "/" : "") + item.route : "");
             }
 
             menu_entry = this.buildItem(nav, item, route);

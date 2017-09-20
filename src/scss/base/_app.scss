@@ -1,0 +1,310 @@
+$font-family-serif: "Open Sans", Garamond, "Times New Roman", serif;
+$font-family-sans-serif: "Open Sans","Helvetica Neue", Helvetica, Arial, sans-serif;
+
+$grey-border: #eee;
+$grey-text: #aaa;
+$black: #000;
+$white: #fff;
+
+html {
+  font-size: 9px;
+
+  @include lg {
+    font-size: 12px;
+  }
+
+  @include xl {
+    font-size: 14px;
+  }
+}
+
+body {
+  color: $black;
+  font-family: $font-family-sans-serif;
+}
+
+#main-container {
+  font-size: 1.8rem;
+  padding: 2rem;
+
+  @include md {
+    padding: 3rem;
+  }
+
+  @include md {
+    padding: 4rem;
+  }
+}
+
+a {
+  color: $grey-text;
+}
+
+a:hover {
+  color: $black;
+}
+
+h1,
+h2,
+h3 {
+  margin: 2rem 0;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.7rem;
+}
+
+button {
+  background: transparent;
+  border-radius: 1.6rem;
+  border: 0.1rem solid $black;
+  cursor: pointer;
+  font-size: 1.5rem;
+  padding: 0.7rem 2rem;
+}
+
+button:disabled {
+  opacity: 0.3;
+}
+
+button:hover {
+  background: $white;
+}
+
+.Menu {
+  align-items: center;
+  border-bottom: 1px solid $grey-border;
+  display: flex;
+  //justify-content: space-between;
+  padding-bottom: 2rem !important;
+  margin: 0 auto 2rem;
+  //max-width: 60rem;
+  background: #fff;
+
+  @include lg {
+    margin-left: 20rem;
+    margin: 0 0 2rem 20rem;
+    padding-bottom: 0;
+  }
+
+  @include md {
+    margin: 0;
+    padding-left: 18px;
+    margin: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-right: 1px solid $grey-border;
+    padding: 4rem;
+  }
+
+  @include sm {
+    position: fixed;
+  }
+}
+
+.Menu img {
+  display: block;
+}
+
+.Menu-logo {
+  margin-right: 2rem;
+  margin-left: 2rem;
+  @include lg {
+    margin-right: 4rem;
+    margin-left: 0;
+  }
+  width: 12rem;
+}
+
+body {
+  &:not(.nav-toggle) {
+    .Menu-logo {
+      @include lg {
+        width: 12rem;
+        display: block;
+      }
+      width: 0px;
+      display: none;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .Page {
+      margin: 0;
+      @include lg {
+        margin-left: 200px;
+      }
+    }
+
+    .Menu {
+      margin: 0;
+      padding-left: 0;
+      @include sm {
+        padding-left: 2rem;
+      }
+      @include md {
+        padding-left: 4rem;
+      }
+      @include lg {
+        padding-left: 4rem;
+      }
+    }
+
+    .Side-Menu {
+      width: 0px;
+      display: none;
+      @include lg {
+        width: 180px;
+        display: block;
+      }
+      overflow: hidden;
+    }
+  }
+}
+
+.Side-Menu {
+  background: #fff;
+  width: 180px;
+  @include md {
+    position: fixed;
+    top: 120px;
+    bottom: 0;
+    background: #ffffff;
+  }
+  @include sm {
+    width: 80%;
+    position: fixed;
+    top: 80px;
+    bottom: 0;
+    background: #ffffff;
+  }
+  @include lg {
+    top: 140px;
+  }
+}
+
+.Menu-links {
+  display: flex;
+  align-items: center;
+  @include md {
+  }
+
+  img {
+    width: 12rem;
+    height: 4.68rem;
+    margin-right: 2rem;
+    @include md {
+      margin-left: 2rem;
+    }
+    @include lg {
+      display: none;
+    }
+  }
+}
+
+.Menu-link {
+  display: inline-block;
+  font-family: $font-family-serif;
+  //font-style: italic;
+  //margin-left: 1.5rem;
+  line-height: 3rem;
+  text-decoration: none;
+  margin: 10px;
+
+  @include md {
+    //margin-left: 3rem;
+  }
+
+  @include lg {
+    //margin: 0 3rem 0 0;
+    line-height: 7.5rem;
+  }
+
+  @include sm {
+    margin: 5px;
+  }
+
+  &.fa {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1em;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    background: #c1c1c1;
+    color: #ffffff;
+    @include sm {
+      width: 30px;
+      height: 30px;
+      font-size: 0.8em;
+    }
+  }
+
+  &.toggle-sidebar {
+    @include lg {
+      display: none;
+    }
+  }
+}
+
+.Menu-link--active {
+  color: $black;
+}
+
+.Page {
+  //max-width: 60rem;
+  margin: 0 auto;
+
+  @include lg {
+    margin: 0 0 0 20rem;
+  }
+
+  @include md {
+    padding-top: 80px;
+    margin-left: 200px;
+  }
+
+  @include sm {
+    padding-top: 60px;
+  }
+}
+
+.Example {
+  background: #F6F8FA;
+  padding: 2rem;
+  border-radius: 0.4rem;
+}
+
+.Example .Icon {
+  margin-right: 10px;
+}
+
+.BackgroundImgExample {
+  background-image: url(../assets/img/book1.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 16rem;
+  max-width: 25rem;
+}
+
+.ImgExample {
+  max-width: 25rem;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid $grey-border;
+  margin: 2rem 0;
+}

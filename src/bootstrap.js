@@ -5,6 +5,7 @@ var Logger = require('js-logger')
 Logger.useDefaults();
 
 var Provider = require('react-redux').Provider
+import { AppContainer } from 'react-hot-loader';
 
 import createStore from './api/client/reducer/create-store'
 import createClients from './api/client/create-clients'

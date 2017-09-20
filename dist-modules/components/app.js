@@ -61,7 +61,7 @@ var App = function (_React$Component) {
   }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(props) {
-      if (props.location.pathname === '/logout' || this.props.location.pathname === '/logout') {
+      if (props.location && (props.location.pathname === '/logout' || this.props.location.pathname === '/logout')) {
         var self = this;
         this.props.clients.ApiClient.logout(function (data) {
           self.props.history.push("/");
@@ -86,7 +86,7 @@ var App = function (_React$Component) {
               return _react2.default.createElement(_header2.default, { menu: _this2.props.navigation.admin.menu, root: _this2.props.navigation.admin.root, custom: _this2.props.navigation.admin.header, location: _this2.props.location });
             } }),
           _react2.default.createElement(_reactRouterDom.Route, { path: '/', render: function render() {
-              return _react2.default.createElement(_header2.default, { menu: _this2.props.navigation.offline.menu, root: _this2.props.navigation.offline.root, custom: _this2.props.navigation.offline.header, location: _this2.props.location });
+              return _react2.default.createElement(_header2.default, { menu: _this2.props.token ? _this2.props.navigation.dashboard.menu : _this2.props.navigation.offline.menu, root: _this2.props.navigation.offline.root, custom: _this2.props.navigation.offline.header, location: _this2.props.location });
             } })
         ),
         this.props.token ? _react2.default.createElement(

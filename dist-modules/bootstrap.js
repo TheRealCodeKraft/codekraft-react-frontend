@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _reactHotLoader = require('react-hot-loader');
+
 var _createStore = require('./api/client/reducer/create-store');
 
 var _createStore2 = _interopRequireDefault(_createStore);
@@ -29,6 +31,7 @@ var Logger = require('js-logger');
 Logger.useDefaults();
 
 var Provider = require('react-redux').Provider;
+
 
 var BrowserRouter = require('react-router-dom').BrowserRouter;
 

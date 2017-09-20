@@ -20,13 +20,31 @@ var _signup = require('../components/offline/signup');
 
 var _signup2 = _interopRequireDefault(_signup);
 
+var _default = require('../config/navigation/default');
+
+var _default2 = _interopRequireDefault(_default);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = function (config) {
 
-  config.offline = manageOffline(config.offline);
-  config.dashboard = manageDashboard(config.dashboard);
-  config.admin = manageAdmin(config.admin);
+  for (var key in _default2.default) {
+    if (!config[key]) config[key] = _default2.default[key];else {
+      if (!config[key].root) config[key].root = _default2.default[key].root;
+      if (!config[key].restricted && _default2.default[key].restricted) config[key].restricted = _default2.default[key].restricted;
+      if (config[key].enableDefault !== false) {
+        if (!config[key].menu) config[key].menu = _default2.default[key].menu;else {
+          for (var menuKey in _default2.default[key].menu) {
+            if (!config[key].menu[menuKey]) config[key].menu[menuKey] = _default2.default[key].menu[menuKey];else {
+              for (var itemKey in _default2.default[key].menu[menuKey].items) {
+                config[key].menu[menuKey].items.push(_default2.default[key].menu[menuKey].items[itemKey]);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
   return config;
 };
