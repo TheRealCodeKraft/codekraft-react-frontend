@@ -45,7 +45,7 @@ var Header = function (_React$Component) {
     value: function render() {
       if (this.props.custom !== undefined) {
         if (this.props.custom !== null) {
-          return React.createElement(this.props.custom, { menu: this.props.menu, root: this.props.root });
+          return React.createElement(this.props.custom, { menu: this.props.menu, root: this.props.root, admin: this.props.admin });
         } else return null;
       }
 
