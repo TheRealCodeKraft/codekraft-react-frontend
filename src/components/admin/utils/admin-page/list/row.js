@@ -74,7 +74,9 @@ class AdminPageListRow extends React.Component {
     if (!this.props.actions) {
       actions.push(<a key={"action-delete-" + this.props.item.id} href="#" onClick={this.handleDelete} className={"admin-action-button" + this.getIcon("delete", "trash")} alt="Supprimer" title="Supprimer"></a>)
       //actions.push(<a key={"action-see-" + this.props.item.id} href="#" onClick={this.handleSee} className={"admin-action-button " + this.getIcon("view", "eye")} alt="Afficher" title="Afficher"></a>)
-      actions.push(<a key={"action-edit-" + this.props.item.id} href="#" onClick={this.handleEdit} className={"admin-action-button" + this.getIcon("edit", "pencil")} alt="Modifier" title="Modifier"></a>)
+      if (this.props.form) {
+        actions.push(<a key={"action-edit-" + this.props.item.id} href="#" onClick={this.handleEdit} className={"admin-action-button" + this.getIcon("edit", "pencil")} alt="Modifier" title="Modifier"></a>)
+      }
     } else {
       this.props.actions.map(action => {
         if (action instanceof Object) {
@@ -90,7 +92,9 @@ class AdminPageListRow extends React.Component {
               //actions.push(<a key={"action-see-" + this.props.item.id} href="#" onClick={this.handleSee} className={"admin-action-button" + this.getIcon("view", "eye")} alt="Afficher" title="Afficher"></a>)
               break
             case "edit":
-              actions.push(<a key={"action-edit-" + this.props.item.id} href="#" onClick={this.handleEdit} className={"admin-action-button" + this.getIcon("edit", "pencil")} alt="Modifier" title="Modifier"></a>)
+              if (this.props.form) {
+                actions.push(<a key={"action-edit-" + this.props.item.id} href="#" onClick={this.handleEdit} className={"admin-action-button" + this.getIcon("edit", "pencil")} alt="Modifier" title="Modifier"></a>)
+              }
               break
             default:
               break

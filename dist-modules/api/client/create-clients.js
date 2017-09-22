@@ -24,13 +24,103 @@ function capitalizeFirstLetter(string) {
   return string;
 }
 
+function createClient(name, plural, store, ApiClient, localConfig) {
+  return function (name, plural, store, ApiClient) {
+    return function () {
+
+      var fetchAll = function fetchAll(params, callback) {
+        ApiClient.get(plural, params, function (data) {
+          var toDispatch = {
+            type: plural.toUpperCase()
+          };
+          toDispatch[plural] = data;
+          store.dispatch(toDispatch);
+          if (callback) callback(data);
+        });
+      };
+
+      var fetchOne = function fetchOne(id, callback) {
+        ApiClient.get(plural + "/" + id, {}, function (data) {
+          var toDispatch = {
+            type: name.toUpperCase()
+          };
+          toDispatch[name] = data;
+          store.dispatch(toDispatch);
+          if (callback) callback(data);
+        });
+      };
+
+      var create = function create(params, callback) {
+        ApiClient.post(plural, params, function (data) {
+          if (!data.error) {
+            var toDispatch = {
+              type: "NEW_" + name.toUpperCase()
+            };
+            toDispatch[name] = data;
+            store.dispatch(toDispatch);
+          }
+          if (callback) callback(data);
+        });
+      };
+
+      var update = function update(id, params, callback) {
+        ApiClient.put(plural, id, params, function (data) {
+          var toDispatch = {
+            type: "UPDATE_" + name.toUpperCase()
+          };
+          toDispatch[name] = data;
+          store.dispatch(toDispatch);
+          if (callback) callback(data);
+        });
+      };
+
+      var destroy = function destroy(id, callback) {
+        ApiClient.destroy(plural, id, function (data) {
+          store.dispatch({
+            type: "DESTROY_" + name.toUpperCase(),
+            id: data.id
+          });
+          if (callback) callback(data);
+        });
+      };
+
+      var functions = {
+        name: name,
+        plural: plural,
+
+        fetchAll: fetchAll,
+        fetchOne: fetchOne,
+        create: create,
+        update: update,
+        destroy: destroy
+      };
+
+      var funx, key;
+      if (localConfig && localConfig.client) {
+        funx = localConfig.client(name, plural, store, ApiClient);
+        for (key in funx) {
+          functions[key] = funx[key];
+        }
+      }
+
+      if (name === "user") {
+        funx = (0, _user2.default)(store, ApiClient);
+        for (key in funx) {
+          functions[key] = funx[key];
+        }
+      }
+
+      return functions;
+    }();
+  }(name, plural, store, ApiClient);
+}
+
 module.exports = function (config, store) {
 
   var ApiClient = (0, _apiClient2.default)(store);
 
   var coreClients = {
-    ApiClient: ApiClient,
-    UserClient: (0, _user2.default)(store, ApiClient)
+    ApiClient: ApiClient
   };
 
   for (var index in config) {
@@ -45,87 +135,11 @@ module.exports = function (config, store) {
       plural = clientName + "s";
     }
 
-    coreClients[capitalizeFirstLetter(clientName) + "Client"] = function (name, plural, store, ApiClient) {
-      return function () {
+    coreClients[capitalizeFirstLetter(clientName) + "Client"] = createClient(clientName, plural, store, ApiClient, localConfig);
+  }
 
-        var fetchAll = function fetchAll(params, callback) {
-          ApiClient.get(plural, params, function (data) {
-            var toDispatch = {
-              type: plural.toUpperCase()
-            };
-            toDispatch[plural] = data;
-            store.dispatch(toDispatch);
-            if (callback) callback(data);
-          });
-        };
-
-        var fetchOne = function fetchOne(id, callback) {
-          ApiClient.get(plural + "/" + id, {}, function (data) {
-            var toDispatch = {
-              type: name.toUpperCase()
-            };
-            toDispatch[name] = data;
-            store.dispatch(toDispatch);
-            if (callback) callback(data);
-          });
-        };
-
-        var create = function create(params, callback) {
-          ApiClient.post(plural, params, function (data) {
-            if (!data.error) {
-              var toDispatch = {
-                type: "NEW_" + name.toUpperCase()
-              };
-              toDispatch[name] = data;
-              store.dispatch(toDispatch);
-            }
-            if (callback) callback(data);
-          });
-        };
-
-        var update = function update(id, params, callback) {
-          ApiClient.put(plural, id, params, function (data) {
-            var toDispatch = {
-              type: "UPDATE_" + name.toUpperCase()
-            };
-            toDispatch[name] = data;
-            store.dispatch(toDispatch);
-            if (callback) callback(data);
-          });
-        };
-
-        var destroy = function destroy(id, callback) {
-          ApiClient.destroy(plural, id, function (data) {
-            store.dispatch({
-              type: "DESTROY_" + name.toUpperCase(),
-              id: data.id
-            });
-            if (callback) callback(data);
-          });
-        };
-
-        var functions = {
-          name: name,
-          plural: plural,
-
-          fetchAll: fetchAll,
-          fetchOne: fetchOne,
-          create: create,
-          update: update,
-          destroy: destroy
-        };
-
-        if (localConfig.client) {
-          var funx = localConfig.client(name, plural, store, ApiClient);
-          var key;
-          for (var key in funx) {
-            functions[key] = funx[key];
-          }
-        }
-
-        return functions;
-      }();
-    }(clientName, plural, store, ApiClient);
+  if (!coreClients["UserClient"]) {
+    coreClients["UserClient"] = createClient("user", "users", store, ApiClient);
   }
 
   return coreClients;

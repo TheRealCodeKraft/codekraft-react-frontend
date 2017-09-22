@@ -1,17 +1,5 @@
 var UserClient = function(store, ApiClient) {
 
-  var name = "user", plural = "users"
-
-  var fetchAll = function(params, callback) {
-    ApiClient.get("users", params, function(data) {
-      store.dispatch({
-        type: "USERS",
-        users: data
-      })
-      if (callback) callback(data)
-    })
-  }
-
   var signup = function(params, callback) {
     ApiClient.post("users", params, callback, true)
     ApiClient.post("users", params, function(data) {
@@ -48,31 +36,15 @@ var UserClient = function(store, ApiClient) {
     })
   }
 
-  var update = function(id, params, callback) {
-    ApiClient.put("users", id, params, function(data) {
-      if (!data.error) {
-        store.dispatch({
-          type: "ME",
-          user: data
-        })
-      }
-      if (callback) callback(data)
-    })
-  }
-
   var updatePassword = function(id, params, callback) {
     ApiClient.put("users/password", id, params, callback)
   }
 
   return {
-    name: name,
-    plural: plural,
-    fetchAll: fetchAll,
     signup: signup,
     me: me,
     resetMe: resetMe,
-    update: update,
-    updatePassword: updatePassword
+    updatePassword: updatePassword,
   }
 
 }

@@ -16,28 +16,8 @@ function capitalizeFirstLetter(string) {
   return string
 }
 
-module.exports = function(config, store) {
-
-  const ApiClient = _ApiClient(store)
-
-  var coreClients = {
-    ApiClient: ApiClient,
-    UserClient: UserClient(store, ApiClient)
-  }
-
-  for (var index in config) {
- 
-    var localConfig, clientName, plural
-    if (config[index] instanceof Object) {
-      localConfig = config[index]
-      clientName = localConfig.name
-      plural = localConfig.plural ? localConfig.plural : clientName + "s"
-    } else {
-      clientName = config[index]
-      plural = clientName + "s"
-    }
-
-    coreClients[capitalizeFirstLetter(clientName) + "Client"] = (function(name, plural, store, ApiClient) { return function() {
+function createClient(name, plural, store, ApiClient, localConfig) {
+return (function(name, plural, store, ApiClient) { return function() {
 
       var fetchAll = function(params, callback) {
         ApiClient.get(plural, params, function(data) {
@@ -106,18 +86,55 @@ module.exports = function(config, store) {
         destroy: destroy,
       }
 
-      if (localConfig.client) {
-        var funx = localConfig.client(name, plural, store, ApiClient)
-        var key
-        for(var key in funx) {
+      var funx, key
+      if (localConfig && localConfig.client) {
+        funx = localConfig.client(name, plural, store, ApiClient)
+        for(key in funx) {
+          functions[key] = funx[key]
+        }
+      }
+
+      if (name === "user") {
+        funx = UserClient(store, ApiClient)
+        for(key in funx) {
           functions[key] = funx[key]
         }
       }
 
       return functions
 
-    }()})(clientName, plural, store, ApiClient)
+    }()})(name, plural, store, ApiClient)
+}
+
+
+module.exports = function(config, store) {
+
+  const ApiClient = _ApiClient(store)
+
+  var coreClients = {
+    ApiClient: ApiClient
   }
+
+  for (var index in config) {
+ 
+    var localConfig, clientName, plural
+    if (config[index] instanceof Object) {
+      localConfig = config[index]
+      clientName = localConfig.name
+      plural = localConfig.plural ? localConfig.plural : clientName + "s"
+    } else {
+      clientName = config[index]
+      plural = clientName + "s"
+    }
+
+    coreClients[capitalizeFirstLetter(clientName) + "Client"] = createClient(clientName, plural, store, ApiClient, localConfig)
+  }
+
+  if (!coreClients["UserClient"]) {
+    coreClients["UserClient"] = createClient("user", "users", store, ApiClient)
+  }
+
 
   return coreClients
 }
+

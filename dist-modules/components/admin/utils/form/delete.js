@@ -42,11 +42,11 @@ var DeleteForm = function (_React$Component) {
           content = React.createElement(
             "div",
             { style: { padding: 20 } },
-            "Suppression de ",
+            "Suppression ",
             React.createElement(
               "strong",
               null,
-              this.props.entity[this.props.delete.labels.identifier]
+              this.props.delete ? " de " + this.props.entity[this.props.delete.labels.identifier] : ""
             ),
             " en cours ..."
           );
@@ -58,14 +58,18 @@ var DeleteForm = function (_React$Component) {
               "span",
               null,
               "\xCAtes-vous s\xFBr de vouloir supprimer ",
-              this.props.delete.labels.entity,
-              " ",
-              React.createElement(
-                "strong",
+              this.props.delete ? React.createElement(
+                "span",
                 null,
-                this.props.entity[this.props.delete.labels.identifier]
-              ),
-              " ?"
+                "this.props.delete.labels.entity} ",
+                React.createElement(
+                  "strong",
+                  null,
+                  this.props.entity[this.props.delete.labels.identifier],
+                  " "
+                )
+              ) : null,
+              "?"
             ),
             React.createElement(
               "div",
@@ -99,6 +103,7 @@ var DeleteForm = function (_React$Component) {
   }, {
     key: "deleteEntity",
     value: function deleteEntity() {
+      console.log(this.props.client);
       this.props.client.destroy(this.props.entity.id, this.handleDeleted);
     }
   }, {

@@ -59,11 +59,65 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function createReducer(reducerName, plural, extension) {
+  return function (reducerName, plural) {
+    return function () {
+      var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var action = arguments[1];
+
+      var items;
+      var newState = {};
+      var _plural = plural;
+      switch (action.type) {
+        case plural.toUpperCase():
+          newState[plural] = action[plural];
+          break;
+        case reducerName.toUpperCase():
+          newState[reducerName] = action[reducerName];
+          break;
+        case "NEW_" + reducerName.toUpperCase():
+          items = pushNewEntityToState(action[reducerName], state, plural);
+          newState[plural] = items;
+          newState["new" + capitalizeFirstLetter(reducerName)] = action[reducerName];
+          break;
+        case "UPDATE_" + reducerName.toUpperCase():
+          items = mergeEntityAndState(action[reducerName], state, plural);
+          newState[plural] = items;
+          newState[reducerName] = action[reducerName];
+          newState["updated" + capitalizeFirstLetter(reducerName)] = action[reducerName];
+          break;
+        case "DESTROY_" + reducerName.toUpperCase():
+          var deletedItem = state[plural].filter(function (item) {
+            return item.id === action.id;
+          })[0];
+          items = removeEntityFromState(action.id, state, plural);
+          newState[plural] = items;
+          newState["deleted" + capitalizeFirstLetter(reducerName)] = deletedItem;
+          break;
+        default:
+          if (extension) newState = extension(state, action);
+          break;
+      }
+
+      var keys = Object.keys(state);
+      if (keys.length > 0) {
+        for (var key in keys) {
+          key = keys[key];
+          if (newState[key] === undefined) {
+            newState[key] = state[key];
+          }
+        }
+      }
+
+      return newState;
+    };
+  }(reducerName, plural);
+}
+
 module.exports = function createStore(config) {
   var coreReducers = {
     "bootstrap": _baseReducers.bootstrapReducer,
-    "authState": _baseReducers.authReducer,
-    "userState": _baseReducers.userReducer
+    "authState": _baseReducers.authReducer
   };
   var reducerName, plural;
   for (var index in config) {
@@ -76,58 +130,15 @@ module.exports = function createStore(config) {
       plural = reducerName + "s";
     }
 
-    coreReducers[reducerName + "State"] = function (reducerName, plural) {
-      return function () {
-        var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-        var action = arguments[1];
+    if (reducerName === "user") {
+      coreReducers[reducerName + "State"] = createReducer(reducerName, plural, _baseReducers.userReducer);
+    } else {
+      coreReducers[reducerName + "State"] = createReducer(reducerName, plural);
+    }
+  }
 
-        var items;
-        var newState = {};
-        var _plural = plural;
-        switch (action.type) {
-          case plural.toUpperCase():
-            newState[plural] = action[plural];
-            break;
-          case reducerName.toUpperCase():
-            newState[reducerName] = action[reducerName];
-            break;
-          case "NEW_" + reducerName.toUpperCase():
-            items = pushNewEntityToState(action[reducerName], state, plural);
-            newState[plural] = items;
-            newState["new" + capitalizeFirstLetter(reducerName)] = action[reducerName];
-            break;
-          case "UPDATE_" + reducerName.toUpperCase():
-            items = mergeEntityAndState(action[reducerName], state, plural);
-            newState[plural] = items;
-            newState[reducerName] = action[reducerName];
-            newState["updated" + capitalizeFirstLetter(reducerName)] = action[reducerName];
-            break;
-          case "DESTROY_" + reducerName.toUpperCase():
-            var deletedItem = state[plural].filter(function (item) {
-              return item.id === action.id;
-            })[0];
-            items = removeEntityFromState(action.id, state, plural);
-            newState[plural] = items;
-            newState["deleted" + capitalizeFirstLetter(reducerName)] = deletedItem;
-            break;
-          default:
-            break;
-        }
-
-        var keys = Object.keys(state);
-        if (keys.length > 0) {
-          //return Object.assign({}, state, newState)
-          for (var key in keys) {
-            key = keys[key];
-            if (newState[key] === undefined) {
-              newState[key] = state[key];
-            }
-          }
-        }
-
-        return newState;
-      };
-    }(reducerName, plural);
+  if (!coreReducers["userState"]) {
+    coreReducers["userState"] = createReducer("user", "users", _baseReducers.userReducer);
   }
 
   var reducerRegistry = new ReducerRegistry(coreReducers);

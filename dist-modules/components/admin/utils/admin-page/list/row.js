@@ -112,7 +112,9 @@ var AdminPageListRow = function (_React$Component) {
       if (!this.props.actions) {
         actions.push(React.createElement("a", { key: "action-delete-" + this.props.item.id, href: "#", onClick: this.handleDelete, className: "admin-action-button" + this.getIcon("delete", "trash"), alt: "Supprimer", title: "Supprimer" }));
         //actions.push(<a key={"action-see-" + this.props.item.id} href="#" onClick={this.handleSee} className={"admin-action-button " + this.getIcon("view", "eye")} alt="Afficher" title="Afficher"></a>)
-        actions.push(React.createElement("a", { key: "action-edit-" + this.props.item.id, href: "#", onClick: this.handleEdit, className: "admin-action-button" + this.getIcon("edit", "pencil"), alt: "Modifier", title: "Modifier" }));
+        if (this.props.form) {
+          actions.push(React.createElement("a", { key: "action-edit-" + this.props.item.id, href: "#", onClick: this.handleEdit, className: "admin-action-button" + this.getIcon("edit", "pencil"), alt: "Modifier", title: "Modifier" }));
+        }
       } else {
         this.props.actions.map(function (action) {
           if (action instanceof Object) {
@@ -132,7 +134,9 @@ var AdminPageListRow = function (_React$Component) {
                 //actions.push(<a key={"action-see-" + this.props.item.id} href="#" onClick={this.handleSee} className={"admin-action-button" + this.getIcon("view", "eye")} alt="Afficher" title="Afficher"></a>)
                 break;
               case "edit":
-                actions.push(React.createElement("a", { key: "action-edit-" + _this2.props.item.id, href: "#", onClick: _this2.handleEdit, className: "admin-action-button" + _this2.getIcon("edit", "pencil"), alt: "Modifier", title: "Modifier" }));
+                if (_this2.props.form) {
+                  actions.push(React.createElement("a", { key: "action-edit-" + _this2.props.item.id, href: "#", onClick: _this2.handleEdit, className: "admin-action-button" + _this2.getIcon("edit", "pencil"), alt: "Modifier", title: "Modifier" }));
+                }
                 break;
               default:
                 break;

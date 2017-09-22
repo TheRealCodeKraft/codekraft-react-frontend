@@ -27,6 +27,7 @@ class AdminPageList extends React.Component {
                                    item={item} 
                                    attributes={this.props.attributes} 
                                    actions={this.props.actions}
+                                   form={this.props.form}
                                    onDelete={this.handleDelete}
                                    onSee={this.handleSee}
                                    onEdit={this.handleEdit}

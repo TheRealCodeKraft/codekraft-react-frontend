@@ -87,6 +87,7 @@ exports.default = function (config, globalConfig) {
             null,
             React.createElement(_list2.default, { attributes: config.list.attributes,
               actions: config.list.actions,
+              form: config.form,
               items: this.props[pluralName],
               onDelete: this.handleDelete,
               onSee: this.handleSee,

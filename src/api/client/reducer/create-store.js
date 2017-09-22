@@ -49,24 +49,8 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-module.exports = function createStore(config) {
-  var coreReducers = {
-    "bootstrap": bootstrapReducer,
-    "authState": authReducer,
-    "userState": userReducer
-  }
-  var reducerName, plural
-  for (var index in config) {
-
-    if (config[index] instanceof Object) {
-      reducerName = config[index].name
-      plural = config[index].plural ? config[index].plural : reducerName + "s"
-    } else {
-      reducerName = config[index]
-      plural = reducerName + "s"
-    }
-
-    coreReducers[reducerName + "State"] = (function(reducerName, plural) { return function(state = {}, action) {
+function createReducer(reducerName, plural, extension) {
+  return (function(reducerName, plural) { return function(state = {}, action) {
       var items
       var newState = {}
       var _plural = plural
@@ -95,12 +79,12 @@ module.exports = function createStore(config) {
           newState["deleted" + capitalizeFirstLetter(reducerName)] = deletedItem
           break
         default:
+          if (extension) newState = extension(state, action)
           break
       }
 
       var keys = Object.keys(state)
       if (keys.length > 0) {
-        //return Object.assign({}, state, newState)
         for(var key in keys) {
           key = keys[key]
           if (newState[key] === undefined) {
@@ -111,6 +95,34 @@ module.exports = function createStore(config) {
 
       return newState
     }})(reducerName, plural)
+}
+
+
+module.exports = function createStore(config) {
+  var coreReducers = {
+    "bootstrap": bootstrapReducer,
+    "authState": authReducer,
+  }
+  var reducerName, plural
+  for (var index in config) {
+
+    if (config[index] instanceof Object) {
+      reducerName = config[index].name
+      plural = config[index].plural ? config[index].plural : reducerName + "s"
+    } else {
+      reducerName = config[index]
+      plural = reducerName + "s"
+    }
+
+    if (reducerName === "user") {
+      coreReducers[reducerName + "State"] = createReducer(reducerName, plural, userReducer)
+    } else {
+      coreReducers[reducerName + "State"] = createReducer(reducerName, plural)
+    }
+  }
+
+  if (!coreReducers["userState"]) {
+    coreReducers["userState"] = createReducer("user", "users", userReducer)
   }
 
   var reducerRegistry = new ReducerRegistry(coreReducers)
@@ -130,3 +142,4 @@ module.exports = function createStore(config) {
   var store = configureStore(reducerRegistry)
   return store
 }
+

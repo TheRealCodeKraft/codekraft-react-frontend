@@ -28,6 +28,27 @@ var config = {
           "see"
         ]
     */
+  },
+  form: {
+    attributes: [{
+      name: "firstname",
+      label: "Prénom",
+      placeholder: "Prénom",
+      type: "text",
+      required: true
+    }, {
+      name: "lastname",
+      label: "Npm",
+      placeholder: "Nom",
+      type: "text",
+      required: true
+    }, {
+      name: "email",
+      label: "Email",
+      placeholder: "Email",
+      type: "email",
+      required: true
+    }]
   }
 };
 

@@ -53,6 +53,7 @@ var AdminPageList = function (_React$Component) {
             item: item,
             attributes: _this2.props.attributes,
             actions: _this2.props.actions,
+            form: _this2.props.form,
             onDelete: _this2.handleDelete,
             onSee: _this2.handleSee,
             onEdit: _this2.handleEdit,
