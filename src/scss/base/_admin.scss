@@ -8,17 +8,38 @@
   margin: 5px;
   cursor: pointer;
   border-radius: 20%;
-  background: #414450;
+  background: #293d4e;
   width:36px;
   height:36px;
   font-size: 21px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  justify-content: center;
 }
 
 .admin-action-button:hover {
   background: #fbfcff;
   color: black;
   text-decoration: none;
+}
+
+.admin-page {
+  .odd {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  .even {
+
+  }
+}
+
+.admin-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .admin-new-button-row {
@@ -28,18 +49,26 @@
 }
 
 .admin-new-button {
-  background: #414450;
+  background: #293d4e;
   color: #ffffff !important;
   padding: 5px;
   padding-right: 10px;
   padding-left: 10px;
   border-radius: 10px;
+  height: 35px;
+  text-decoration: none;
 }
 
 .admin-new-button:hover {
   background: #fbfcff;
   color: #000000 !important;
-  text-decoration: none;
+}
+
+.admin-list-header {
+  div {
+    display: table-cell;
+    background: #293d4e;
+  }
 }
 
 .admin-sidebar-overlay {
@@ -83,6 +112,33 @@
 
 .admin-sidebar .session-table-form-container {
   margin-top:15px;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #b53c3c;
+  margin-bottom: 20px;
+}
+
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sidebar-close-icon {
+  color: #ffffff;
+  font-size: 2em;
+}
+
+.sidebar-content-container {
+  flex: 1;
+  height: 100%;
+  overflow: auto;
+  padding: 20px;
 }
 
 /****************** END SIDEBAR **********************/

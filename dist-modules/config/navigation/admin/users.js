@@ -8,7 +8,7 @@ var config = {
   title: "Utilisateurs",
   description: "Accédez à la liste des utilisateurs",
   client: "UserClient",
-  //icon: "users",
+  icon: "users",
   list: {
     attributes: [{
       name: "id",
@@ -49,6 +49,12 @@ var config = {
       type: "email",
       required: true
     }]
+  },
+  delete: {
+    labels: {
+      entity: "l'utilisateur",
+      identifier: "lastname"
+    }
   }
 };
 

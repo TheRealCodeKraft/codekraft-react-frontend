@@ -55,31 +55,23 @@ exports.default = function (config, globalConfig) {
 
         return React.createElement(
           _reactBootstrap.Grid,
-          { fluid: true },
+          { fluid: true, className: 'admin-page' },
           React.createElement(
-            _reactBootstrap.Row,
-            null,
+            'div',
+            { className: 'admin-page-header' },
             React.createElement(
-              _reactBootstrap.Col,
-              { xs: 10 },
-              React.createElement(
-                'h1',
-                null,
-                React.createElement('i', { className: globalConfig.iconSet ? globalConfig.iconSet : "fa fa-" + (config.icon ? config.icon : globalConfig.icons && globalConfig.icons.pin ? globalConfig.icons.pin : "terminal") + " text-warning" }),
-                ' ',
-                config.title
-              )
+              'h1',
+              null,
+              React.createElement('i', { className: (globalConfig.iconSet ? globalConfig.iconSet : "fa fa-") + (config.icon ? config.icon : "terminal") + " text-warning" }),
+              ' ',
+              config.title
             ),
-            config.list.actions && config.list.actions.indexOf("new") !== -1 ? React.createElement(
-              _reactBootstrap.Col,
-              { xs: 12, className: 'admin-new-button-row' },
-              React.createElement(
-                'a',
-                { href: '#', onClick: this.handleNew, className: 'admin-new-button' },
-                React.createElement('i', { className: 'pe pe-7s-plus' }),
-                ' Nouveau'
-              )
-            ) : null
+            React.createElement(
+              'a',
+              { href: '#', onClick: this.handleNew, className: 'admin-new-button' },
+              React.createElement('i', { className: this.getIcon("new", "plus") }),
+              ' Nouveau'
+            )
           ),
           this.buildWatchers(),
           React.createElement(
@@ -105,6 +97,11 @@ exports.default = function (config, globalConfig) {
             )
           )
         );
+      }
+    }, {
+      key: 'getIcon',
+      value: function getIcon(name, defVal) {
+        return " " + (globalConfig.iconSet || "fa fa-") + (globalConfig.icons && globalConfig.icons[name] ? globalConfig.icons[name] : defVal);
       }
     }, {
       key: 'buildWatchers',

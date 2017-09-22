@@ -24,12 +24,10 @@ var AdminPageListHeader = function (_React$Component) {
 
     _this.tableRowStyles = {
       display: "table-row",
-      background: "#414450",
       color: "#ffffff"
     };
 
     _this.tableCellStyles = {
-      display: "table-cell",
       padding: 5
     };
 
@@ -59,7 +57,7 @@ var AdminPageListHeader = function (_React$Component) {
       header.push(React.createElement("div", { key: "header-row-attr-actions", style: this.tableCellActionsStyles }));
       return React.createElement(
         "div",
-        { style: this.tableRowStyles },
+        { className: "admin-list-header", style: this.tableRowStyles },
         header
       );
     }

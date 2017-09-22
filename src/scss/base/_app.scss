@@ -19,12 +19,14 @@ html {
 }
 
 body {
+  background: #294f6f;
   color: $black;
   font-family: $font-family-sans-serif;
 }
 
 #main-container {
-  font-size: 1.8rem;
+  color: #b1b1b1;
+  font-size: 1.2rem;
   padding: 2rem;
 
   @include md {
@@ -48,6 +50,12 @@ h1,
 h2,
 h3 {
   margin: 2rem 0;
+  i.fa {
+    background: #293d4e;
+    //border: 1px solid #000;
+    border-radius: 100%;
+    padding: 10px;
+  }
 }
 
 h1 {
@@ -149,7 +157,7 @@ body {
     .Page {
       margin: 0;
       @include lg {
-        margin-left: 200px;
+        margin-left: 300px;
       }
     }
 
@@ -171,7 +179,7 @@ body {
       width: 0px;
       display: none;
       @include lg {
-        width: 180px;
+        width: 300px;
         display: block;
       }
       overflow: hidden;
@@ -196,24 +204,23 @@ body {
 }
 
 .Side-Menu {
-  background: #fff;
-  width: 180px;
+  background: rgba(255, 255, 255, 0.8);
+  width: 250px;
   left: 0;
   @include md {
     position: fixed;
-    top: 80px;
+    top: 60px;
     bottom: 0;
-    background: #ffffff;
   }
   @include sm {
     width: 80%;
     position: fixed;
-    top: 50px;
+    top: 42px;
     bottom: 0;
-    background: #ffffff;
   }
   @include lg {
-    top: 80px;
+    top: 60px;
+    width: 400px;
   }
 }
 
@@ -296,7 +303,7 @@ body {
 
   padding-top: 30px;
   @include md {
-    margin-left: 200px;
+    margin-left: 250px;
   }
 
   @include sm {

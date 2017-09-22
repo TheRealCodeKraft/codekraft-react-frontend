@@ -50,6 +50,7 @@ var AdminPageList = function (_React$Component) {
         React.createElement(_header2.default, { attributes: this.props.attributes }),
         this.props.items.map(function (item, index) {
           return React.createElement(_row2.default, { key: "admin-list-row-" + index,
+            index: index,
             item: item,
             attributes: _this2.props.attributes,
             actions: _this2.props.actions,

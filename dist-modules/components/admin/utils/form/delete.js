@@ -61,7 +61,8 @@ var DeleteForm = function (_React$Component) {
               this.props.delete ? React.createElement(
                 "span",
                 null,
-                "this.props.delete.labels.entity} ",
+                this.props.delete.labels.entity,
+                " ",
                 React.createElement(
                   "strong",
                   null,

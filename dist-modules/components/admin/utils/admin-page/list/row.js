@@ -64,7 +64,7 @@ var AdminPageListRow = function (_React$Component) {
 
       return React.createElement(
         "div",
-        { style: this.tableRowStyles },
+        { className: this.props.index % 2 ? "odd" : "even", style: this.tableRowStyles },
         row
       );
     }

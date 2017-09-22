@@ -36,7 +36,7 @@ class AdminPageListRow extends React.Component {
     }
     row.push(this.buildActions(this.props.item))
   
-    return <div style={this.tableRowStyles}>{row}</div>
+    return <div className={this.props.index % 2 ? "odd": "even"} style={this.tableRowStyles}>{row}</div>
   }
 
   buildDisplayValue(name, attribute) {

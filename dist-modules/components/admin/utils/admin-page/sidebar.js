@@ -57,10 +57,10 @@ var AdminSidebar = function (_React$Component) {
     value: function getSidebarContent() {
       return React.createElement(
         "div",
-        { style: { display: "flex", flexDirection: "column", height: "100%" } },
+        { className: "sidebar-content" },
         React.createElement(
           "div",
-          { style: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: 20, background: "#b53c3c", marginBottom: 20 } },
+          { className: "sidebar-header" },
           React.createElement(
             "h3",
             { style: { textTransform: "uppercase" } },
@@ -69,12 +69,12 @@ var AdminSidebar = function (_React$Component) {
           React.createElement(
             "a",
             { href: "#", onClick: this.handleClose },
-            React.createElement("i", { className: "fa fa-times text-warning", style: { color: "#ffffff", fontSize: "2em" } })
+            React.createElement("i", { className: "fa fa-times text-warning sidebar-close-icon" })
           )
         ),
         React.createElement(
           "div",
-          { style: { flex: 1, height: "100%", overflow: "auto", padding: 20 } },
+          { className: "sidebar-content-container" },
           this.props.children
         )
       );

@@ -3,7 +3,7 @@ const config = {
   title: "Utilisateurs",
   description: "Accédez à la liste des utilisateurs",
   client: "UserClient",
-  //icon: "users",
+  icon: "users",
   list: {
     attributes: [
       {
@@ -53,6 +53,12 @@ const config = {
         required: true
       },
     ]
+  },
+  delete: {
+    labels: {
+      entity: "l'utilisateur",
+      identifier: "lastname"
+    }
   }
 }
 

@@ -57,19 +57,18 @@ export default function(config, globalConfig) {
       const pluralName = getPluralName()
 
       return (
-        <Grid fluid>
+        <Grid fluid className="admin-page">
 
-          <Row>
-            <Col xs={10}>
-              <h1><i className={globalConfig.iconSet ? globalConfig.iconSet : "fa fa-" + (config.icon ? config.icon : ((globalConfig.icons && globalConfig.icons.pin) ? globalConfig.icons.pin : "terminal")) + " text-warning"}></i> {config.title}</h1>
-            </Col>
-            {(config.list.actions && config.list.actions.indexOf("new") !== -1)
+          <div className="admin-page-header">
+              <h1><i className={(globalConfig.iconSet ? globalConfig.iconSet : "fa fa-") + (config.icon ? config.icon : "terminal") + " text-warning"}></i> {config.title}</h1>
+            {/*(config.list.actions && config.list.actions.indexOf("new") !== -1)
              ? <Col xs={12} className="admin-new-button-row">
-                <a href="#" onClick={this.handleNew} className="admin-new-button"><i className="pe pe-7s-plus" /> Nouveau</a>
+                <a href="#" onClick={this.handleNew} className="admin-new-button"><i className={this.getIcon("new", "plus")} /> Nouveau</a>
               </Col>
              : null
-            }
-          </Row>
+            */}
+              <a href="#" onClick={this.handleNew} className="admin-new-button"><i className={this.getIcon("new", "plus")} /> Nouveau</a>
+          </div>
           {this.buildWatchers()}
           <div>
             <AdminPageList attributes={config.list.attributes} 
@@ -92,6 +91,10 @@ export default function(config, globalConfig) {
           </div>
         </Grid>
       )
+    }
+
+    getIcon(name, defVal) {
+      return " " + (globalConfig.iconSet || "fa fa-") + (globalConfig.icons && globalConfig.icons[name] ? globalConfig.icons[name] : defVal)
     }
 
     buildWatchers() {

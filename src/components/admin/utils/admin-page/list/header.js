@@ -7,12 +7,10 @@ class AdminPageListHeader extends React.Component {
 
     this.tableRowStyles = {
       display: "table-row",
-      background: "#414450",
       color: "#ffffff"
     }
 
     this.tableCellStyles = {
-      display: "table-cell",
       padding: 5
     }
 
@@ -32,7 +30,7 @@ class AdminPageListHeader extends React.Component {
       header.push(<div key={"header-row-attr-" + attrIndex} style={this.tableCellStyles}>{label}</div>)
     }
     header.push(<div key="header-row-attr-actions" style={this.tableCellActionsStyles}></div>)
-    return <div style={this.tableRowStyles}>{header}</div>
+    return <div className="admin-list-header" style={this.tableRowStyles}>{header}</div>
   }
 
 }

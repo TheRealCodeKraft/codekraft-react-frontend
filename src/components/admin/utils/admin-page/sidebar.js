@@ -31,12 +31,12 @@ class AdminSidebar extends React.Component {
 
   getSidebarContent() {
     return (
-      <div style={{display: "flex", flexDirection: "column", height: "100%"}}>
-        <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", padding: 20, background: "#b53c3c", marginBottom: 20}}>
+      <div className="sidebar-content">
+        <div className="sidebar-header">
           <h3 style={{textTransform: "uppercase"}}>{this.props.title}</h3>
-          <a href="#" onClick={this.handleClose}><i className="fa fa-times text-warning" style={{color: "#ffffff", fontSize: "2em"}}></i></a>
+          <a href="#" onClick={this.handleClose}><i className="fa fa-times text-warning sidebar-close-icon"></i></a>
         </div>
-        <div style={{flex: 1, height: "100%", overflow: "auto", padding: 20}}>
+        <div className="sidebar-content-container">
           {this.props.children}
         </div>
       </div>
