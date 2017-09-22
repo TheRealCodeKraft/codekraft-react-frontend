@@ -28,7 +28,7 @@ class Header extends React.Component {
     return (
       <div className="Menu">
         <div className="Menu-logo">
-          <img src="/assets/img/logo-skeleton.png" alt="CodeKraft Skeleton logo" />
+          <div className="logo-img" />
           <div className="Side-Menu">
             {side_menu_entries}
           </div>
@@ -85,7 +85,7 @@ class Header extends React.Component {
   embedSandwich(items) {
     items = [<a href="#" onClick={this.handleHamburgerClick} className="Menu-link toggle-sidebar fa fa-bars"></a>].concat(items)
     if (!this.state.menu) {
-      items = [<img src="/assets/img/logo-skeleton.png" alt="CodeKraft Skeleton logo" />].concat(items)
+      items = [<div className="logo-img menu-logo" />].concat(items)
     }
     return items
   }

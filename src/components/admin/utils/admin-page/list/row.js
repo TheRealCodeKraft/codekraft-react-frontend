@@ -72,9 +72,9 @@ class AdminPageListRow extends React.Component {
   buildActions() {
     var actions = []
     if (!this.props.actions) {
-      actions.push(<a key={"action-delete-" + this.props.item.id} href="#" onClick={this.handleDelete} className="admin-action-button pe pe-7s-junk" alt="Supprimer" title="Supprimer"></a>)
-      actions.push(<a key={"action-see-" + this.props.item.id} href="#" onClick={this.handleSee} className="admin-action-button pe pe-7s-look" alt="Afficher" title="Afficher"></a>)
-      actions.push(<a key={"action-edit-" + this.props.item.id} href="#" onClick={this.handleEdit} className="admin-action-button pe pe-7s-pen" alt="Modifier" title="Modifier"></a>)
+      actions.push(<a key={"action-delete-" + this.props.item.id} href="#" onClick={this.handleDelete} className={"admin-action-button" + this.getIcon("delete", "trash")} alt="Supprimer" title="Supprimer"></a>)
+      //actions.push(<a key={"action-see-" + this.props.item.id} href="#" onClick={this.handleSee} className={"admin-action-button " + this.getIcon("view", "eye")} alt="Afficher" title="Afficher"></a>)
+      actions.push(<a key={"action-edit-" + this.props.item.id} href="#" onClick={this.handleEdit} className={"admin-action-button" + this.getIcon("edit", "pencil")} alt="Modifier" title="Modifier"></a>)
     } else {
       this.props.actions.map(action => {
         if (action instanceof Object) {
@@ -84,13 +84,13 @@ class AdminPageListRow extends React.Component {
         } else {
           switch(action) {
             case "delete":
-              actions.push(<a key={"action-delete-" + this.props.item.id} href="#" onClick={this.handleDelete} className="admin-action-button pe pe-7s-junk" alt="Supprimer" title="Supprimer"></a>)
+              actions.push(<a key={"action-delete-" + this.props.item.id} href="#" onClick={this.handleDelete} className={"admin-action-button" + this.getIcon("delete", "trash")} alt="Supprimer" title="Supprimer"></a>)
               break
             case "see":
-              actions.push(<a key={"action-see-" + this.props.item.id} href="#" onClick={this.handleSee} className="admin-action-button pe pe-7s-look" alt="Afficher" title="Afficher"></a>)
+              //actions.push(<a key={"action-see-" + this.props.item.id} href="#" onClick={this.handleSee} className={"admin-action-button" + this.getIcon("view", "eye")} alt="Afficher" title="Afficher"></a>)
               break
             case "edit":
-              actions.push(<a key={"action-edit-" + this.props.item.id} href="#" onClick={this.handleEdit} className="admin-action-button pe pe-7s-pen" alt="Modifier" title="Modifier"></a>)
+              actions.push(<a key={"action-edit-" + this.props.item.id} href="#" onClick={this.handleEdit} className={"admin-action-button" + this.getIcon("edit", "pencil")} alt="Modifier" title="Modifier"></a>)
               break
             default:
               break
@@ -101,6 +101,10 @@ class AdminPageListRow extends React.Component {
     }
 
     return <div key={"actions-" + this.props.item.id} style={{textAlign: "right", whiteSpace: "nowrap"}}>{actions}</div>
+  }
+
+  getIcon(name, defVal) {
+    return " " + (this.props.config.iconSet || "fa fa-") + (this.props.config.icons && this.props.config.icons[name] ? this.props.config.icons[name] : defVal)
   }
 
   acceptCustomAction(action) {

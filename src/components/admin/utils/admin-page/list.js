@@ -31,6 +31,7 @@ class AdminPageList extends React.Component {
                                    onSee={this.handleSee}
                                    onEdit={this.handleEdit}
                                    onCustomAction={this.handleCustomAction}
+                                   config={this.props.config}
                  />
         })}
       </div>

@@ -54,7 +54,7 @@ export default function(name, config) {
                      if (item.component) {
                        component = item.component
                      } else if (item.client) {
-                       component = AdminPage(item)
+                       component = AdminPage(item, config)
                      }
  
                      if (component) {

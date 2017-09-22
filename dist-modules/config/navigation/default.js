@@ -24,9 +24,14 @@ var _signup = require('../../components/offline/signup');
 
 var _signup2 = _interopRequireDefault(_signup);
 
+var _users2 = require('./admin/users');
+
+var _users3 = _interopRequireDefault(_users2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var config = {
+  iconSet: "fa fa-icon",
   offline: {
     root: "/",
     menu: {
@@ -59,14 +64,17 @@ var config = {
       default: {
         items: [{
           title: "Accueil",
+          faIcon: "home",
           root: true,
           component: _home4.default
         }, {
           title: "Administration",
+          faIcon: "cogs",
           switch: "/admin",
           grants: ["admin"]
         }, {
           title: "Se déconnecter",
+          faIcon: "sign-out",
           type: "logout"
         }]
       }
@@ -76,20 +84,24 @@ var config = {
     root: "/admin",
     menu: {
       default: {
+        hiddenOnHome: true,
         items: [{
           title: "Tableau de bord",
+          faIcon: "home",
           root: true,
-          component: _home6.default,
-          hiddenOnHome: true
+          component: _home6.default
         }, {
           title: "Retour au site",
-          hiddenOnHome: true,
+          faIcon: "step-backward",
           switch: "/dashboard"
         }, {
           title: "Se déconnecter",
-          hiddenOnHome: true,
+          faIcon: "sign-out",
           type: "logout"
         }]
+      },
+      side: {
+        items: [_users3.default]
       }
     }
   }

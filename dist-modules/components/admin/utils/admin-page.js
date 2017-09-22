@@ -8,7 +8,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-exports.default = function (config) {
+exports.default = function (config, globalConfig) {
   var AdminPage = function (_React$Component) {
     _inherits(AdminPage, _React$Component);
 
@@ -65,12 +65,12 @@ exports.default = function (config) {
               React.createElement(
                 'h1',
                 null,
-                React.createElement('i', { className: "pe pe-7s-" + (config.icon ? config.icon : "pin") + " text-warning" }),
+                React.createElement('i', { className: globalConfig.iconSet ? globalConfig.iconSet : "fa fa-" + (config.icon ? config.icon : globalConfig.icons && globalConfig.icons.pin ? globalConfig.icons.pin : "terminal") + " text-warning" }),
                 ' ',
                 config.title
               )
             ),
-            config.list.actions.indexOf("new") !== -1 ? React.createElement(
+            config.list.actions && config.list.actions.indexOf("new") !== -1 ? React.createElement(
               _reactBootstrap.Col,
               { xs: 12, className: 'admin-new-button-row' },
               React.createElement(
@@ -91,7 +91,8 @@ exports.default = function (config) {
               onDelete: this.handleDelete,
               onSee: this.handleSee,
               onEdit: this.handleEdit,
-              onCustomAction: this.handleCustomAction
+              onCustomAction: this.handleCustomAction,
+              config: globalConfig
             }),
             React.createElement(
               _sidebar2.default,
@@ -133,12 +134,12 @@ exports.default = function (config) {
           case "list":
             break;
           case "create":
-            title = "Créer " + config.delete.labels.entity;
+            title = "Créer" + (config.delete ? " " + config.delete.labels.entity : "");
           case "edit":
-            title = "Modifier " + config.delete.labels.entity;
+            title = "Modifier" + (config.delete ? " " + config.delete.labels.entity : "");
             break;
           case "delete":
-            title = "Supprimer " + config.delete.labels.entity;
+            title = "Supprimer" + (config.delete ? " " + config.delete.labels.entity : "");
             break;
           default:
             if (this.state.currentAction !== undefined) {

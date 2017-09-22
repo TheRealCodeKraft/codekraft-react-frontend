@@ -56,7 +56,8 @@ var AdminPageList = function (_React$Component) {
             onDelete: _this2.handleDelete,
             onSee: _this2.handleSee,
             onEdit: _this2.handleEdit,
-            onCustomAction: _this2.handleCustomAction
+            onCustomAction: _this2.handleCustomAction,
+            config: _this2.props.config
           });
         })
       );

@@ -60,7 +60,7 @@ exports.default = function (name, config) {
               if (item.component) {
                 component = item.component;
               } else if (item.client) {
-                component = (0, _adminPage2.default)(item);
+                component = (0, _adminPage2.default)(item, config);
               }
 
               if (component) {

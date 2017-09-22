@@ -84,7 +84,8 @@ button:hover {
   border-bottom: 1px solid $grey-border;
   display: flex;
   //justify-content: space-between;
-  padding-bottom: 2rem !important;
+  padding-bottom: 0rem !important;
+  padding-top: 0rem !important;
   margin: 0 auto 2rem;
   //max-width: 60rem;
   background: #fff;
@@ -109,6 +110,9 @@ button:hover {
 
   @include sm {
     position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
   }
 }
 
@@ -121,6 +125,9 @@ button:hover {
   margin-left: 2rem;
   @include lg {
     margin-right: 4rem;
+    margin-left: 0;
+  }
+  @include md {
     margin-left: 0;
   }
   width: 12rem;
@@ -172,24 +179,41 @@ body {
   }
 }
 
+.logo-img {
+  background-image: url('~codekraft-react-frontend/src/assets/img/logo-skeleton.png');
+  background-size: cover;
+  width: 12rem;
+  height: 4.68rem;
+  margin-right: 2rem;
+  @include md {
+    margin-left: 0rem;
+  }
+  &.menu-logo {
+    @include lg {
+      display: none;
+    }
+  }
+}
+
 .Side-Menu {
   background: #fff;
   width: 180px;
+  left: 0;
   @include md {
     position: fixed;
-    top: 120px;
+    top: 80px;
     bottom: 0;
     background: #ffffff;
   }
   @include sm {
     width: 80%;
     position: fixed;
-    top: 80px;
+    top: 50px;
     bottom: 0;
     background: #ffffff;
   }
   @include lg {
-    top: 140px;
+    top: 80px;
   }
 }
 
@@ -270,13 +294,13 @@ body {
     margin: 0 0 0 20rem;
   }
 
+  padding-top: 30px;
   @include md {
-    padding-top: 80px;
     margin-left: 200px;
   }
 
   @include sm {
-    padding-top: 60px;
+    padding-top: 35px;
   }
 }
 

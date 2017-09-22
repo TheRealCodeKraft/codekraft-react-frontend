@@ -59,7 +59,7 @@ var Header = function (_React$Component) {
         React.createElement(
           'div',
           { className: 'Menu-logo' },
-          React.createElement('img', { src: '/assets/img/logo-skeleton.png', alt: 'CodeKraft Skeleton logo' }),
+          React.createElement('div', { className: 'logo-img' }),
           React.createElement(
             'div',
             { className: 'Side-Menu' },
@@ -129,7 +129,7 @@ var Header = function (_React$Component) {
     value: function embedSandwich(items) {
       items = [React.createElement('a', { href: '#', onClick: this.handleHamburgerClick, className: 'Menu-link toggle-sidebar fa fa-bars' })].concat(items);
       if (!this.state.menu) {
-        items = [React.createElement('img', { src: '/assets/img/logo-skeleton.png', alt: 'CodeKraft Skeleton logo' })].concat(items);
+        items = [React.createElement('div', { className: 'logo-img menu-logo' })].concat(items);
       }
       return items;
     }

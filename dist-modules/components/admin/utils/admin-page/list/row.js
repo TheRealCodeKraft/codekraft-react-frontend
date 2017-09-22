@@ -110,9 +110,9 @@ var AdminPageListRow = function (_React$Component) {
 
       var actions = [];
       if (!this.props.actions) {
-        actions.push(React.createElement("a", { key: "action-delete-" + this.props.item.id, href: "#", onClick: this.handleDelete, className: "admin-action-button pe pe-7s-junk", alt: "Supprimer", title: "Supprimer" }));
-        actions.push(React.createElement("a", { key: "action-see-" + this.props.item.id, href: "#", onClick: this.handleSee, className: "admin-action-button pe pe-7s-look", alt: "Afficher", title: "Afficher" }));
-        actions.push(React.createElement("a", { key: "action-edit-" + this.props.item.id, href: "#", onClick: this.handleEdit, className: "admin-action-button pe pe-7s-pen", alt: "Modifier", title: "Modifier" }));
+        actions.push(React.createElement("a", { key: "action-delete-" + this.props.item.id, href: "#", onClick: this.handleDelete, className: "admin-action-button" + this.getIcon("delete", "trash"), alt: "Supprimer", title: "Supprimer" }));
+        //actions.push(<a key={"action-see-" + this.props.item.id} href="#" onClick={this.handleSee} className={"admin-action-button " + this.getIcon("view", "eye")} alt="Afficher" title="Afficher"></a>)
+        actions.push(React.createElement("a", { key: "action-edit-" + this.props.item.id, href: "#", onClick: this.handleEdit, className: "admin-action-button" + this.getIcon("edit", "pencil"), alt: "Modifier", title: "Modifier" }));
       } else {
         this.props.actions.map(function (action) {
           if (action instanceof Object) {
@@ -126,13 +126,13 @@ var AdminPageListRow = function (_React$Component) {
           } else {
             switch (action) {
               case "delete":
-                actions.push(React.createElement("a", { key: "action-delete-" + _this2.props.item.id, href: "#", onClick: _this2.handleDelete, className: "admin-action-button pe pe-7s-junk", alt: "Supprimer", title: "Supprimer" }));
+                actions.push(React.createElement("a", { key: "action-delete-" + _this2.props.item.id, href: "#", onClick: _this2.handleDelete, className: "admin-action-button" + _this2.getIcon("delete", "trash"), alt: "Supprimer", title: "Supprimer" }));
                 break;
               case "see":
-                actions.push(React.createElement("a", { key: "action-see-" + _this2.props.item.id, href: "#", onClick: _this2.handleSee, className: "admin-action-button pe pe-7s-look", alt: "Afficher", title: "Afficher" }));
+                //actions.push(<a key={"action-see-" + this.props.item.id} href="#" onClick={this.handleSee} className={"admin-action-button" + this.getIcon("view", "eye")} alt="Afficher" title="Afficher"></a>)
                 break;
               case "edit":
-                actions.push(React.createElement("a", { key: "action-edit-" + _this2.props.item.id, href: "#", onClick: _this2.handleEdit, className: "admin-action-button pe pe-7s-pen", alt: "Modifier", title: "Modifier" }));
+                actions.push(React.createElement("a", { key: "action-edit-" + _this2.props.item.id, href: "#", onClick: _this2.handleEdit, className: "admin-action-button" + _this2.getIcon("edit", "pencil"), alt: "Modifier", title: "Modifier" }));
                 break;
               default:
                 break;
@@ -147,6 +147,11 @@ var AdminPageListRow = function (_React$Component) {
         { key: "actions-" + this.props.item.id, style: { textAlign: "right", whiteSpace: "nowrap" } },
         actions
       );
+    }
+  }, {
+    key: "getIcon",
+    value: function getIcon(name, defVal) {
+      return " " + (this.props.config.iconSet || "fa fa-") + (this.props.config.icons && this.props.config.icons[name] ? this.props.config.icons[name] : defVal);
     }
   }, {
     key: "acceptCustomAction",

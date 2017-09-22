@@ -5,7 +5,10 @@ import AdminHome from '../../components/admin/home'
 import Login from '../../components/offline/login'
 import Signup from '../../components/offline/signup'
 
+import _users from './admin/users'
+
 const config = {
+  iconSet: "fa fa-icon",
   offline: {
     root: "/",
     menu: {
@@ -43,16 +46,19 @@ const config = {
         items: [
           {
             title: "Accueil",
+            faIcon: "home",
             root: true,
             component: DashboardHome
           },
           {
             title: "Administration",
+            faIcon: "cogs",
             switch: "/admin",
             grants: ["admin"]
           },
           { 
             title: "Se déconnecter",
+            faIcon: "sign-out",
             type: "logout"
           }
         ]
@@ -63,23 +69,29 @@ const config = {
     root: "/admin",
     menu: {
       default: {
+        hiddenOnHome: true,
         items: [
           {
             title: "Tableau de bord",
+            faIcon: "home",
             root: true,
             component: AdminHome,
-            hiddenOnHome: true,
           },
           {
             title: "Retour au site",
-            hiddenOnHome: true,
+            faIcon: "step-backward",
             switch: "/dashboard"
           },
           {
             title: "Se déconnecter",
-            hiddenOnHome: true,
+            faIcon: "sign-out",
             type: "logout"
           }
+        ]
+      },
+      side: {
+        items: [
+          _users
         ]
       }
     }
