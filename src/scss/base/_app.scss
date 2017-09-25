@@ -2,7 +2,7 @@ $font-family-serif: "Open Sans", Garamond, "Times New Roman", serif;
 $font-family-sans-serif: "Open Sans","Helvetica Neue", Helvetica, Arial, sans-serif;
 
 $grey-border: #eee;
-$grey-text: #aaa;
+$grey-text: #6d6d6d;
 $black: #000;
 $white: #fff;
 
@@ -19,8 +19,8 @@ html {
 }
 
 body {
-  background: #294f6f;
-  color: $black;
+  background: #9a9a9a;
+  color: $grey-text;
   font-family: $font-family-sans-serif;
 }
 
@@ -51,7 +51,7 @@ h2,
 h3 {
   margin: 2rem 0;
   i.fa {
-    background: #293d4e;
+    background: #fff;
     //border: 1px solid #000;
     border-radius: 100%;
     padding: 10px;
@@ -204,7 +204,7 @@ body {
 }
 
 .Side-Menu {
-  background: rgba(255, 255, 255, 0.8);
+  background: #e0e0e0;
   width: 250px;
   left: 0;
   @include md {

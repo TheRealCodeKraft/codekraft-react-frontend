@@ -1,7 +1,6 @@
 var UserClient = function(store, ApiClient) {
 
   var signup = function(params, callback) {
-    ApiClient.post("users", params, callback, true)
     ApiClient.post("users", params, function(data) {
       store.dispatch({
         type: "SIGNUP",

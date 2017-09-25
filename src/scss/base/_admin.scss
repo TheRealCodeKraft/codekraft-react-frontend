@@ -8,7 +8,7 @@
   margin: 5px;
   cursor: pointer;
   border-radius: 20%;
-  background: #293d4e;
+  background: #fff;
   width:36px;
   height:36px;
   font-size: 21px;
@@ -26,9 +26,10 @@
 }
 
 .admin-page {
+  color: #000;
   .odd {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.2);
+    //color: #fff;
   }
 
   .even {
@@ -49,8 +50,7 @@
 }
 
 .admin-new-button {
-  background: #293d4e;
-  color: #ffffff !important;
+  background: #fff;
   padding: 5px;
   padding-right: 10px;
   padding-left: 10px;
@@ -67,7 +67,8 @@
 .admin-list-header {
   div {
     display: table-cell;
-    background: #293d4e;
+    background: #fff;
+    color: $grey-text;
   }
 }
 
@@ -80,6 +81,33 @@
   overflow:scroll;
 }
 
+/*************
+ * HOME PAGE *
+ *************/
+.admin-home {
+  .admin-home-group {
+    .admin-home-group-items {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      a {
+        text-decoration: none;
+        .admin-home-item {
+          padding: 20px;
+          padding-top: 10px;
+          margin: 20px;
+          background: #fff;
+          border-radius: 20px;
+          max-width: 350px;
+          min-width: 350px;
+        }
+        .admin-home-item:hover {
+        }
+      }
+    }
+  }
+}
+
 /****************** SIDEBAR **********************/
 .admin-sidebar {
    height: 0px;
@@ -88,7 +116,7 @@
 .admin-sidebar .admin-sidebar-container {
   position: fixed !important;
   top: 90px !important;
-  background: #414450;
+  background: #fff;
   left: 20px;
   z-index: 1000 !important;
   overflow: hidden !important;
@@ -118,9 +146,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  background: #b53c3c;
-  margin-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background: $grey-text;
+  color: #fff;
 }
 
 .sidebar-content {

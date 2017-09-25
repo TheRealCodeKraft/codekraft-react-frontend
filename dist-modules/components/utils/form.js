@@ -437,6 +437,7 @@ var Form = function (_React$Component) {
     key: "handleFormSubmit",
     value: function handleFormSubmit(e) {
       e.preventDefault();
+      console.log("SUBMIT");
 
       var errors = this.validate();
       this.setState({ errors: errors });

@@ -62,29 +62,93 @@ var Home = function (_React$Component) {
 
       return React.createElement(
         "section",
-        null,
+        { className: "admin-home" },
         groups.map(function (group) {
           if (group.hiddenOnHome) return null;
-          return [React.createElement(
-            "h1",
-            null,
-            group.label
-          ), group.items.map(function (item) {
-            return React.createElement(
-              _reactRouterDom.Link,
-              { to: "/admin/" + item.route },
-              React.createElement(
-                "h2",
-                null,
-                item.title
-              ),
-              React.createElement(
-                "div",
-                null,
-                item.description ? item.description : ""
-              )
-            );
-          })];
+          return React.createElement(
+            "div",
+            { className: "admin-home-group" },
+            group.label ? React.createElement(
+              "h1",
+              null,
+              group.label
+            ) : null,
+            React.createElement(
+              "div",
+              { className: "admin-home-group-items" },
+              group.items.map(function (item) {
+                return [React.createElement(
+                  _reactRouterDom.Link,
+                  { to: "/admin/" + item.route },
+                  React.createElement(
+                    "div",
+                    { className: "admin-home-item" },
+                    React.createElement(
+                      "h2",
+                      null,
+                      item.title
+                    ),
+                    React.createElement(
+                      "p",
+                      null,
+                      item.description ? item.description : ""
+                    )
+                  )
+                ), React.createElement(
+                  _reactRouterDom.Link,
+                  { to: "/admin/" + item.route },
+                  React.createElement(
+                    "div",
+                    { className: "admin-home-item" },
+                    React.createElement(
+                      "h2",
+                      null,
+                      item.title
+                    ),
+                    React.createElement(
+                      "p",
+                      null,
+                      item.description ? item.description : ""
+                    )
+                  )
+                ), React.createElement(
+                  _reactRouterDom.Link,
+                  { to: "/admin/" + item.route },
+                  React.createElement(
+                    "div",
+                    { className: "admin-home-item" },
+                    React.createElement(
+                      "h2",
+                      null,
+                      item.title
+                    ),
+                    React.createElement(
+                      "p",
+                      null,
+                      item.description ? item.description : ""
+                    )
+                  )
+                ), React.createElement(
+                  _reactRouterDom.Link,
+                  { to: "/admin/" + item.route },
+                  React.createElement(
+                    "div",
+                    { className: "admin-home-item" },
+                    React.createElement(
+                      "h2",
+                      null,
+                      item.title
+                    ),
+                    React.createElement(
+                      "p",
+                      null,
+                      item.description ? item.description : ""
+                    )
+                  )
+                )];
+              })
+            )
+          );
         })
       );
     }

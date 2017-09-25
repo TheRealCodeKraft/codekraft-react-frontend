@@ -23,17 +23,42 @@ class Home extends React.Component {
     }
 
     return (
-      <section>
+      <section className="admin-home">
         {groups.map(group => {
           if (group.hiddenOnHome) return null
-          return [<h1>{group.label}</h1>,
-                  group.items.map(item => {
-                    return (<Link to={"/admin/" + item.route}>
+          return (
+            <div className="admin-home-group">
+              {group.label ? <h1>{group.label}</h1> : null}
+                <div className="admin-home-group-items">
+                {group.items.map(item => {
+                  return [<Link to={"/admin/" + item.route}>
+                            <div className="admin-home-item">
                               <h2>{item.title}</h2>
-                              <div>{item.description ? item.description : ""}</div>
-                            </Link>)
-                  })
-                 ]
+                              <p>{item.description ? item.description : ""}</p>
+                            </div>
+                          </Link>,
+                          <Link to={"/admin/" + item.route}>
+                            <div className="admin-home-item">
+                              <h2>{item.title}</h2>
+                              <p>{item.description ? item.description : ""}</p>
+                            </div>
+                          </Link>,
+                          <Link to={"/admin/" + item.route}>
+                            <div className="admin-home-item">
+                              <h2>{item.title}</h2>
+                              <p>{item.description ? item.description : ""}</p>
+                            </div>
+                          </Link>,
+                          <Link to={"/admin/" + item.route}>
+                            <div className="admin-home-item">
+                              <h2>{item.title}</h2>
+                              <p>{item.description ? item.description : ""}</p>
+                            </div>
+                          </Link>]
+                })}
+                </div>
+            </div>
+          )
         })}
       </section>
     )
