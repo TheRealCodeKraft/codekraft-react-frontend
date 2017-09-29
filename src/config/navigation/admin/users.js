@@ -64,7 +64,7 @@ const config = {
         key: "id",
         value: "title",
         required: true,
-        defaultValue: "admin"
+        defaultValue: "standard"
       }
     ]
   },
