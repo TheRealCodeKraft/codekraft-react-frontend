@@ -52,6 +52,20 @@ const config = {
         type: "email",
         required: true
       },
+      {
+        name: "role",
+        label: "Role",
+        type: "select",
+        placeholder: false,
+        values: [
+          {id: "standard", title: "Standard"},
+          {id: "admin", title: "Administrateur"},
+        ],
+        key: "id",
+        value: "title",
+        required: true,
+        defaultValue: "admin"
+      }
     ]
   },
   delete: {

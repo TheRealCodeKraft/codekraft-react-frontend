@@ -71,7 +71,11 @@ class ListSelector extends React.Component {
   }
 
   handleSelectionChange(e, obj) {
-    this.setState({values: this.refs.select.el.val()}, this.handleChange)
+    var newValues = this.refs.select.el.val()
+    newValues = newValues.filter(function(item, pos) {
+      return newValues.indexOf(item) == pos
+    })
+    this.setState({values: newValues}, this.handleChange)
   }
 
   handleChange() {

@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 var UserClient = function UserClient(store, ApiClient) {
 
   var signup = function signup(params, callback) {
-    ApiClient.post("users", params, callback, true);
     ApiClient.post("users", params, function (data) {
       store.dispatch({
         type: "SIGNUP",

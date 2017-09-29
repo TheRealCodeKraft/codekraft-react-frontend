@@ -75,6 +75,8 @@ var ApiClient = function ApiClient(store) {
     fetch(process.env.API_URL + endpoint, fetchParams).then(function (promise) {
       promise.json().then(function (response) {
 
+        /*if (response.json) response = response.json*/
+
         Logger.debug({
           method: method,
           response: endpoint,

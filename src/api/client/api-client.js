@@ -64,6 +64,8 @@ var ApiClient = function(store) {
     .then(promise => {
       promise.json().then(response => {
 
+        /*if (response.json) response = response.json*/
+
         Logger.debug({
           method: method,
           response: endpoint,
