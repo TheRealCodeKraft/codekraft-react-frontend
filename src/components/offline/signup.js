@@ -74,17 +74,21 @@ class Signup extends React.Component {
   }
 
   render() {
-      return (
-                        <Form id="signup-form" 
-                              fields={this.fields} 
-                              submitLabel="M'enregistrer"
-                              submitClass={"btn btn-accent btn-signup"}  
-                              onSubmit={this.handleSubmit} 
-                              service={{client: this.props.clients.UserClient, func: "signup"}}
-                              onSubmitComplete={this.handleSubmitComplete}
-                              onSubmitError={this.handleSubmitError}
-                        />
-      )
+    return (
+      <div>
+        <Form id="signup-form" 
+              fields={this.fields} 
+              submitLabel="M'enregistrer"
+              submitClass={"btn btn-accent btn-signup"}  
+              onSubmit={this.handleSubmit} 
+              service={{client: this.props.clients.UserClient, func: "signup"}}
+              onSubmitComplete={this.handleSubmitComplete}
+              onSubmitError={this.handleSubmitError}
+        />
+        <Link className={"btn btn-default"} to="/login">J'ai déjà un compte</Link>
+        <Link to="/forgot-password">Mot de passe oublié</Link>
+      </div>
+    )
   }
 
   handleSubmit(values) {

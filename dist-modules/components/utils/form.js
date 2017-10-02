@@ -184,7 +184,7 @@ var Form = function (_React$Component) {
             "span",
             null,
             this.state.submitError
-          ) /*, <br />*/] : null,
+          ), React.createElement("br", null)] : null,
           this.props.submitLabel !== "none" ? submitButton : null
         )
       );

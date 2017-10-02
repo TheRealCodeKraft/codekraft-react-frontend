@@ -92,15 +92,29 @@ var Signup = function (_React$Component) {
   _createClass(Signup, [{
     key: "render",
     value: function render() {
-      return React.createElement(_form2.default, { id: "signup-form",
-        fields: this.fields,
-        submitLabel: "M'enregistrer",
-        submitClass: "btn btn-accent btn-signup",
-        onSubmit: this.handleSubmit,
-        service: { client: this.props.clients.UserClient, func: "signup" },
-        onSubmitComplete: this.handleSubmitComplete,
-        onSubmitError: this.handleSubmitError
-      });
+      return React.createElement(
+        "div",
+        null,
+        React.createElement(_form2.default, { id: "signup-form",
+          fields: this.fields,
+          submitLabel: "M'enregistrer",
+          submitClass: "btn btn-accent btn-signup",
+          onSubmit: this.handleSubmit,
+          service: { client: this.props.clients.UserClient, func: "signup" },
+          onSubmitComplete: this.handleSubmitComplete,
+          onSubmitError: this.handleSubmitError
+        }),
+        React.createElement(
+          _reactRouterDom.Link,
+          { className: "btn btn-default", to: "/login" },
+          "J'ai d\xE9j\xE0 un compte"
+        ),
+        React.createElement(
+          _reactRouterDom.Link,
+          { to: "/forgot-password" },
+          "Mot de passe oubli\xE9"
+        )
+      );
     }
   }, {
     key: "handleSubmit",

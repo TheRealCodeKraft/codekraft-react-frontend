@@ -81,7 +81,8 @@ exports.default = function (name, config) {
               } else {
                 return null;
               }
-            })
+            }),
+            React.createElement(_reactRouter.Route, { path: "*", component: _notFound2.default })
           );
         }
 
@@ -136,6 +137,10 @@ var _profileFiller2 = _interopRequireDefault(_profileFiller);
 var _adminPage = require("../admin/utils/admin-page");
 
 var _adminPage2 = _interopRequireDefault(_adminPage);
+
+var _notFound = require("./not-found");
+
+var _notFound2 = _interopRequireDefault(_notFound);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

@@ -53,11 +53,13 @@ var ApiClient = function ApiClient(store) {
         }
         break;
       case "get":
-        if (params !== undefined && params.length > 0) {
+        if (params !== undefined) {
           var keys = Object.keys(params);
-          for (var paramIndex in keys) {
-            endpoint += paramIndex === 0 ? "?" : "&";
-            endpoint += keys[paramIndex] + "=" + params[keys[paramIndex]];
+          if (keys.length > 0) {
+            for (var paramIndex in keys) {
+              endpoint += paramIndex == 0 ? "?" : "&";
+              endpoint += keys[paramIndex] + "=" + params[keys[paramIndex]];
+            }
           }
         }
         break;
@@ -120,7 +122,9 @@ var ApiClient = function ApiClient(store) {
   };
 
   var put = function put(endpoint, id, params, callback) {
-    return call("put", endpoint + (id ? "/" + id : ""), params, callback);
+    var offline = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+
+    return call("put", endpoint + (id ? "/" + id : ""), params, callback, offline);
   };
 
   var patch = function patch(endpoint, id, params, callback) {

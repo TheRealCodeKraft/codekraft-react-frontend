@@ -4,6 +4,8 @@ import AdminHome from '../../components/admin/home'
 
 import Login from '../../components/offline/login'
 import Signup from '../../components/offline/signup'
+import ForgotPassword from '../../components/offline/forgot-password'
+import ResetPassword from '../../components/offline/reset-password'
 
 import _users from './admin/users'
 
@@ -33,6 +35,18 @@ const config = {
             route: "signup",
             faIcon: "user-plus",
             component: Signup,
+            discardOnLogin: true
+          },
+          {
+            title: "Mot de passe oublié",
+            route: "forgot-password",
+            component: ForgotPassword,
+            discardOnLogin: true
+          },
+          {
+            title: "Réinitialisation du mot de passe",
+            route: "reset-password",
+            component: ResetPassword,
             discardOnLogin: true
           }
         ]

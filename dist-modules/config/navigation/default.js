@@ -24,6 +24,14 @@ var _signup = require('../../components/offline/signup');
 
 var _signup2 = _interopRequireDefault(_signup);
 
+var _forgotPassword = require('../../components/offline/forgot-password');
+
+var _forgotPassword2 = _interopRequireDefault(_forgotPassword);
+
+var _resetPassword = require('../../components/offline/reset-password');
+
+var _resetPassword2 = _interopRequireDefault(_resetPassword);
+
 var _users2 = require('./admin/users');
 
 var _users3 = _interopRequireDefault(_users2);
@@ -53,6 +61,16 @@ var config = {
           route: "signup",
           faIcon: "user-plus",
           component: _signup2.default,
+          discardOnLogin: true
+        }, {
+          title: "Mot de passe oublié",
+          route: "forgot-password",
+          component: _forgotPassword2.default,
+          discardOnLogin: true
+        }, {
+          title: "Réinitialisation du mot de passe",
+          route: "reset-password",
+          component: _resetPassword2.default,
           discardOnLogin: true
         }]
       }

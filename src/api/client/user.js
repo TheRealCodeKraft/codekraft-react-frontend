@@ -35,15 +35,37 @@ var UserClient = function(store, ApiClient) {
     })
   }
 
+  var forgotPassword = function(params, callback) {
+    ApiClient.get("users/forgot-password", params, callback, true)
+  }
+
+  var checkStamp = function(params, callback) {
+    ApiClient.get("users/check-stamp", params, function(data) {
+      store.dispatch({
+        type: "STAMP", 
+        stamp: data
+      }) 
+      if (callback) callback(data)
+    }, true)
+  }
+
   var updatePassword = function(id, params, callback) {
-    ApiClient.put("users/password", id, params, callback)
+    ApiClient.put("users/update-password", id, params, function(data) {
+      store.dispatch({
+        type: "UPDATE_PASSWORD",
+        updated: true
+      })
+      if (callback) callback(data)
+    }, true)
   }
 
   return {
     signup: signup,
     me: me,
     resetMe: resetMe,
-    updatePassword: updatePassword,
+    forgotPassword: forgotPassword,
+    checkStamp: checkStamp,
+    updatePassword: updatePassword
   }
 
 }

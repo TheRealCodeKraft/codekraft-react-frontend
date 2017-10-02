@@ -43,28 +43,32 @@ class Login extends React.Component {
     if (this.state.loggedIn) return <Redirect to="/dashboard" />
     return (
       <div>  
-            {this.props.newUser
-             ? <div className="alert alert-success" style={{marginTop: 0, display: "flex", alignItems: "center"}}>
-                   <i className="pe pe-7s-door-lock" style={{fontSize: "3em", marginRight: 15}}></i>
-                   Votre compte a été créé, vous pouvez maintenant vous connecter.
-                 </div>
-             : null}
+        {this.props.newUser
+         ? <div className="alert alert-success" style={{marginTop: 0, display: "flex", alignItems: "center"}}>
+             <i className="pe pe-7s-door-lock" style={{fontSize: "3em", marginRight: 15}}></i>
+             Votre compte a été créé, vous pouvez maintenant vous connecter.
+           </div>
+         : null}
 
-                    <Form id="login-form" 
-                        clients={this.props.clients}
-                        fields={this.fields} 
-                        submitLabel="Me connecter" 
-                        onSubmit={this.handleSubmit}
-                        submitClass={"btn btn-accent btn-signup"} 
-                        service={{client: this.props.clients.ApiClient, func: "login"}}
-                        onSubmitComplete={this.handleSubmitComplete}
-                    />
-                    <Link className={"btn btn-default btn-signup"} to="/signup">Créer un compte</Link>
-            <div className="text-center small">
-                    <Link to="/">Mot de passe oublié</Link>
-            </div>
+        {this.props.passwordUpdated
+         ? <div className="alert alert-success" style={{marginTop: 0, display: "flex", alignItems: "center"}}>
+             <i className="pe pe-7s-door-lock" style={{fontSize: "3em", marginRight: 15}}></i>
+             Votre mot de passe a bien été modifié, vous pouvez maintenant vous connecter
+           </div>
+         : null}
 
-        </div>
+        <Form id="login-form" 
+              clients={this.props.clients}
+              fields={this.fields} 
+              submitLabel="Me connecter" 
+              onSubmit={this.handleSubmit}
+              submitClass={"btn btn-accent btn-signup"} 
+              service={{client: this.props.clients.ApiClient, func: "login"}}
+              onSubmitComplete={this.handleSubmitComplete}
+        />
+        <Link className={"btn btn-default"} to="/signup">Créer un compte</Link>
+        <Link to="/forgot-password">Mot de passe oublié</Link>
+      </div>
     )
   }
 
@@ -79,7 +83,8 @@ class Login extends React.Component {
 function mapStateToProps(state) {
   return {
     clients: state.bootstrap.clients,
-    newUser: state.userState.newUser || null
+    newUser: state.userState.newUser || null,
+    passwordUpdated: state.userState.password_updated || null
   }
 }
 

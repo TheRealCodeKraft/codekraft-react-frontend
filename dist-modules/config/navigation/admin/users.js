@@ -57,7 +57,7 @@ var config = {
       key: "id",
       value: "title",
       required: true,
-      defaultValue: "admin"
+      defaultValue: -1
     }]
   },
   delete: {

@@ -8,6 +8,7 @@ import CheckForAcls from '../utils/check-for-acls'
 
 import ProfileFiller from '../common/profile-filler'
 import AdminPage from '../admin/utils/admin-page'
+import NotFound from './not-found'
 
 export default function(name, config) {
 
@@ -77,6 +78,7 @@ export default function(name, config) {
                        return null
                      }
                    })}
+                   <Route path="*" component={NotFound} />
                  </Switch>
       }
 

@@ -41,11 +41,13 @@ var ApiClient = function(store) {
         }
         break
       case "get":
-        if (params !== undefined && params.length > 0) {
+        if (params !== undefined) {
           var keys = Object.keys(params)
-          for(var paramIndex in keys) {
-            endpoint += (paramIndex === 0 ? "?" : "&")
-            endpoint += keys[paramIndex] + "=" + params[keys[paramIndex]]
+          if (keys.length > 0) {
+            for(var paramIndex in keys) {
+              endpoint += (paramIndex == 0 ? "?" : "&")
+              endpoint += keys[paramIndex] + "=" + params[keys[paramIndex]]
+            }
           }
         }
         break
@@ -103,8 +105,8 @@ var ApiClient = function(store) {
     return call("get", endpoint, params, callback, offline)
   }
 
-  var put = function(endpoint, id, params, callback) {
-    return call("put", endpoint + (id ? ("/" + id) : ""), params, callback)
+  var put = function(endpoint, id, params, callback, offline=false) {
+    return call("put", endpoint + (id ? ("/" + id) : ""), params, callback, offline)
   }
 
   var patch = function(endpoint, id, params, callback) {
@@ -144,6 +146,7 @@ var ApiClient = function(store) {
     })
     if (callback) callback()
   }
+
 
   var getToken = function() {
     var storageToken = StorageService.get(STORAGE_KEY_FOR_TOKEN)

@@ -86,6 +86,11 @@ var _userReducer = function _userReducer() {
       newState["authenticated"] = false;
       newState["notFound"] = true;
       break;
+    case 'STAMP':
+      newState["stamp"] = action.stamp;
+      break;
+    case 'UPDATE_PASSWORD':
+      newState["password_updated"] = action.updated;
     default:
       break;
   }

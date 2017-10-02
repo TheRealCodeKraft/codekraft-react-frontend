@@ -71,6 +71,12 @@ var Login = function (_React$Component) {
           React.createElement("i", { className: "pe pe-7s-door-lock", style: { fontSize: "3em", marginRight: 15 } }),
           "Votre compte a \xE9t\xE9 cr\xE9\xE9, vous pouvez maintenant vous connecter."
         ) : null,
+        this.props.passwordUpdated ? React.createElement(
+          "div",
+          { className: "alert alert-success", style: { marginTop: 0, display: "flex", alignItems: "center" } },
+          React.createElement("i", { className: "pe pe-7s-door-lock", style: { fontSize: "3em", marginRight: 15 } }),
+          "Votre mot de passe a bien \xE9t\xE9 modifi\xE9, vous pouvez maintenant vous connecter"
+        ) : null,
         React.createElement(_form2.default, { id: "login-form",
           clients: this.props.clients,
           fields: this.fields,
@@ -82,17 +88,13 @@ var Login = function (_React$Component) {
         }),
         React.createElement(
           _reactRouterDom.Link,
-          { className: "btn btn-default btn-signup", to: "/signup" },
+          { className: "btn btn-default", to: "/signup" },
           "Cr\xE9er un compte"
         ),
         React.createElement(
-          "div",
-          { className: "text-center small" },
-          React.createElement(
-            _reactRouterDom.Link,
-            { to: "/" },
-            "Mot de passe oubli\xE9"
-          )
+          _reactRouterDom.Link,
+          { to: "/forgot-password" },
+          "Mot de passe oubli\xE9"
         )
       );
     }
@@ -112,7 +114,8 @@ var Login = function (_React$Component) {
 function mapStateToProps(state) {
   return {
     clients: state.bootstrap.clients,
-    newUser: state.userState.newUser || null
+    newUser: state.userState.newUser || null,
+    passwordUpdated: state.userState.password_updated || null
   };
 }
 
