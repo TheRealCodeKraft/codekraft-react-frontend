@@ -8,6 +8,7 @@ import ForgotPassword from '../../components/offline/forgot-password'
 import ResetPassword from '../../components/offline/reset-password'
 
 import _users from './admin/users'
+import _pages from './admin/pages'
 
 const config = {
   iconSet: "fa fa-icon",
@@ -105,7 +106,8 @@ const config = {
       },
       side: {
         items: [
-          _users
+          _users,
+          _pages
         ]
       }
     }

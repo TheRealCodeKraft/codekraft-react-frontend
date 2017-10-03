@@ -36,6 +36,10 @@ var _users2 = require('./admin/users');
 
 var _users3 = _interopRequireDefault(_users2);
 
+var _pages2 = require('./admin/pages');
+
+var _pages3 = _interopRequireDefault(_pages2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var config = {
@@ -119,7 +123,7 @@ var config = {
         }]
       },
       side: {
-        items: [_users3.default]
+        items: [_users3.default, _pages3.default]
       }
     }
   }

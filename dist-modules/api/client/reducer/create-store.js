@@ -140,6 +140,9 @@ module.exports = function createStore(config) {
   if (!coreReducers["userState"]) {
     coreReducers["userState"] = createReducer("user", "users", _baseReducers.userReducer);
   }
+  if (!coreReducers["pageState"]) {
+    coreReducers["pageState"] = createReducer("page", "pages");
+  }
 
   var reducerRegistry = new ReducerRegistry(coreReducers);
 

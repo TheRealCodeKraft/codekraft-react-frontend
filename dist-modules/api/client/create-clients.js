@@ -141,6 +141,9 @@ module.exports = function (config, store) {
   if (!coreClients["UserClient"]) {
     coreClients["UserClient"] = createClient("user", "users", store, ApiClient);
   }
+  if (!coreClients["PageClient"]) {
+    coreClients["PageClient"] = createClient("page", "pages", store, ApiClient);
+  }
 
   return coreClients;
 };
