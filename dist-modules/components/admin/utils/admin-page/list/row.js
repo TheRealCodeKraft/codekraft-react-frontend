@@ -194,6 +194,7 @@ var AdminPageListRow = function (_React$Component) {
     key: "handleEdit",
     value: function handleEdit(e) {
       e.preventDefault();
+      console.log(this.props.item.id);
       if (this.props.onEdit) this.props.onEdit(this.props.item.id);
     }
   }, {

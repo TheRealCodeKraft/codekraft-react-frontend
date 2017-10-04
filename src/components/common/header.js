@@ -1,4 +1,6 @@
 var React = require("react")
+import { connect } from 'react-redux'
+
 import NavLink from './header/link'
 import ShowForAcls from '../utils/show-for-acls'
 
@@ -8,22 +10,43 @@ class Header extends React.Component {
     super(props)
 
     this.state = {
-      menu: false
+      menu: false,
+      dynItems: {}
     }
 
     this.handleHamburgerClick = this.handleHamburgerClick.bind(this)
   }
 
+  componentWillMount() {
+    var menuToLoad = Object.keys(this.props.menu).filter(menuKey => {
+      var menu = this.props.menu[menuKey]
+      return menu.source !== undefined && menu.source !== null
+    })
+    if (menuToLoad.length > 0) {
+      var client, source, self=this
+      for (var i in menuToLoad) {
+        source = this.props.menu[menuToLoad[i]].source
+        client = this.props.clients[source.client + "Client"]
+        client.fetchAll({group: source.group}, function(data) {
+          var dynItems = self.state.dynItems
+          dynItems[menuToLoad[i]] = data
+          self.setState({dynItems: dynItems}) 
+        })
+      }
+    }
+  }
+
   render() {
+
     if (this.props.custom !== undefined) {
       if (this.props.custom !== null) {
          return <this.props.custom menu={this.props.menu} root={this.props.root} admin={this.props.admin} />
       } else return null
     }
 
-    var default_menu_entries = this.buildItemsFor(this.props.menu.default)
+    var default_menu_entries = this.buildItemsFor("default")
     default_menu_entries = this.embedSandwich(default_menu_entries)
-    var side_menu_entries = this.buildItemsFor(this.props.menu.side)
+    var side_menu_entries = this.buildItemsFor("side")
 
     return (
       <div className="Menu">
@@ -40,15 +63,21 @@ class Header extends React.Component {
     )
   }
 
-  buildItemsFor(nav) {
+  buildItemsFor(navKey) {
+    var nav = this.props.menu[navKey]
     var menu_entries = []
     if (nav) {
       var menu_entry, menu, item, route
       if (nav.label) {
         menu_entries.push(<li className={"nav-category"}>{nav.label}</li>)
       }
-      for (var index in nav.items) {  
-        item = nav.items[index]
+      var items = nav.items
+      if (nav.source !== undefined && nav.source !== null) {
+        items = this.state.dynItems[navKey]
+      }
+      for (var index in items) {  
+        item = items[index]
+console.log(item)
         if (item.display !== false) {
           if (item.type) {
             switch(item.type) {
@@ -61,6 +90,8 @@ class Header extends React.Component {
             route = this.props.root 
           } else if (item.switch) {
             route = item.switch
+          } else if (item.slug) {
+            route = item.slug
           } else {
             route = (item.route[0] !== "/" ? this.props.root : "") + (item.route ? ((item.route[0] !== "/" && this.props.root !== "/") ? "/" : "") + item.route : "")
           }
@@ -103,4 +134,10 @@ class Header extends React.Component {
 
 }
 
-export default Header
+function mapStateToProps(state) {
+  return {
+    clients: state.bootstrap.clients || {},
+  }
+}
+
+export default connect(mapStateToProps)(Header)

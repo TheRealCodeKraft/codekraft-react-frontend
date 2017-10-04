@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _reactRedux = require('react-redux');
+
 var _link = require('./header/link');
 
 var _link2 = _interopRequireDefault(_link);
@@ -33,7 +35,8 @@ var Header = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).call(this, props));
 
     _this.state = {
-      menu: false
+      menu: false,
+      dynItems: {}
     };
 
     _this.handleHamburgerClick = _this.handleHamburgerClick.bind(_this);
@@ -41,17 +44,42 @@ var Header = function (_React$Component) {
   }
 
   _createClass(Header, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      var _this2 = this;
+
+      var menuToLoad = Object.keys(this.props.menu).filter(function (menuKey) {
+        var menu = _this2.props.menu[menuKey];
+        return menu.source !== undefined && menu.source !== null;
+      });
+      if (menuToLoad.length > 0) {
+        var client,
+            source,
+            self = this;
+        for (var i in menuToLoad) {
+          source = this.props.menu[menuToLoad[i]].source;
+          client = this.props.clients[source.client + "Client"];
+          client.fetchAll({ group: source.group }, function (data) {
+            var dynItems = self.state.dynItems;
+            dynItems[menuToLoad[i]] = data;
+            self.setState({ dynItems: dynItems });
+          });
+        }
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
+
       if (this.props.custom !== undefined) {
         if (this.props.custom !== null) {
           return React.createElement(this.props.custom, { menu: this.props.menu, root: this.props.root, admin: this.props.admin });
         } else return null;
       }
 
-      var default_menu_entries = this.buildItemsFor(this.props.menu.default);
+      var default_menu_entries = this.buildItemsFor("default");
       default_menu_entries = this.embedSandwich(default_menu_entries);
-      var side_menu_entries = this.buildItemsFor(this.props.menu.side);
+      var side_menu_entries = this.buildItemsFor("side");
 
       return React.createElement(
         'div',
@@ -75,7 +103,8 @@ var Header = function (_React$Component) {
     }
   }, {
     key: 'buildItemsFor',
-    value: function buildItemsFor(nav) {
+    value: function buildItemsFor(navKey) {
+      var nav = this.props.menu[navKey];
       var menu_entries = [];
       if (nav) {
         var menu_entry, menu, item, route;
@@ -86,8 +115,13 @@ var Header = function (_React$Component) {
             nav.label
           ));
         }
-        for (var index in nav.items) {
-          item = nav.items[index];
+        var items = nav.items;
+        if (nav.source !== undefined && nav.source !== null) {
+          items = this.state.dynItems[navKey];
+        }
+        for (var index in items) {
+          item = items[index];
+          console.log(item);
           if (item.display !== false) {
             if (item.type) {
               switch (item.type) {
@@ -99,6 +133,8 @@ var Header = function (_React$Component) {
               route = this.props.root;
             } else if (item.switch) {
               route = item.switch;
+            } else if (item.slug) {
+              route = item.slug;
             } else {
               route = (item.route[0] !== "/" ? this.props.root : "") + (item.route ? (item.route[0] !== "/" && this.props.root !== "/" ? "/" : "") + item.route : "");
             }
@@ -150,4 +186,10 @@ var Header = function (_React$Component) {
   return Header;
 }(React.Component);
 
-exports.default = Header;
+function mapStateToProps(state) {
+  return {
+    clients: state.bootstrap.clients || {}
+  };
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(Header);

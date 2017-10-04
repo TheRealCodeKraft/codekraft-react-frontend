@@ -23,6 +23,7 @@ class AdminPageList extends React.Component {
            </section>
          : null*/}
         {this.props.items.map((item, index) => {
+console.log(item)
           return <AdminPageListRow key={"admin-list-row-" + index}
                                    index={index}
                                    item={item} 

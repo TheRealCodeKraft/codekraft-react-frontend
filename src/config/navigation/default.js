@@ -77,7 +77,13 @@ const config = {
             type: "logout"
           }
         ]
-      }
+      },
+      side: {
+        source: {
+          client: "Page",
+          group: "SIDE"
+        }
+      }
     }
   },
   admin: {

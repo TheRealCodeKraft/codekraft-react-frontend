@@ -143,6 +143,7 @@ class AdminPageListRow extends React.Component {
 
   handleEdit(e) {
     e.preventDefault()
+console.log(this.props.item.id)
     if (this.props.onEdit) this.props.onEdit(this.props.item.id)
   }
 

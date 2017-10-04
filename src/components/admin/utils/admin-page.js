@@ -142,6 +142,7 @@ export default function(config, globalConfig) {
       var content = null
       
       var entity = null
+console.log(this.state.currentId)
       if (this.state.currentId !== undefined) {
         entity = this.props[getPluralName()].filter(item => { return item.id === this.state.currentId })[0]
       }

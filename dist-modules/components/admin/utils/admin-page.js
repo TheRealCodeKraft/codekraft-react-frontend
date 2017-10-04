@@ -155,6 +155,7 @@ exports.default = function (config, globalConfig) {
         var content = null;
 
         var entity = null;
+        console.log(this.state.currentId);
         if (this.state.currentId !== undefined) {
           entity = this.props[getPluralName()].filter(function (item) {
             return item.id === _this3.state.currentId;

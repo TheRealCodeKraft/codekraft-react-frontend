@@ -99,6 +99,12 @@ var config = {
           faIcon: "sign-out",
           type: "logout"
         }]
+      },
+      side: {
+        source: {
+          client: "Page",
+          group: "SIDE"
+        }
       }
     }
   },
