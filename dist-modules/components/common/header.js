@@ -92,9 +92,6 @@ var Header = function (_React$Component) {
           ));
         }
         var items = nav.items;
-        if (nav.source !== undefined && nav.source !== null) {
-          items = this.state.dynItems[navKey];
-        }
         for (var index in items) {
           item = items[index];
           if (item.display !== false) {

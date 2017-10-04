@@ -26,21 +26,24 @@ var Bootstrap = function() {
       clients: clients
     })
 
-    store.dispatch({
-      type: "NAVIGATION",
-      navigation: createNavigation(config.navigation, clients)
-    })
+    createNavigation(config.navigation, clients, function(nav) {
+console.log(nav)
+      store.dispatch({
+        type: "NAVIGATION",
+        navigation: nav
+      })
   
-    document.addEventListener('DOMContentLoaded', function() {
-      ReactDOM.render(
-        <Provider store={store}>
-          <BrowserRouter>
+      //document.addEventListener('DOMContentLoaded', function() {
+        ReactDOM.render(
+          <Provider store={store}>
+            <BrowserRouter>
               <App />
-          </BrowserRouter>
-        </Provider>,
-        document.getElementById('app-root')
-      );
-    });
+            </BrowserRouter>
+          </Provider>,
+          document.getElementById('app-root')
+        );
+      //});
+    })
   }
 
   return {

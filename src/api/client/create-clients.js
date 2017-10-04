@@ -19,7 +19,7 @@ function capitalizeFirstLetter(string) {
 function createClient(name, plural, store, ApiClient, localConfig) {
 return (function(name, plural, store, ApiClient) { return function() {
 
-      var fetchAll = function(params, callback) {
+      var fetchAll = function(params, callback, offline=false) {
         ApiClient.get(plural, params, function(data) {
           var toDispatch = {
             type: plural.toUpperCase()
@@ -27,7 +27,7 @@ return (function(name, plural, store, ApiClient) { return function() {
           toDispatch[plural] = data
           store.dispatch(toDispatch)
           if (callback) callback(data)
-        })
+        }, offline)
       }
 
       var fetchOne = function(id, callback) {

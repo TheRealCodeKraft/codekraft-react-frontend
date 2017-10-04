@@ -46,12 +46,14 @@ var Bootstrap = function () {
       clients: clients
     });
 
-    store.dispatch({
-      type: "NAVIGATION",
-      navigation: (0, _createNavigation2.default)(config.navigation, clients)
-    });
+    (0, _createNavigation2.default)(config.navigation, clients, function (nav) {
+      console.log(nav);
+      store.dispatch({
+        type: "NAVIGATION",
+        navigation: nav
+      });
 
-    document.addEventListener('DOMContentLoaded', function () {
+      //document.addEventListener('DOMContentLoaded', function() {
       ReactDOM.render(React.createElement(
         Provider,
         { store: store },
@@ -61,6 +63,7 @@ var Bootstrap = function () {
           React.createElement(_app2.default, null)
         )
       ), document.getElementById('app-root'));
+      //});
     });
   };
 

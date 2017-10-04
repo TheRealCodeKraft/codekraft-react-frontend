@@ -29,6 +29,8 @@ function createClient(name, plural, store, ApiClient, localConfig) {
     return function () {
 
       var fetchAll = function fetchAll(params, callback) {
+        var offline = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
         ApiClient.get(plural, params, function (data) {
           var toDispatch = {
             type: plural.toUpperCase()
@@ -36,7 +38,7 @@ function createClient(name, plural, store, ApiClient, localConfig) {
           toDispatch[plural] = data;
           store.dispatch(toDispatch);
           if (callback) callback(data);
-        });
+        }, offline);
       };
 
       var fetchOne = function fetchOne(id, callback) {

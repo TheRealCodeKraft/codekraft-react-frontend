@@ -53,9 +53,6 @@ class Header extends React.Component {
         menu_entries.push(<li className={"nav-category"}>{nav.label}</li>)
       }
       var items = nav.items
-      if (nav.source !== undefined && nav.source !== null) {
-        items = this.state.dynItems[navKey]
-      }
       for (var index in items) {  
         item = items[index]
         if (item.display !== false) {

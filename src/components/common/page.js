@@ -1,13 +1,18 @@
 import React from "react"
 
-class Page extends React.Component {
+export default function(item, config) {
 
-  render() {
-    return (
-      <span>Page de contenu</span>
-    )
+  class Page extends React.Component {
+
+    render() {
+      return (
+        <div>
+          <h1>{item.title}</h1>
+          <div dangerouslySetInnerHTML={{__html: item.body}} />
+        </div>
+      )
+    }
   }
 
+  return Page
 }
-
-export default Page

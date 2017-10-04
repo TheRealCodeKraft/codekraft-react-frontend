@@ -10,22 +10,23 @@ import Page from '../components/common/page'
 
 //import sync from 'synchronize'
 
-function loadItems(menu, client, callback) {
-  return (function(menu, client) { 
-    client.fetchAll({group: menu.source.group}, function(data) {
+function loadItems(mainKey, subKey, group, client, callback) {
+  return (function(mainKey, key, group, client) { 
+    client.fetchAll({group: group}, function(data) {
       var items = data
       for (var key in items) {
         if (items[key].slug) {
           items[key].route = items[key].slug
-          items[key].component = Page
+          if (items[key].component) item[key].component(items[key])
+          else items[key].component = Page(items[key])
         }
       }
-      callback(null, items)
-    })
-  }(menu, client))
+      callback(mainKey, subKey, items)
+    }, true)
+  }(mainKey, subKey, group, client))
 }
 
-module.exports = function(config, clients) {
+module.exports = function(config, clients, callback) {
 
   for (var key in BootstrapConfig) {
     if (!config[key]) config[key] = BootstrapConfig[key]
@@ -48,22 +49,24 @@ module.exports = function(config, clients) {
     }
   }
 
-//  sync.fiber(function() {
-    var menu, submenu, client
-    for (var key in config) {
-      menu = config[key]
-      if (menu instanceof Object) {
-        for (var menuKey in menu.menu) {
-          submenu = menu.menu[menuKey]
-          if (submenu.source) {
-            client = clients[submenu.source.client + "Client"]
-            loadItems(submenu, client, function() {}/*, sync.defer()*/)
-          }
-        }
+  var menu, submenu, client, counter=0
+  for (var key in config) {
+    menu = config[key]
+    if (menu instanceof Object) {
+      for (var menuKey in menu.menu) {
+        submenu = menu.menu[menuKey]
+        if (submenu.source) {
+          client = clients[submenu.source.client + "Client"]
+          counter++
+          loadItems(key, menuKey, submenu.source.group, client, function(mainKey, subKey, items) {
+            config[mainKey].menu[subKey].items = items
+            counter--
+            if (counter === 0)
+              callback(config)
+          })
+        }
       }
     }
-//  })
-//sync.await()
-console.log("NAVIGATION BUILT")
-  return config 
+  }
+  return;
 }
