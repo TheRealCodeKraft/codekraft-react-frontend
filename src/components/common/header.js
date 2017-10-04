@@ -17,25 +17,6 @@ class Header extends React.Component {
     this.handleHamburgerClick = this.handleHamburgerClick.bind(this)
   }
 
-  componentWillMount() {
-    var menuToLoad = Object.keys(this.props.menu).filter(menuKey => {
-      var menu = this.props.menu[menuKey]
-      return menu.source !== undefined && menu.source !== null
-    })
-    if (menuToLoad.length > 0) {
-      var client, source, self=this
-      for (var i in menuToLoad) {
-        source = this.props.menu[menuToLoad[i]].source
-        client = this.props.clients[source.client + "Client"]
-        client.fetchAll({group: source.group}, function(data) {
-          var dynItems = self.state.dynItems
-          dynItems[menuToLoad[i]] = data
-          self.setState({dynItems: dynItems}) 
-        })
-      }
-    }
-  }
-
   render() {
 
     if (this.props.custom !== undefined) {
@@ -77,7 +58,6 @@ class Header extends React.Component {
       }
       for (var index in items) {  
         item = items[index]
-console.log(item)
         if (item.display !== false) {
           if (item.type) {
             switch(item.type) {
@@ -90,8 +70,6 @@ console.log(item)
             route = this.props.root 
           } else if (item.switch) {
             route = item.switch
-          } else if (item.slug) {
-            route = item.slug
           } else {
             route = (item.route[0] !== "/" ? this.props.root : "") + (item.route ? ((item.route[0] !== "/" && this.props.root !== "/") ? "/" : "") + item.route : "")
           }

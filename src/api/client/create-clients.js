@@ -106,7 +106,6 @@ return (function(name, plural, store, ApiClient) { return function() {
     }()})(name, plural, store, ApiClient)
 }
 
-
 module.exports = function(config, store) {
 
   const ApiClient = _ApiClient(store)

@@ -6,8 +6,26 @@ import Login from '../components/offline/login'
 import Signup from '../components/offline/signup'
 
 import BootstrapConfig from '../config/navigation/default'
+import Page from '../components/common/page'
 
-module.exports = function(config) {
+//import sync from 'synchronize'
+
+function loadItems(menu, client, callback) {
+  return (function(menu, client) { 
+    client.fetchAll({group: menu.source.group}, function(data) {
+      var items = data
+      for (var key in items) {
+        if (items[key].slug) {
+          items[key].route = items[key].slug
+          items[key].component = Page
+        }
+      }
+      callback(null, items)
+    })
+  }(menu, client))
+}
+
+module.exports = function(config, clients) {
 
   for (var key in BootstrapConfig) {
     if (!config[key]) config[key] = BootstrapConfig[key]
@@ -30,5 +48,22 @@ module.exports = function(config) {
     }
   }
 
+//  sync.fiber(function() {
+    var menu, submenu, client
+    for (var key in config) {
+      menu = config[key]
+      if (menu instanceof Object) {
+        for (var menuKey in menu.menu) {
+          submenu = menu.menu[menuKey]
+          if (submenu.source) {
+            client = clients[submenu.source.client + "Client"]
+            loadItems(submenu, client, function() {}/*, sync.defer()*/)
+          }
+        }
+      }
+    }
+//  })
+//sync.await()
+console.log("NAVIGATION BUILT")
   return config 
 }

@@ -48,7 +48,7 @@ var Bootstrap = function () {
 
     store.dispatch({
       type: "NAVIGATION",
-      navigation: (0, _createNavigation2.default)(config.navigation)
+      navigation: (0, _createNavigation2.default)(config.navigation, clients)
     });
 
     document.addEventListener('DOMContentLoaded', function () {
