@@ -94,57 +94,6 @@ var Home = function (_React$Component) {
                       item.description ? item.description : ""
                     )
                   )
-                ), React.createElement(
-                  _reactRouterDom.Link,
-                  { to: "/admin/" + item.route },
-                  React.createElement(
-                    "div",
-                    { className: "admin-home-item" },
-                    React.createElement(
-                      "h2",
-                      null,
-                      item.title
-                    ),
-                    React.createElement(
-                      "p",
-                      null,
-                      item.description ? item.description : ""
-                    )
-                  )
-                ), React.createElement(
-                  _reactRouterDom.Link,
-                  { to: "/admin/" + item.route },
-                  React.createElement(
-                    "div",
-                    { className: "admin-home-item" },
-                    React.createElement(
-                      "h2",
-                      null,
-                      item.title
-                    ),
-                    React.createElement(
-                      "p",
-                      null,
-                      item.description ? item.description : ""
-                    )
-                  )
-                ), React.createElement(
-                  _reactRouterDom.Link,
-                  { to: "/admin/" + item.route },
-                  React.createElement(
-                    "div",
-                    { className: "admin-home-item" },
-                    React.createElement(
-                      "h2",
-                      null,
-                      item.title
-                    ),
-                    React.createElement(
-                      "p",
-                      null,
-                      item.description ? item.description : ""
-                    )
-                  )
                 )];
               })
             )

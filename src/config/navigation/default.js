@@ -22,7 +22,13 @@ const config = {
             root: true,
             faIcon: "home",
             component: OfflineHome,
-            discardOnLogin: true
+            discardOnLogin: true,
+            dynamic: {
+              params: {
+                uid: "home",
+              },
+              client: "Page"
+            }
           },
           {
             title: "Connexion",
@@ -51,6 +57,12 @@ const config = {
             discardOnLogin: true
           }
         ]
+      },
+      side: {
+        source: {
+          client: "Page",
+          group: "SIDE"
+        }
       }
     }
   },

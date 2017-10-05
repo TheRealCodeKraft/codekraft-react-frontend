@@ -47,7 +47,6 @@ var Bootstrap = function () {
     });
 
     (0, _createNavigation2.default)(config.navigation, clients, function (nav) {
-      console.log(nav);
       store.dispatch({
         type: "NAVIGATION",
         navigation: nav

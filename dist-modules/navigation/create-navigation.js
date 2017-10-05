@@ -32,19 +32,43 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //import sync from 'synchronize'
 
+var globalItems = {};
+
 function loadItems(mainKey, subKey, group, client, callback) {
   return function (mainKey, key, group, client) {
-    client.fetchAll({ group: group }, function (data) {
-      var items = data;
+    var globalItemsKey = group;
+    //if (!globalItems[globalItemsKey]) {
+    //  globalItems[globalItemsKey] = []
+    client.fetchAll({ group: group }, function (items) {
       for (var key in items) {
         if (items[key].slug) {
           items[key].route = items[key].slug;
           if (items[key].component) item[key].component(items[key]);else items[key].component = (0, _page2.default)(items[key]);
         }
       }
-      callback(mainKey, subKey, items);
+      globalItems[globalItemsKey] = items;
+      callback(mainKey, subKey, globalItems[globalItemsKey]);
     }, true);
+    //} else {
+    //  callback(mainKey, subKey, globalItems[globalItemsKey])
+    //}
   }(mainKey, subKey, group, client);
+}
+
+function loadItem(mainKey, subKey, itemIndex, baseItem, data, clients, callback) {
+  return function (mainKey, subKey, itemIndex, baseItem, data, clients, callback) {
+    var client = clients[data.client + "Client"];
+    client.fetchAll(data.params, function (data) {
+      var item = data[0];
+      for (var key in item) {
+        baseItem[key] = item[key];
+      }
+      item = baseItem;
+      item.component = (0, _page2.default)(item);
+
+      callback(mainKey, subKey, itemIndex, item);
+    }, true);
+  }(mainKey, subKey, itemIndex, baseItem, data, clients, callback);
 }
 
 module.exports = function (config, clients, callback) {
@@ -70,7 +94,9 @@ module.exports = function (config, clients, callback) {
   var menu,
       submenu,
       client,
-      counter = 0;
+      listCounter = 0,
+      itemCounter = 0,
+      dynamic;
   for (var key in config) {
     menu = config[key];
     if (menu instanceof Object) {
@@ -78,12 +104,24 @@ module.exports = function (config, clients, callback) {
         submenu = menu.menu[menuKey];
         if (submenu.source) {
           client = clients[submenu.source.client + "Client"];
-          counter++;
+          listCounter++;
           loadItems(key, menuKey, submenu.source.group, client, function (mainKey, subKey, items) {
             config[mainKey].menu[subKey].items = items;
-            counter--;
-            if (counter === 0) callback(config);
+            listCounter--;
+            if (listCounter === 0 && itemCounter === 0) callback(config);
           });
+        } else if (submenu.items) {
+          for (var itemIndex in submenu.items) {
+            dynamic = submenu.items[itemIndex].dynamic;
+            if (dynamic) {
+              itemCounter++;
+              loadItem(key, menuKey, itemIndex, submenu.items[itemIndex], dynamic, clients, function (mainKey, subKey, itemIndex, item) {
+                config[mainKey].menu[subKey].items[itemIndex] = item;
+                itemCounter--;
+                if (listCounter === 0 && itemCounter === 0) callback(config);
+              });
+            }
+          }
         }
       }
     }

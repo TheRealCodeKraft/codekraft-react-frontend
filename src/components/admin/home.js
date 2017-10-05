@@ -36,24 +36,6 @@ class Home extends React.Component {
                               <h2>{item.title}</h2>
                               <p>{item.description ? item.description : ""}</p>
                             </div>
-                          </Link>,
-                          <Link to={"/admin/" + item.route}>
-                            <div className="admin-home-item">
-                              <h2>{item.title}</h2>
-                              <p>{item.description ? item.description : ""}</p>
-                            </div>
-                          </Link>,
-                          <Link to={"/admin/" + item.route}>
-                            <div className="admin-home-item">
-                              <h2>{item.title}</h2>
-                              <p>{item.description ? item.description : ""}</p>
-                            </div>
-                          </Link>,
-                          <Link to={"/admin/" + item.route}>
-                            <div className="admin-home-item">
-                              <h2>{item.title}</h2>
-                              <p>{item.description ? item.description : ""}</p>
-                            </div>
                           </Link>]
                 })}
                 </div>

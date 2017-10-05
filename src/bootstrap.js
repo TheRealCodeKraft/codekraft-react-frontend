@@ -27,7 +27,6 @@ var Bootstrap = function() {
     })
 
     createNavigation(config.navigation, clients, function(nav) {
-console.log(nav)
       store.dispatch({
         type: "NAVIGATION",
         navigation: nav

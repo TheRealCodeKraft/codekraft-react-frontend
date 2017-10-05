@@ -53,7 +53,13 @@ var config = {
           root: true,
           faIcon: "home",
           component: _home2.default,
-          discardOnLogin: true
+          discardOnLogin: true,
+          dynamic: {
+            params: {
+              uid: "home"
+            },
+            client: "Page"
+          }
         }, {
           title: "Connexion",
           route: "login",
@@ -77,6 +83,12 @@ var config = {
           component: _resetPassword2.default,
           discardOnLogin: true
         }]
+      },
+      side: {
+        source: {
+          client: "Page",
+          group: "SIDE"
+        }
       }
     }
   },
