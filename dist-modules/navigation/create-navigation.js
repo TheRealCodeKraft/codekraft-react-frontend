@@ -32,7 +32,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //import sync from 'synchronize'
 
-var globalItems = {};
+//var globalItems = {}
 
 function loadItems(mainKey, subKey, group, client, callback) {
   return function (mainKey, key, group, client) {
@@ -46,8 +46,8 @@ function loadItems(mainKey, subKey, group, client, callback) {
           if (items[key].component) item[key].component(items[key]);else items[key].component = (0, _page2.default)(items[key]);
         }
       }
-      globalItems[globalItemsKey] = items;
-      callback(mainKey, subKey, globalItems[globalItemsKey]);
+      //globalItems[globalItemsKey] = items
+      callback(mainKey, subKey, items);
     }, true);
     //} else {
     //  callback(mainKey, subKey, globalItems[globalItemsKey])
