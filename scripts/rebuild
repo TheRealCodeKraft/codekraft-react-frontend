@@ -1,8 +1,9 @@
 #!/bin/bash
 
-SOURCE=${BASH_SOURCE[0]}
-local_dir="$( dirname $SOURCE)"
+if [ ! -d "/codekraft/lib/node_modules" ]; then
+  cd /codekraft/lib/
+  npm install
+fi
 
-cd $local_dir
-cd ..
+cd /codekraft/lib
 npm run build
