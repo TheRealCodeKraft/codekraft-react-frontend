@@ -46,6 +46,7 @@
     "js-logger": "^1.4.1",
     "json-loader": "^0.5.7",
     "moment": "2.18.1",
+    "moment-timezone": "^0.5.13",
     "react": "^15.6.1",
     "react-actioncable-provider": "^1.0.0",
     "react-bootstrap": "^0.31.3",

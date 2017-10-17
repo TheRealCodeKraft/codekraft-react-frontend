@@ -1,0 +1,8 @@
+#!/bin/bash
+
+SOURCE=${BASH_SOURCE[0]}
+local_dir="$( dirname $SOURCE)"
+
+cd $local_dir
+cd ..
+npm run build
