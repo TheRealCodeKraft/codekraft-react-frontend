@@ -69,6 +69,8 @@ exports.default = function (name, config) {
                   component = (0, _checkForAcls2.default)(config.grants, component);
                 }
 
+                console.log(item);
+                console.log(config.restricted);
                 if (config.restricted && !item.discardOnLogin) {
                   component = (0, _authChecker2.default)(component);
                 }

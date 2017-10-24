@@ -94,6 +94,7 @@ var config = {
   },
   dashboard: {
     root: "/dashboard",
+    restricted: true,
     menu: {
       default: {
         items: [{
@@ -122,6 +123,7 @@ var config = {
   },
   admin: {
     root: "/admin",
+    restricted: true,
     menu: {
       default: {
         hiddenOnHome: true,
