@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _reactRedux = require('react-redux');
-
 var _link = require('./header/link');
 
 var _link2 = _interopRequireDefault(_link);
@@ -49,7 +47,7 @@ var Header = function (_React$Component) {
 
       if (this.props.custom !== undefined) {
         if (this.props.custom !== null) {
-          return React.createElement(this.props.custom, { menu: this.props.menu, root: this.props.root, admin: this.props.admin });
+          return React.createElement(this.props.custom, { menu: this.props.menu, root: this.props.root, admin: this.props.admin, location: this.props.location });
         } else return null;
       }
 
@@ -128,7 +126,17 @@ var Header = function (_React$Component) {
     key: 'buildItem',
     value: function buildItem(nav, item, route) {
       var LinkComponent = nav.navLink ? nav.navLink : _link2.default;
-      return React.createElement(LinkComponent, { item: item, pathname: this.props.location.pathname, route: route });
+      var className;
+      if (nav.linkClassName) {
+        className = nav.linkClassName;
+      } else {
+        className = "Menu-link" + (this.props.location.pathname === route ? " Menu-link--active" : "") + (item.faIcon ? " fa fa-" + item.faIcon : "");
+      }
+      if (nav.linkComponent) {
+        return React.createElement(nav.linkComponent, { item: item, pathname: this.props.location.pathname, route: route, active: this.props.location.pathname === route });
+      } else {
+        return React.createElement(LinkComponent, { item: item, pathname: this.props.location.pathname, route: route, className: className });
+      }
     }
   }, {
     key: 'embedSandwich',
@@ -156,10 +164,4 @@ var Header = function (_React$Component) {
   return Header;
 }(React.Component);
 
-function mapStateToProps(state) {
-  return {
-    clients: state.bootstrap.clients || {}
-  };
-}
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(Header);
+exports.default = Header;

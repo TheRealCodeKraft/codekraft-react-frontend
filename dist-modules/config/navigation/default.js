@@ -76,11 +76,13 @@ var config = {
           title: "Mot de passe oublié",
           route: "forgot-password",
           component: _forgotPassword2.default,
+          display: false,
           discardOnLogin: true
         }, {
           title: "Réinitialisation du mot de passe",
           route: "reset-password",
           component: _resetPassword2.default,
+          display: false,
           discardOnLogin: true
         }]
       },

@@ -38,7 +38,7 @@ var Link = function (_React$Component) {
 
       return _react2.default.createElement(
         _reactRouterDom.NavLink,
-        { exact: true, to: route, className: "Menu-link" + (pathname === route ? " Menu-link--active" : "") + (item.faIcon ? " fa fa-" + item.faIcon : "") },
+        { exact: true, to: route, className: this.props.className },
         item.faIcon ? "" : item.title
       );
     }

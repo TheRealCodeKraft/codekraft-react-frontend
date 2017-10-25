@@ -51,7 +51,7 @@ function loadItem(mainKey, subKey, itemIndex, baseItem, data, clients, callback)
 }
 
 module.exports = function(config, clients, callback) {
-
+  var lastIndex
   for (var key in BootstrapConfig) {
     if (!config[key]) config[key] = BootstrapConfig[key]
     else {
@@ -64,7 +64,16 @@ module.exports = function(config, clients, callback) {
             if (!config[key].menu[menuKey]) config[key].menu[menuKey] = BootstrapConfig[key].menu[menuKey]
             else {
               for (var itemKey in BootstrapConfig[key].menu[menuKey].items) {
+                if (BootstrapConfig[key].menu[menuKey].items[itemKey].root) {
+                  if (config[key].menu[menuKey].items.filter(item => { return item.root }).length > 0) {
+                    continue
+                  }
+                }
                 config[key].menu[menuKey].items.push(BootstrapConfig[key].menu[menuKey].items[itemKey])
+                lastIndex = config[key].menu[menuKey].items.length - 1
+                if (config[key].menu[menuKey].discards && config[key].menu[menuKey].discards.indexOf(config[key].menu[menuKey].items[lastIndex].title) !== -1) {
+                  config[key].menu[menuKey].items[lastIndex].display = false
+                }
               }
             }
           }

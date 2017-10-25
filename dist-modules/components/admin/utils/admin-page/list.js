@@ -49,7 +49,6 @@ var AdminPageList = function (_React$Component) {
         { style: { display: "table", width: "100%" } },
         React.createElement(_header2.default, { attributes: this.props.attributes }),
         this.props.items.map(function (item, index) {
-          console.log(item);
           return React.createElement(_row2.default, { key: "admin-list-row-" + index,
             index: index,
             item: item,
@@ -68,6 +67,7 @@ var AdminPageList = function (_React$Component) {
   }, {
     key: 'handleDelete',
     value: function handleDelete(id) {
+      console.log("ID : " + id);
       if (this.props.onDelete) this.props.onDelete(id);
     }
   }, {

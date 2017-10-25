@@ -48,12 +48,14 @@ const config = {
             title: "Mot de passe oublié",
             route: "forgot-password",
             component: ForgotPassword,
+            display: false,
             discardOnLogin: true
           },
           {
             title: "Réinitialisation du mot de passe",
             route: "reset-password",
             component: ResetPassword,
+            display: false,
             discardOnLogin: true
           }
         ]

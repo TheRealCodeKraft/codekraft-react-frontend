@@ -1,5 +1,4 @@
 var React = require("react")
-import { connect } from 'react-redux'
 
 import NavLink from './header/link'
 import ShowForAcls from '../utils/show-for-acls'
@@ -21,7 +20,7 @@ class Header extends React.Component {
 
     if (this.props.custom !== undefined) {
       if (this.props.custom !== null) {
-         return <this.props.custom menu={this.props.menu} root={this.props.root} admin={this.props.admin} />
+         return <this.props.custom menu={this.props.menu} root={this.props.root} admin={this.props.admin} location={this.props.location} />
       } else return null
     }
 
@@ -85,7 +84,18 @@ class Header extends React.Component {
 
   buildItem(nav, item, route) {
     var LinkComponent = nav.navLink ? nav.navLink : NavLink
-    return <LinkComponent item={item} pathname={this.props.location.pathname} route={route} />
+    var className 
+    if (nav.linkClassName) {
+      className = nav.linkClassName
+    }
+    else {
+      className = "Menu-link" + (this.props.location.pathname === route ? " Menu-link--active" : "") + (item.faIcon ? " fa fa-" + item.faIcon : "")
+    }
+    if (nav.linkComponent) {
+      return <nav.linkComponent item={item} pathname={this.props.location.pathname} route={route} active={this.props.location.pathname === route} />
+    } else {
+      return <LinkComponent item={item} pathname={this.props.location.pathname} route={route} className={className} />
+    }
   }
 
   embedSandwich(items) {
@@ -109,10 +119,4 @@ class Header extends React.Component {
 
 }
 
-function mapStateToProps(state) {
-  return {
-    clients: state.bootstrap.clients || {},
-  }
-}
-
-export default connect(mapStateToProps)(Header)
+export default Header

@@ -72,7 +72,7 @@ function loadItem(mainKey, subKey, itemIndex, baseItem, data, clients, callback)
 }
 
 module.exports = function (config, clients, callback) {
-
+  var lastIndex;
   for (var key in _default2.default) {
     if (!config[key]) config[key] = _default2.default[key];else {
       if (!config[key].root) config[key].root = _default2.default[key].root;
@@ -82,7 +82,18 @@ module.exports = function (config, clients, callback) {
           for (var menuKey in _default2.default[key].menu) {
             if (!config[key].menu[menuKey]) config[key].menu[menuKey] = _default2.default[key].menu[menuKey];else {
               for (var itemKey in _default2.default[key].menu[menuKey].items) {
+                if (_default2.default[key].menu[menuKey].items[itemKey].root) {
+                  if (config[key].menu[menuKey].items.filter(function (item) {
+                    return item.root;
+                  }).length > 0) {
+                    continue;
+                  }
+                }
                 config[key].menu[menuKey].items.push(_default2.default[key].menu[menuKey].items[itemKey]);
+                lastIndex = config[key].menu[menuKey].items.length - 1;
+                if (config[key].menu[menuKey].discards && config[key].menu[menuKey].discards.indexOf(config[key].menu[menuKey].items[lastIndex].title) !== -1) {
+                  config[key].menu[menuKey].items[lastIndex].display = false;
+                }
               }
             }
           }

@@ -86,6 +86,17 @@ function createClient(name, plural, store, ApiClient, localConfig) {
         });
       };
 
+      var upload = function upload(id, fieldName, file, callback) {
+        ApiClient.upload(plural + '/' + id + '/' + fieldName, fieldName, file, function (data) {
+          var toDispatch = {
+            type: "UPDATE_" + name.toUpperCase()
+          };
+          toDispatch[name] = data;
+          store.dispatch(toDispatch);
+          if (callback) callback(data);
+        });
+      };
+
       var functions = {
         name: name,
         plural: plural,
@@ -94,7 +105,8 @@ function createClient(name, plural, store, ApiClient, localConfig) {
         fetchOne: fetchOne,
         create: create,
         update: update,
-        destroy: destroy
+        destroy: destroy,
+        upload: upload
       };
 
       var funx, key;

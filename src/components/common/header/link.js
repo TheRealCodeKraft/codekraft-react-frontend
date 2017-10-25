@@ -10,7 +10,7 @@ class Link extends React.Component {
     const pathname = this.props.pathname
 
     return (
-      <NavLink exact to={route} className={"Menu-link" + (pathname === route ? " Menu-link--active" : "") + (item.faIcon ? " fa fa-" + item.faIcon : "")}>
+      <NavLink exact to={route} className={this.props.className}>
         {item.faIcon ? "" : item.title}
       </NavLink>
     )
