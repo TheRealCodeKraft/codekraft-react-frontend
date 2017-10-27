@@ -15,7 +15,7 @@ var configureStore = require('./store-config');
 var ReducerRegistry = require('./registry');
 
 function pushNewEntityToState(entity, state, name) {
-  var list = state[name];
+  var list = state[name] || [];
   if (entity !== undefined) {
     list = JSON.parse(JSON.stringify(list));
     list.push(entity);
@@ -24,7 +24,7 @@ function pushNewEntityToState(entity, state, name) {
 }
 
 function removeEntityFromState(id, state, name) {
-  var list = state[name],
+  var list = state[name] || [],
       newList = [];
   if (list && id !== undefined) {
     for (var index in list) {
@@ -39,7 +39,7 @@ function removeEntityFromState(id, state, name) {
 }
 
 function mergeEntityAndState(entity, state, name) {
-  var list = state[name],
+  var list = state[name] || [],
       newList = [];
   if (list && entity !== undefined) {
     for (var index in list) {

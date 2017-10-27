@@ -41,7 +41,7 @@ return (function(name, plural, store, ApiClient) { return function() {
         })
       }
 
-      var create = function(params, callback) {
+      var create = function(params, callback, offline=false) {
         ApiClient.post(plural, params, function(data) {
           if (!data.error) {
             var toDispatch = {
@@ -51,7 +51,7 @@ return (function(name, plural, store, ApiClient) { return function() {
             store.dispatch(toDispatch)
           }
           if (callback) callback(data)
-        })
+        }, offline)
       }
 
       var update = function(id, params, callback) {

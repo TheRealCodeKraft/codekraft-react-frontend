@@ -53,6 +53,8 @@ function createClient(name, plural, store, ApiClient, localConfig) {
       };
 
       var create = function create(params, callback) {
+        var offline = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
         ApiClient.post(plural, params, function (data) {
           if (!data.error) {
             var toDispatch = {
@@ -62,7 +64,7 @@ function createClient(name, plural, store, ApiClient, localConfig) {
             store.dispatch(toDispatch);
           }
           if (callback) callback(data);
-        });
+        }, offline);
       };
 
       var update = function update(id, params, callback) {
