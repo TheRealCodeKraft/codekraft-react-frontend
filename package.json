@@ -61,7 +61,8 @@
     "react-select2-wrapper": "^1.0.4-beta5",
     "react-sidebar": "^2.3.2",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "react-blur-admin": "^0.11.1"
   },
   "eslintConfig": {
     "extends": "react-app",
