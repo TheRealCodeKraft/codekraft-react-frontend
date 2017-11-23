@@ -1,5 +1,7 @@
 var React = require("react")
 
+var moment = require("moment")
+
 class AdminPageListRow extends React.Component {
 
   constructor(props) {
@@ -63,6 +65,9 @@ class AdminPageListRow extends React.Component {
      }
      if (attribute.type === "image") {
        value = <img src={value} style={{height: 50}} className="img-rounded" alt={value} />
+     }
+     if (attribute.type === "date") {
+       value = moment(value).format('DD/MM/YYYY')
      }
    }
 

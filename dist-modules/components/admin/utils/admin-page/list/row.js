@@ -14,6 +14,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var React = require("react");
 
+var moment = require("moment");
+
 var AdminPageListRow = function (_React$Component) {
   _inherits(AdminPageListRow, _React$Component);
 
@@ -98,6 +100,9 @@ var AdminPageListRow = function (_React$Component) {
         }
         if (attribute.type === "image") {
           value = React.createElement("img", { src: value, style: { height: 50 }, className: "img-rounded", alt: value });
+        }
+        if (attribute.type === "date") {
+          value = moment(value).format('DD/MM/YYYY');
         }
       }
 
