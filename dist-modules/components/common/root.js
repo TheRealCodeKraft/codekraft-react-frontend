@@ -86,6 +86,7 @@ exports.default = function (name, config) {
           );
         }
 
+        console.log(config);
         if (config.wrapper) {
           return React.createElement(
             config.wrapper.component,

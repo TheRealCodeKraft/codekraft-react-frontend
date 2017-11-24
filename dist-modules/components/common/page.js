@@ -19,16 +19,7 @@ exports.default = function (item, config) {
     _createClass(Page, [{
       key: "render",
       value: function render() {
-        return _react2.default.createElement(
-          "div",
-          null,
-          _react2.default.createElement(
-            "h1",
-            null,
-            item.title
-          ),
-          _react2.default.createElement("div", { dangerouslySetInnerHTML: { __html: item.body } })
-        );
+        return _react2.default.createElement("div", { dangerouslySetInnerHTML: { __html: item.body } });
       }
     }]);
 

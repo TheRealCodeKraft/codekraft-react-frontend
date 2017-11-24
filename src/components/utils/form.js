@@ -229,7 +229,7 @@ class Form extends React.Component {
 
     switch(field.type) {
       case "checkbox":
-        input = <input className={field.inputClass} title={field.title} name={field.name} type={field.type} value={value === true ? "on" : "off"} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} />
+        input = <input id={field.name} className={field.inputClass} title={field.title} name={field.name} type={field.type} value={value === true ? "on" : "off"} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} />
         break
       case "radio":
         var radios = []
@@ -299,14 +299,19 @@ class Form extends React.Component {
   decorateInput(input, field) {
     input = <div className="form-group" key={this.props.id + "-field-" + field.name}>
               {
-                field.label !== undefined
-                ? <label className="control-label" for={field.name}>{field.label}</label> 
+                (field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off")
+                ? <label className="control-label" htmlFor={field.name}>{field.label}</label> 
                 : null
               }
               {input}
               {
+                (field.label !== undefined && field.type == "checkbox")
+                ? <label className="control-label" htmlFor={field.name}>{field.label}</label> 
+                : null
+              }
+              {
                 this.state.errors[field.name] !== undefined
-                ? <span>{this.state.errors[field.name]}</span>
+                ? <span className="form-error">{this.state.errors[field.name]}</span>
                 : null
               }
             </div>

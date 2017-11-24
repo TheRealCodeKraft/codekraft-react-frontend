@@ -78,24 +78,24 @@ var Login = function (_React$Component) {
           "Votre mot de passe a bien \xE9t\xE9 modifi\xE9, vous pouvez maintenant vous connecter"
         ) : null,
         React.createElement(_form2.default, { id: "login-form",
+          labels: this.props.labels,
           clients: this.props.clients,
           fields: this.fields,
           submitLabel: "Me connecter",
           onSubmit: this.handleSubmit,
-          submitClass: "btn btn-accent btn-signup",
+          submitClass: this.props.submitClass ? this.props.submitClass : "btn btn-accent btn-signup",
           service: { client: this.props.clients.ApiClient, func: "login" },
           onSubmitComplete: this.handleSubmitComplete
         }),
-        React.createElement(
+        this.props.showLoseLinks !== false ? [React.createElement(
           _reactRouterDom.Link,
           { className: "btn btn-default", to: "/signup" },
           "Cr\xE9er un compte"
-        ),
-        React.createElement(
+        ), React.createElement(
           _reactRouterDom.Link,
           { to: "/forgot-password" },
           "Mot de passe oubli\xE9"
-        )
+        )] : null
       );
     }
   }, {

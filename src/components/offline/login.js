@@ -58,16 +58,19 @@ class Login extends React.Component {
          : null}
 
         <Form id="login-form" 
+              labels={this.props.labels}
               clients={this.props.clients}
               fields={this.fields} 
               submitLabel="Me connecter" 
               onSubmit={this.handleSubmit}
-              submitClass={"btn btn-accent btn-signup"} 
+              submitClass={this.props.submitClass ? this.props.submitClass : "btn btn-accent btn-signup"} 
               service={{client: this.props.clients.ApiClient, func: "login"}}
               onSubmitComplete={this.handleSubmitComplete}
         />
-        <Link className={"btn btn-default"} to="/signup">Créer un compte</Link>
-        <Link to="/forgot-password">Mot de passe oublié</Link>
+        { this.props.showLoseLinks !== false
+          ? [<Link className={"btn btn-default"} to="/signup">Créer un compte</Link>,
+             <Link to="/forgot-password">Mot de passe oublié</Link>]
+          : null}
       </div>
     )
   }

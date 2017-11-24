@@ -12,14 +12,6 @@ var _home5 = require('../components/admin/home');
 
 var _home6 = _interopRequireDefault(_home5);
 
-var _login = require('../components/offline/login');
-
-var _login2 = _interopRequireDefault(_login);
-
-var _signup = require('../components/offline/signup');
-
-var _signup2 = _interopRequireDefault(_signup);
-
 var _default = require('../config/navigation/default');
 
 var _default2 = _interopRequireDefault(_default);
@@ -81,6 +73,7 @@ module.exports = function (config, clients, callback) {
         if (!config[key].menu) config[key].menu = _default2.default[key].menu;else {
           for (var menuKey in _default2.default[key].menu) {
             if (!config[key].menu[menuKey]) config[key].menu[menuKey] = _default2.default[key].menu[menuKey];else {
+              if (!config[key].menu[menuKey].items) config[key].menu[menuKey].items = [];
               for (var itemKey in _default2.default[key].menu[menuKey].items) {
                 if (_default2.default[key].menu[menuKey].items[itemKey].root) {
                   if (config[key].menu[menuKey].items.filter(function (item) {
@@ -88,6 +81,11 @@ module.exports = function (config, clients, callback) {
                   }).length > 0) {
                     continue;
                   }
+                }
+                if (_default2.default[key].menu[menuKey].items[itemKey].route !== undefined && config[key].menu[menuKey].items.filter(function (item) {
+                  return item.route == _default2.default[key].menu[menuKey].items[itemKey].route;
+                }).length > 0) {
+                  continue;
                 }
                 config[key].menu[menuKey].items.push(_default2.default[key].menu[menuKey].items[itemKey]);
                 lastIndex = config[key].menu[menuKey].items.length - 1;

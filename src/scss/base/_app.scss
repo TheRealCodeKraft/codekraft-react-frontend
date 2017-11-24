@@ -27,14 +27,14 @@ body {
 #main-container {
   color: #b1b1b1;
   font-size: 1.2rem;
-  padding: 2rem;
+  //padding: 2rem;
 
   @include md {
-    padding: 3rem;
+    //padding: 3rem;
   }
 
   @include md {
-    padding: 4rem;
+    //padding: 4rem;
   }
 }
 
@@ -341,4 +341,47 @@ hr {
   border: 0;
   border-top: 1px solid $grey-border;
   margin: 2rem 0;
+}
+
+input[type="checkbox"] {
+  position: absolute;
+  left: -9999px;
+}
+
+label {
+  display: block;
+  position: relative;
+  margin: 20px;
+  padding: 15px 30px 15px 62px;
+  border: 3px solid #fff;
+  border-radius: 100px;
+  color: #fff;
+  background-color: #6a8494;
+  box-shadow: 0 0 20px rgba(0, 0, 0, .2);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color .2s, box-shadow .2s;
+  font-weight: 300;
+}
+
+label::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 10px;
+  width: 32px;
+  border: 3px solid #fff;
+  border-radius: 100px;
+  transition: background-color .2s;
+}
+
+input:checked + label {
+  background-color: #ab576c;
+}
+
+input:checked + label::before {
+  background-color: #fff;
 }

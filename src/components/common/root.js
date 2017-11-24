@@ -82,6 +82,7 @@ export default function(name, config) {
                  </Switch>
       }
 
+      console.log(config)
       if (config.wrapper) {
         return (
           <config.wrapper.component config={config.wrapper.config}>

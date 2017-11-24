@@ -6,10 +6,7 @@ export default function(item, config) {
 
     render() {
       return (
-        <div>
-          <h1>{item.title}</h1>
-          <div dangerouslySetInnerHTML={{__html: item.body}} />
-        </div>
+        <div dangerouslySetInnerHTML={{__html: item.body}} />
       )
     }
   }

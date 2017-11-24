@@ -96,24 +96,24 @@ var Signup = function (_React$Component) {
         "div",
         null,
         React.createElement(_form2.default, { id: "signup-form",
+          labels: this.props.labels,
           fields: this.fields,
           submitLabel: "M'enregistrer",
-          submitClass: "btn btn-accent btn-signup",
+          submitClass: this.props.submitClass ? this.props.submitClass : "btn btn-accent btn-signup",
           onSubmit: this.handleSubmit,
           service: { client: this.props.clients.UserClient, func: "signup" },
           onSubmitComplete: this.handleSubmitComplete,
           onSubmitError: this.handleSubmitError
         }),
-        React.createElement(
+        this.props.showLoseLinks !== false ? [React.createElement(
           _reactRouterDom.Link,
           { className: "btn btn-default", to: "/login" },
           "J'ai d\xE9j\xE0 un compte"
-        ),
-        React.createElement(
+        ), React.createElement(
           _reactRouterDom.Link,
           { to: "/forgot-password" },
           "Mot de passe oubli\xE9"
-        )
+        )] : null
       );
     }
   }, {

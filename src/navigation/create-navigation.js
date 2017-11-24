@@ -2,9 +2,6 @@ import OfflineHome from '../components/offline/home'
 import DashboardHome from '../components/dashboard/home'
 import AdminHome from '../components/admin/home'
 
-import Login from '../components/offline/login'
-import Signup from '../components/offline/signup'
-
 import BootstrapConfig from '../config/navigation/default'
 import Page from '../components/common/page'
 
@@ -63,11 +60,15 @@ module.exports = function(config, clients, callback) {
           for (var menuKey in BootstrapConfig[key].menu) {
             if (!config[key].menu[menuKey]) config[key].menu[menuKey] = BootstrapConfig[key].menu[menuKey]
             else {
+              if (!config[key].menu[menuKey].items) config[key].menu[menuKey].items = []
               for (var itemKey in BootstrapConfig[key].menu[menuKey].items) {
                 if (BootstrapConfig[key].menu[menuKey].items[itemKey].root) {
                   if (config[key].menu[menuKey].items.filter(item => { return item.root }).length > 0) {
                     continue
                   }
+                }
+                if (BootstrapConfig[key].menu[menuKey].items[itemKey].route !== undefined && config[key].menu[menuKey].items.filter(item => { return item.route == BootstrapConfig[key].menu[menuKey].items[itemKey].route }).length > 0) {
+                  continue
                 }
                 config[key].menu[menuKey].items.push(BootstrapConfig[key].menu[menuKey].items[itemKey])
                 lastIndex = config[key].menu[menuKey].items.length - 1
