@@ -84,6 +84,10 @@ var config = {
           component: _resetPassword2.default,
           display: false,
           discardOnLogin: true
+        }, {
+          title: "Dashboard",
+          switch: "/dashboard",
+          onlyOnLogin: true
         }]
       },
       side: {

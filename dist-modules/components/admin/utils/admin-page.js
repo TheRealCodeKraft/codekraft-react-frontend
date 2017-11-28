@@ -56,7 +56,7 @@ exports.default = function (config, globalConfig) {
         return React.createElement(
           _reactBootstrap.Grid,
           { fluid: true, className: 'admin-page' },
-          React.createElement(
+          globalConfig.subHeader ? React.createElement(globalConfig.subHeader, _extends({}, globalConfig, { config: config, globalConfig: globalConfig, location: this.props.location, onNew: this.handleNew })) : React.createElement(
             'div',
             { className: 'admin-page-header' },
             React.createElement(
@@ -201,7 +201,7 @@ exports.default = function (config, globalConfig) {
     }, {
       key: 'handleNew',
       value: function handleNew(e) {
-        e.preventDefault();
+        if (e) e.preventDefault();
         this.setState({ currentId: undefined, mode: "create" }, this.openSidebar);
       }
     }, {
@@ -266,8 +266,10 @@ exports.default = function (config, globalConfig) {
     return props;
   }
 
-  return (0, _reactRedux.connect)(mapStateToProps)(AdminPage);
+  return (0, _reactRouter.withRouter)((0, _reactRedux.connect)(mapStateToProps)(AdminPage));
 };
+
+var _reactRouter = require('react-router');
 
 var _reactRedux = require('react-redux');
 

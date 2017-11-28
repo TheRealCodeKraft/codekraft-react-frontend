@@ -57,6 +57,11 @@ const config = {
             component: ResetPassword,
             display: false,
             discardOnLogin: true
+          },
+          {
+            title: "Dashboard",
+            switch: "/dashboard",
+            onlyOnLogin: true
           }
         ]
       },

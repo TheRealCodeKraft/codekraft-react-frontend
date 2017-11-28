@@ -47,7 +47,7 @@ var Header = function (_React$Component) {
 
       if (this.props.custom !== undefined) {
         if (this.props.custom !== null) {
-          return React.createElement(this.props.custom, { menu: this.props.menu, root: this.props.root, admin: this.props.admin, location: this.props.location });
+          return React.createElement(this.props.custom, { menu: this.props.menu, root: this.props.root, admin: this.props.admin, location: this.props.location, token: this.props.token });
         } else return null;
       }
 
@@ -92,7 +92,7 @@ var Header = function (_React$Component) {
         var items = nav.items;
         for (var index in items) {
           item = items[index];
-          if (item.display !== false) {
+          if (item.display !== false && !(this.props.token && item.discardOnLogin || !this.props.token && item.onlyOnLogin)) {
             if (item.type) {
               switch (item.type) {
                 case "logout":
