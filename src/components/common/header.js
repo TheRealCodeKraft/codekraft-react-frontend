@@ -20,7 +20,7 @@ class Header extends React.Component {
 
     if (this.props.custom !== undefined) {
       if (this.props.custom !== null) {
-         return <this.props.custom menu={this.props.menu} root={this.props.root} admin={this.props.admin} location={this.props.location} token={this.props.token} />
+         return <this.props.custom menu={this.props.menu} root={this.props.root} admin={this.props.admin} location={this.props.location} token={this.props.token} name={this.props.name} />
       } else return null
     }
 
