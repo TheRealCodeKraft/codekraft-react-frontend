@@ -56,6 +56,7 @@ exports.default = function (name, config) {
             null,
             this.state.pages.map(function (item) {
               var url = config.root + (item.route && item.route !== "" ? (config.root !== "/" ? "/" : "") + item.route : "");
+              console.log(url);
               var component = null;
               if (item.component) {
                 component = item.component;
@@ -86,7 +87,6 @@ exports.default = function (name, config) {
           );
         }
 
-        console.log(config);
         if (config.wrapper) {
           return React.createElement(
             config.wrapper.component,

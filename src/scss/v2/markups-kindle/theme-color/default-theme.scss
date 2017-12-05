@@ -1,0 +1,121 @@
+
+/*=======================================
+Template Design By MarkUps	
+Author URI : http://www.markups.io/
+========================================*/
+
+.mu-service-icon-box,
+.mu-team-social-info a:hover,
+.mu-team-social-info a:focus,
+.mu-testimonial-slide .slick-dots li button::before,
+.mu-testimonial-slide .slick-dots li.slick-active button::before,
+.mu-footer-area a:hover,
+.mu-footer-area a:focus,
+.mu-hero-left .mu-primary-btn,
+.mu-hero-left .mu-primary-btn:hover,
+.mu-hero-left .mu-primary-btn:focus,
+.mu-single-counter i,
+.counter-value {
+	color: $main_color;
+  .login & {
+    color: $secondary_color;
+  }
+  .signup & {
+    color: $ternary_color;
+  }
+  .admin &, .admin-header & {
+    color: $quartery_color;
+  }
+  .dashboard & {
+    color: $fivery_color;
+  }
+}
+
+.mu-send-msg-btn:hover,
+.mu-send-msg-btn:focus,
+.mu-book-overview-icon-box,
+.mu-social-media a, 
+.mu-social-media a:hover,
+.mu-social-media a:focus,
+.mu-order-btn:hover,
+.mu-order-btn:focus {
+	border: 1px solid $main_color;
+	color: $main_color;
+  .login & {
+    color: $secondary_color;
+  }
+  .signup & {
+    color: $ternary_color;
+  }
+  .admin &, .admin-header & {
+    color: $quartery_color;
+  }
+  .dashboard & {
+    color: $fivery_color;
+  }
+}
+
+.mu-send-msg-btn {
+	border: 1px solid $main_color;
+	background-color: $main_color;
+  .login & {
+	  border: 1px solid $secondary_color;
+    background-color: $secondary_color;
+  }
+  .signup & {
+	  border: 1px solid $ternary_color;
+    background-color: $ternary_color;
+  }
+  .admin &, .admin-header & {
+	  border: 1px solid $quartery_color;
+    background-color: $quartery_color;
+  }
+  .dashboard & {
+	  border: 1px solid $fivery_color;
+    background-color: $fivery_color;
+  }
+}
+
+
+#mu-hero,
+.mu-testimonial-slide .slick-dots li button:hover,
+.mu-testimonial-slide .slick-dots li button:focus,
+.mu-testimonial-slide .slick-dots li.slick-active button,
+.mu-header-dot,
+.mu-author-social a,
+.mu-pricing-content .mu-popular-price-tag,
+#mu-video-review:before  {
+	background-color: $main_color;
+  .login & {
+    background-color: $secondary_color;
+  }
+  .signup & {
+    background-color: $ternary_color;
+  }
+  .admin &, .admin-header & {
+    background-color: $quartery_color;
+  }
+  .dashboard & {
+    background-color: $fivery_color;
+  }
+}
+
+.mu-contact-form .form-control:focus,
+.mu-testimonial-slide .slick-dots li button:hover,
+.mu-testimonial-slide .slick-dots li button:focus,
+.mu-testimonial-slide .slick-dots li.slick-active button{
+	border: 1px solid $main_color;    
+  .login & {
+	  border: 1px solid $secondary_color;
+  }
+  .signup & {
+	  border: 1px solid $ternary_color;
+  }
+  .admin &, .admin-header & {
+	  border: 1px solid $quartery_color;
+  }
+  .dashboard & {
+	  border: 1px solid $fivery_color;
+  }
+} 
+

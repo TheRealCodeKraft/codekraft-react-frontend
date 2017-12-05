@@ -2,7 +2,6 @@ import OfflineHome from '../components/offline/home'
 import DashboardHome from '../components/dashboard/home'
 import AdminHome from '../components/admin/home'
 
-import BootstrapConfig from '../config/navigation/default'
 import Page from '../components/common/page'
 
 //import sync from 'synchronize'
@@ -47,7 +46,7 @@ function loadItem(mainKey, subKey, itemIndex, baseItem, data, clients, callback)
   }(mainKey, subKey, itemIndex, baseItem, data, clients, callback))
 }
 
-module.exports = function(config, clients, callback) {
+module.exports = function(BootstrapConfig, config, clients, callback) {
   var lastIndex
   for (var key in BootstrapConfig) {
     if (!config[key]) config[key] = BootstrapConfig[key]

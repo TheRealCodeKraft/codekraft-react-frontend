@@ -39,25 +39,25 @@ class App extends React.Component {
     return (
       <div id="main-container" className={"wrapper"}>
         <Switch>
-           <Route path="/dashboard" render={() => <Header menu={this.props.navigation.dashboard.menu} root={this.props.navigation.dashboard.root} custom={this.props.navigation.dashboard.header} location={this.props.location} name="dashboard" />} />
-           <Route path="/admin" render={() => <Header menu={this.props.navigation.admin.menu} root={this.props.navigation.admin.root} custom={this.props.navigation.admin.header} location={this.props.location} admin={true} name="admin" />} />
-           <Route path="/" render={() => <Header menu={false ? this.props.navigation.dashboard.menu : this.props.navigation.offline.menu} root={this.props.navigation.offline.root} custom={this.props.navigation.offline.header} location={this.props.location} token={this.props.token} name="offline" />} />
+           <Route path="/dashboard" render={() => <Header menu={this.props.navigation.dashboard.menu} root={this.props.navigation.dashboard.root} custom={this.props.navigation.dashboard.header} location={this.props.location} name="dashboard" mainTitle={this.props.config.mainTitle} />} />
+           <Route path="/admin" render={() => <Header menu={this.props.navigation.admin.menu} root={this.props.navigation.admin.root} custom={this.props.navigation.admin.header} location={this.props.location} admin={true} name="admin" mainTitle={this.props.config.mainTitle} />} />
+           <Route path="/" render={() => <Header menu={false ? this.props.navigation.dashboard.menu : this.props.navigation.offline.menu} root={this.props.navigation.offline.root} custom={this.props.navigation.offline.header} location={this.props.location} token={this.props.token} name="offline" mainTitle={this.props.config.mainTitle} />} />
         </Switch>
  
-          {this.props.token
-           ? <ActionCableProvider url={process.env.CABLE_URL + "/?token=" + this.props.token.access_token}>
-               <Switch>
-                 <Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />
-                 <Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
-                 <Route path="/" component={Root("offline", this.props.navigation.offline)} />
-               </Switch>
-             </ActionCableProvider>
-           : <Switch>
+        {this.props.token
+         ? <ActionCableProvider url={process.env.CABLE_URL + "/?token=" + this.props.token.access_token}>
+             <Switch>
                <Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />
                <Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
                <Route path="/" component={Root("offline", this.props.navigation.offline)} />
-             </Switch>}
-        </div>
+             </Switch>
+           </ActionCableProvider>
+         : <Switch>
+             <Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />
+             <Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
+             <Route path="/" component={Root("offline", this.props.navigation.offline)} />
+           </Switch>}
+      </div>
     );
   }
 }
