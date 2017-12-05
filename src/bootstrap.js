@@ -18,7 +18,7 @@ import App from './components/app'
 
 var Bootstrap = function() {
 
-  var launch = function(config) {
+  var launch = function(config, callback) {
     const store = createStore(config.clients)
     const clients = createClients(config.clients, store)
 
@@ -43,6 +43,7 @@ var Bootstrap = function() {
           document.getElementById('app-root')
         );
       //});
+      if (callback) callback()
     })
   }
 

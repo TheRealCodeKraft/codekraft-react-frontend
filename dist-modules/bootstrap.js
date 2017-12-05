@@ -40,7 +40,7 @@ var BrowserRouter = require('react-router-dom').BrowserRouter;
 
 var Bootstrap = function () {
 
-  var launch = function launch(config) {
+  var launch = function launch(config, callback) {
     var store = (0, _createStore2.default)(config.clients);
     var clients = (0, _createClients2.default)(config.clients, store);
 
@@ -66,6 +66,7 @@ var Bootstrap = function () {
         )
       ), document.getElementById('app-root'));
       //});
+      if (callback) callback();
     });
   };
 
