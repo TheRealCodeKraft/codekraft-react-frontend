@@ -24,6 +24,18 @@ var _app = require('./components/app');
 
 var _app2 = _interopRequireDefault(_app);
 
+var _app3 = require('./components/v2/app');
+
+var _app4 = _interopRequireDefault(_app3);
+
+var _default = require('./config/navigation/default');
+
+var _default2 = _interopRequireDefault(_default);
+
+var _default3 = require('./config/navigation/v2/default');
+
+var _default4 = _interopRequireDefault(_default3);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var React = require('react');
@@ -43,13 +55,21 @@ var Bootstrap = function () {
   var launch = function launch(config, callback) {
     var store = (0, _createStore2.default)(config.clients);
     var clients = (0, _createClients2.default)(config.clients, store);
+    var version = config.version ? config.version : 1;
+
+    var mainComponent = _app2.default,
+        bootstrapConfig = _default2.default;
+    if (version === 2) {
+      mainComponent = _app4.default;
+      bootstrapConfig = _default4.default;
+    }
 
     store.dispatch({
       type: "CLIENTS",
       clients: clients
     });
 
-    (0, _createNavigation2.default)(config.navigation, clients, function (nav) {
+    (0, _createNavigation2.default)(bootstrapConfig, config.navigation, clients, function (nav) {
       store.dispatch({
         type: "NAVIGATION",
         navigation: nav
@@ -62,7 +82,7 @@ var Bootstrap = function () {
         React.createElement(
           BrowserRouter,
           null,
-          React.createElement(_app2.default, null)
+          React.createElement(mainComponent, { config: config })
         )
       ), document.getElementById('app-root'));
       //});

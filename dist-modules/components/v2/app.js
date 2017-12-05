@@ -24,7 +24,7 @@ var _header = require('./common/header');
 
 var _header2 = _interopRequireDefault(_header);
 
-var _root = require('./common/root');
+var _root = require('../common/root');
 
 var _root2 = _interopRequireDefault(_root);
 

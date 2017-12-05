@@ -12,10 +12,6 @@ var _home5 = require('../components/admin/home');
 
 var _home6 = _interopRequireDefault(_home5);
 
-var _default = require('../config/navigation/default');
-
-var _default2 = _interopRequireDefault(_default);
-
 var _page = require('../components/common/page');
 
 var _page2 = _interopRequireDefault(_page);
@@ -63,31 +59,31 @@ function loadItem(mainKey, subKey, itemIndex, baseItem, data, clients, callback)
   }(mainKey, subKey, itemIndex, baseItem, data, clients, callback);
 }
 
-module.exports = function (config, clients, callback) {
+module.exports = function (BootstrapConfig, config, clients, callback) {
   var lastIndex;
-  for (var key in _default2.default) {
-    if (!config[key]) config[key] = _default2.default[key];else {
-      if (!config[key].root) config[key].root = _default2.default[key].root;
-      if (!config[key].restricted && _default2.default[key].restricted) config[key].restricted = _default2.default[key].restricted;
+  for (var key in BootstrapConfig) {
+    if (!config[key]) config[key] = BootstrapConfig[key];else {
+      if (!config[key].root) config[key].root = BootstrapConfig[key].root;
+      if (!config[key].restricted && BootstrapConfig[key].restricted) config[key].restricted = BootstrapConfig[key].restricted;
       if (config[key].enableDefault !== false) {
-        if (!config[key].menu) config[key].menu = _default2.default[key].menu;else {
-          for (var menuKey in _default2.default[key].menu) {
-            if (!config[key].menu[menuKey]) config[key].menu[menuKey] = _default2.default[key].menu[menuKey];else {
+        if (!config[key].menu) config[key].menu = BootstrapConfig[key].menu;else {
+          for (var menuKey in BootstrapConfig[key].menu) {
+            if (!config[key].menu[menuKey]) config[key].menu[menuKey] = BootstrapConfig[key].menu[menuKey];else {
               if (!config[key].menu[menuKey].items) config[key].menu[menuKey].items = [];
-              for (var itemKey in _default2.default[key].menu[menuKey].items) {
-                if (_default2.default[key].menu[menuKey].items[itemKey].root) {
+              for (var itemKey in BootstrapConfig[key].menu[menuKey].items) {
+                if (BootstrapConfig[key].menu[menuKey].items[itemKey].root) {
                   if (config[key].menu[menuKey].items.filter(function (item) {
                     return item.root;
                   }).length > 0) {
                     continue;
                   }
                 }
-                if (_default2.default[key].menu[menuKey].items[itemKey].route !== undefined && config[key].menu[menuKey].items.filter(function (item) {
-                  return item.route == _default2.default[key].menu[menuKey].items[itemKey].route;
+                if (BootstrapConfig[key].menu[menuKey].items[itemKey].route !== undefined && config[key].menu[menuKey].items.filter(function (item) {
+                  return item.route == BootstrapConfig[key].menu[menuKey].items[itemKey].route;
                 }).length > 0) {
                   continue;
                 }
-                config[key].menu[menuKey].items.push(_default2.default[key].menu[menuKey].items[itemKey]);
+                config[key].menu[menuKey].items.push(BootstrapConfig[key].menu[menuKey].items[itemKey]);
                 lastIndex = config[key].menu[menuKey].items.length - 1;
                 if (config[key].menu[menuKey].discards && config[key].menu[menuKey].discards.indexOf(config[key].menu[menuKey].items[lastIndex].title) !== -1) {
                   config[key].menu[menuKey].items[lastIndex].display = false;
