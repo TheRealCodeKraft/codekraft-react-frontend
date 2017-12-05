@@ -79,6 +79,8 @@ class Form extends React.Component {
           this.loadValuesState()
         }
       })
+    } else {
+      this.loadValuesState()
     }
   }
 
@@ -246,7 +248,8 @@ class Form extends React.Component {
         input = radios
         break
       case "switch":
-        input = <Switch title={field.title} name={field.name} onChange={this.handleInputChange.bind(this, field, !this.state.values[field.name])} onText="OUI" offText="NON" defaultValue={value} bsSize="mini" />
+        console.log(value)
+        input = <Switch title={field.title} name={field.name} onChange={this.handleInputChange.bind(this, field, !this.state.values[field.name])} onText="OUI" offText="NON" value={value} defaultValue={field.defaultValue} bsSize="mini" />
         break
       case "select":
         if (field.values instanceof Array) {
@@ -394,11 +397,13 @@ class Form extends React.Component {
     for (var index in this.props.fields) {
       field = this.props.fields[index]
       if (field.required && field.show !== false) {
-        if (textTypes.indexOf(field.type) >= 0 && (this.state.values[field.name] === "" || this.state.values[field.name] === undefined)) {
-          errors[field.name] = field.name + "_required"
-        }
-        if (field.type === "select" && (this.state.values[field.name] === -1 || this.state.values[field.name] === "-1")) {
-          errors[field.name] = field.name + "_required"
+        if (!field.displayIf || (this.state.values[field.displayIf["name"]] == field.displayIf["value"])) {
+          if (textTypes.indexOf(field.type) >= 0 && (this.state.values[field.name] === "" || this.state.values[field.name] === undefined)) {
+            errors[field.name] = field.name + "_required"
+          }
+          if (field.type === "select" && (this.state.values[field.name] === -1 || this.state.values[field.name] === "-1")) {
+            errors[field.name] = field.name + "_required"
+          }
         }
       }
 
