@@ -179,3 +179,14 @@ button[type="submit"] {
 .header.side-menu-toggle + div .admin-page {
   padding-left: 300px;
 }
+
+.side-menu {
+  padding: 0 !important;
+  .nav-category {
+    background: #686d7f;
+    color: #fff;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}

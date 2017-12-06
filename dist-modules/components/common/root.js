@@ -40,6 +40,16 @@ exports.default = function (name, config) {
             }
             pageIndex++;
           }
+
+          for (var gIndex in groups[index].groups) {
+            for (var pi in groups[index].groups[gIndex].items) {
+              pages.push(groups[index].groups[gIndex].items[pi]);
+              if (!(pages[pages.length - 1].client instanceof Object)) {
+                pages[pages.length - 1].client = this.props.clients[pages[pages.length - 1].client];
+              }
+              pageIndex++;
+            }
+          }
         }
         this.setState({ pages: pages });
       }
@@ -56,7 +66,6 @@ exports.default = function (name, config) {
             null,
             this.state.pages.map(function (item) {
               var url = config.root + (item.route && item.route !== "" ? (config.root !== "/" ? "/" : "") + item.route : "");
-              console.log(url);
               var component = null;
               if (item.component) {
                 component = item.component;

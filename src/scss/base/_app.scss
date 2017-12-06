@@ -348,7 +348,7 @@ input[type="checkbox"] {
   left: -9999px;
 }
 
-label {
+input[type="checkbox"] + label {
   display: block;
   position: relative;
   margin: 20px;
@@ -365,7 +365,7 @@ label {
   font-weight: 300;
 }
 
-label::before {
+input[type="checkbox"] + label::before {
   content: '';
   display: block;
   position: absolute;

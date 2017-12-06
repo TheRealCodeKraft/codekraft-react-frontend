@@ -90,7 +90,20 @@ class Form extends React.Component {
 
     for (var index in this.props.fields) {
       if (this.props.values) {
-        currentValue = this.props.values[this.props.fields[index].name]
+        if (this.props.fields[index].name.indexOf("[") !== -1) {
+           var splitted = this.props.fields[index].name.split('[')
+           if (this.props.values[splitted[0]]) {
+             if (splitted.length === 2) {
+               currentValue = this.props.values[splitted[0]][splitted[1].replace(']', '')]
+             } else {
+               currentValue = this.props.values[splitted[0]][splitted[1].replace(']', '')][splitted[2].replace(']', '')]
+             }
+           } else {
+             currentValue = undefined
+           }
+        } else {
+          currentValue = this.props.values[this.props.fields[index].name]
+        }
         if (currentValue instanceof Array) {
           currentValue = currentValue.map(value => { return value.id })
         }
@@ -100,6 +113,7 @@ class Form extends React.Component {
 
       valuesState[this.props.fields[index].name] = currentValue
     }
+    console.log(valuesState)
 
     this.setState({values: valuesState});
   }
@@ -223,15 +237,18 @@ class Form extends React.Component {
 
   getInput(field) {
     var input = null, value = this.state.values[field.name], options = []
+    var fieldName = field.name
 
     if (field.name.indexOf('[') !== -1) {
       var splitted = field.name.split('[')
-      value = this.state.values[splitted[0]][splitted[1].replace(']', '')][splitted[2].replace(']','')]
+      if (this.state.values[splitted[0]]) {
+        value = this.state.values[splitted[0]][splitted[1].replace(']', '')][splitted[2].replace(']','')]
+      }
     }
 
     switch(field.type) {
       case "checkbox":
-        input = <input id={field.name} className={field.inputClass} title={field.title} name={field.name} type={field.type} value={value === true ? "on" : "off"} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} />
+        input = <input id={field.name} className={field.inputClass} title={field.title} name={fieldName} type={field.type} value={value === true ? "on" : "off"} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} />
         break
       case "radio":
         var radios = []
@@ -241,7 +258,7 @@ class Form extends React.Component {
           for (var index in field.values) {
             val = field.values[index]
             radioId = this.props.id + "-" + field.name + "-" + index
-            radios.push(<input key={radioId} id={radioId} title={field.title} name={field.name} type={field.type} value={val.value} onChange={this.handleInputChange.bind(this, field)} checked={value === val.value ? "checked" : ""} />)
+            radios.push(<input key={radioId} id={radioId} title={field.title} name={fieldName} type={field.type} value={val.value} onChange={this.handleInputChange.bind(this, field)} checked={value === val.value ? "checked" : ""} />)
             radios.push(<label key={radioId + "_label"} htmlFor={radioId}>{val.label}</label>)
           }
         }
@@ -249,7 +266,7 @@ class Form extends React.Component {
         break
       case "switch":
         console.log(value)
-        input = <Switch title={field.title} name={field.name} onChange={this.handleInputChange.bind(this, field, !this.state.values[field.name])} onText="OUI" offText="NON" value={value} defaultValue={field.defaultValue} bsSize="mini" />
+        input = <Switch title={field.title} name={fieldName} onChange={this.handleInputChange.bind(this, field, !this.state.values[field.name])} onText="OUI" offText="NON" value={value} defaultValue={field.defaultValue} bsSize="mini" />
         break
       case "select":
         if (field.values instanceof Array) {
@@ -257,12 +274,12 @@ class Form extends React.Component {
         } else if (field.values instanceof Object) {
           options = this.state.loadedData[field.name] || []
         }
-        input = <select className="form-control" title={field.title} name={field.name} onChange={this.handleInputChange.bind(this, field)} defaultValue={value}>
+        input = <select className="form-control" title={field.title} name={fieldName} onChange={this.handleInputChange.bind(this, field)} value={value}>
                   {field.placeholder ? <option value="-1">{field.placeholder}</option> : null}
                   {options.map(val => {
                     var properties = {}
                     if (val[field.key] === value) {
-                      properties.selected = "selected"
+                      properties.selecTed = "selected"
                     }
                     return <option value={val[field.key]} {...properties}>{val[field.value]}</option>
                   })}
@@ -278,7 +295,7 @@ class Form extends React.Component {
         break
       case "textarea":
         if (value == null) value = ""
-        input = <textarea className="form-control" title={field.title} name={field.name} value={value} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} rows={5} />
+        input = <textarea className="form-control" title={field.title} name={fieldName} value={value} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} rows={5} />
         break
       case "date":
         if (!value) value=""
@@ -292,7 +309,7 @@ class Form extends React.Component {
         break
       default:
         if (value == null) value = ""
-        input = <input className="form-control" title={field.title} name={field.name} type={field.type} value={value} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} />
+        input = <input className="form-control" title={field.title} name={fieldName} type={field.type} value={value} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} />
         break
     }
 
@@ -325,15 +342,16 @@ class Form extends React.Component {
   handleInputChange(field, e) {
     var values = this.state.values;
     var value = e.target ? e.target.value : e
+    /*
     if (field.name.indexOf("[") !== -1) {
       var splitted = field.name.split("[")
       var parentFieldName = splitted[0]
       var index = splitted[1].replace(']', '')
       var fieldName = splitted[2].replace(']', '')
       values[parentFieldName][index][fieldName] = value
-    } else {
+    } else {*/
       values[field.name] = value
-    }
+    //}
 
     switch(field.type) {
       case "checkbox":
@@ -365,7 +383,17 @@ class Form extends React.Component {
 
       for (var fIndex in this.props.fields) {
         if (this.props.fields[fIndex].type !== "image-uploader" && this.props.fields[fIndex].show !== false) {
-          currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name]
+          if (this.props.fields[fIndex].name.indexOf('[') !== -1) {
+            var splitted = this.props.fields[fIndex].name.split("[")
+            if (splitted.length === 2) { 
+              currentValues[splitted[0] + "_" + splitted[1].replace(']', '')] = this.state.values[this.props.fields[fIndex].name]
+            } else {
+              currentValues[splitted[0]] = {}
+              currentValues[splitted[0]][splitted[1].replace(']', '') + "_" + splitted[2].replace(']', '')] = this.state.values[this.props.fields[fIndex].name]
+            }
+          } else {
+            currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name]
+          }
         }
       }
       if (this.props.service !== undefined) {

@@ -47,36 +47,54 @@ class Header extends React.Component {
     var nav = this.props.menu[navKey]
     var menu_entries = []
     if (nav) {
-      var menu_entry, menu, item, route
       if (nav.label) {
         menu_entries.push(<li className={"nav-category"}>{nav.label}</li>)
       }
       var items = nav.items
-      for (var index in items) {  
-        item = items[index]
-        if (item.display !== false && !(this.props.token && item.discardOnLogin || !this.props.token && item.onlyOnLogin)) {
-          if (item.type) {
-            switch(item.type) {
-              case "logout":
-                route = "/logout"
-                break
-            }
+      if (nav.groups) {
+        menu_entries.push(this.getGroups(nav.groups, nav))
+      }
+      menu_entries.push(this.getItems(items, nav))
+    }
+    return menu_entries
+  }
 
-          } else if (item.root === true) {
-            route = this.props.root 
-          } else if (item.switch) {
-            route = item.switch
-          } else {
-            route = (item.route[0] !== "/" ? this.props.root : "") + (item.route ? ((item.route[0] !== "/" && this.props.root !== "/") ? "/" : "") + item.route : "")
-          }
-          
-          menu_entry = this.buildItem(nav, item, route)
+  getGroups(groups, nav) {
+    var menu_entries = []
+    for (var index in nav.groups) {
+      menu_entries.push(<li className="nav-category">{nav.groups[index]["label"]}</li>)
+      menu_entries.push(this.getItems(nav.groups[index]["items"], nav))
+    }
+    return menu_entries
+  }
 
-          if (item.grants) {
-            menu_entry = <ShowForAcls grants={item.grants}>{menu_entry}</ShowForAcls>
+  getItems(items, nav) {
+    var menu_entries = []
+    var menu_entry, menu, item, route
+    for (var index in items) {  
+      item = items[index]
+      if (item.display !== false && !(this.props.token && item.discardOnLogin || !this.props.token && item.onlyOnLogin)) {
+        if (item.type) {
+          switch(item.type) {
+            case "logout":
+              route = "/logout"
+              break
           }
-          menu_entries.push(menu_entry)
+
+        } else if (item.root === true) {
+          route = this.props.root 
+        } else if (item.switch) {
+          route = item.switch
+        } else {
+          route = (item.route[0] !== "/" ? this.props.root : "") + (item.route ? ((item.route[0] !== "/" && this.props.root !== "/") ? "/" : "") + item.route : "")
         }
+        
+        menu_entry = this.buildItem(nav, item, route)
+
+        if (item.grants) {
+          menu_entry = <ShowForAcls grants={item.grants}>{menu_entry}</ShowForAcls>
+        }
+        menu_entries.push(menu_entry)
       }
     }
     return menu_entries
