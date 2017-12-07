@@ -64,13 +64,12 @@ export default function(config, globalConfig) {
             ? <globalConfig.subHeader {...globalConfig}  config={config} globalConfig={globalConfig} location={this.props.location} onNew={this.handleNew} />
            :   <div className="admin-page-header">
                  <h1><i className={(globalConfig.iconSet ? globalConfig.iconSet : "fa fa-") + (config.icon ? config.icon : "terminal") + " text-warning"}></i> {config.title}</h1>
-               {/*(config.list.actions && config.list.actions.indexOf("new") !== -1)
+               {(!config.list.actions || config.list.actions.indexOf("new") !== -1)
                 ? <Col xs={12} className="admin-new-button-row">
                    <a href="#" onClick={this.handleNew} className="admin-new-button"><i className={this.getIcon("new", "plus")} /> Nouveau</a>
                  </Col>
                 : null
-               */}
-                 <a href="#" onClick={this.handleNew} className="admin-new-button"><i className={this.getIcon("new", "plus")} /> Nouveau</a>
+               }
                </div>}
           {this.buildWatchers()}
           <div>

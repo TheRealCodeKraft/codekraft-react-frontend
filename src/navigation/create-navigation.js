@@ -53,6 +53,7 @@ module.exports = function(BootstrapConfig, config, clients, callback) {
     else {
       if (!config[key].root) config[key].root = BootstrapConfig[key].root
       if (!config[key].restricted && BootstrapConfig[key].restricted) config[key].restricted = BootstrapConfig[key].restricted
+      if (!config[key].grants && BootstrapConfig[key].grants) config[key].grants = BootstrapConfig[key].grants
       if (config[key].enableDefault !== false) {
         if (!config[key].menu) config[key].menu = BootstrapConfig[key].menu
         else {

@@ -66,12 +66,16 @@ exports.default = function (config, globalConfig) {
               ' ',
               config.title
             ),
-            React.createElement(
-              'a',
-              { href: '#', onClick: this.handleNew, className: 'admin-new-button' },
-              React.createElement('i', { className: this.getIcon("new", "plus") }),
-              ' Nouveau'
-            )
+            !config.list.actions || config.list.actions.indexOf("new") !== -1 ? React.createElement(
+              _reactBootstrap.Col,
+              { xs: 12, className: 'admin-new-button-row' },
+              React.createElement(
+                'a',
+                { href: '#', onClick: this.handleNew, className: 'admin-new-button' },
+                React.createElement('i', { className: this.getIcon("new", "plus") }),
+                ' Nouveau'
+              )
+            ) : null
           ),
           this.buildWatchers(),
           React.createElement(

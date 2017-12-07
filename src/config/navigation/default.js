@@ -109,6 +109,7 @@ const config = {
   admin: {
     root: "/admin",
     restricted: true,
+    grants: ["admin"],
     menu: {
       default: {
         hiddenOnHome: true,

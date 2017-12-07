@@ -74,6 +74,7 @@ class Header extends React.Component {
     for (var index in items) {  
       item = items[index]
       if (item.display !== false && !(this.props.token && item.discardOnLogin || !this.props.token && item.onlyOnLogin)) {
+        route=undefined
         if (item.type) {
           switch(item.type) {
             case "logout":
@@ -85,16 +86,18 @@ class Header extends React.Component {
           route = this.props.root 
         } else if (item.switch) {
           route = item.switch
-        } else {
+        } else if (item.route){
           route = (item.route[0] !== "/" ? this.props.root : "") + (item.route ? ((item.route[0] !== "/" && this.props.root !== "/") ? "/" : "") + item.route : "")
         }
         
-        menu_entry = this.buildItem(nav, item, route)
+        if (route !== undefined) {
+          menu_entry = this.buildItem(nav, item, route)
 
-        if (item.grants) {
-          menu_entry = <ShowForAcls grants={item.grants}>{menu_entry}</ShowForAcls>
+          if (item.grants) {
+            menu_entry = <ShowForAcls grants={item.grants}>{menu_entry}</ShowForAcls>
+          }
+          menu_entries.push(menu_entry)
         }
-        menu_entries.push(menu_entry)
       }
     }
     return menu_entries
