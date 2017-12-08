@@ -99,6 +99,14 @@ function createClient(name, plural, store, ApiClient, localConfig) {
         });
       };
 
+      var pushInState = function pushInState(data) {
+        var toDispatch = {
+          type: "UPDATE_" + name.toUpperCase()
+        };
+        toDispatch[name] = data;
+        store.dispatch(toDispatch);
+      };
+
       var functions = {
         name: name,
         plural: plural,
@@ -108,7 +116,9 @@ function createClient(name, plural, store, ApiClient, localConfig) {
         create: create,
         update: update,
         destroy: destroy,
-        upload: upload
+        upload: upload,
+
+        pushInState: pushInState
       };
 
       var funx, key;

@@ -86,6 +86,14 @@ return (function(name, plural, store, ApiClient) { return function() {
         })
       }
 
+      var pushInState = function(data) {
+        var toDispatch = {
+          type: "UPDATE_" + name.toUpperCase()
+        }
+        toDispatch[name] = data
+        store.dispatch(toDispatch)
+      }
+
       var functions = {
         name: name,
         plural: plural,
@@ -95,7 +103,9 @@ return (function(name, plural, store, ApiClient) { return function() {
         create: create,
         update: update,
         destroy: destroy,
-        upload: upload
+        upload: upload,
+
+        pushInState: pushInState
       }
 
       var funx, key

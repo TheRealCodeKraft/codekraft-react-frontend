@@ -126,6 +126,7 @@ module.exports = function createStore(config) {
       reducerName = config[index].name;
       plural = config[index].plural ? config[index].plural : reducerName + "s";
     } else {
+      //.reducerName = toCamel(config[index])
       reducerName = config[index];
       plural = reducerName + "s";
     }
@@ -146,18 +147,12 @@ module.exports = function createStore(config) {
 
   var reducerRegistry = new ReducerRegistry(coreReducers);
 
-  // Configure hot module replacement for core reducers
-  if (process.env.NODE_ENV !== 'production') {
-    /*
-        if (module.hot) {
-          module.hot.accept('./ducks/core', () => {
-            var nextCoreReducers = require('./ducks/core')
-            reducerRegistry.register(nextCoreReducers)
-          })
-        }
-    */
-  }
-
   var store = configureStore(reducerRegistry);
   return store;
 };
+
+function toCamel(data) {
+  return data.replace(/([-_][a-z])/g, function ($1) {
+    return $1.toUpperCase().replace(/[-_]/, '');
+  });
+}
