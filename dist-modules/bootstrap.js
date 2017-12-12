@@ -36,6 +36,10 @@ var _default3 = require('./config/navigation/v2/default');
 
 var _default4 = _interopRequireDefault(_default3);
 
+var _reactPopup = require('react-popup');
+
+var _reactPopup2 = _interopRequireDefault(_reactPopup);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var React = require('react');
@@ -86,6 +90,8 @@ var Bootstrap = function () {
         )
       ), document.getElementById('app-root'));
       //});
+
+      ReactDOM.render(React.createElement(_reactPopup2.default, null), document.getElementById('popup-container'));
       if (callback) callback();
     });
   };

@@ -20,6 +20,8 @@ import AppV2 from './components/v2/app'
 import BootstrapConfig from './config/navigation/default'
 import BootstrapConfigV2 from './config/navigation/v2/default'
 
+import Popup from 'react-popup'
+
 var Bootstrap = function() {
 
   var launch = function(config, callback) {
@@ -54,6 +56,11 @@ var Bootstrap = function() {
           document.getElementById('app-root')
         );
       //});
+      
+      ReactDOM.render(
+        <Popup />,
+        document.getElementById('popup-container')
+      )
       if (callback) callback()
     })
   }

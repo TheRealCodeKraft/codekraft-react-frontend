@@ -1,4 +1,5 @@
 @import "colors";
+@import "popup";
 @import "~codekraft-react-frontend/src/scss/v2/markups-kindle/bootstrap.min.css";
 @import "~codekraft-react-frontend/src/scss/v2/markups-kindle/slick.css";
 @import "~codekraft-react-frontend/src/scss/v2/markups-kindle/theme-color/default-theme";
@@ -153,6 +154,8 @@ button[type="submit"] {
       -webkit-transition: font-size .2s; /* Safari */
       transition: font-size .2s;
       margin: 0;
+      color: #fff;
+      font-size: 0.8em;
       &:hover {
         color: #fff;
         font-size: 2em;
