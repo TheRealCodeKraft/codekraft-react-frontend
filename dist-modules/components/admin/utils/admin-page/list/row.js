@@ -107,6 +107,9 @@ var AdminPageListRow = function (_React$Component) {
         if (attribute.replaceWith && attribute.replaceWith[value] !== undefined) {
           value = attribute.replaceWith[value];
         }
+        if (attribute.type === "color") {
+          value = React.createElement("div", { style: { width: 40, height: 20, background: value } });
+        }
       }
 
       return value;

@@ -368,6 +368,7 @@ class Form extends React.Component {
         values[field.name] = value
         break
       case "color":
+        console.log(value.hex)
         values[field.name] = value.hex
       default:
         break
