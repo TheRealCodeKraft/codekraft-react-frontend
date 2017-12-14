@@ -26,6 +26,8 @@ var _reactFileInput = require("react-file-input");
 
 var _reactFileInput2 = _interopRequireDefault(_reactFileInput);
 
+var _reactColor = require("react-color");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -389,6 +391,9 @@ var Form = function (_React$Component) {
             onChange: this.handleInputChange.bind(this, field)
           });
           break;
+        case "color":
+          input = React.createElement(_reactColor.SketchPicker, { color: value, onChangeComplete: this.handleInputChange.bind(this, field) });
+          break;
         default:
           if (value == null) value = "";
           input = React.createElement("input", { className: "form-control", title: field.title, name: fieldName, type: field.type, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field) });
@@ -449,6 +454,8 @@ var Form = function (_React$Component) {
         case "list-selector":
           values[field.name] = value;
           break;
+        case "color":
+          values[field.name] = value.hex;
         default:
           break;
       }

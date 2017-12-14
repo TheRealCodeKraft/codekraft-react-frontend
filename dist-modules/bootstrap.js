@@ -40,6 +40,10 @@ var _reactPopup = require('react-popup');
 
 var _reactPopup2 = _interopRequireDefault(_reactPopup);
 
+var _momentTimezone = require('moment-timezone');
+
+var _momentTimezone2 = _interopRequireDefault(_momentTimezone);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var React = require('react');
@@ -53,6 +57,8 @@ var Provider = require('react-redux').Provider;
 
 
 var BrowserRouter = require('react-router-dom').BrowserRouter;
+
+_momentTimezone2.default.locale('fr');
 
 var Bootstrap = function () {
 
@@ -91,7 +97,7 @@ var Bootstrap = function () {
       ), document.getElementById('app-root'));
       //});
 
-      ReactDOM.render(React.createElement(_reactPopup2.default, null), document.getElementById('popup-container'));
+      ReactDOM.render(React.createElement(_reactPopup2.default, { escToClose: true, closeOnOutsideClick: true, defaultOk: 'OK', defaultCancel: 'Annuler' }), document.getElementById('popup-container'));
       if (callback) callback();
     });
   };

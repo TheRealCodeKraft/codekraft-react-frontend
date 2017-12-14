@@ -22,6 +22,9 @@ import BootstrapConfigV2 from './config/navigation/v2/default'
 
 import Popup from 'react-popup'
 
+import moment from 'moment-timezone'
+moment.locale('fr')
+
 var Bootstrap = function() {
 
   var launch = function(config, callback) {
@@ -58,7 +61,7 @@ var Bootstrap = function() {
       //});
       
       ReactDOM.render(
-        <Popup />,
+        <Popup escToClose={true} closeOnOutsideClick={true} defaultOk="OK" defaultCancel="Annuler" />,
         document.getElementById('popup-container')
       )
       if (callback) callback()

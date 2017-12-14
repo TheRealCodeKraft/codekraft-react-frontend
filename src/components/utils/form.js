@@ -7,6 +7,7 @@ import Switch from 'react-bootstrap-switch'
 import DatePicker from 'react-datetime'
 import ListSelector from './form/list-selector'
 import FileInput from "react-file-input"
+import { SketchPicker } from 'react-color'
 
 class Form extends React.Component {
 
@@ -307,6 +308,9 @@ class Form extends React.Component {
                             onChange={this.handleInputChange.bind(this, field)}
                 />
         break
+      case "color":
+        input = <SketchPicker color={value} onChangeComplete={this.handleInputChange.bind(this, field)} />
+        break
       default:
         if (value == null) value = ""
         input = <input className="form-control" title={field.title} name={fieldName} type={field.type} value={value} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} />
@@ -363,6 +367,8 @@ class Form extends React.Component {
       case "list-selector":
         values[field.name] = value
         break
+      case "color":
+        values[field.name] = value.hex
       default:
         break
     }
