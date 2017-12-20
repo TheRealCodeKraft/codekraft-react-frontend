@@ -73,6 +73,7 @@ function createReducer(reducerName, plural, extension) {
           newState[plural] = action[plural];
           break;
         case reducerName.toUpperCase():
+          items = mergeEntityAndState(action[reducerName], state, plural);
           newState[reducerName] = action[reducerName];
           break;
         case "NEW_" + reducerName.toUpperCase():

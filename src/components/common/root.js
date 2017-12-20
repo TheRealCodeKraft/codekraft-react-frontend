@@ -98,6 +98,10 @@ export default function(name, config) {
                  </Switch>
       }
 
+      if (config.wrapper === null) {
+        return content
+      }
+
       if (config.wrapper) {
         return (
           <config.wrapper.component config={config.wrapper.config}>

@@ -58,6 +58,12 @@ var Header = function (_BaseHeader) {
       var menu_entries = this.buildItemsFor("default");
       var side_menu_entries = this.buildItemsFor("side");
 
+      if (this.props.custom !== undefined) {
+        if (this.props.custom !== null) {
+          return React.createElement(this.props.custom, { menu: this.props.menu, root: this.props.root, admin: this.props.admin, location: this.props.location, token: this.props.token, name: this.props.name });
+        } else return null;
+      }
+
       return React.createElement(
         'div',
         { className: "header " + this.props.name + (this.state.sideMenuOpen ? " side-menu-toggle" : "") },

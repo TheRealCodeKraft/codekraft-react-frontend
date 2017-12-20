@@ -73,9 +73,11 @@ var App = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
+      console.log(this.props.navigation.mainWrapper);
+
       return _react2.default.createElement(
-        'div',
-        { id: 'main-container', className: "wrapper" },
+        this.props.navigation.mainWrapper,
+        { navigation: this.props.navigation, location: this.props.location },
         _react2.default.createElement(
           _reactRouterDom.Switch,
           null,

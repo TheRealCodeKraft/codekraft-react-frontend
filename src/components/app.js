@@ -35,9 +35,10 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(this.props.navigation.mainWrapper)
 
     return (
-      <div id="main-container" className={"wrapper"}>
+      <this.props.navigation.mainWrapper navigation={this.props.navigation} location={this.props.location}>
         <Switch>
            <Route path="/dashboard" render={() => <Header menu={this.props.navigation.dashboard.menu} root={this.props.navigation.dashboard.root} custom={this.props.navigation.dashboard.header} location={this.props.location} name="dashboard" mainTitle={this.props.config.mainTitle} />} />
            <Route path="/admin" render={() => <Header menu={this.props.navigation.admin.menu} root={this.props.navigation.admin.root} custom={this.props.navigation.admin.header} location={this.props.location} admin={true} name="admin" mainTitle={this.props.config.mainTitle} />} />
@@ -57,7 +58,7 @@ class App extends React.Component {
              <Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
              <Route path="/" component={Root("offline", this.props.navigation.offline)} />
            </Switch>}
-      </div>
+      </this.props.navigation.mainWrapper>
     );
   }
 }

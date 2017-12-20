@@ -102,6 +102,10 @@ exports.default = function (name, config) {
           );
         }
 
+        if (config.wrapper === null) {
+          return content;
+        }
+
         if (config.wrapper) {
           return React.createElement(
             config.wrapper.component,

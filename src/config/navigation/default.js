@@ -7,11 +7,14 @@ import Signup from '../../components/offline/signup'
 import ForgotPassword from '../../components/offline/forgot-password'
 import ResetPassword from '../../components/offline/reset-password'
 
+import MainWrapper from '../../components/common/main-wrapper'
+
 import _users from './admin/users'
 import _pages from './admin/pages'
 
 const config = {
   iconSet: "fa fa-icon",
+  mainWrapper: MainWrapper,
   offline: {
     root: "/",
     menu: {
