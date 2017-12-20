@@ -35,7 +35,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.props.navigation.mainWrapper)
 
     return (
       <this.props.navigation.mainWrapper navigation={this.props.navigation} location={this.props.location}>
