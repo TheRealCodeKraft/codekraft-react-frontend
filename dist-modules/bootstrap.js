@@ -97,7 +97,11 @@ var Bootstrap = function () {
       ), document.getElementById('app-root'));
       //});
 
-      ReactDOM.render(React.createElement(_reactPopup2.default, { escToClose: true, closeOnOutsideClick: true, defaultOk: 'OK', defaultCancel: 'Annuler' }), document.getElementById('popup-container'));
+      ReactDOM.render(React.createElement(
+        Provider,
+        { store: store },
+        React.createElement(_reactPopup2.default, { escToClose: true, closeOnOutsideClick: true, defaultOk: 'OK', defaultCancel: 'Annuler' })
+      ), document.getElementById('popup-container'));
       if (callback) callback();
     });
   };

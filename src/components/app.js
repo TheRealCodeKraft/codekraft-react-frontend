@@ -57,6 +57,9 @@ class App extends React.Component {
              <Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
              <Route path="/" component={Root("offline", this.props.navigation.offline)} />
            </Switch>}
+        {this.props.navigation.footer
+         ? <this.props.navigation.footer />
+         : null}
       </this.props.navigation.mainWrapper>
     );
   }

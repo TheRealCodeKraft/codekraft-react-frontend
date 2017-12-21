@@ -105,7 +105,8 @@ var App = function (_React$Component) {
           _react2.default.createElement(_reactRouterDom.Route, { path: '/dashboard', component: (0, _root2.default)("dashboard", this.props.navigation.dashboard) }),
           _react2.default.createElement(_reactRouterDom.Route, { path: '/admin', component: (0, _root2.default)("admin", this.props.navigation.admin) }),
           _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: (0, _root2.default)("offline", this.props.navigation.offline) })
-        )
+        ),
+        this.props.navigation.footer ? _react2.default.createElement(this.props.navigation.footer, null) : null
       );
     }
   }]);

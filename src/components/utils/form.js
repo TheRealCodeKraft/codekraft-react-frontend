@@ -122,8 +122,10 @@ class Form extends React.Component {
   render() {
     var submitButton = this.state.submitting
                        ? <div className="loader-dots"></div>
-                       : [<button type="submit" className={this.props.submitClass}>{this.props.submitLabel ? this.props.submitLabel : "Enregistrer"}</button>,
-                         this.props.cancelButton === true ? <button className={this.props.submitClass} onClick={this.handleCancelButton}>Ignorer</button> : null]
+                       : (this.props.hideSubmit !== true
+                          ? [<button type="submit" className={this.props.submitClass}>{this.props.submitLabel ? this.props.submitLabel : "Enregistrer"}</button>,
+                             this.props.cancelButton === true ? <button className={this.props.submitClass} onClick={this.handleCancelButton}>Ignorer</button> : null]
+                          : null)
 
     return (
       <div className="form-container">
@@ -280,7 +282,7 @@ class Form extends React.Component {
                   {options.map(val => {
                     var properties = {}
                     if (val[field.key] === value) {
-                      properties.selecTed = "selected"
+                      properties.selected = "selected"
                     }
                     return <option value={val[field.key]} {...properties}>{val[field.value]}</option>
                   })}
@@ -382,7 +384,10 @@ class Form extends React.Component {
 
   handleFormSubmit(e) {
     e.preventDefault();
+    this.submit()
+  }
 
+  submit() {
     var errors = this.validate()
     this.setState({errors: errors})
     if (Object.keys(errors).length === 0) {
@@ -471,4 +476,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Form);
+export default connect(mapStateToProps, null, null, { withRef: true })(Form);

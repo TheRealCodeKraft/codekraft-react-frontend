@@ -167,7 +167,7 @@ var Form = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      var submitButton = this.state.submitting ? React.createElement("div", { className: "loader-dots" }) : [React.createElement(
+      var submitButton = this.state.submitting ? React.createElement("div", { className: "loader-dots" }) : this.props.hideSubmit !== true ? [React.createElement(
         "button",
         { type: "submit", className: this.props.submitClass },
         this.props.submitLabel ? this.props.submitLabel : "Enregistrer"
@@ -175,7 +175,7 @@ var Form = function (_React$Component) {
         "button",
         { className: this.props.submitClass, onClick: this.handleCancelButton },
         "Ignorer"
-      ) : null];
+      ) : null] : null;
 
       return React.createElement(
         "div",
@@ -360,7 +360,7 @@ var Form = function (_React$Component) {
             options.map(function (val) {
               var properties = {};
               if (val[field.key] === value) {
-                properties.selecTed = "selected";
+                properties.selected = "selected";
               }
               return React.createElement(
                 "option",
@@ -471,7 +471,11 @@ var Form = function (_React$Component) {
     key: "handleFormSubmit",
     value: function handleFormSubmit(e) {
       e.preventDefault();
-
+      this.submit();
+    }
+  }, {
+    key: "submit",
+    value: function submit() {
       var errors = this.validate();
       this.setState({ errors: errors });
       if (Object.keys(errors).length === 0) {
@@ -564,4 +568,4 @@ function mapStateToProps(state) {
   };
 }
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(Form);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, null, null, { withRef: true })(Form);

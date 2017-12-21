@@ -61,7 +61,9 @@ var Bootstrap = function() {
       //});
       
       ReactDOM.render(
-        <Popup escToClose={true} closeOnOutsideClick={true} defaultOk="OK" defaultCancel="Annuler" />,
+          <Provider store={store}>
+        <Popup escToClose={true} closeOnOutsideClick={true} defaultOk="OK" defaultCancel="Annuler" />
+          </Provider>,
         document.getElementById('popup-container')
       )
       if (callback) callback()
