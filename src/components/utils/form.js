@@ -427,6 +427,8 @@ class Form extends React.Component {
         })
       }
       if (this.props.onSubmit) this.props.onSubmit(currentValues)
+    } else {
+      this.props.onSubmitError({error: true, message: "Validation failed"})
     }
   }
 

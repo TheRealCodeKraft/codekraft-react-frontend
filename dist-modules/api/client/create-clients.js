@@ -101,6 +101,17 @@ function createClient(name, plural, store, ApiClient, localConfig) {
         });
       };
 
+      var deleteFile = function deleteFile(id, fieldName, callback) {
+        ApiClient.destroy(plural, id + "/" + fieldName, function (data) {
+          var toDispatch = {
+            type: "UPDATE_" + name.toUpperCase()
+          };
+          toDispatch[name] = data;
+          store.dispatch(toDispatch);
+          if (callback) callback(data);
+        });
+      };
+
       var pushInState = function pushInState(data) {
         var toDispatch = {
           type: "UPDATE_" + name.toUpperCase()
@@ -119,6 +130,7 @@ function createClient(name, plural, store, ApiClient, localConfig) {
         update: update,
         destroy: destroy,
         upload: upload,
+        deleteFile: deleteFile,
 
         pushInState: pushInState
       };
