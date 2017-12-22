@@ -60,6 +60,7 @@ function createReducer(reducerName, plural, extension) {
           break
         case reducerName.toUpperCase():
           items = mergeEntityAndState(action[reducerName], state, plural)
+          newState[plural] = items
           newState[reducerName] = action[reducerName]
           break
         case "NEW_" + reducerName.toUpperCase():
@@ -74,13 +75,12 @@ function createReducer(reducerName, plural, extension) {
           newState["updated" + capitalizeFirstLetter(reducerName)] = action[reducerName]
           break
         case "DESTROY_" + reducerName.toUpperCase():
-          var deletedItem = state[plural].filter(item => { return item.id === action.id })[0]
-          items = removeEntityFromState(action.id, state, plural)
-          newState[plural] = items
-          newState["deleted" + capitalizeFirstLetter(reducerName)] = deletedItem
-          break
-        default:
-          if (extension) newState = extension(state, action)
+          if (state[plural]) {
+            var deletedItem = state[plural].filter(item => { return item.id === action.id })[0]
+            items = removeEntityFromState(action.id, state, plural)
+            newState[plural] = items
+            newState["deleted" + capitalizeFirstLetter(reducerName)] = deletedItem
+          }
           break
       }
 
@@ -94,6 +94,10 @@ function createReducer(reducerName, plural, extension) {
         }
       }
 
+      if (extension) {
+        newState = extension(newState, action, state)
+      }
+
       return newState
     }})(reducerName, plural)
 }
@@ -104,12 +108,13 @@ module.exports = function createStore(config) {
     "bootstrap": bootstrapReducer,
     "authState": authReducer,
   }
-  var reducerName, plural
+  var reducerName, plural, extension
   for (var index in config) {
 
     if (config[index] instanceof Object) {
       reducerName = config[index].name
       plural = config[index].plural ? config[index].plural : reducerName + "s"
+      extension = config[index].reducer
     } else {
       //.reducerName = toCamel(config[index])
       reducerName = config[index]
@@ -119,7 +124,7 @@ module.exports = function createStore(config) {
     if (reducerName === "user") {
       coreReducers[reducerName + "State"] = createReducer(reducerName, plural, userReducer)
     } else {
-      coreReducers[reducerName + "State"] = createReducer(reducerName, plural)
+      coreReducers[reducerName + "State"] = createReducer(reducerName, plural, extension)
     }
   }
 

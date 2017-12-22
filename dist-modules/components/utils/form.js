@@ -71,19 +71,27 @@ var Form = function (_React$Component) {
     key: "componentWillMount",
     value: function componentWillMount() {
       var field = undefined,
-          loadingData = [];
+          loadingData = [],
+          loadedData = [];
       for (var index in this.props.fields) {
         field = this.props.fields[index];
         if (field.values && field.values.targetState !== undefined) {
-          this.props.clients[field.values.client][field.values.func]();
-          loadingData.push(field);
+          if (this.props.reduxState[field.values.targetState][field.values.targetValue]) {
+            loadedData[field.name] = this.props.reduxState[field.values.targetState][field.values.targetValue];
+          } else {
+            this.props.clients[field.values.client][field.values.func]();
+            loadingData.push(field);
+          }
         }
       }
 
       if (loadingData.length > 0) {
-        this.setState({ loadingData: loadingData });
+        this.setState({ loadingData: loadingData, loadedData: loadedData });
       } else {
-        this.loadValuesState();
+        if (this.props.onLoaded) this.props.onLoaded();
+        this.setState({ loadedData: loadedData }, function () {
+          this.loadValuesState();
+        });
       }
 
       var self = this;
@@ -116,12 +124,15 @@ var Form = function (_React$Component) {
             loadingData.push(current);
           }
         }
+        if (loadingData.length === 0) {
+          if (this.props.onLoaded) this.props.onLoaded();
+        }
         this.setState({ loadingData: loadingData, loadedData: loadedData }, function () {
           if (this.state.loadingData.length === 0) {
             this.loadValuesState();
           }
         });
-      } else {
+      } else if (this.props.entityId !== props.entityId) {
         this.loadValuesState();
       }
     }
@@ -158,7 +169,6 @@ var Form = function (_React$Component) {
 
         valuesState[this.props.fields[index].name] = currentValue;
       }
-      console.log(valuesState);
 
       this.setState({ values: valuesState });
     }
@@ -247,10 +257,12 @@ var Form = function (_React$Component) {
     }
   }, {
     key: "handleFileChanged",
-    value: function handleFileChanged(field) {
+    value: function handleFileChanged(field, data) {
       var uploading = this.state.uploading;
       uploading[field.name] = false;
-      this.setState({ uploading: uploading });
+      this.setState({ uploading: uploading }, function () {
+        if (this.props.onUploadFinished) this.props.onUploadFinished(field, data);
+      });
     }
   }, {
     key: "getInputs",
@@ -340,7 +352,6 @@ var Form = function (_React$Component) {
           input = radios;
           break;
         case "switch":
-          console.log(value);
           input = React.createElement(_reactBootstrapSwitch2.default, { title: field.title, name: fieldName, onChange: this.handleInputChange.bind(this, field, !this.state.values[field.name]), onText: "OUI", offText: "NON", value: value, defaultValue: field.defaultValue, bsSize: "mini" });
           break;
         case "select":
@@ -455,7 +466,6 @@ var Form = function (_React$Component) {
           values[field.name] = value;
           break;
         case "color":
-          console.log(value.hex);
           values[field.name] = value.hex;
         default:
           break;
