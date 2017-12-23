@@ -287,6 +287,11 @@ class Form extends React.Component {
         } else if (field.values instanceof Object) {
           options = this.state.loadedData[field.name] || []
         }
+
+        if (field.dependant) {
+          options = options.filter(o => o[field.dependant] == this.state.values[field.dependant])
+        }
+
         input = <select className="form-control" title={field.title} name={fieldName} onChange={this.handleInputChange.bind(this, field)} value={value}>
                   {field.placeholder ? <option value="-1">{field.placeholder}</option> : null}
                   {options.map(val => {

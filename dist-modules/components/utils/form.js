@@ -317,6 +317,8 @@ var Form = function (_React$Component) {
   }, {
     key: "getInput",
     value: function getInput(field) {
+      var _this4 = this;
+
       var input = null,
           value = this.state.values[field.name],
           options = [];
@@ -360,6 +362,13 @@ var Form = function (_React$Component) {
           } else if (field.values instanceof Object) {
             options = this.state.loadedData[field.name] || [];
           }
+
+          if (field.dependant) {
+            options = options.filter(function (o) {
+              return o[field.dependant] == _this4.state.values[field.dependant];
+            });
+          }
+
           input = React.createElement(
             "select",
             { className: "form-control", title: field.title, name: fieldName, onChange: this.handleInputChange.bind(this, field), value: value },
