@@ -132,7 +132,7 @@ class Form extends React.Component {
     var submitButton = this.state.submitting
                        ? <div className="loader-dots"></div>
                        : (this.props.hideSubmit !== true
-                          ? [<button type="submit" className={this.props.submitClass}>{this.props.submitLabel ? this.props.submitLabel : "Enregistrer"}</button>,
+                          ? [<button type="submit" className={this.props.submitClass}>{this.props.submitLabel !== undefined ? this.props.submitLabel : "Enregistrer"}</button>,
                              this.props.cancelButton === true ? <button className={this.props.submitClass} onClick={this.handleCancelButton}>Ignorer</button> : null]
                           : null)
 
@@ -481,6 +481,16 @@ class Form extends React.Component {
       
     }
     return errors;
+  }
+
+  reset() {
+    var newValues = {}
+    for (var key in this.props.fields) {
+      if (this.props.fields[key].defaultValue) {
+        newValues[this.props.fields[key].name] = this.props.fields[key].defaultValue
+      }
+    }
+    this.setState({values: newValues})
   }
 
 }

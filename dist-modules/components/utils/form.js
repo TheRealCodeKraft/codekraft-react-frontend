@@ -180,7 +180,7 @@ var Form = function (_React$Component) {
       var submitButton = this.state.submitting ? React.createElement("div", { className: "loader-dots" }) : this.props.hideSubmit !== true ? [React.createElement(
         "button",
         { type: "submit", className: this.props.submitClass },
-        this.props.submitLabel ? this.props.submitLabel : "Enregistrer"
+        this.props.submitLabel !== undefined ? this.props.submitLabel : "Enregistrer"
       ), this.props.cancelButton === true ? React.createElement(
         "button",
         { className: this.props.submitClass, onClick: this.handleCancelButton },
@@ -576,6 +576,17 @@ var Form = function (_React$Component) {
         }
       }
       return errors;
+    }
+  }, {
+    key: "reset",
+    value: function reset() {
+      var newValues = {};
+      for (var key in this.props.fields) {
+        if (this.props.fields[key].defaultValue) {
+          newValues[this.props.fields[key].name] = this.props.fields[key].defaultValue;
+        }
+      }
+      this.setState({ values: newValues });
     }
   }]);
 
