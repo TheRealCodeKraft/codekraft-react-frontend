@@ -1,6 +1,6 @@
 {
   "name": "codekraft-react-frontend",
-  "version": "1.0.49",
+  "version": "1.0.50",
   "description": "The react frontend from CodeKraft Corporation",
   "main": "dist-modules/index.js",
   "scripts": {
@@ -65,7 +65,8 @@
     "react-select2-wrapper": "^1.0.4-beta5",
     "react-sidebar": "^2.3.2",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "react-ga": "^2.4.0"
   },
   "eslintConfig": {
     "extends": "react-app",

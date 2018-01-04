@@ -40,6 +40,10 @@ var _reactPopup = require('react-popup');
 
 var _reactPopup2 = _interopRequireDefault(_reactPopup);
 
+var _reactGa = require('react-ga');
+
+var _reactGa2 = _interopRequireDefault(_reactGa);
+
 var _momentTimezone = require('moment-timezone');
 
 var _momentTimezone2 = _interopRequireDefault(_momentTimezone);
@@ -61,6 +65,19 @@ var BrowserRouter = require('react-router-dom').BrowserRouter;
 _momentTimezone2.default.locale('fr');
 
 var Bootstrap = function () {
+
+  var history = createHistory();
+
+  if (process.env.UA_ID) {
+    console.log("OK!", process.env.UA_ID);
+    _reactGa2.default.initialize(process.env.UA_ID);
+  }
+  history.listen(function (location, action) {
+    if (process.env.UA_ID) {
+      _reactGa2.default.set({ page: location.pathname });
+      _reactGa2.default.pageview(location.pathname);
+    }
+  });
 
   var launch = function launch(config, callback) {
     var store = (0, _createStore2.default)(config.clients);

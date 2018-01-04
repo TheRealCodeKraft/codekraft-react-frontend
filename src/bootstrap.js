@@ -22,10 +22,25 @@ import BootstrapConfigV2 from './config/navigation/v2/default'
 
 import Popup from 'react-popup'
 
+import ReactGA from 'react-ga'
+
 import moment from 'moment-timezone'
 moment.locale('fr')
 
 var Bootstrap = function() {
+
+  const history = createHistory()
+
+  if (process.env.UA_ID) {
+    console.log("OK!", process.env.UA_ID)
+    ReactGA.initialize(process.env.UA_ID)
+  }
+  history.listen((location, action) => {
+    if (process.env.UA_ID) {
+      ReactGA.set({ page: location.pathname })
+      ReactGA.pageview(location.pathname)
+    }
+  });
 
   var launch = function(config, callback) {
     const store = createStore(config.clients)
