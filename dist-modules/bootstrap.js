@@ -40,6 +40,10 @@ var _reactPopup = require('react-popup');
 
 var _reactPopup2 = _interopRequireDefault(_reactPopup);
 
+var _createBrowserHistory = require('history/createBrowserHistory');
+
+var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
+
 var _reactGa = require('react-ga');
 
 var _reactGa2 = _interopRequireDefault(_reactGa);
@@ -61,19 +65,21 @@ var Provider = require('react-redux').Provider;
 
 
 var BrowserRouter = require('react-router-dom').BrowserRouter;
+var Router = require('react-router-dom').Router;
 
 _momentTimezone2.default.locale('fr');
 
 var Bootstrap = function () {
 
-  var history = createHistory();
+  var history = (0, _createBrowserHistory2.default)();
 
   if (process.env.UA_ID) {
-    console.log("OK!", process.env.UA_ID);
     _reactGa2.default.initialize(process.env.UA_ID);
   }
   history.listen(function (location, action) {
+    console.log("PROUT");
     if (process.env.UA_ID) {
+      console.log("ANALYZE IT!");
       _reactGa2.default.set({ page: location.pathname });
       _reactGa2.default.pageview(location.pathname);
     }
@@ -102,13 +108,15 @@ var Bootstrap = function () {
         navigation: nav
       });
 
+      console.log("HISTORY");
+      console.log(history);
       //document.addEventListener('DOMContentLoaded', function() {
       ReactDOM.render(React.createElement(
         Provider,
         { store: store },
         React.createElement(
-          BrowserRouter,
-          null,
+          Router,
+          { history: history },
           React.createElement(mainComponent, { config: config })
         )
       ), document.getElementById('app-root'));

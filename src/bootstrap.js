@@ -13,6 +13,7 @@ import createClients from './api/client/create-clients'
 import createNavigation from './navigation/create-navigation'
 
 var BrowserRouter = require('react-router-dom').BrowserRouter
+var Router = require('react-router-dom').Router
 
 import App from './components/app'
 import AppV2 from './components/v2/app'
@@ -21,7 +22,7 @@ import BootstrapConfig from './config/navigation/default'
 import BootstrapConfigV2 from './config/navigation/v2/default'
 
 import Popup from 'react-popup'
-
+import createHistory from 'history/createBrowserHistory'
 import ReactGA from 'react-ga'
 
 import moment from 'moment-timezone'
@@ -32,7 +33,6 @@ var Bootstrap = function() {
   const history = createHistory()
 
   if (process.env.UA_ID) {
-    console.log("OK!", process.env.UA_ID)
     ReactGA.initialize(process.env.UA_ID)
   }
   history.listen((location, action) => {
@@ -64,12 +64,14 @@ var Bootstrap = function() {
         navigation: nav
       })
 
+      console.log("HISTORY")
+      console.log(history)
       //document.addEventListener('DOMContentLoaded', function() {
         ReactDOM.render(
           <Provider store={store}>
-            <BrowserRouter>
+            <Router history={history}>
               {React.createElement(mainComponent, {config: config})}
-            </BrowserRouter>
+            </Router>
           </Provider>,
           document.getElementById('app-root')
         );
