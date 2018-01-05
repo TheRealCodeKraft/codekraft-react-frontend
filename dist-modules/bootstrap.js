@@ -77,9 +77,7 @@ var Bootstrap = function () {
     _reactGa2.default.initialize(process.env.UA_ID);
   }
   history.listen(function (location, action) {
-    console.log("PROUT");
     if (process.env.UA_ID) {
-      console.log("ANALYZE IT!");
       _reactGa2.default.set({ page: location.pathname });
       _reactGa2.default.pageview(location.pathname);
     }
@@ -125,7 +123,7 @@ var Bootstrap = function () {
       ReactDOM.render(React.createElement(
         Provider,
         { store: store },
-        React.createElement(_reactPopup2.default, { escToClose: true, closeOnOutsideClick: true, defaultOk: 'OK', defaultCancel: 'Annuler' })
+        React.createElement(_reactPopup2.default, { escToClose: true, closeOnOutsideClick: false, defaultOk: 'OK', defaultCancel: 'Annuler' })
       ), document.getElementById('popup-container'));
       if (callback) callback();
     });
