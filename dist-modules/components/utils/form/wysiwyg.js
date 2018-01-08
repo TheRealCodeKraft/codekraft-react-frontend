@@ -28,20 +28,83 @@ var Wysiwyg = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Wysiwyg.__proto__ || Object.getPrototypeOf(Wysiwyg)).call(this, props));
 
-    _this.state = { editorState: _draftJs.EditorState.createEmpty() };
+    _this.state = {
+      loaded: false,
+      raw: "",
+      editorState: _draftJs.EditorState.createEmpty()
+    };
     return _this;
   }
 
   _createClass(Wysiwyg, [{
+    key: "componentWillReceiveProps",
+    value: function componentWillReceiveProps(props) {
+      if (props.value && !this.state.raw) {
+        this.setState({
+          raw: props.value,
+          editorState: _draftJs.EditorState.createWithContent((0, _draftJs.convertFromRaw)(JSON.parse(props.value)))
+        });
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       return _react2.default.createElement(
         "div",
         null,
         _react2.default.createElement(
-          "a",
-          { onClick: this._onBoldClick.bind(this) },
-          "Bold"
+          "div",
+          { className: "editor-actions" },
+          _react2.default.createElement(
+            "a",
+            { onClick: this._onBoldClick.bind(this) },
+            _react2.default.createElement("i", { className: "fa fa-bold" })
+          ),
+          _react2.default.createElement(
+            "a",
+            { onClick: this._onItalicClick.bind(this) },
+            _react2.default.createElement("i", { className: "fa fa-italic" })
+          ),
+          _react2.default.createElement(
+            "a",
+            { onClick: this._onH1Click.bind(this) },
+            "H1"
+          ),
+          _react2.default.createElement(
+            "a",
+            { onClick: this._onH2Click.bind(this) },
+            "H2"
+          ),
+          _react2.default.createElement(
+            "a",
+            { onClick: this._onH3Click.bind(this) },
+            "H3"
+          ),
+          _react2.default.createElement(
+            "a",
+            { onClick: this._onH4Click.bind(this) },
+            "H4"
+          ),
+          _react2.default.createElement(
+            "a",
+            { onClick: this._onH5Click.bind(this) },
+            "H5"
+          ),
+          _react2.default.createElement(
+            "a",
+            { onClick: this._onH6Click.bind(this) },
+            "H6"
+          ),
+          _react2.default.createElement(
+            "a",
+            { onClick: this._onUlClick.bind(this) },
+            _react2.default.createElement("i", { className: "fa fa-list" })
+          ),
+          _react2.default.createElement(
+            "a",
+            { onClick: this._onOlClick.bind(this) },
+            _react2.default.createElement("i", { className: "fa fa-list-ol" })
+          )
         ),
         _react2.default.createElement(_draftJs.Editor, { editorState: this.state.editorState, onChange: this.onChange.bind(this) })
       );
@@ -50,17 +113,73 @@ var Wysiwyg = function (_React$Component) {
     key: "onChange",
     value: function onChange(editorState) {
       this.setState({ editorState: editorState }, function () {
-        console.log(this.state.editorState);
-        console.log(editorState.getCurrentContent());
-        console.log((0, _draftJs.convertToRaw)(editorState.getCurrentContent()));
-        if (this.props.onChange) this.props.onChange("BLAPZ");
+        if (this.props.onChange) this.props.onChange(editorState.getCurrentContent());
       });
+    }
+  }, {
+    key: "_changeStyle",
+    value: function _changeStyle(type) {
+      this.onChange(_draftJs.RichUtils.toggleInlineStyle(this.state.editorState, type));
     }
   }, {
     key: "_onBoldClick",
     value: function _onBoldClick(e) {
       e.preventDefault();
-      this.onChange(_draftJs.RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
+      this._changeStyle('BOLD');
+    }
+  }, {
+    key: "_onItalicClick",
+    value: function _onItalicClick(e) {
+      e.preventDefault();
+      this._changeStyle('ITALIC');
+    }
+  }, {
+    key: "_onH1Click",
+    value: function _onH1Click(e) {
+      e.preventDefault();
+      this.onChange(_draftJs.RichUtils.toggleBlockType(this.state.editorState, 'header-one'));
+    }
+  }, {
+    key: "_onH2Click",
+    value: function _onH2Click(e) {
+      e.preventDefault();
+      this.onChange(_draftJs.RichUtils.toggleBlockType(this.state.editorState, 'header-two'));
+    }
+  }, {
+    key: "_onH3Click",
+    value: function _onH3Click(e) {
+      e.preventDefault();
+      this.onChange(_draftJs.RichUtils.toggleBlockType(this.state.editorState, 'header-three'));
+    }
+  }, {
+    key: "_onH4Click",
+    value: function _onH4Click(e) {
+      e.preventDefault();
+      this.onChange(_draftJs.RichUtils.toggleBlockType(this.state.editorState, 'header-four'));
+    }
+  }, {
+    key: "_onH5Click",
+    value: function _onH5Click(e) {
+      e.preventDefault();
+      this.onChange(_draftJs.RichUtils.toggleBlockType(this.state.editorState, 'header-five'));
+    }
+  }, {
+    key: "_onH6Click",
+    value: function _onH6Click(e) {
+      e.preventDefault();
+      this.onChange(_draftJs.RichUtils.toggleBlockType(this.state.editorState, 'header-six'));
+    }
+  }, {
+    key: "_onUlClick",
+    value: function _onUlClick(e) {
+      e.preventDefault();
+      this.onChange(_draftJs.RichUtils.toggleBlockType(this.state.editorState, 'unordered-list-item'));
+    }
+  }, {
+    key: "_onOlClick",
+    value: function _onOlClick(e) {
+      e.preventDefault();
+      this.onChange(_draftJs.RichUtils.toggleBlockType(this.state.editorState, 'ordered-list-item'));
     }
   }]);
 

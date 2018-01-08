@@ -32,6 +32,10 @@ var _reactFileInput2 = _interopRequireDefault(_reactFileInput);
 
 var _reactColor = require("react-color");
 
+var _draftJsExportHtml = require("draft-js-export-html");
+
+var _draftJs = require("draft-js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -144,7 +148,8 @@ var Form = function (_React$Component) {
     key: "loadValuesState",
     value: function loadValuesState() {
       var valuesState = {};
-      var currentValue = undefined;
+      var currentValue = undefined,
+          currentHtmlValue = undefined;
 
       for (var index in this.props.fields) {
         if (this.props.values) {
@@ -159,6 +164,9 @@ var Form = function (_React$Component) {
             } else {
               currentValue = undefined;
             }
+          } else if (this.props.fields[index].type == "wysiwyg") {
+            currentValue = this.props.values[this.props.fields[index].name + "_raw"];
+            currentHtmlValue = this.props.values[this.props.fields[index].name + "_html"];
           } else {
             currentValue = this.props.values[this.props.fields[index].name];
           }
@@ -171,7 +179,12 @@ var Form = function (_React$Component) {
           currentValue = this.props.fields[index].defaultValue;
         }
 
-        valuesState[this.props.fields[index].name] = currentValue;
+        if (this.props.fields[index].type == "wysiwyg") {
+          valuesState[this.props.fields[index].name + "_raw"] = currentValue;
+          valuesState[this.props.fields[index].name + "_html"] = currentHtmlValue;
+        } else {
+          valuesState[this.props.fields[index].name] = currentValue;
+        }
       }
 
       this.setState({ values: valuesState });
@@ -407,8 +420,7 @@ var Form = function (_React$Component) {
           input = React.createElement("textarea", { className: "form-control", title: field.title, name: fieldName, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field), rows: 5 });
           break;
         case "wysiwyg":
-          if (value == null) value = "";
-          input = React.createElement(_wysiwyg2.default, { value: value, onChange: this.handleInputChange.bind(this, field) });
+          input = React.createElement(_wysiwyg2.default, { value: this.state.values[field.name + "_raw"], onChange: this.handleInputChange.bind(this, field) });
           break;
         case "date":
           if (!value) value = "";else if (value !== "") {
@@ -484,6 +496,9 @@ var Form = function (_React$Component) {
           break;
         case "color":
           values[field.name] = value.hex;
+        case "wysiwyg":
+          values[field.name + "_raw"] = JSON.stringify((0, _draftJs.convertToRaw)(value));
+          values[field.name + "_html"] = (0, _draftJsExportHtml.stateToHTML)(value);
         default:
           break;
       }
@@ -519,7 +534,13 @@ var Form = function (_React$Component) {
                 currentValues[splitted[0]][splitted[1].replace(']', '') + "_" + splitted[2].replace(']', '')] = this.state.values[this.props.fields[fIndex].name];
               }
             } else {
-              currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name];
+              console.log(this.props.fields[fIndex]);
+              if (this.props.fields[fIndex].type == "wysiwyg") {
+                currentValues[this.props.fields[fIndex].name + "_raw"] = this.state.values[this.props.fields[fIndex].name + "_raw"];
+                currentValues[this.props.fields[fIndex].name + "_html"] = this.state.values[this.props.fields[fIndex].name + "_html"];
+              } else {
+                currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name];
+              }
             }
           }
         }
