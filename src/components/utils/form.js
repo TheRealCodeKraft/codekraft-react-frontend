@@ -6,6 +6,7 @@ var moment = require("moment")
 import Switch from 'react-bootstrap-switch'
 import DatePicker from 'react-datetime'
 import ListSelector from './form/list-selector'
+import Wysiwyg from './form/wysiwyg'
 import FileInput from "react-file-input"
 import { SketchPicker } from 'react-color'
 
@@ -314,6 +315,10 @@ class Form extends React.Component {
       case "textarea":
         if (value == null) value = ""
         input = <textarea className="form-control" title={field.title} name={fieldName} value={value} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} rows={5} />
+        break
+      case "wysiwyg":
+        if (value == null) value = ""
+        input = <Wysiwyg value={value} onChange={this.handleInputChange.bind(this, field)} />
         break
       case "date":
         if (!value) value=""

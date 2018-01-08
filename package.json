@@ -1,6 +1,6 @@
 {
   "name": "codekraft-react-frontend",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "description": "The react frontend from CodeKraft Corporation",
   "main": "dist-modules/index.js",
   "scripts": {
@@ -42,6 +42,9 @@
   "dependencies": {
     "amdefine": "^1.0.1",
     "dotenv": "^4.0.0",
+    "draft-js": "^0.10.4",
+    "draft-js-export-html": "^1.2.0",
+    "draft-js-import-html": "^1.2.1",
     "jquery": "^3.2.1",
     "js-logger": "^1.4.1",
     "json-loader": "^0.5.7",

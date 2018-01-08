@@ -22,6 +22,10 @@ var _listSelector = require("./form/list-selector");
 
 var _listSelector2 = _interopRequireDefault(_listSelector);
 
+var _wysiwyg = require("./form/wysiwyg");
+
+var _wysiwyg2 = _interopRequireDefault(_wysiwyg);
+
 var _reactFileInput = require("react-file-input");
 
 var _reactFileInput2 = _interopRequireDefault(_reactFileInput);
@@ -401,6 +405,10 @@ var Form = function (_React$Component) {
         case "textarea":
           if (value == null) value = "";
           input = React.createElement("textarea", { className: "form-control", title: field.title, name: fieldName, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field), rows: 5 });
+          break;
+        case "wysiwyg":
+          if (value == null) value = "";
+          input = React.createElement(_wysiwyg2.default, { value: value, onChange: this.handleInputChange.bind(this, field) });
           break;
         case "date":
           if (!value) value = "";else if (value !== "") {
