@@ -24,6 +24,10 @@ var _draftJsStaticToolbarPlugin2 = _interopRequireDefault(_draftJsStaticToolbarP
 
 var _draftJsButtons = require("draft-js-buttons");
 
+var _wysiwyg = require("./wysiwyg.css");
+
+var _wysiwyg2 = _interopRequireDefault(_wysiwyg);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -32,8 +36,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var HeadlinesPicker = function (_Component) {
-  _inherits(HeadlinesPicker, _Component);
+var HeadlinesPicker = function (_React$Component) {
+  _inherits(HeadlinesPicker, _React$Component);
 
   function HeadlinesPicker() {
     var _ref;
@@ -88,10 +92,10 @@ var HeadlinesPicker = function (_Component) {
   }]);
 
   return HeadlinesPicker;
-}(Component);
+}(_react2.default.Component);
 
-var HeadlinesButton = function (_Component2) {
-  _inherits(HeadlinesButton, _Component2);
+var HeadlinesButton = function (_React$Component2) {
+  _inherits(HeadlinesButton, _React$Component2);
 
   function HeadlinesButton() {
     var _ref2;
@@ -130,7 +134,7 @@ var HeadlinesButton = function (_Component2) {
   }]);
 
   return HeadlinesButton;
-}(Component);
+}(_react2.default.Component);
 
 var toolbarPlugin = (0, _draftJsStaticToolbarPlugin2.default)({
   structure: [_draftJsButtons.BoldButton, _draftJsButtons.ItalicButton, _draftJsButtons.UnderlineButton, _draftJsButtons.CodeButton, _draftJsStaticToolbarPlugin.Separator, HeadlinesButton, _draftJsButtons.UnorderedListButton, _draftJsButtons.OrderedListButton, _draftJsButtons.BlockquoteButton, _draftJsButtons.CodeBlockButton]
@@ -139,8 +143,8 @@ var Toolbar = toolbarPlugin.Toolbar;
 
 var plugins = [toolbarPlugin];
 
-var Wysiwyg = function (_React$Component) {
-  _inherits(Wysiwyg, _React$Component);
+var Wysiwyg = function (_React$Component3) {
+  _inherits(Wysiwyg, _React$Component3);
 
   function Wysiwyg(props) {
     _classCallCheck(this, Wysiwyg);
@@ -225,7 +229,8 @@ var Wysiwyg = function (_React$Component) {
             _react2.default.createElement("i", { className: "fa fa-list-ol" })
           )
         ),
-        _react2.default.createElement(_draftJsPluginsEditor2.default, { editorState: this.state.editorState, onChange: this.onChange.bind(this), plugins: plugins })
+        _react2.default.createElement(_draftJsPluginsEditor2.default, { editorState: this.state.editorState, onChange: this.onChange.bind(this), plugins: plugins }),
+        _react2.default.createElement(Toolbar, null)
       );
     }
   }, {

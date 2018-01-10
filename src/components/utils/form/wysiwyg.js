@@ -16,9 +16,10 @@ import {
   OrderedListButton,
   BlockquoteButton,
   CodeBlockButton,
-} from 'draft-js-buttons';
+} from 'draft-js-buttons'
+import editorStyle from './wysiwyg.css'
 
-class HeadlinesPicker extends Component {
+class HeadlinesPicker extends React.Component {
   componentDidMount() {
     setTimeout(() => { window.addEventListener('click', this.onWindowClick); });
   }
@@ -44,7 +45,7 @@ class HeadlinesPicker extends Component {
   }
 }
 
-class HeadlinesButton extends Component {
+class HeadlinesButton extends React.Component {
   onClick = () =>
     // A button can call `onOverrideContent` to replace the content
     // of the toolbar. This can be useful for displaying sub
@@ -114,6 +115,7 @@ class Wysiwyg extends React.Component {
           <a onClick={this._onOlClick.bind(this)}><i className="fa fa-list-ol" /></a>
         </div>
         <Editor editorState={this.state.editorState} onChange={this.onChange.bind(this)} plugins={plugins} />
+        <Toolbar />
       </div>
     );
   }
