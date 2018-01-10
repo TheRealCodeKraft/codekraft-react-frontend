@@ -471,38 +471,41 @@ var Form = function (_React$Component) {
   }, {
     key: "handleInputChange",
     value: function handleInputChange(field, e) {
-      var values = this.state.values;
-      var value = e.target ? e.target.value : e;
-      /*
-      if (field.name.indexOf("[") !== -1) {
-        var splitted = field.name.split("[")
-        var parentFieldName = splitted[0]
-        var index = splitted[1].replace(']', '')
-        var fieldName = splitted[2].replace(']', '')
-        values[parentFieldName][index][fieldName] = value
-      } else {*/
-      values[field.name] = value;
-      //}
+      if (Object.keys(this.state.values).length > 0) {
+        var values = this.state.values;
+        var value = e.target ? e.target.value : e;
+        /*
+        if (field.name.indexOf("[") !== -1) {
+          var splitted = field.name.split("[")
+          var parentFieldName = splitted[0]
+          var index = splitted[1].replace(']', '')
+          var fieldName = splitted[2].replace(']', '')
+          values[parentFieldName][index][fieldName] = value
+        } else {*/
+        values[field.name] = value;
+        //}
 
-      switch (field.type) {
-        case "checkbox":
-          values[field.name] = value === "on" ? false : true;
-          break;
-        case "radio":
-          values[field.name] = value === "true" ? true : false;
-          break;
-        case "list-selector":
-          values[field.name] = value;
-          break;
-        case "color":
-          values[field.name] = value.hex;
-        case "wysiwyg":
-          values[field.name + "_raw"] = JSON.stringify((0, _draftJs.convertToRaw)(value));
-          values[field.name + "_html"] = (0, _draftJsExportHtml.stateToHTML)(value);
-        default:
-          break;
+        switch (field.type) {
+          case "checkbox":
+            values[field.name] = value === "on" ? false : true;
+            break;
+          case "radio":
+            values[field.name] = value === "true" ? true : false;
+            break;
+          case "list-selector":
+            values[field.name] = value;
+            break;
+          case "color":
+            values[field.name] = value.hex;
+            break;
+          case "wysiwyg":
+            values[field.name + "_raw"] = JSON.stringify((0, _draftJs.convertToRaw)(value));
+            values[field.name + "_html"] = (0, _draftJsExportHtml.stateToHTML)(value);
+          default:
+            break;
+        }
+        this.setState({ values: values });
       }
-      this.setState({ values: values });
     }
   }, {
     key: "handleCancelButton",
@@ -534,7 +537,6 @@ var Form = function (_React$Component) {
                 currentValues[splitted[0]][splitted[1].replace(']', '') + "_" + splitted[2].replace(']', '')] = this.state.values[this.props.fields[fIndex].name];
               }
             } else {
-              console.log(this.props.fields[fIndex]);
               if (this.props.fields[fIndex].type == "wysiwyg") {
                 currentValues[this.props.fields[fIndex].name + "_raw"] = this.state.values[this.props.fields[fIndex].name + "_raw"];
                 currentValues[this.props.fields[fIndex].name + "_html"] = this.state.values[this.props.fields[fIndex].name + "_html"];

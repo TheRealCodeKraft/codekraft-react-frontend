@@ -17,7 +17,42 @@ import {
   BlockquoteButton,
   CodeBlockButton,
 } from 'draft-js-buttons'
-import editorStyle from './wysiwyg.css'
+
+const editorStyles = {
+  editor: {
+    boxSizing: "border-box",
+    border: "1px solid #ddd",
+    cursor: "text",
+    padding: "16px",
+    borderRadius: "2px",
+    marginBottom: "2em",
+    boxShadow: "inset 0px 1px 8px -3px #ABABAB",
+    background: "#fefefe",
+    minHeight: "140px",
+  },
+
+  headlineButtonWrapper: {
+    display: "inline-block",
+  },
+
+  headlineButton: {
+    background: "#fbfbfb",
+    color: "#888",
+    fontSize: "18px",
+    border: "0",
+    paddingTop: "5px",
+    verticalAlign: "bottom",
+    height: "34px",
+    width: "36px",
+  },
+
+  /*
+  .headlineButton:hover,
+  .headlineButton:focus {
+    background: #f3f3f3;
+  }
+  */
+}
 
 class HeadlinesPicker extends React.Component {
   componentDidMount() {
@@ -54,8 +89,8 @@ class HeadlinesButton extends React.Component {
 
   render() {
     return (
-      <div className={editorStyles.headlineButtonWrapper}>
-        <button onClick={this.onClick} className={editorStyles.headlineButton}>
+      <div style={editorStyles.headlineButtonWrapper}>
+        <button onClick={this.onClick} style={editorStyles.headlineButton}>
           H
         </button>
       </div>
@@ -102,18 +137,6 @@ class Wysiwyg extends React.Component {
   render() {
     return (
       <div>
-        <div className="editor-actions">
-          <a onClick={this._onBoldClick.bind(this)}><i className="fa fa-bold" /></a>
-          <a onClick={this._onItalicClick.bind(this)}><i className="fa fa-italic" /></a>
-          <a onClick={this._onH1Click.bind(this)}>H1</a>
-          <a onClick={this._onH2Click.bind(this)}>H2</a>
-          <a onClick={this._onH3Click.bind(this)}>H3</a>
-          <a onClick={this._onH4Click.bind(this)}>H4</a>
-          <a onClick={this._onH5Click.bind(this)}>H5</a>
-          <a onClick={this._onH6Click.bind(this)}>H6</a>
-          <a onClick={this._onUlClick.bind(this)}><i className="fa fa-list" /></a>
-          <a onClick={this._onOlClick.bind(this)}><i className="fa fa-list-ol" /></a>
-        </div>
         <Editor editorState={this.state.editorState} onChange={this.onChange.bind(this)} plugins={plugins} />
         <Toolbar />
       </div>
@@ -124,87 +147,6 @@ class Wysiwyg extends React.Component {
     this.setState({editorState}, function() {
       if (this.props.onChange) this.props.onChange(editorState.getCurrentContent())
     })
-  }
-
-  _changeStyle(type) {
-    this.onChange(RichUtils.toggleInlineStyle(
-      this.state.editorState,
-      type
-    ))
-  }
-
-  _onBoldClick(e) {
-    e.preventDefault()
-    this._changeStyle('BOLD')
-  }
-
-  _onItalicClick(e) {
-    e.preventDefault()
-    this._changeStyle('ITALIC')
-  }
-
-  _onH1Click(e) {
-    e.preventDefault()
-    this.onChange(RichUtils.toggleBlockType(
-      this.state.editorState,
-      'header-one'
-    ))
-  }
-
-  _onH2Click(e) {
-    e.preventDefault()
-    this.onChange(RichUtils.toggleBlockType(
-      this.state.editorState,
-      'header-two'
-    ))
-  }
-
-  _onH3Click(e) {
-    e.preventDefault()
-    this.onChange(RichUtils.toggleBlockType(
-      this.state.editorState,
-      'header-three'
-    ))
-  }
-
-  _onH4Click(e) {
-    e.preventDefault()
-    this.onChange(RichUtils.toggleBlockType(
-      this.state.editorState,
-      'header-four'
-    ))
-  }
-
-  _onH5Click(e) {
-    e.preventDefault()
-    this.onChange(RichUtils.toggleBlockType(
-      this.state.editorState,
-      'header-five'
-    ))
-  }
-
-  _onH6Click(e) {
-    e.preventDefault()
-    this.onChange(RichUtils.toggleBlockType(
-      this.state.editorState,
-      'header-six'
-    ))
-  }
-
-  _onUlClick(e) {
-    e.preventDefault()
-    this.onChange(RichUtils.toggleBlockType(
-      this.state.editorState,
-      'unordered-list-item'
-    ))
-  }
-
-  _onOlClick(e) {
-    e.preventDefault()
-    this.onChange(RichUtils.toggleBlockType(
-      this.state.editorState,
-      'ordered-list-item'
-    ))
   }
 
 }

@@ -24,10 +24,6 @@ var _draftJsStaticToolbarPlugin2 = _interopRequireDefault(_draftJsStaticToolbarP
 
 var _draftJsButtons = require("draft-js-buttons");
 
-var _wysiwyg = require("./wysiwyg.css");
-
-var _wysiwyg2 = _interopRequireDefault(_wysiwyg);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -35,6 +31,42 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var editorStyles = {
+  editor: {
+    boxSizing: "border-box",
+    border: "1px solid #ddd",
+    cursor: "text",
+    padding: "16px",
+    borderRadius: "2px",
+    marginBottom: "2em",
+    boxShadow: "inset 0px 1px 8px -3px #ABABAB",
+    background: "#fefefe",
+    minHeight: "140px"
+  },
+
+  headlineButtonWrapper: {
+    display: "inline-block"
+  },
+
+  headlineButton: {
+    background: "#fbfbfb",
+    color: "#888",
+    fontSize: "18px",
+    border: "0",
+    paddingTop: "5px",
+    verticalAlign: "bottom",
+    height: "34px",
+    width: "36px"
+  }
+
+  /*
+  .headlineButton:hover,
+  .headlineButton:focus {
+    background: #f3f3f3;
+  }
+  */
+};
 
 var HeadlinesPicker = function (_React$Component) {
   _inherits(HeadlinesPicker, _React$Component);
@@ -123,10 +155,10 @@ var HeadlinesButton = function (_React$Component2) {
     value: function render() {
       return _react2.default.createElement(
         "div",
-        { className: editorStyles.headlineButtonWrapper },
+        { style: editorStyles.headlineButtonWrapper },
         _react2.default.createElement(
           "button",
-          { onClick: this.onClick, className: editorStyles.headlineButton },
+          { onClick: this.onClick, style: editorStyles.headlineButton },
           "H"
         )
       );
@@ -175,60 +207,6 @@ var Wysiwyg = function (_React$Component3) {
       return _react2.default.createElement(
         "div",
         null,
-        _react2.default.createElement(
-          "div",
-          { className: "editor-actions" },
-          _react2.default.createElement(
-            "a",
-            { onClick: this._onBoldClick.bind(this) },
-            _react2.default.createElement("i", { className: "fa fa-bold" })
-          ),
-          _react2.default.createElement(
-            "a",
-            { onClick: this._onItalicClick.bind(this) },
-            _react2.default.createElement("i", { className: "fa fa-italic" })
-          ),
-          _react2.default.createElement(
-            "a",
-            { onClick: this._onH1Click.bind(this) },
-            "H1"
-          ),
-          _react2.default.createElement(
-            "a",
-            { onClick: this._onH2Click.bind(this) },
-            "H2"
-          ),
-          _react2.default.createElement(
-            "a",
-            { onClick: this._onH3Click.bind(this) },
-            "H3"
-          ),
-          _react2.default.createElement(
-            "a",
-            { onClick: this._onH4Click.bind(this) },
-            "H4"
-          ),
-          _react2.default.createElement(
-            "a",
-            { onClick: this._onH5Click.bind(this) },
-            "H5"
-          ),
-          _react2.default.createElement(
-            "a",
-            { onClick: this._onH6Click.bind(this) },
-            "H6"
-          ),
-          _react2.default.createElement(
-            "a",
-            { onClick: this._onUlClick.bind(this) },
-            _react2.default.createElement("i", { className: "fa fa-list" })
-          ),
-          _react2.default.createElement(
-            "a",
-            { onClick: this._onOlClick.bind(this) },
-            _react2.default.createElement("i", { className: "fa fa-list-ol" })
-          )
-        ),
         _react2.default.createElement(_draftJsPluginsEditor2.default, { editorState: this.state.editorState, onChange: this.onChange.bind(this), plugins: plugins }),
         _react2.default.createElement(Toolbar, null)
       );
@@ -239,71 +217,6 @@ var Wysiwyg = function (_React$Component3) {
       this.setState({ editorState: editorState }, function () {
         if (this.props.onChange) this.props.onChange(editorState.getCurrentContent());
       });
-    }
-  }, {
-    key: "_changeStyle",
-    value: function _changeStyle(type) {
-      this.onChange(_draftJs.RichUtils.toggleInlineStyle(this.state.editorState, type));
-    }
-  }, {
-    key: "_onBoldClick",
-    value: function _onBoldClick(e) {
-      e.preventDefault();
-      this._changeStyle('BOLD');
-    }
-  }, {
-    key: "_onItalicClick",
-    value: function _onItalicClick(e) {
-      e.preventDefault();
-      this._changeStyle('ITALIC');
-    }
-  }, {
-    key: "_onH1Click",
-    value: function _onH1Click(e) {
-      e.preventDefault();
-      this.onChange(_draftJs.RichUtils.toggleBlockType(this.state.editorState, 'header-one'));
-    }
-  }, {
-    key: "_onH2Click",
-    value: function _onH2Click(e) {
-      e.preventDefault();
-      this.onChange(_draftJs.RichUtils.toggleBlockType(this.state.editorState, 'header-two'));
-    }
-  }, {
-    key: "_onH3Click",
-    value: function _onH3Click(e) {
-      e.preventDefault();
-      this.onChange(_draftJs.RichUtils.toggleBlockType(this.state.editorState, 'header-three'));
-    }
-  }, {
-    key: "_onH4Click",
-    value: function _onH4Click(e) {
-      e.preventDefault();
-      this.onChange(_draftJs.RichUtils.toggleBlockType(this.state.editorState, 'header-four'));
-    }
-  }, {
-    key: "_onH5Click",
-    value: function _onH5Click(e) {
-      e.preventDefault();
-      this.onChange(_draftJs.RichUtils.toggleBlockType(this.state.editorState, 'header-five'));
-    }
-  }, {
-    key: "_onH6Click",
-    value: function _onH6Click(e) {
-      e.preventDefault();
-      this.onChange(_draftJs.RichUtils.toggleBlockType(this.state.editorState, 'header-six'));
-    }
-  }, {
-    key: "_onUlClick",
-    value: function _onUlClick(e) {
-      e.preventDefault();
-      this.onChange(_draftJs.RichUtils.toggleBlockType(this.state.editorState, 'unordered-list-item'));
-    }
-  }, {
-    key: "_onOlClick",
-    value: function _onOlClick(e) {
-      e.preventDefault();
-      this.onChange(_draftJs.RichUtils.toggleBlockType(this.state.editorState, 'ordered-list-item'));
     }
   }]);
 

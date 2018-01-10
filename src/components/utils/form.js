@@ -376,6 +376,7 @@ class Form extends React.Component {
   }
 
   handleInputChange(field, e) {
+    if (Object.keys(this.state.values).length > 0) {
     var values = this.state.values;
     var value = e.target ? e.target.value : e
     /*
@@ -401,6 +402,7 @@ class Form extends React.Component {
         break
       case "color":
         values[field.name] = value.hex
+        break
       case "wysiwyg":
         values[field.name + "_raw"] = JSON.stringify(convertToRaw(value))
         values[field.name + "_html"] = stateToHTML(value)
@@ -408,6 +410,7 @@ class Form extends React.Component {
         break
     }
     this.setState({values: values});
+    }
   }
 
   handleCancelButton() {
@@ -436,7 +439,6 @@ class Form extends React.Component {
               currentValues[splitted[0]][splitted[1].replace(']', '') + "_" + splitted[2].replace(']', '')] = this.state.values[this.props.fields[fIndex].name]
             }
           } else {
-            console.log(this.props.fields[fIndex])
             if (this.props.fields[fIndex].type == "wysiwyg") {
               currentValues[this.props.fields[fIndex].name + "_raw"] = this.state.values[this.props.fields[fIndex].name + "_raw"]
               currentValues[this.props.fields[fIndex].name + "_html"] = this.state.values[this.props.fields[fIndex].name + "_html"]

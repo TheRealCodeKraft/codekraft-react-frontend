@@ -1,0 +1,248 @@
+$font-family-serif: "Open Sans", Garamond, "Times New Roman", serif;
+$font-family-sans-serif: "Open Sans","Helvetica Neue", Helvetica, Arial, sans-serif;
+
+$grey-border: #eee;
+$grey-text: #2f323b;
+$black: #000;
+$white: #fff;
+
+
+.navbar-default .navbar-admin, .navbar-default .navbar-admin:hover {
+  background-color:#b53c3c;
+}
+
+
+.admin-action-button {
+  padding: 5px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 20%;
+  background: $grey-text;
+  color: $white;
+  width:36px;
+  height:36px;
+  font-size: 21px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  justify-content: center;
+}
+
+.admin-action-button:hover {
+  background: $black;
+  color: #fff;
+  text-decoration: none;
+}
+
+.admin-page {
+  color: $grey-text;
+  .odd {
+    background: rgba(255, 255, 255, 0.2);
+    //color: #fff;
+  }
+
+  .even {
+
+  }
+}
+
+.admin-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-new-button-row {
+  text-align: right;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
+.admin-new-button {
+  background: $grey-text;
+  color: $white;
+  padding: 5px;
+  padding-right: 10px;
+  padding-left: 10px;
+  border-radius: 10px;
+  height: 35px;
+  text-decoration: none;
+}
+
+.admin-new-button:hover {
+  background: $black;
+  color: $white;
+}
+
+.admin-list-header {
+  div {
+    display: table-cell;
+    background: $grey-text;
+    color: #fff;
+  }
+}
+
+.admin-sidebar-overlay {
+  background-color:#44464F;
+}
+
+.admin-sidebar-container {
+  /*padding:20px;*/
+  overflow:scroll;
+}
+
+/*************
+ * HOME PAGE *
+ *************/
+.admin-home {
+  .admin-home-group {
+    .admin-home-group-items {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      a {
+        text-decoration: none;
+        .admin-home-item {
+          padding: 20px;
+          padding-top: 10px;
+          margin: 20px;
+          background: #fff;
+          border-radius: 20px;
+          max-width: 350px;
+          min-width: 350px;
+        }
+        .admin-home-item:hover {
+        }
+      }
+    }
+  }
+}
+
+/****************** SIDEBAR **********************/
+.admin-sidebar {
+   height: 0px;
+   //z-index: 1000;
+}
+.admin-sidebar .admin-sidebar-container {
+  position: fixed !important;
+  top: 90px !important;
+  background: #fff;
+  left: 20px;
+  z-index: 1000 !important;
+  overflow: hidden !important;
+  @media screen and (max-width: 650px ) {
+    width: 400px;
+  }
+  @media screen and (max-width: 400px ) {
+    width: 350px;
+  }
+}
+
+.admin-sidebar .admin-sidebar-container.tiny-sidebar {
+  bottom: auto !important;
+  left: auto;
+  width: 400px;
+}
+
+.admin-sidebar .admin-sidebar-overlay {
+  z-index: 999 !important;
+}
+
+.admin-sidebar .session-table-form-container {
+  margin-top:15px;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  background: $grey-text;
+  color: #fff;
+}
+
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sidebar-close-icon {
+  color: #ffffff;
+  font-size: 2em;
+}
+
+.sidebar-content-container {
+  flex: 1;
+  height: 100%;
+  overflow: auto;
+  padding: 20px;
+}
+
+/****************** END SIDEBAR **********************/
+
+/***********************
+ * CLUE/LEVELS MANAGER *
+ ***********************/
+.clue-levels-list-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.clue-levels-level {
+  display: flex;
+}
+
+.up-and-down {
+  width: 100px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  padding: 5px;
+  background: #33353E;
+  display: flex;
+  align-items: center;
+  font-size:24px;
+  justify-content: space-between;
+}
+
+.level-level {
+  margin-top: 1px;
+  margin-bottom: 1px;
+  padding: 10px;
+  background: #33353E;
+}
+
+.level-description {
+  margin-top: 1px;
+  margin-bottom: 1px;
+  padding: 10px;
+  background: #33353E;
+  flex: 1;
+}
+
+.level-actions {
+  margin-top: 1px;
+  margin-bottom: 1px;
+  padding: 5px;
+  background: #33353E;
+}
+
+/**************
+ * VIDEO GAME *
+ **************/
+#video-game-content {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: hidden;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  z-index: 10000;
+}
+
