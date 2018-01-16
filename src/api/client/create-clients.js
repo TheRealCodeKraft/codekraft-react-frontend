@@ -17,7 +17,7 @@ function capitalizeFirstLetter(string) {
 }
 
 function createClient(name, plural, store, ApiClient, localConfig) {
-return (function(name, plural, store, ApiClient) { return function() {
+  return (function(name, plural, store, ApiClient) { return function() {
 
       var fetchAll = function(params, callback, offline=false) {
         ApiClient.get(plural, params, function(data) {
@@ -30,7 +30,7 @@ return (function(name, plural, store, ApiClient) { return function() {
         }, offline)
       }
 
-      var fetchOne = function(id, callback) {
+      var fetchOne = function(id, callback, offline=false) {
         ApiClient.get(plural + "/" + id, {}, function(data) {
           var toDispatch = {
             type: name.toUpperCase()
@@ -38,7 +38,7 @@ return (function(name, plural, store, ApiClient) { return function() {
           toDispatch[name] = data
           store.dispatch(toDispatch)
           if (callback) callback(data)
-        })
+        }, offline)
       }
 
       var create = function(params, callback, offline=false) {
@@ -86,6 +86,17 @@ return (function(name, plural, store, ApiClient) { return function() {
         })
       }
 
+      var deleteFile = function(id, fieldName, callback) {
+        ApiClient.destroy(plural, id + "/" + fieldName, function(data) {
+          var toDispatch = {
+            type: "UPDATE_" + name.toUpperCase()
+          }
+          toDispatch[name] = data
+          store.dispatch(toDispatch)
+          if (callback) callback(data)
+        })
+      }
+
       var pushInState = function(data) {
         var toDispatch = {
           type: "UPDATE_" + name.toUpperCase()
@@ -104,6 +115,7 @@ return (function(name, plural, store, ApiClient) { return function() {
         update: update,
         destroy: destroy,
         upload: upload,
+        deleteFile: deleteFile,
 
         pushInState: pushInState
       }

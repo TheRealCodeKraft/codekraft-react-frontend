@@ -24,6 +24,12 @@ class Header extends BaseHeader {
     var menu_entries = this.buildItemsFor("default")
     var side_menu_entries = this.buildItemsFor("side")
 
+    if (this.props.custom !== undefined) {
+      if (this.props.custom !== null) {
+         return <this.props.custom menu={this.props.menu} root={this.props.root} admin={this.props.admin} location={this.props.location} token={this.props.token} name={this.props.name} />
+      } else return null
+    }
+
     return (
       <div className={"header " + this.props.name + (this.state.sideMenuOpen ? " side-menu-toggle" : "")}>
   	    <header id="mu-header" className="" role="banner">

@@ -22,9 +22,19 @@ var _listSelector = require("./form/list-selector");
 
 var _listSelector2 = _interopRequireDefault(_listSelector);
 
+var _wysiwyg = require("./form/wysiwyg");
+
+var _wysiwyg2 = _interopRequireDefault(_wysiwyg);
+
 var _reactFileInput = require("react-file-input");
 
 var _reactFileInput2 = _interopRequireDefault(_reactFileInput);
+
+var _reactColor = require("react-color");
+
+var _draftJsExportHtml = require("draft-js-export-html");
+
+var _draftJs = require("draft-js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -69,19 +79,27 @@ var Form = function (_React$Component) {
     key: "componentWillMount",
     value: function componentWillMount() {
       var field = undefined,
-          loadingData = [];
+          loadingData = [],
+          loadedData = [];
       for (var index in this.props.fields) {
         field = this.props.fields[index];
         if (field.values && field.values.targetState !== undefined) {
-          this.props.clients[field.values.client][field.values.func]();
-          loadingData.push(field);
+          if (this.props.reduxState[field.values.targetState][field.values.targetValue]) {
+            loadedData[field.name] = this.props.reduxState[field.values.targetState][field.values.targetValue];
+          } else {
+            this.props.clients[field.values.client][field.values.func]();
+            loadingData.push(field);
+          }
         }
       }
 
       if (loadingData.length > 0) {
-        this.setState({ loadingData: loadingData });
+        this.setState({ loadingData: loadingData, loadedData: loadedData });
       } else {
-        this.loadValuesState();
+        if (this.props.onLoaded) this.props.onLoaded();
+        this.setState({ loadedData: loadedData }, function () {
+          this.loadValuesState();
+        });
       }
 
       var self = this;
@@ -114,12 +132,15 @@ var Form = function (_React$Component) {
             loadingData.push(current);
           }
         }
+        if (loadingData.length === 0) {
+          if (this.props.onLoaded) this.props.onLoaded();
+        }
         this.setState({ loadingData: loadingData, loadedData: loadedData }, function () {
           if (this.state.loadingData.length === 0) {
             this.loadValuesState();
           }
         });
-      } else {
+      } else if (this.props.entityId !== props.entityId) {
         this.loadValuesState();
       }
     }
@@ -127,7 +148,8 @@ var Form = function (_React$Component) {
     key: "loadValuesState",
     value: function loadValuesState() {
       var valuesState = {};
-      var currentValue = undefined;
+      var currentValue = undefined,
+          currentHtmlValue = undefined;
 
       for (var index in this.props.fields) {
         if (this.props.values) {
@@ -142,6 +164,9 @@ var Form = function (_React$Component) {
             } else {
               currentValue = undefined;
             }
+          } else if (this.props.fields[index].type == "wysiwyg") {
+            currentValue = this.props.values[this.props.fields[index].name + "_raw"];
+            currentHtmlValue = this.props.values[this.props.fields[index].name + "_html"];
           } else {
             currentValue = this.props.values[this.props.fields[index].name];
           }
@@ -154,9 +179,13 @@ var Form = function (_React$Component) {
           currentValue = this.props.fields[index].defaultValue;
         }
 
-        valuesState[this.props.fields[index].name] = currentValue;
+        if (this.props.fields[index].type == "wysiwyg") {
+          valuesState[this.props.fields[index].name + "_raw"] = currentValue;
+          valuesState[this.props.fields[index].name + "_html"] = currentHtmlValue;
+        } else {
+          valuesState[this.props.fields[index].name] = currentValue;
+        }
       }
-      console.log(valuesState);
 
       this.setState({ values: valuesState });
     }
@@ -165,15 +194,15 @@ var Form = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      var submitButton = this.state.submitting ? React.createElement("div", { className: "loader-dots" }) : [React.createElement(
+      var submitButton = this.state.submitting ? React.createElement("div", { className: "loader-dots" }) : this.props.hideSubmit !== true ? [React.createElement(
         "button",
         { type: "submit", className: this.props.submitClass },
-        this.props.submitLabel ? this.props.submitLabel : "Enregistrer"
+        this.props.submitLabel !== undefined ? this.props.submitLabel : "Enregistrer"
       ), this.props.cancelButton === true ? React.createElement(
         "button",
         { className: this.props.submitClass, onClick: this.handleCancelButton },
         "Ignorer"
-      ) : null];
+      ) : null] : null;
 
       return React.createElement(
         "div",
@@ -245,10 +274,12 @@ var Form = function (_React$Component) {
     }
   }, {
     key: "handleFileChanged",
-    value: function handleFileChanged(field) {
+    value: function handleFileChanged(field, data) {
       var uploading = this.state.uploading;
       uploading[field.name] = false;
-      this.setState({ uploading: uploading });
+      this.setState({ uploading: uploading }, function () {
+        if (this.props.onUploadFinished) this.props.onUploadFinished(field, data);
+      });
     }
   }, {
     key: "getInputs",
@@ -303,6 +334,8 @@ var Form = function (_React$Component) {
   }, {
     key: "getInput",
     value: function getInput(field) {
+      var _this4 = this;
+
       var input = null,
           value = this.state.values[field.name],
           options = [];
@@ -338,7 +371,6 @@ var Form = function (_React$Component) {
           input = radios;
           break;
         case "switch":
-          console.log(value);
           input = React.createElement(_reactBootstrapSwitch2.default, { title: field.title, name: fieldName, onChange: this.handleInputChange.bind(this, field, !this.state.values[field.name]), onText: "OUI", offText: "NON", value: value, defaultValue: field.defaultValue, bsSize: "mini" });
           break;
         case "select":
@@ -347,6 +379,13 @@ var Form = function (_React$Component) {
           } else if (field.values instanceof Object) {
             options = this.state.loadedData[field.name] || [];
           }
+
+          if (field.dependant) {
+            options = options.filter(function (o) {
+              return o[field.dependant] == _this4.state.values[field.dependant];
+            });
+          }
+
           input = React.createElement(
             "select",
             { className: "form-control", title: field.title, name: fieldName, onChange: this.handleInputChange.bind(this, field), value: value },
@@ -358,7 +397,7 @@ var Form = function (_React$Component) {
             options.map(function (val) {
               var properties = {};
               if (val[field.key] === value) {
-                properties.selecTed = "selected";
+                properties.selected = "selected";
               }
               return React.createElement(
                 "option",
@@ -380,6 +419,9 @@ var Form = function (_React$Component) {
           if (value == null) value = "";
           input = React.createElement("textarea", { className: "form-control", title: field.title, name: fieldName, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field), rows: 5 });
           break;
+        case "wysiwyg":
+          input = React.createElement(_wysiwyg2.default, { value: this.state.values[field.name + "_raw"], onChange: this.handleInputChange.bind(this, field) });
+          break;
         case "date":
           if (!value) value = "";else if (value !== "") {
             value = moment(value).format("DD/MM/YYYY");
@@ -388,6 +430,9 @@ var Form = function (_React$Component) {
             dateFormat: "DD/MM/YYYY",
             onChange: this.handleInputChange.bind(this, field)
           });
+          break;
+        case "color":
+          input = React.createElement(_reactColor.SketchPicker, { color: value, onChangeComplete: this.handleInputChange.bind(this, field) });
           break;
         default:
           if (value == null) value = "";
@@ -426,33 +471,41 @@ var Form = function (_React$Component) {
   }, {
     key: "handleInputChange",
     value: function handleInputChange(field, e) {
-      var values = this.state.values;
-      var value = e.target ? e.target.value : e;
-      /*
-      if (field.name.indexOf("[") !== -1) {
-        var splitted = field.name.split("[")
-        var parentFieldName = splitted[0]
-        var index = splitted[1].replace(']', '')
-        var fieldName = splitted[2].replace(']', '')
-        values[parentFieldName][index][fieldName] = value
-      } else {*/
-      values[field.name] = value;
-      //}
+      if (Object.keys(this.state.values).length > 0) {
+        var values = this.state.values;
+        var value = e.target ? e.target.value : e;
+        /*
+        if (field.name.indexOf("[") !== -1) {
+          var splitted = field.name.split("[")
+          var parentFieldName = splitted[0]
+          var index = splitted[1].replace(']', '')
+          var fieldName = splitted[2].replace(']', '')
+          values[parentFieldName][index][fieldName] = value
+        } else {*/
+        values[field.name] = value;
+        //}
 
-      switch (field.type) {
-        case "checkbox":
-          values[field.name] = value === "on" ? false : true;
-          break;
-        case "radio":
-          values[field.name] = value === "true" ? true : false;
-          break;
-        case "list-selector":
-          values[field.name] = value;
-          break;
-        default:
-          break;
+        switch (field.type) {
+          case "checkbox":
+            values[field.name] = value === "on" ? false : true;
+            break;
+          case "radio":
+            values[field.name] = value === "true" ? true : false;
+            break;
+          case "list-selector":
+            values[field.name] = value;
+            break;
+          case "color":
+            values[field.name] = value.hex;
+            break;
+          case "wysiwyg":
+            values[field.name + "_raw"] = JSON.stringify((0, _draftJs.convertToRaw)(value));
+            values[field.name + "_html"] = (0, _draftJsExportHtml.stateToHTML)(value);
+          default:
+            break;
+        }
+        this.setState({ values: values });
       }
-      this.setState({ values: values });
     }
   }, {
     key: "handleCancelButton",
@@ -463,7 +516,11 @@ var Form = function (_React$Component) {
     key: "handleFormSubmit",
     value: function handleFormSubmit(e) {
       e.preventDefault();
-
+      this.submit();
+    }
+  }, {
+    key: "submit",
+    value: function submit() {
       var errors = this.validate();
       this.setState({ errors: errors });
       if (Object.keys(errors).length === 0) {
@@ -480,7 +537,12 @@ var Form = function (_React$Component) {
                 currentValues[splitted[0]][splitted[1].replace(']', '') + "_" + splitted[2].replace(']', '')] = this.state.values[this.props.fields[fIndex].name];
               }
             } else {
-              currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name];
+              if (this.props.fields[fIndex].type == "wysiwyg") {
+                currentValues[this.props.fields[fIndex].name + "_raw"] = this.state.values[this.props.fields[fIndex].name + "_raw"];
+                currentValues[this.props.fields[fIndex].name + "_html"] = this.state.values[this.props.fields[fIndex].name + "_html"];
+              } else {
+                currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name];
+              }
             }
           }
         }
@@ -494,6 +556,8 @@ var Form = function (_React$Component) {
           });
         }
         if (this.props.onSubmit) this.props.onSubmit(currentValues);
+      } else {
+        this.props.onSubmitError({ error: true, message: "Validation failed" });
       }
     }
   }, {
@@ -544,6 +608,17 @@ var Form = function (_React$Component) {
       }
       return errors;
     }
+  }, {
+    key: "reset",
+    value: function reset() {
+      var newValues = {};
+      for (var key in this.props.fields) {
+        if (this.props.fields[key].defaultValue) {
+          newValues[this.props.fields[key].name] = this.props.fields[key].defaultValue;
+        }
+      }
+      this.setState({ values: newValues });
+    }
   }]);
 
   return Form;
@@ -556,4 +631,4 @@ function mapStateToProps(state) {
   };
 }
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(Form);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, null, null, { withRef: true })(Form);

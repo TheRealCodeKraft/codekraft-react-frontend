@@ -32,6 +32,10 @@ var _resetPassword = require('../../components/offline/reset-password');
 
 var _resetPassword2 = _interopRequireDefault(_resetPassword);
 
+var _mainWrapper = require('../../components/common/main-wrapper');
+
+var _mainWrapper2 = _interopRequireDefault(_mainWrapper);
+
 var _users2 = require('./admin/users');
 
 var _users3 = _interopRequireDefault(_users2);
@@ -44,6 +48,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var config = {
   iconSet: "fa fa-icon",
+  mainWrapper: _mainWrapper2.default,
   offline: {
     root: "/",
     menu: {

@@ -36,6 +36,22 @@ var _default3 = require('./config/navigation/v2/default');
 
 var _default4 = _interopRequireDefault(_default3);
 
+var _reactPopup = require('react-popup');
+
+var _reactPopup2 = _interopRequireDefault(_reactPopup);
+
+var _createBrowserHistory = require('history/createBrowserHistory');
+
+var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
+
+var _reactGa = require('react-ga');
+
+var _reactGa2 = _interopRequireDefault(_reactGa);
+
+var _momentTimezone = require('moment-timezone');
+
+var _momentTimezone2 = _interopRequireDefault(_momentTimezone);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var React = require('react');
@@ -49,8 +65,23 @@ var Provider = require('react-redux').Provider;
 
 
 var BrowserRouter = require('react-router-dom').BrowserRouter;
+var Router = require('react-router-dom').Router;
+
+_momentTimezone2.default.locale('fr');
 
 var Bootstrap = function () {
+
+  var history = (0, _createBrowserHistory2.default)();
+
+  if (process.env.UA_ID) {
+    _reactGa2.default.initialize(process.env.UA_ID);
+  }
+  history.listen(function (location, action) {
+    if (process.env.UA_ID) {
+      _reactGa2.default.set({ page: location.pathname });
+      _reactGa2.default.pageview(location.pathname);
+    }
+  });
 
   var launch = function launch(config, callback) {
     var store = (0, _createStore2.default)(config.clients);
@@ -75,17 +106,25 @@ var Bootstrap = function () {
         navigation: nav
       });
 
+      console.log("HISTORY");
+      console.log(history);
       //document.addEventListener('DOMContentLoaded', function() {
       ReactDOM.render(React.createElement(
         Provider,
         { store: store },
         React.createElement(
-          BrowserRouter,
-          null,
+          Router,
+          { history: history },
           React.createElement(mainComponent, { config: config })
         )
       ), document.getElementById('app-root'));
       //});
+
+      ReactDOM.render(React.createElement(
+        Provider,
+        { store: store },
+        React.createElement(_reactPopup2.default, { escToClose: true, closeOnOutsideClick: false, defaultOk: 'OK', defaultCancel: 'Annuler' })
+      ), document.getElementById('popup-container'));
       if (callback) callback();
     });
   };
