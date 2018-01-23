@@ -170,7 +170,7 @@ var Form = function (_React$Component) {
           } else {
             currentValue = this.props.values[this.props.fields[index].name];
           }
-          if (currentValue instanceof Array) {
+          if (currentValue instanceof Array && !this.props.fields[index].component) {
             currentValue = currentValue.map(function (value) {
               return value.id;
             });
@@ -436,7 +436,13 @@ var Form = function (_React$Component) {
           break;
         default:
           if (value == null) value = "";
-          input = React.createElement("input", { className: "form-control", title: field.title, name: fieldName, type: field.type, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field) });
+          if (field.component) {
+            console.log("FROM FORM");
+            console.log(value);
+            input = React.createElement(field.component, { className: "form-control", field: field, name: fieldName, value: value, onChange: this.handleInputChange.bind(this, field) });
+          } else {
+            input = React.createElement("input", { className: "form-control", title: field.title, name: fieldName, type: field.type, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field) });
+          }
           break;
       }
 

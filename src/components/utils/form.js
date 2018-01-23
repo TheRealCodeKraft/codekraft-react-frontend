@@ -122,7 +122,7 @@ class Form extends React.Component {
         } else {
           currentValue = this.props.values[this.props.fields[index].name]
         }
-        if (currentValue instanceof Array) {
+        if (currentValue instanceof Array && !this.props.fields[index].component) {
           currentValue = currentValue.map(value => { return value.id })
         }
       } else {
@@ -345,7 +345,13 @@ class Form extends React.Component {
         break
       default:
         if (value == null) value = ""
-        input = <input className="form-control" title={field.title} name={fieldName} type={field.type} value={value} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} />
+        if (field.component) {
+          console.log("FROM FORM")
+          console.log(value)
+          input = <field.component className="form-control" field={field} name={fieldName} value={value} onChange={this.handleInputChange.bind(this, field)} />
+        } else {
+          input = <input className="form-control" title={field.title} name={fieldName} type={field.type} value={value} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} />
+        }
         break
     }
 
