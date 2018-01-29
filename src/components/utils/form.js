@@ -346,8 +346,6 @@ class Form extends React.Component {
       default:
         if (value == null) value = ""
         if (field.component) {
-          console.log("FROM FORM")
-          console.log(value)
           input = <field.component className="form-control" field={field} name={fieldName} value={value} onChange={this.handleInputChange.bind(this, field)} />
         } else {
           input = <input className="form-control" title={field.title} name={fieldName} type={field.type} value={value} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} />
@@ -518,7 +516,9 @@ class Form extends React.Component {
   reset() {
     var newValues = {}
     for (var key in this.props.fields) {
-      if (this.props.fields[key].defaultValue) {
+      if (this.props.fields[key].type == "wysiwyg") {
+        newValues[this.props.fields[key].name + "_raw"] = "RESET"
+      } else if (this.props.fields[key].defaultValue) {
         newValues[this.props.fields[key].name] = this.props.fields[key].defaultValue
       }
     }

@@ -194,10 +194,12 @@ var Wysiwyg = function (_React$Component3) {
   _createClass(Wysiwyg, [{
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(props) {
-      if (props.value && !this.state.raw) {
+
+      console.log("PROPS");
+      if (props.value && (!this.state.raw || props.value == "RESET")) {
         this.setState({
           raw: props.value,
-          editorState: _draftJs.EditorState.createWithContent((0, _draftJs.convertFromRaw)(JSON.parse(props.value)))
+          editorState: props.value == "RESET" ? _draftJs.EditorState.createEmpty() : _draftJs.EditorState.createWithContent((0, _draftJs.convertFromRaw)(JSON.parse(props.value)))
         });
       }
     }

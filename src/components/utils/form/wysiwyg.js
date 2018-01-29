@@ -126,10 +126,10 @@ class Wysiwyg extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props.value && !this.state.raw) {
+    if (props.value && (!this.state.raw || props.value == "RESET")) {
       this.setState({
         raw: props.value,
-        editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(props.value)))
+        editorState: (props.value == "RESET") ? EditorState.createEmpty() : EditorState.createWithContent(convertFromRaw(JSON.parse(props.value)))
       })
     }
   }

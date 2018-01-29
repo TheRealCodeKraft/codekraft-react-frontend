@@ -619,7 +619,9 @@ var Form = function (_React$Component) {
     value: function reset() {
       var newValues = {};
       for (var key in this.props.fields) {
-        if (this.props.fields[key].defaultValue) {
+        if (this.props.fields[key].type == "wysiwyg") {
+          newValues[this.props.fields[key].name + "_raw"] = 'RESET';
+        } else if (this.props.fields[key].defaultValue) {
           newValues[this.props.fields[key].name] = this.props.fields[key].defaultValue;
         }
       }
