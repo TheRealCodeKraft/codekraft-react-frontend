@@ -138,7 +138,7 @@ class Wysiwyg extends React.Component {
     return (
       <div>
         <Editor editorState={this.state.editorState} onChange={this.onChange.bind(this)} plugins={plugins} />
-        <Toolbar />
+        {(!this.props.toolbar || this.props.toolbar === false) ? null : <Toolbar />}
       </div>
     );
   }

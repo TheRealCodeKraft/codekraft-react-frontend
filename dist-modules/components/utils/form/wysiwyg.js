@@ -194,8 +194,6 @@ var Wysiwyg = function (_React$Component3) {
   _createClass(Wysiwyg, [{
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(props) {
-
-      console.log("PROPS");
       if (props.value && (!this.state.raw || props.value == "RESET")) {
         this.setState({
           raw: props.value,
@@ -210,7 +208,7 @@ var Wysiwyg = function (_React$Component3) {
         "div",
         null,
         _react2.default.createElement(_draftJsPluginsEditor2.default, { editorState: this.state.editorState, onChange: this.onChange.bind(this), plugins: plugins }),
-        _react2.default.createElement(Toolbar, null)
+        !this.props.toolbar || this.props.toolbar === false ? null : _react2.default.createElement(Toolbar, null)
       );
     }
   }, {

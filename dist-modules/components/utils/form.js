@@ -420,7 +420,7 @@ var Form = function (_React$Component) {
           input = React.createElement("textarea", { className: "form-control", title: field.title, name: fieldName, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field), rows: 5 });
           break;
         case "wysiwyg":
-          input = React.createElement(_wysiwyg2.default, { value: this.state.values[field.name + "_raw"], onChange: this.handleInputChange.bind(this, field) });
+          input = React.createElement(_wysiwyg2.default, { value: this.state.values[field.name + "_raw"], toolbar: field.toolbar, onChange: this.handleInputChange.bind(this, field) });
           break;
         case "date":
           if (!value) value = "";else if (value !== "") {
@@ -437,8 +437,6 @@ var Form = function (_React$Component) {
         default:
           if (value == null) value = "";
           if (field.component) {
-            console.log("FROM FORM");
-            console.log(value);
             input = React.createElement(field.component, { className: "form-control", field: field, name: fieldName, value: value, onChange: this.handleInputChange.bind(this, field) });
           } else {
             input = React.createElement("input", { className: "form-control", title: field.title, name: fieldName, type: field.type, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field) });
@@ -620,7 +618,7 @@ var Form = function (_React$Component) {
       var newValues = {};
       for (var key in this.props.fields) {
         if (this.props.fields[key].type == "wysiwyg") {
-          newValues[this.props.fields[key].name + "_raw"] = 'RESET';
+          newValues[this.props.fields[key].name + "_raw"] = "RESET";
         } else if (this.props.fields[key].defaultValue) {
           newValues[this.props.fields[key].name] = this.props.fields[key].defaultValue;
         }
