@@ -8,6 +8,7 @@ import DatePicker from 'react-datetime'
 import ListSelector from './form/list-selector'
 import Wysiwyg from './form/wysiwyg'
 import FileInput from "react-file-input"
+import DropZone from "react-drop-zone"
 import { SketchPicker } from 'react-color'
 
 import {stateToHTML} from 'draft-js-export-html'
@@ -343,6 +344,9 @@ class Form extends React.Component {
       case "color":
         input = <SketchPicker color={value} onChangeComplete={this.handleInputChange.bind(this, field)} />
         break
+      case "multiple-upload":
+        <DropZone onDrop={this.handleMultipleUploadChange.bind(this, field)} />
+        break
       default:
         if (value == null) value = ""
         if (field.component) {
@@ -377,6 +381,10 @@ class Form extends React.Component {
             </div>
 
     return input 
+  }
+
+  handleMultipleUploadChange(acceptedFiles, rejectedFiles) {
+    console.log("UPLOAD YE!")
   }
 
   handleInputChange(field, e) {

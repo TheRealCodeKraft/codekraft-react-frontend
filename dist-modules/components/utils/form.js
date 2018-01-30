@@ -30,6 +30,10 @@ var _reactFileInput = require("react-file-input");
 
 var _reactFileInput2 = _interopRequireDefault(_reactFileInput);
 
+var _reactDropZone = require("react-drop-zone");
+
+var _reactDropZone2 = _interopRequireDefault(_reactDropZone);
+
 var _reactColor = require("react-color");
 
 var _draftJsExportHtml = require("draft-js-export-html");
