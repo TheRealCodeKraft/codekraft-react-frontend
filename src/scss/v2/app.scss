@@ -5,6 +5,7 @@
 @import "~codekraft-react-frontend/src/scss/v2/markups-kindle/theme-color/default-theme";
 @import "~codekraft-react-frontend/src/scss/v2/markups-kindle/main";
 @import '~draft-js-linkify-plugin/lib/plugin.css';
+@import '~draft-js-mention-plugin/lib/plugin.css';
 
 .Page {
   margin: 0 !important;

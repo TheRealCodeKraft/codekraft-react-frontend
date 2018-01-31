@@ -1,6 +1,6 @@
 {
   "name": "codekraft-react-frontend",
-  "version": "1.0.66",
+  "version": "1.0.67",
   "description": "The react frontend from CodeKraft Corporation",
   "main": "dist-modules/index.js",
   "scripts": {
@@ -48,6 +48,7 @@
     "draft-js-export-html": "^1.2.0",
     "draft-js-import-html": "^1.2.1",
     "draft-js-linkify-plugin": "^2.0.1",
+    "draft-js-mention-plugin": "^2.0.1",
     "draft-js-plugins-editor": "^2.0.4",
     "draft-js-static-toolbar-plugin": "^2.0.1",
     "jquery": "^3.3.1",
