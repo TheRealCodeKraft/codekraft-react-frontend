@@ -1,6 +1,6 @@
 {
   "name": "codekraft-react-frontend",
-  "version": "1.0.65",
+  "version": "1.0.66",
   "description": "The react frontend from CodeKraft Corporation",
   "main": "dist-modules/index.js",
   "scripts": {
@@ -58,7 +58,6 @@
     "moment-timezone": "^0.5.14",
     "react": "^15.6.2",
     "react-actioncable-provider": "^1.0.3",
-    "react-blur-admin": "^0.11.1",
     "react-bootstrap": "^0.31.5",
     "react-bootstrap-switch": "^15.5.3",
     "react-color": "^2.13.8",
