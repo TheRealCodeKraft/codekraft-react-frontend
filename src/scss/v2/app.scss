@@ -194,3 +194,48 @@ button[type="submit"] {
   }
 }
 
+.multiple-upload {
+  .files {
+    display: flex;
+    .file-thumbnail {
+      a {
+        position: absolute;
+        margin-left: 5px;
+        margin-top: 5px;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+        align-items: center;
+        color: #fff;
+        padding: 5px;
+        background: rgba(0, 0, 0, .8);
+      }
+      img {
+        height: 100px;
+        margin: 5px;
+      }
+    }
+  }
+}
+
+.gallery {
+  display: flex;
+  .thumbnails {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: #fff;
+    height: 120px;
+    box-shadow: -1px 2px 10px 3px rgba(0, 0, 0, 0.3) inset;
+    .thumbnail {
+      height: 100px;
+      margin: 0;
+      border: 0;
+      padding: 0;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+  }
+}

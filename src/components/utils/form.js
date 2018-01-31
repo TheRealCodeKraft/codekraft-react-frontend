@@ -8,7 +8,7 @@ import DatePicker from 'react-datetime'
 import ListSelector from './form/list-selector'
 import Wysiwyg from './form/wysiwyg'
 import FileInput from "react-file-input"
-import DropZone from "react-drop-zone"
+import MultipleUpload from './form/multiple-upload'
 import { SketchPicker } from 'react-color'
 
 import {stateToHTML} from 'draft-js-export-html'
@@ -152,7 +152,7 @@ class Form extends React.Component {
     return (
       <div className="form-container">
         {this.props.entityId ? this.buildImageUploaders() : null}
-        <form id={this.props.id} onSubmit={this.handleFormSubmit}>
+        <form encType='multipart/form-data' id={this.props.id} onSubmit={this.handleFormSubmit}>
           {this.props.fields.map(field => {
             if (field.show === false) { return null }
             if (field.type === "image-uploader") { return null }
@@ -345,7 +345,7 @@ class Form extends React.Component {
         input = <SketchPicker color={value} onChangeComplete={this.handleInputChange.bind(this, field)} />
         break
       case "multiple-upload":
-        <DropZone onDrop={this.handleMultipleUploadChange.bind(this, field)} />
+        input = <MultipleUpload onChange={this.handleInputChange.bind(this, field)} />
         break
       default:
         if (value == null) value = ""
@@ -383,45 +383,42 @@ class Form extends React.Component {
     return input 
   }
 
-  handleMultipleUploadChange(acceptedFiles, rejectedFiles) {
-    console.log("UPLOAD YE!")
-  }
-
   handleInputChange(field, e) {
     if (Object.keys(this.state.values).length > 0) {
-    var values = this.state.values;
-    var value = e.target ? e.target.value : e
-    /*
-    if (field.name.indexOf("[") !== -1) {
-      var splitted = field.name.split("[")
-      var parentFieldName = splitted[0]
-      var index = splitted[1].replace(']', '')
-      var fieldName = splitted[2].replace(']', '')
-      values[parentFieldName][index][fieldName] = value
-    } else {*/
-      values[field.name] = value
-    //}
-
-    switch(field.type) {
-      case "checkbox":
-        values[field.name] = (value === "on" ? false : true)
-        break
-      case "radio":
-        values[field.name] = (value === "true" ? true : false)
-        break
-      case "list-selector":
+      var values = this.state.values;
+      var value = e.target ? e.target.value : e
+      /*
+      if (field.name.indexOf("[") !== -1) {
+        var splitted = field.name.split("[")
+        var parentFieldName = splitted[0]
+        var index = splitted[1].replace(']', '')
+        var fieldName = splitted[2].replace(']', '')
+        values[parentFieldName][index][fieldName] = value
+      } else {*/
         values[field.name] = value
-        break
-      case "color":
-        values[field.name] = value.hex
-        break
-      case "wysiwyg":
-        values[field.name + "_raw"] = JSON.stringify(convertToRaw(value))
-        values[field.name + "_html"] = stateToHTML(value)
-      default:
-        break
-    }
-    this.setState({values: values});
+      //}
+
+      switch(field.type) {
+        case "checkbox":
+          values[field.name] = (value === "on" ? false : true)
+          break
+        case "radio":
+          values[field.name] = (value === "true" ? true : false)
+          break
+        case "list-selector":
+          values[field.name] = value
+          break
+        case "color":
+          values[field.name] = value.hex
+          break
+        case "wysiwyg":
+          values[field.name + "_raw"] = JSON.stringify(convertToRaw(value))
+          values[field.name + "_html"] = stateToHTML(value)
+        default:
+          break
+      }
+        console.log(values)
+      this.setState({values: values});
     }
   }
 

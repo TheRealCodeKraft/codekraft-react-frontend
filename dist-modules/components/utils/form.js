@@ -30,9 +30,9 @@ var _reactFileInput = require("react-file-input");
 
 var _reactFileInput2 = _interopRequireDefault(_reactFileInput);
 
-var _reactDropZone = require("react-drop-zone");
+var _multipleUpload = require("./form/multiple-upload");
 
-var _reactDropZone2 = _interopRequireDefault(_reactDropZone);
+var _multipleUpload2 = _interopRequireDefault(_multipleUpload);
 
 var _reactColor = require("react-color");
 
@@ -214,7 +214,7 @@ var Form = function (_React$Component) {
         this.props.entityId ? this.buildImageUploaders() : null,
         React.createElement(
           "form",
-          { id: this.props.id, onSubmit: this.handleFormSubmit },
+          { encType: "multipart/form-data", id: this.props.id, onSubmit: this.handleFormSubmit },
           this.props.fields.map(function (field) {
             if (field.show === false) {
               return null;
@@ -438,6 +438,9 @@ var Form = function (_React$Component) {
         case "color":
           input = React.createElement(_reactColor.SketchPicker, { color: value, onChangeComplete: this.handleInputChange.bind(this, field) });
           break;
+        case "multiple-upload":
+          input = React.createElement(_multipleUpload2.default, { onChange: this.handleInputChange.bind(this, field) });
+          break;
         default:
           if (value == null) value = "";
           if (field.component) {
@@ -512,6 +515,7 @@ var Form = function (_React$Component) {
           default:
             break;
         }
+        console.log(values);
         this.setState({ values: values });
       }
     }
