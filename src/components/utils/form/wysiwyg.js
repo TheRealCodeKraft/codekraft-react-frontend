@@ -4,6 +4,8 @@ import Editor from "draft-js-plugins-editor"
 import {Draft, EditorState, ContentState, RichUtils, convertFromRaw} from 'draft-js';
 
 import createToolbarPlugin, { Separator } from 'draft-js-static-toolbar-plugin';
+import createLinkifyPlugin from 'draft-js-linkify-plugin'
+
 import {
   ItalicButton,
   BoldButton,
@@ -113,7 +115,12 @@ const toolbarPlugin = createToolbarPlugin({
   ]
 });
 const { Toolbar } = toolbarPlugin;
-const plugins = [toolbarPlugin];
+
+const linkifyPlugin = createLinkifyPlugin({
+  target: '_blank'  // default is '_self'
+});
+
+const plugins = [toolbarPlugin, linkifyPlugin];
 
 class Wysiwyg extends React.Component {
   constructor(props) {

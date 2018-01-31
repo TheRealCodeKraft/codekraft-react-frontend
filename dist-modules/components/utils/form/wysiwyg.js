@@ -22,6 +22,10 @@ var _draftJsStaticToolbarPlugin = require("draft-js-static-toolbar-plugin");
 
 var _draftJsStaticToolbarPlugin2 = _interopRequireDefault(_draftJsStaticToolbarPlugin);
 
+var _draftJsLinkifyPlugin = require("draft-js-linkify-plugin");
+
+var _draftJsLinkifyPlugin2 = _interopRequireDefault(_draftJsLinkifyPlugin);
+
 var _draftJsButtons = require("draft-js-buttons");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -173,7 +177,12 @@ var toolbarPlugin = (0, _draftJsStaticToolbarPlugin2.default)({
 });
 var Toolbar = toolbarPlugin.Toolbar;
 
-var plugins = [toolbarPlugin];
+
+var linkifyPlugin = (0, _draftJsLinkifyPlugin2.default)({
+  target: '_blank' // default is '_self'
+});
+
+var plugins = [toolbarPlugin, linkifyPlugin];
 
 var Wysiwyg = function (_React$Component3) {
   _inherits(Wysiwyg, _React$Component3);

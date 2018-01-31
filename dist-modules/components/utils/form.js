@@ -510,12 +510,12 @@ var Form = function (_React$Component) {
             values[field.name] = value.hex;
             break;
           case "wysiwyg":
+            console.log((0, _draftJs.convertToRaw)(value));
             values[field.name + "_raw"] = JSON.stringify((0, _draftJs.convertToRaw)(value));
             values[field.name + "_html"] = (0, _draftJsExportHtml.stateToHTML)(value);
           default:
             break;
         }
-        console.log(values);
         this.setState({ values: values });
       }
     }

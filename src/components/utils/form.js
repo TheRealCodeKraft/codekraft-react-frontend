@@ -412,12 +412,12 @@ class Form extends React.Component {
           values[field.name] = value.hex
           break
         case "wysiwyg":
+          console.log(convertToRaw(value))
           values[field.name + "_raw"] = JSON.stringify(convertToRaw(value))
           values[field.name + "_html"] = stateToHTML(value)
         default:
           break
       }
-        console.log(values)
       this.setState({values: values});
     }
   }
