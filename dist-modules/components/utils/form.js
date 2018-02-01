@@ -424,7 +424,7 @@ var Form = function (_React$Component) {
           input = React.createElement("textarea", { className: "form-control", title: field.title, name: fieldName, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field), rows: 5 });
           break;
         case "wysiwyg":
-          input = React.createElement(_wysiwyg2.default, { value: this.state.values[field.name + "_raw"], toolbar: field.toolbar, onChange: this.handleInputChange.bind(this, field) });
+          input = React.createElement(_wysiwyg2.default, { value: this.state.values[field.name + "_raw"], toolbar: field.toolbar, onChange: this.handleInputChange.bind(this, field), mentions: field.mentions });
           break;
         case "date":
           if (!value) value = "";else if (value !== "") {
@@ -510,8 +510,7 @@ var Form = function (_React$Component) {
             values[field.name] = value.hex;
             break;
           case "wysiwyg":
-            console.log((0, _draftJs.convertToRaw)(value));
-            values[field.name + "_raw"] = JSON.stringify((0, _draftJs.convertToRaw)(value));
+            values[field.name + "_raw"] = (0, _draftJs.convertToRaw)(value);
             values[field.name + "_html"] = (0, _draftJsExportHtml.stateToHTML)(value);
           default:
             break;

@@ -107,6 +107,7 @@ var ApiClient = function(store) {
           ps.append("attachments[]", params[key][j])
         }
       } else {
+        if (params[key] instanceof Object) params[key] = JSON.stringify(params[key])
         ps.append(key, params[key])
       }
     }
