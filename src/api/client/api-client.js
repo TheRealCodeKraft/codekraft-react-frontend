@@ -98,7 +98,20 @@ var ApiClient = function(store) {
   }
 
   var post = function(endpoint, params, callback, offline=false, defaultParams=false) {
-    return call("post", endpoint, params, callback, offline, defaultParams)
+    var ps = new FormData()
+    var keys = Object.keys(params), key
+    for (var i in keys) {
+      key = keys[i]
+      if (key == "attachments") {
+        for (var j in params[key]) {
+          ps.append("attachments[]", params[key][j])
+        }
+      } else {
+        if (params[key] instanceof Object) params[key] = JSON.stringify(params[key])
+        ps.append(key, params[key])
+      }
+    }
+    return call("post", endpoint, ps, callback, offline, defaultParams)
   }
 
   var get = function(endpoint, params, callback, offline=false) {
@@ -118,9 +131,9 @@ var ApiClient = function(store) {
   }
 
   var upload = function(endpoint, fieldName, file, callback) {
-    var data = new FormData(); 
-    data.append(fieldName, file)
-    return call("put", endpoint, data, callback)
+    var params = new FormData(); 
+    params.append(fieldName, file)
+    return call("put", endpoint, params, callback)
   }
 
   var refreshToken = function(callback) {

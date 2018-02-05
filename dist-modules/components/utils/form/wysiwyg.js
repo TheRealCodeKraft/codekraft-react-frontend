@@ -22,6 +22,14 @@ var _draftJsStaticToolbarPlugin = require("draft-js-static-toolbar-plugin");
 
 var _draftJsStaticToolbarPlugin2 = _interopRequireDefault(_draftJsStaticToolbarPlugin);
 
+var _draftJsLinkifyPlugin = require("draft-js-linkify-plugin");
+
+var _draftJsLinkifyPlugin2 = _interopRequireDefault(_draftJsLinkifyPlugin);
+
+var _draftJsMentionPlugin = require("draft-js-mention-plugin");
+
+var _draftJsMentionPlugin2 = _interopRequireDefault(_draftJsMentionPlugin);
+
 var _draftJsButtons = require("draft-js-buttons");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -173,7 +181,16 @@ var toolbarPlugin = (0, _draftJsStaticToolbarPlugin2.default)({
 });
 var Toolbar = toolbarPlugin.Toolbar;
 
-var plugins = [toolbarPlugin];
+
+var linkifyPlugin = (0, _draftJsLinkifyPlugin2.default)({
+  target: '_blank' // default is '_self'
+});
+
+var mentionPlugin = (0, _draftJsMentionPlugin2.default)();
+var MentionSuggestions = mentionPlugin.MentionSuggestions;
+
+
+var plugins = [toolbarPlugin, linkifyPlugin, mentionPlugin];
 
 var Wysiwyg = function (_React$Component3) {
   _inherits(Wysiwyg, _React$Component3);
@@ -183,10 +200,21 @@ var Wysiwyg = function (_React$Component3) {
 
     var _this5 = _possibleConstructorReturn(this, (Wysiwyg.__proto__ || Object.getPrototypeOf(Wysiwyg)).call(this, props));
 
+    _this5.onSearchChange = function (_ref3) {
+      var value = _ref3.value;
+
+      _this5.setState({ suggestions: (0, _draftJsMentionPlugin.defaultSuggestionsFilter)(value, _this5.props.mentions) });
+    };
+
+    _this5.onAddMention = function () {
+      if (_this5.props.onChange) _this5.props.onChange(_this5.state.editorState.getCurrentContent());
+    };
+
     _this5.state = {
       loaded: false,
       raw: "",
-      editorState: _draftJs.EditorState.createEmpty()
+      editorState: _draftJs.EditorState.createEmpty(),
+      suggestions: null
     };
     return _this5;
   }
@@ -194,11 +222,21 @@ var Wysiwyg = function (_React$Component3) {
   _createClass(Wysiwyg, [{
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(props) {
-      if (props.value && !this.state.raw) {
+      if (props.value && (!this.state.raw || props.value == "RESET")) {
+        var editorState;
+        if (props.value == "RESET") {
+          editorState = _draftJs.EditorState.createEmpty();
+        } else {
+          editorState = _draftJs.EditorState.create({ currentContent: (0, _draftJs.convertFromRaw)(props.value), selection: this.state.editorState.getSelection() });
+        }
+
         this.setState({
           raw: props.value,
-          editorState: _draftJs.EditorState.createWithContent((0, _draftJs.convertFromRaw)(JSON.parse(props.value)))
+          editorState: editorState
         });
+      }
+      if (props.mentions && !this.state.suggestions) {
+        this.setState({ suggestions: props.mentions });
       }
     }
   }, {
@@ -208,13 +246,19 @@ var Wysiwyg = function (_React$Component3) {
         "div",
         null,
         _react2.default.createElement(_draftJsPluginsEditor2.default, { editorState: this.state.editorState, onChange: this.onChange.bind(this), plugins: plugins }),
-        _react2.default.createElement(Toolbar, null)
+        !this.props.toolbar || this.props.toolbar === false ? null : _react2.default.createElement(Toolbar, null),
+        this.props.mentions && this.props.mentions.length > 0 ? _react2.default.createElement(MentionSuggestions, {
+          onSearchChange: this.onSearchChange.bind(this),
+          suggestions: this.state.suggestions,
+          onAddMention: this.onAddMention.bind(this)
+        }) : null
       );
     }
   }, {
     key: "onChange",
     value: function onChange(editorState) {
       this.setState({ editorState: editorState }, function () {
+        console.log(editorState.getCurrentContent());
         if (this.props.onChange) this.props.onChange(editorState.getCurrentContent());
       });
     }

@@ -30,6 +30,10 @@ var _reactFileInput = require("react-file-input");
 
 var _reactFileInput2 = _interopRequireDefault(_reactFileInput);
 
+var _multipleUpload = require("./form/multiple-upload");
+
+var _multipleUpload2 = _interopRequireDefault(_multipleUpload);
+
 var _reactColor = require("react-color");
 
 var _draftJsExportHtml = require("draft-js-export-html");
@@ -210,7 +214,7 @@ var Form = function (_React$Component) {
         this.props.entityId ? this.buildImageUploaders() : null,
         React.createElement(
           "form",
-          { id: this.props.id, onSubmit: this.handleFormSubmit },
+          { encType: "multipart/form-data", id: this.props.id, onSubmit: this.handleFormSubmit },
           this.props.fields.map(function (field) {
             if (field.show === false) {
               return null;
@@ -420,7 +424,7 @@ var Form = function (_React$Component) {
           input = React.createElement("textarea", { className: "form-control", title: field.title, name: fieldName, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field), rows: 5 });
           break;
         case "wysiwyg":
-          input = React.createElement(_wysiwyg2.default, { value: this.state.values[field.name + "_raw"], onChange: this.handleInputChange.bind(this, field) });
+          input = React.createElement(_wysiwyg2.default, { value: this.state.values[field.name + "_raw"], toolbar: field.toolbar, onChange: this.handleInputChange.bind(this, field), mentions: field.mentions });
           break;
         case "date":
           if (!value) value = "";else if (value !== "") {
@@ -434,11 +438,12 @@ var Form = function (_React$Component) {
         case "color":
           input = React.createElement(_reactColor.SketchPicker, { color: value, onChangeComplete: this.handleInputChange.bind(this, field) });
           break;
+        case "multiple-upload":
+          input = React.createElement(_multipleUpload2.default, { onChange: this.handleInputChange.bind(this, field) });
+          break;
         default:
           if (value == null) value = "";
           if (field.component) {
-            console.log("FROM FORM");
-            console.log(value);
             input = React.createElement(field.component, { className: "form-control", field: field, name: fieldName, value: value, onChange: this.handleInputChange.bind(this, field) });
           } else {
             input = React.createElement("input", { className: "form-control", title: field.title, name: fieldName, type: field.type, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field) });
@@ -505,7 +510,7 @@ var Form = function (_React$Component) {
             values[field.name] = value.hex;
             break;
           case "wysiwyg":
-            values[field.name + "_raw"] = JSON.stringify((0, _draftJs.convertToRaw)(value));
+            values[field.name + "_raw"] = (0, _draftJs.convertToRaw)(value);
             values[field.name + "_html"] = (0, _draftJsExportHtml.stateToHTML)(value);
           default:
             break;
@@ -624,7 +629,9 @@ var Form = function (_React$Component) {
     value: function reset() {
       var newValues = {};
       for (var key in this.props.fields) {
-        if (this.props.fields[key].defaultValue) {
+        if (this.props.fields[key].type == "wysiwyg") {
+          newValues[this.props.fields[key].name + "_raw"] = "RESET";
+        } else if (this.props.fields[key].defaultValue) {
           newValues[this.props.fields[key].name] = this.props.fields[key].defaultValue;
         }
       }

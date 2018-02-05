@@ -4,6 +4,9 @@ import Editor from "draft-js-plugins-editor"
 import {Draft, EditorState, ContentState, RichUtils, convertFromRaw} from 'draft-js';
 
 import createToolbarPlugin, { Separator } from 'draft-js-static-toolbar-plugin';
+import createLinkifyPlugin from 'draft-js-linkify-plugin'
+import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
+
 import {
   ItalicButton,
   BoldButton,
@@ -112,8 +115,16 @@ const toolbarPlugin = createToolbarPlugin({
     CodeBlockButton
   ]
 });
-const { Toolbar } = toolbarPlugin;
-const plugins = [toolbarPlugin];
+const { Toolbar } = toolbarPlugin
+
+const linkifyPlugin = createLinkifyPlugin({
+  target: '_blank'  // default is '_self'
+});
+
+const mentionPlugin = createMentionPlugin();
+const { MentionSuggestions } = mentionPlugin
+
+const plugins = [toolbarPlugin, linkifyPlugin, mentionPlugin];
 
 class Wysiwyg extends React.Component {
   constructor(props) {
@@ -121,16 +132,27 @@ class Wysiwyg extends React.Component {
     this.state = {
       loaded: false,
       raw: "",
-      editorState: EditorState.createEmpty()
+      editorState: EditorState.createEmpty(),
+      suggestions: null
     }
   }
 
   componentWillReceiveProps(props) {
-    if (props.value && !this.state.raw) {
+    if (props.value && (!this.state.raw || props.value == "RESET")) {
+      var editorState
+      if (props.value == "RESET") {
+        editorState = EditorState.createEmpty()
+      } else {
+        editorState = EditorState.create({currentContent: convertFromRaw(props.value), selection: this.state.editorState.getSelection()})
+      }
+
       this.setState({
         raw: props.value,
-        editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(props.value)))
+        editorState: editorState 
       })
+    }
+    if (props.mentions && !this.state.suggestions) {
+      this.setState({suggestions: props.mentions})
     }
   }
 
@@ -138,7 +160,14 @@ class Wysiwyg extends React.Component {
     return (
       <div>
         <Editor editorState={this.state.editorState} onChange={this.onChange.bind(this)} plugins={plugins} />
-        <Toolbar />
+        {(!this.props.toolbar || this.props.toolbar === false) ? null : <Toolbar />}
+        {(this.props.mentions && this.props.mentions.length > 0)
+         ? <MentionSuggestions
+             onSearchChange={this.onSearchChange.bind(this)}
+             suggestions={this.state.suggestions}
+             onAddMention={this.onAddMention.bind(this)}
+           />
+         : null}
       </div>
     );
   }
@@ -147,6 +176,14 @@ class Wysiwyg extends React.Component {
     this.setState({editorState}, function() {
       if (this.props.onChange) this.props.onChange(editorState.getCurrentContent())
     })
+  }
+
+  onSearchChange = ({value}) => {
+    this.setState({suggestions: defaultSuggestionsFilter(value, this.props.mentions)})
+  }
+
+  onAddMention = () => {
+    if (this.props.onChange) this.props.onChange(this.state.editorState.getCurrentContent())
   }
 
 }

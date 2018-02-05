@@ -14,11 +14,15 @@ var _require3 = require('react-router'),
 var configureStore = require('./store-config');
 var ReducerRegistry = require('./registry');
 
-function pushNewEntityToState(entity, state, name) {
+function pushNewEntityToState(entity, state, name, insertOn) {
   var list = state[name] || [];
   if (entity !== undefined) {
     list = JSON.parse(JSON.stringify(list));
-    list.push(entity);
+    if (insertOn == "bottom") {
+      list.push(entity);
+    } else {
+      list.unshift(entity);
+    }
   }
   return list;
 }
@@ -59,8 +63,8 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function createReducer(reducerName, plural, extension) {
-  return function (reducerName, plural) {
+function createReducer(reducerName, plural, extension, insertOn) {
+  return function (reducerName, plural, extension, insertOn) {
     return function () {
       var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var action = arguments[1];
@@ -78,7 +82,7 @@ function createReducer(reducerName, plural, extension) {
           newState[reducerName] = action[reducerName];
           break;
         case "NEW_" + reducerName.toUpperCase():
-          items = pushNewEntityToState(action[reducerName], state, plural);
+          items = pushNewEntityToState(action[reducerName], state, plural, insertOn);
           newState[plural] = items;
           newState["new" + capitalizeFirstLetter(reducerName)] = action[reducerName];
           break;
@@ -116,7 +120,7 @@ function createReducer(reducerName, plural, extension) {
 
       return newState;
     };
-  }(reducerName, plural);
+  }(reducerName, plural, extension, insertOn);
 }
 
 module.exports = function createStore(config) {
@@ -124,23 +128,25 @@ module.exports = function createStore(config) {
     "bootstrap": _baseReducers.bootstrapReducer,
     "authState": _baseReducers.authReducer
   };
-  var reducerName, plural, extension;
+  var reducerName, plural, extension, insertOn;
   for (var index in config) {
 
     if (config[index] instanceof Object) {
       reducerName = config[index].name;
       plural = config[index].plural ? config[index].plural : reducerName + "s";
       extension = config[index].reducer;
+      insertOn = config[index].insertOn || "bottom";
     } else {
       //.reducerName = toCamel(config[index])
       reducerName = config[index];
       plural = reducerName + "s";
+      insertOn = "bottom";
     }
 
     if (reducerName === "user") {
       coreReducers[reducerName + "State"] = createReducer(reducerName, plural, _baseReducers.userReducer);
     } else {
-      coreReducers[reducerName + "State"] = createReducer(reducerName, plural, extension);
+      coreReducers[reducerName + "State"] = createReducer(reducerName, plural, extension, insertOn);
     }
   }
 
