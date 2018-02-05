@@ -562,7 +562,7 @@ var Form = function (_React$Component) {
             if (this.props.entityId !== undefined) {
               this.props.service.client[this.props.service.func](this.props.entityId, currentValues, this.handleFormSubmitted);
             } else {
-              this.props.service.client[this.props.service.func](currentValues, this.handleFormSubmitted);
+              this.props.service.client[this.props.service.func](currentValues, this.handleFormSubmitted, this.props.offlineMode);
             }
           });
         }
