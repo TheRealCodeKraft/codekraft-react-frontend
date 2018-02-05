@@ -258,7 +258,6 @@ var Wysiwyg = function (_React$Component3) {
     key: "onChange",
     value: function onChange(editorState) {
       this.setState({ editorState: editorState }, function () {
-        console.log(editorState.getCurrentContent());
         if (this.props.onChange) this.props.onChange(editorState.getCurrentContent());
       });
     }
