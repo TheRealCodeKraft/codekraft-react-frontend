@@ -468,7 +468,7 @@ var Form = function (_React$Component) {
         this.state.errors[field.name] !== undefined ? React.createElement(
           "span",
           { className: "form-error" },
-          this.state.errors[field.name]
+          this.state.errors[field.name].includes("_required") ? field.label + " est obligatoire" : this.state.errors[field.name]
         ) : null
       );
 
@@ -613,6 +613,11 @@ var Form = function (_React$Component) {
         }
       }
       return errors;
+    }
+  }, {
+    key: "getValue",
+    value: function getValue(fieldName) {
+      return this.state.values[fieldName];
     }
   }, {
     key: "reset",

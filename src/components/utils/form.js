@@ -373,7 +373,7 @@ class Form extends React.Component {
               }
               {
                 this.state.errors[field.name] !== undefined
-                ? <span className="form-error">{this.state.errors[field.name]}</span>
+                ? <span className="form-error">{this.state.errors[field.name].includes("_required") ? (field.label + " est obligatoire") : this.state.errors[field.name]}</span>
                 : null
               }
             </div>
@@ -513,6 +513,10 @@ class Form extends React.Component {
       
     }
     return errors;
+  }
+
+  getValue(fieldName) {
+    return this.state.values[fieldName]
   }
 
   reset() {
