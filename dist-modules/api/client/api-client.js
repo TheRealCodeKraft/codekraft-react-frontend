@@ -78,7 +78,6 @@ var ApiClient = function ApiClient(store) {
       promise.json().then(function (response) {
 
         /*if (response.json) response = response.json*/
-        console.log(response);
 
         Logger.debug({
           method: method,
@@ -123,8 +122,6 @@ var ApiClient = function ApiClient(store) {
           ps.append("attachments[]", params[key][j]);
         }
       } else {
-        console.log(params[key]);
-        console.log(params[key] instanceof Object);
         if (params[key] instanceof Object) params[key] = JSON.stringify(params[key]);
         ps.append(key, params[key]);
       }

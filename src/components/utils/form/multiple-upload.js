@@ -15,7 +15,14 @@ class MultipleUpload extends React.Component {
   render() {
     return (
       <div className="multiple-upload">
-        <DropZone onDrop={this.handleDrop.bind(this)} />
+        <DropZone 
+          onDrop={this.handleDrop.bind(this)}
+          className="multiple-upload-zone"
+          activeClassName="active-zone"
+        >
+          <span>Déposez des fichiers ici</span>
+          <span>ou cliquez pour sélectionner des fichiers</span>
+        </DropZone>
         <div className="files">
           {this.state.files.map((file, index) => (
             <div className="file-thumbnail">

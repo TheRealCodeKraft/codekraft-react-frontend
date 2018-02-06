@@ -30,12 +30,14 @@ function createClient(name, plural, store, ApiClient, localConfig) {
 
       var fetchAll = function fetchAll(params, callback) {
         var offline = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+        var append = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
         ApiClient.get(plural, params, function (data) {
           var toDispatch = {
             type: plural.toUpperCase()
           };
           toDispatch[plural] = data;
+          toDispatch["append"] = append;
           store.dispatch(toDispatch);
           if (callback) callback(data);
         }, offline);
@@ -113,8 +115,10 @@ function createClient(name, plural, store, ApiClient, localConfig) {
       };
 
       var pushInState = function pushInState(data) {
+        var update = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
         var toDispatch = {
-          type: "UPDATE_" + name.toUpperCase()
+          type: (update ? "UPDATE_" : "NEW_") + name.toUpperCase()
         };
         toDispatch[name] = data;
         store.dispatch(toDispatch);

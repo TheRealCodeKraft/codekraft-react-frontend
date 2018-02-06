@@ -166,7 +166,7 @@ var HeadlinesButton = function (_React$Component2) {
         { style: editorStyles.headlineButtonWrapper },
         _react2.default.createElement(
           "button",
-          { onClick: this.onClick, style: editorStyles.headlineButton },
+          { onClick: this.onClick },
           "H"
         )
       );
@@ -246,7 +246,7 @@ var Wysiwyg = function (_React$Component3) {
         "div",
         null,
         _react2.default.createElement(_draftJsPluginsEditor2.default, { editorState: this.state.editorState, onChange: this.onChange.bind(this), plugins: plugins }),
-        !this.props.toolbar || this.props.toolbar === false ? null : _react2.default.createElement(Toolbar, null),
+        this.props.toolbar && this.props.toolbar === false ? null : _react2.default.createElement(Toolbar, null),
         this.props.mentions && this.props.mentions.length > 0 ? _react2.default.createElement(MentionSuggestions, {
           onSearchChange: this.onSearchChange.bind(this),
           suggestions: this.state.suggestions,
@@ -258,7 +258,6 @@ var Wysiwyg = function (_React$Component3) {
     key: "onChange",
     value: function onChange(editorState) {
       this.setState({ editorState: editorState }, function () {
-        console.log(editorState.getCurrentContent());
         if (this.props.onChange) this.props.onChange(editorState.getCurrentContent());
       });
     }

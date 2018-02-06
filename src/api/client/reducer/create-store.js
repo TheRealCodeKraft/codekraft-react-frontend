@@ -60,7 +60,13 @@ function createReducer(reducerName, plural, extension, insertOn) {
       var _plural = plural
       switch(action.type) {
         case plural.toUpperCase():
-          newState[plural] = action[plural]
+          var list
+          if (action.append && state[plural]) {
+            list = state[plural].concat(action[plural])
+          } else {
+            list = action[plural]
+          }
+          newState[plural] = list 
           break
         case reducerName.toUpperCase():
           items = mergeEntityAndState(action[reducerName], state, plural)

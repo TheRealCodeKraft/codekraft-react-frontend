@@ -93,7 +93,7 @@ class HeadlinesButton extends React.Component {
   render() {
     return (
       <div style={editorStyles.headlineButtonWrapper}>
-        <button onClick={this.onClick} style={editorStyles.headlineButton}>
+        <button onClick={this.onClick}>
           H
         </button>
       </div>
@@ -160,7 +160,7 @@ class Wysiwyg extends React.Component {
     return (
       <div>
         <Editor editorState={this.state.editorState} onChange={this.onChange.bind(this)} plugins={plugins} />
-        {(!this.props.toolbar || this.props.toolbar === false) ? null : <Toolbar />}
+        {(this.props.toolbar && this.props.toolbar === false) ? null : <Toolbar />}
         {(this.props.mentions && this.props.mentions.length > 0)
          ? <MentionSuggestions
              onSearchChange={this.onSearchChange.bind(this)}

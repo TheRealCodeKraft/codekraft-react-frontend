@@ -44,7 +44,24 @@ var MultipleUpload = function (_React$Component) {
       return _react2.default.createElement(
         "div",
         { className: "multiple-upload" },
-        _react2.default.createElement(_reactDropzone2.default, { onDrop: this.handleDrop.bind(this) }),
+        _react2.default.createElement(
+          _reactDropzone2.default,
+          {
+            onDrop: this.handleDrop.bind(this),
+            className: "multiple-upload-zone",
+            activeClassName: "active-zone"
+          },
+          _react2.default.createElement(
+            "span",
+            null,
+            "D\xE9posez des fichiers ici"
+          ),
+          _react2.default.createElement(
+            "span",
+            null,
+            "ou cliquez pour s\xE9lectionner des fichiers"
+          )
+        ),
         _react2.default.createElement(
           "div",
           { className: "files" },
