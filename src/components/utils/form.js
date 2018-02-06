@@ -430,11 +430,11 @@ class Form extends React.Component {
     this.submit()
   }
 
-  submit() {
+  submit(extraData={}) {
     var errors = this.validate()
     this.setState({errors: errors})
     if (Object.keys(errors).length === 0) {
-      var currentValues = {}
+      var currentValues = extraData
 
       for (var fIndex in this.props.fields) {
         if (this.props.fields[fIndex].type !== "image-uploader" && this.props.fields[fIndex].show !== false) {

@@ -532,10 +532,14 @@ var Form = function (_React$Component) {
   }, {
     key: "submit",
     value: function submit() {
+      var extraData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
       var errors = this.validate();
       this.setState({ errors: errors });
       if (Object.keys(errors).length === 0) {
-        var currentValues = {};
+        console.log(extraData);
+        var currentValues = extraData;
+        console.log(currentValues);
 
         for (var fIndex in this.props.fields) {
           if (this.props.fields[fIndex].type !== "image-uploader" && this.props.fields[fIndex].show !== false) {
@@ -557,6 +561,7 @@ var Form = function (_React$Component) {
             }
           }
         }
+        console.log(currentValues);
         if (this.props.service !== undefined) {
           this.setState({ submitting: true, submitError: undefined }, function () {
             if (this.props.entityId !== undefined) {
