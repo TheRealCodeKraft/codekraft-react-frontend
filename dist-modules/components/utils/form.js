@@ -537,9 +537,7 @@ var Form = function (_React$Component) {
       var errors = this.validate();
       this.setState({ errors: errors });
       if (Object.keys(errors).length === 0) {
-        console.log(extraData);
         var currentValues = extraData;
-        console.log(currentValues);
 
         for (var fIndex in this.props.fields) {
           if (this.props.fields[fIndex].type !== "image-uploader" && this.props.fields[fIndex].show !== false) {
@@ -561,7 +559,6 @@ var Form = function (_React$Component) {
             }
           }
         }
-        console.log(currentValues);
         if (this.props.service !== undefined) {
           this.setState({ submitting: true, submitError: undefined }, function () {
             if (this.props.entityId !== undefined) {
@@ -602,6 +599,13 @@ var Form = function (_React$Component) {
             }
             if (field.type === "select" && (this.state.values[field.name] === -1 || this.state.values[field.name] === "-1")) {
               errors[field.name] = field.name + "_required";
+            }
+            if (field.type === "wysiwyg") {
+              //&& this.state.values[field.name + "_html"] === undefined) {
+              if (!this.state.values[field.name + "_raw"] || !(0, _draftJs.convertFromRaw)(this.state.values[field.name + "_raw"]).hasText()) {
+                console.log(this.state.values[field.name + "_html"]);
+                errors[field.name] = field.name + "_required";
+              }
             }
           }
         }

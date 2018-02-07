@@ -12,7 +12,7 @@ import MultipleUpload from './form/multiple-upload'
 import { SketchPicker } from 'react-color'
 
 import {stateToHTML} from 'draft-js-export-html'
-import {convertToRaw} from 'draft-js';
+import {convertToRaw, convertFromRaw} from 'draft-js';
 
 class Form extends React.Component {
 
@@ -493,6 +493,12 @@ class Form extends React.Component {
           }
           if (field.type === "select" && (this.state.values[field.name] === -1 || this.state.values[field.name] === "-1")) {
             errors[field.name] = field.name + "_required"
+          }
+          if (field.type === "wysiwyg") { //&& this.state.values[field.name + "_html"] === undefined) {
+            if (!this.state.values[field.name + "_raw"] || !convertFromRaw(this.state.values[field.name + "_raw"]).hasText()) {
+              console.log(this.state.values[field.name + "_html"])
+              errors[field.name] = field.name + "_required"
+            }
           }
         }
       }
