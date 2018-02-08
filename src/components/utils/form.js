@@ -119,6 +119,9 @@ class Form extends React.Component {
            }
         } else if (this.props.fields[index].type == "wysiwyg") {
           currentValue = this.props.values[this.props.fields[index].name + "_raw"]
+          if (!(currentValue instanceof Object)) {
+            currentValue = JSON.parse(currentValue)
+          }
           currentHtmlValue = this.props.values[this.props.fields[index].name + "_html"]
         } else {
           currentValue = this.props.values[this.props.fields[index].name]
@@ -496,7 +499,6 @@ class Form extends React.Component {
           }
           if (field.type === "wysiwyg") { //&& this.state.values[field.name + "_html"] === undefined) {
             if (!this.state.values[field.name + "_raw"] || !convertFromRaw(this.state.values[field.name + "_raw"]).hasText()) {
-              console.log(this.state.values[field.name + "_html"])
               errors[field.name] = field.name + "_required"
             }
           }

@@ -161,7 +161,7 @@ class Wysiwyg extends React.Component {
       <div>
         <Editor editorState={this.state.editorState} onChange={this.onChange.bind(this)} plugins={plugins} />
         {(this.props.toolbar && this.props.toolbar === false) ? null : <Toolbar />}
-        {(this.props.mentions && this.props.mentions.length > 0)
+        {(this.state.suggestions && this.props.mentions && this.props.mentions.length > 0)
          ? <MentionSuggestions
              onSearchChange={this.onSearchChange.bind(this)}
              suggestions={this.state.suggestions}
