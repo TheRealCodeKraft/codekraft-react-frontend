@@ -9,6 +9,7 @@ import ListSelector from './form/list-selector'
 import Wysiwyg from './form/wysiwyg'
 import FileInput from "react-file-input"
 import MultipleUpload from './form/multiple-upload'
+import DateHourPicker from './form/date-hour-picker'
 import { SketchPicker } from 'react-color'
 
 import {stateToHTML} from 'draft-js-export-html'
@@ -344,6 +345,16 @@ class Form extends React.Component {
                             onChange={this.handleInputChange.bind(this, field)}
                 />
         break
+      case "datehour":
+        if (!value) value=""
+        else if (value !== "") {
+          value=moment(value)//.format("DD/MM/YYYY HH:mm")
+        }
+        input = <DateHourPicker 
+                  value={value} 
+                  onChange={this.handleInputChange.bind(this, field)}
+                />
+        break
       case "color":
         input = <SketchPicker color={value} onChangeComplete={this.handleInputChange.bind(this, field)} />
         break
@@ -400,6 +411,8 @@ class Form extends React.Component {
       } else {*/
         values[field.name] = value
       //}
+      
+      console.log(value)
 
       switch(field.type) {
         case "checkbox":
@@ -454,7 +467,11 @@ class Form extends React.Component {
               currentValues[this.props.fields[fIndex].name + "_raw"] = this.state.values[this.props.fields[fIndex].name + "_raw"]
               currentValues[this.props.fields[fIndex].name + "_html"] = this.state.values[this.props.fields[fIndex].name + "_html"]
             } else {
-              currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name]
+              if (this.props.fields[fIndex].type == "datehour") {
+                currentValues[this.props.fields[fIndex].name] = moment(this.state.values[this.props.fields[fIndex].name]).format("DD/MM/YYYY HH:mm")
+              } else {
+                currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name]
+              }
             }
           }
         }

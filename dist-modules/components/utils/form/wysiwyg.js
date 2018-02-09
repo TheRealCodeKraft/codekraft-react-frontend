@@ -246,7 +246,7 @@ var Wysiwyg = function (_React$Component3) {
         "div",
         null,
         _react2.default.createElement(_draftJsPluginsEditor2.default, { editorState: this.state.editorState, onChange: this.onChange.bind(this), plugins: plugins }),
-        this.props.toolbar && this.props.toolbar === false ? null : _react2.default.createElement(Toolbar, null),
+        this.props.toolbar == undefined || this.props.toolbar == true ? _react2.default.createElement(Toolbar, null) : null,
         this.state.suggestions && this.props.mentions && this.props.mentions.length > 0 ? _react2.default.createElement(MentionSuggestions, {
           onSearchChange: this.onSearchChange.bind(this),
           suggestions: this.state.suggestions,

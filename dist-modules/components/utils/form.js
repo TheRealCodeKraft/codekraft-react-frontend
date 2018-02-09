@@ -34,6 +34,10 @@ var _multipleUpload = require("./form/multiple-upload");
 
 var _multipleUpload2 = _interopRequireDefault(_multipleUpload);
 
+var _dateHourPicker = require("./form/date-hour-picker");
+
+var _dateHourPicker2 = _interopRequireDefault(_dateHourPicker);
+
 var _reactColor = require("react-color");
 
 var _draftJsExportHtml = require("draft-js-export-html");
@@ -438,6 +442,15 @@ var Form = function (_React$Component) {
             onChange: this.handleInputChange.bind(this, field)
           });
           break;
+        case "datehour":
+          if (!value) value = "";else if (value !== "") {
+            value = moment(value); //.format("DD/MM/YYYY HH:mm")
+          }
+          input = React.createElement(_dateHourPicker2.default, {
+            value: value,
+            onChange: this.handleInputChange.bind(this, field)
+          });
+          break;
         case "color":
           input = React.createElement(_reactColor.SketchPicker, { color: value, onChangeComplete: this.handleInputChange.bind(this, field) });
           break;
@@ -499,6 +512,8 @@ var Form = function (_React$Component) {
         values[field.name] = value;
         //}
 
+        console.log(value);
+
         switch (field.type) {
           case "checkbox":
             values[field.name] = value === "on" ? false : true;
@@ -557,7 +572,11 @@ var Form = function (_React$Component) {
                 currentValues[this.props.fields[fIndex].name + "_raw"] = this.state.values[this.props.fields[fIndex].name + "_raw"];
                 currentValues[this.props.fields[fIndex].name + "_html"] = this.state.values[this.props.fields[fIndex].name + "_html"];
               } else {
-                currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name];
+                if (this.props.fields[fIndex].type == "datehour") {
+                  currentValues[this.props.fields[fIndex].name] = moment(this.state.values[this.props.fields[fIndex].name]).format("DD/MM/YYYY HH:mm");
+                } else {
+                  currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name];
+                }
               }
             }
           }
