@@ -18,6 +18,7 @@ var ApiClient = function ApiClient(store) {
   var call = function call(method, endpoint, params, callback) {
     var offline = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
     var defaultParams = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
+    var baseParams = arguments[6];
 
     var headers = {};
 
@@ -70,6 +71,7 @@ var ApiClient = function ApiClient(store) {
     Logger.debug({
       method: method,
       request: endpoint,
+      params: baseParams ? baseParams : params,
       headers: headers,
       data: params
     });
@@ -126,7 +128,7 @@ var ApiClient = function ApiClient(store) {
         ps.append(key, params[key]);
       }
     }
-    return call("post", endpoint, ps, callback, offline, defaultParams);
+    return call("post", endpoint, ps, callback, offline, defaultParams, params);
   };
 
   var get = function get(endpoint, params, callback) {

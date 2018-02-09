@@ -199,6 +199,7 @@ button[type="submit"] {
 .multiple-upload {
   .files {
     display: flex;
+    flex-wrap: wrap;
     .file-thumbnail {
       a {
         position: absolute;
@@ -215,7 +216,7 @@ button[type="submit"] {
         background: rgba(0, 0, 0, .8);
       }
       img {
-        height: 100px;
+        height: 50px;
         margin: 5px;
       }
     }
@@ -227,8 +228,8 @@ button[type="submit"] {
     justify-content: center;
     align-items: center;
     flex: 1;
-    font-size: 2em;
-    height: 200px; 
+    font-size: 1.5em;
+    height: 100px; 
     border-width: 2px; 
     border-color: rgb(102, 102, 102); 
     border-style: dashed; 
@@ -245,6 +246,7 @@ button[type="submit"] {
   display: flex;
   .thumbnails {
     flex: 1;
+    overflow-x: scroll;
     display: flex;
     align-items: center;
     background: #fff;

@@ -5,7 +5,7 @@ import StorageService from './storage/storage'
 const STORAGE_KEY_FOR_TOKEN = "token";
 
 var ApiClient = function(store) {
-  var call = function(method, endpoint, params, callback, offline=false, defaultParams=false) {
+  var call = function(method, endpoint, params, callback, offline=false, defaultParams=false, baseParams) {
     var headers = {
     }
 
@@ -58,6 +58,7 @@ var ApiClient = function(store) {
     Logger.debug({
       method: method,
       request: endpoint,
+      params: baseParams ? baseParams : params,
       headers: headers,
       data: params
     })
@@ -111,7 +112,7 @@ var ApiClient = function(store) {
         ps.append(key, params[key])
       }
     }
-    return call("post", endpoint, ps, callback, offline, defaultParams)
+    return call("post", endpoint, ps, callback, offline, defaultParams, params)
   }
 
   var get = function(endpoint, params, callback, offline=false) {

@@ -45,6 +45,22 @@ var MultipleUpload = function (_React$Component) {
         "div",
         { className: "multiple-upload" },
         _react2.default.createElement(
+          "div",
+          { className: "files" },
+          this.state.files.map(function (file, index) {
+            return _react2.default.createElement(
+              "div",
+              { className: "file-thumbnail" },
+              _react2.default.createElement(
+                "a",
+                { onClick: _this2.handleRemove.bind(_this2, index) },
+                _react2.default.createElement("i", { className: "fa fa-remove" })
+              ),
+              _react2.default.createElement("img", { src: file.preview })
+            );
+          })
+        ),
+        this.props.showZone == undefined || this.props.showZone === true ? _react2.default.createElement(
           _reactDropzone2.default,
           {
             onDrop: this.handleDrop.bind(this),
@@ -61,23 +77,7 @@ var MultipleUpload = function (_React$Component) {
             null,
             "ou cliquez pour s\xE9lectionner des fichiers"
           )
-        ),
-        _react2.default.createElement(
-          "div",
-          { className: "files" },
-          this.state.files.map(function (file, index) {
-            return _react2.default.createElement(
-              "div",
-              { className: "file-thumbnail" },
-              _react2.default.createElement(
-                "a",
-                { onClick: _this2.handleRemove.bind(_this2, index) },
-                _react2.default.createElement("i", { className: "fa fa-remove" })
-              ),
-              _react2.default.createElement("img", { src: file.preview })
-            );
-          })
-        )
+        ) : null
       );
     }
   }, {
