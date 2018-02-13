@@ -116,12 +116,20 @@ function createClient(name, plural, store, ApiClient, localConfig) {
 
       var pushInState = function pushInState(data) {
         var update = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+        var target = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
 
         var toDispatch = {
           type: (update ? "UPDATE_" : "NEW_") + name.toUpperCase()
         };
         toDispatch[name] = data;
         store.dispatch(toDispatch);
+        if (target) {
+          toDispatch = { type: target };
+          toDispatch[name] = data;
+          console.log("DISPATCH");
+          console.log(toDispatch);
+          store.dispatch(toDispatch);
+        }
       };
 
       var functions = {
