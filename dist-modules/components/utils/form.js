@@ -148,53 +148,57 @@ var Form = function (_React$Component) {
             this.loadValuesState();
           }
         });
-      } else if (this.props.entityId !== props.entityId) {
-        this.loadValuesState();
+      } else {
+        // if (this.props.entityId !== props.entityId) {
+        this.loadValuesState(props);
       }
     }
   }, {
     key: "loadValuesState",
     value: function loadValuesState() {
+      var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+      if (!props) props = this.props;
       var valuesState = {};
       var currentValue = undefined,
           currentHtmlValue = undefined;
 
-      for (var index in this.props.fields) {
-        if (this.props.values) {
-          if (this.props.fields[index].name.indexOf("[") !== -1) {
-            var splitted = this.props.fields[index].name.split('[');
-            if (this.props.values[splitted[0]]) {
+      for (var index in props.fields) {
+        if (props.values) {
+          if (props.fields[index].name.indexOf("[") !== -1) {
+            var splitted = props.fields[index].name.split('[');
+            if (props.values[splitted[0]]) {
               if (splitted.length === 2) {
-                currentValue = this.props.values[splitted[0]][splitted[1].replace(']', '')];
+                currentValue = props.values[splitted[0]][splitted[1].replace(']', '')];
               } else {
-                currentValue = this.props.values[splitted[0]][splitted[1].replace(']', '')][splitted[2].replace(']', '')];
+                currentValue = props.values[splitted[0]][splitted[1].replace(']', '')][splitted[2].replace(']', '')];
               }
             } else {
               currentValue = undefined;
             }
-          } else if (this.props.fields[index].type == "wysiwyg") {
-            currentValue = this.props.values[this.props.fields[index].name + "_raw"];
+          } else if (props.fields[index].type == "wysiwyg") {
+            currentValue = props.values[props.fields[index].name + "_raw"];
             if (!(currentValue instanceof Object)) {
               currentValue = JSON.parse(currentValue);
             }
-            currentHtmlValue = this.props.values[this.props.fields[index].name + "_html"];
+            currentHtmlValue = props.values[props.fields[index].name + "_html"];
           } else {
-            currentValue = this.props.values[this.props.fields[index].name];
+            currentValue = props.values[props.fields[index].name];
           }
-          if (currentValue instanceof Array && !this.props.fields[index].component) {
+          if (currentValue instanceof Array && !props.fields[index].component) {
             currentValue = currentValue.map(function (value) {
               return value.id;
             });
           }
         } else {
-          currentValue = this.props.fields[index].defaultValue;
+          currentValue = props.fields[index].defaultValue;
         }
 
-        if (this.props.fields[index].type == "wysiwyg") {
-          valuesState[this.props.fields[index].name + "_raw"] = currentValue;
-          valuesState[this.props.fields[index].name + "_html"] = currentHtmlValue;
+        if (props.fields[index].type == "wysiwyg") {
+          valuesState[props.fields[index].name + "_raw"] = currentValue;
+          valuesState[props.fields[index].name + "_html"] = currentHtmlValue;
         } else {
-          valuesState[this.props.fields[index].name] = currentValue;
+          valuesState[props.fields[index].name] = currentValue;
         }
       }
 
