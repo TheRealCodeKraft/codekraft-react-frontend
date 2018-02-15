@@ -148,8 +148,7 @@ var Form = function (_React$Component) {
             this.loadValuesState();
           }
         });
-      } else {
-        // if (this.props.entityId !== props.entityId) {
+      } else if (this.props.entityId !== props.entityId) {
         this.loadValuesState(props);
       }
     }
@@ -516,7 +515,7 @@ var Form = function (_React$Component) {
         values[field.name] = value;
         //}
 
-        console.log(value);
+        //console.log(value)
 
         switch (field.type) {
           case "checkbox":

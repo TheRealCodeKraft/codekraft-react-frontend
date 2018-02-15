@@ -101,18 +101,19 @@ var ApiClient = function(store) {
   var post = function(endpoint, params, callback, offline=false, defaultParams=false) {
     var ps = new FormData()
     var keys = Object.keys(params), key
+    var formData = false
     for (var i in keys) {
       key = keys[i]
       if (key == "attachments") {
+        formData=true
         for (var j in params[key]) {
           ps.append("attachments[]", params[key][j])
         }
       } else {
-        if (params[key] instanceof Object) params[key] = JSON.stringify(params[key])
-        ps.append(key, params[key])
+        ps.append(key, (params[key] instanceof Object) ? JSON.stringify(params[key]) : params[key])
       }
     }
-    return call("post", endpoint, ps, callback, offline, defaultParams, params)
+    return call("post", endpoint, formData ? ps : params, callback, offline, defaultParams, params)
   }
 
   var get = function(endpoint, params, callback, offline=false) {

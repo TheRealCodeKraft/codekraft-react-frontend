@@ -96,7 +96,7 @@ class Form extends React.Component {
           this.loadValuesState()
         }
       })
-    } else { // if (this.props.entityId !== props.entityId) {
+    } else if (this.props.entityId !== props.entityId) {
       this.loadValuesState(props)
     }
   }
