@@ -37,6 +37,17 @@ var MultipleUpload = function (_React$Component) {
   }
 
   _createClass(MultipleUpload, [{
+    key: "componentWillReceiveProps",
+    value: function componentWillReceiveProps(props) {
+      if (props.value) {
+        if (props.value == "RESET") {
+          this.setState({ files: [] });
+        } else if (this.state.files.length == 0) {
+          this.setState({ files: props.value });
+        }
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
@@ -56,7 +67,7 @@ var MultipleUpload = function (_React$Component) {
                 { onClick: _this2.handleRemove.bind(_this2, index) },
                 _react2.default.createElement("i", { className: "fa fa-remove" })
               ),
-              _react2.default.createElement("img", { src: file.preview })
+              _react2.default.createElement("img", { src: file.preview ? file.preview : file.file_url })
             );
           })
         ),

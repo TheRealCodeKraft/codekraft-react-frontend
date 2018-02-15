@@ -119,8 +119,24 @@ var ApiClient = function(store) {
     return call("get", endpoint, params, callback, offline)
   }
 
-  var put = function(endpoint, id, params, callback, offline=false) {
-    return call("put", endpoint + (id ? ("/" + id) : ""), params, callback, offline)
+  var put = function(endpoint, id, params, callback, offline=false, defaultParams=false) {
+    var ps = new FormData()
+    var keys = Object.keys(params), key
+    for (var i in keys) {
+      key = keys[i]
+      if (key == "attachments") {
+        for (var j in params[key]) {
+console.log(JSON.stringify(params[key][j]))
+          ps.append("attachments[]", (params[key] instanceof File || params[key] instanceof Blob) ? params[key][j] : JSON.stringify(params[key][j]))
+        }
+      } else {
+        if (params[key] instanceof Object) params[key] = JSON.stringify(params[key])
+        ps.append(key, params[key])
+      }
+    }
+console.log(ps)
+
+    return call("put", endpoint + (id ? ("/" + id) : ""), ps, callback, offline, defaultParams, params)
   }
 
   var patch = function(endpoint, id, params, callback) {

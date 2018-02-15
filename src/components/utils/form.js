@@ -96,7 +96,7 @@ class Form extends React.Component {
           this.loadValuesState()
         }
       })
-    } else { // if (this.props.entityId !== props.entityId) {
+    } else if (this.props.entityId !== props.entityId || props.forceReload) {
       this.loadValuesState(props)
     }
   }
@@ -128,7 +128,7 @@ class Form extends React.Component {
         } else {
           currentValue = props.values[props.fields[index].name]
         }
-        if (currentValue instanceof Array && !props.fields[index].component) {
+        if (currentValue instanceof Array && !props.fields[index].component && props.fields[index].type !== "multiple-upload") {
           currentValue = currentValue.map(value => { return value.id })
         }
       } else {
@@ -360,7 +360,7 @@ class Form extends React.Component {
         input = <SketchPicker color={value} onChangeComplete={this.handleInputChange.bind(this, field)} />
         break
       case "multiple-upload":
-        input = <MultipleUpload onChange={this.handleInputChange.bind(this, field)} showZone={field.showZone} />
+        input = <MultipleUpload onChange={this.handleInputChange.bind(this, field)} showZone={field.showZone} value={value} />
         break
       default:
         if (value == null) value = ""
@@ -552,6 +552,8 @@ class Form extends React.Component {
     for (var key in this.props.fields) {
       if (this.props.fields[key].type == "wysiwyg") {
         newValues[this.props.fields[key].name + "_raw"] = "RESET"
+      } else if (this.props.fields[key].type == "multiple-upload") {
+        newValues[this.props.fields[key].name] = "RESET"
       } else if (this.props.fields[key].defaultValue) {
         newValues[this.props.fields[key].name] = this.props.fields[key].defaultValue
       }

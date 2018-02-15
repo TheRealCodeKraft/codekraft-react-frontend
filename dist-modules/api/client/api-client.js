@@ -139,8 +139,26 @@ var ApiClient = function ApiClient(store) {
 
   var put = function put(endpoint, id, params, callback) {
     var offline = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+    var defaultParams = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
 
-    return call("put", endpoint + (id ? "/" + id : ""), params, callback, offline);
+    var ps = new FormData();
+    var keys = Object.keys(params),
+        key;
+    for (var i in keys) {
+      key = keys[i];
+      if (key == "attachments") {
+        for (var j in params[key]) {
+          console.log(JSON.stringify(params[key][j]));
+          ps.append("attachments[]", params[key] instanceof File || params[key] instanceof Blob ? params[key][j] : JSON.stringify(params[key][j]));
+        }
+      } else {
+        if (params[key] instanceof Object) params[key] = JSON.stringify(params[key]);
+        ps.append(key, params[key]);
+      }
+    }
+    console.log(ps);
+
+    return call("put", endpoint + (id ? "/" + id : ""), ps, callback, offline, defaultParams, params);
   };
 
   var patch = function patch(endpoint, id, params, callback) {
