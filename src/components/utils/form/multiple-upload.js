@@ -12,6 +12,16 @@ class MultipleUpload extends React.Component {
     }
   }
 
+  componentWillReceiveProps(props) {
+    if (props.value) {
+      if (props.value == "RESET") {
+        this.setState({files: []})
+      } else if (this.state.files.length == 0) {
+        this.setState({files: props.value})
+      }
+    }
+  }
+
   render() {
     return (
       <div className="multiple-upload">
@@ -19,7 +29,7 @@ class MultipleUpload extends React.Component {
           {this.state.files.map((file, index) => (
             <div className="file-thumbnail">
               <a onClick={this.handleRemove.bind(this, index)}><i className="fa fa-remove" /></a>
-              <img src={file.preview} />
+              <img src={file.preview ? file.preview : file.file_url} />
             </div>
           ))}
         </div>

@@ -140,8 +140,29 @@ var ApiClient = function ApiClient(store) {
 
   var put = function put(endpoint, id, params, callback) {
     var offline = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+    var defaultParams = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
 
-    return call("put", endpoint + (id ? "/" + id : ""), params, callback, offline);
+    var ps = new FormData();
+    var keys = Object.keys(params),
+        key;
+    var formData = false;
+    for (var i in keys) {
+      key = keys[i];
+      if (key == "attachments") {
+        formData = true;
+        if (params[key].length > 0) {
+          for (var j in params[key]) {
+            ps.append("attachments[]", params[key][j]["id"] ? JSON.stringify(params[key][j]) : params[key][j]);
+          }
+        } else {
+          ps.append("attachments", "");
+        }
+      } else {
+        ps.append(key, params[key] instanceof Object ? JSON.stringify(params[key]) : params[key]);
+      }
+    }
+
+    return call("put", endpoint + (id ? "/" + id : ""), formData ? ps : params, callback, offline, defaultParams, params);
   };
 
   var patch = function patch(endpoint, id, params, callback) {
