@@ -1,5 +1,7 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
+
+import 'babel-polyfill';
 import { connect } from 'react-redux'
 
 var Logger = require('js-logger')
