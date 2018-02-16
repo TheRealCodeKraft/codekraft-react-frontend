@@ -122,6 +122,7 @@ class Form extends React.Component {
         } else if (props.fields[index].type == "wysiwyg") {
           currentValue = props.values[props.fields[index].name + "_raw"]
           if (!(currentValue instanceof Object)) {
+console.log(currentValue)
             currentValue = JSON.parse(currentValue)
           }
           currentHtmlValue = props.values[props.fields[index].name + "_html"]

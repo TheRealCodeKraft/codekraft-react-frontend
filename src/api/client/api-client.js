@@ -4,6 +4,8 @@ var Logger = require('js-logger')
 import StorageService from './storage/storage'
 const STORAGE_KEY_FOR_TOKEN = "token";
 
+import "isomorphic-fetch"
+
 var ApiClient = function(store) {
   var call = function(method, endpoint, params, callback, offline=false, defaultParams=false, baseParams) {
     var headers = {
@@ -120,8 +122,27 @@ var ApiClient = function(store) {
     return call("get", endpoint, params, callback, offline)
   }
 
-  var put = function(endpoint, id, params, callback, offline=false) {
-    return call("put", endpoint + (id ? ("/" + id) : ""), params, callback, offline)
+  var put = function(endpoint, id, params, callback, offline=false, defaultParams=false) {
+    var ps = new FormData()
+    var keys = Object.keys(params), key
+    var formData = false
+    for (var i in keys) {
+      key = keys[i]
+      if (key == "attachments") {
+        formData=true
+        if (params[key].length > 0) {
+          for (var j in params[key]) {
+            ps.append("attachments[]", params[key][j]["id"] ? JSON.stringify(params[key][j]) : params[key][j])
+          }
+        } else {
+          ps.append("attachments", "")
+        }
+      } else {
+        ps.append(key, (params[key] instanceof Object) ? JSON.stringify(params[key]) : params[key])
+      }
+    }
+
+    return call("put", endpoint + (id ? ("/" + id) : ""), formData ? ps : params, callback, offline, defaultParams, params)
   }
 
   var patch = function(endpoint, id, params, callback) {
