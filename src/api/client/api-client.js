@@ -4,6 +4,7 @@ var Logger = require('js-logger')
 import StorageService from './storage/storage'
 const STORAGE_KEY_FOR_TOKEN = "token";
 
+require('es6-promise').polyfill();
 import "isomorphic-fetch"
 
 var ApiClient = function(store) {
