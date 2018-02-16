@@ -177,7 +177,7 @@ var Form = function (_React$Component) {
             }
           } else if (props.fields[index].type == "wysiwyg") {
             currentValue = props.values[props.fields[index].name + "_raw"];
-            if (!(currentValue instanceof Object)) {
+            if (!(currentValue instanceof Object) && !(currentValue == "")) {
               currentValue = JSON.parse(currentValue);
             }
             currentHtmlValue = props.values[props.fields[index].name + "_html"];

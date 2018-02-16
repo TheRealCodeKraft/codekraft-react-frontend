@@ -200,6 +200,10 @@ var Wysiwyg = function (_React$Component3) {
 
     var _this5 = _possibleConstructorReturn(this, (Wysiwyg.__proto__ || Object.getPrototypeOf(Wysiwyg)).call(this, props));
 
+    _this5.focus = function () {
+      _this5.editor.focus();
+    };
+
     _this5.onSearchChange = function (_ref3) {
       var value = _ref3.value;
 
@@ -212,7 +216,7 @@ var Wysiwyg = function (_React$Component3) {
 
     _this5.state = {
       loaded: false,
-      raw: "",
+      raw: undefined,
       editorState: _draftJs.EditorState.createEmpty(),
       suggestions: null
     };
@@ -224,7 +228,9 @@ var Wysiwyg = function (_React$Component3) {
     value: function componentWillReceiveProps(props) {
       if (props.value && (!this.state.raw || props.value == "RESET")) {
         var editorState;
-        if (props.value == "RESET") {
+        console.log("VALUE");
+        console.log(props.value);
+        if (props.value == "RESET" || props.value == "") {
           editorState = _draftJs.EditorState.createEmpty();
         } else {
           editorState = _draftJs.EditorState.create({ currentContent: (0, _draftJs.convertFromRaw)(props.value), selection: this.state.editorState.getSelection() });
@@ -242,10 +248,14 @@ var Wysiwyg = function (_React$Component3) {
   }, {
     key: "render",
     value: function render() {
+      var _this6 = this;
+
       return _react2.default.createElement(
         "div",
         null,
-        _react2.default.createElement(_draftJsPluginsEditor2.default, { editorState: this.state.editorState, onChange: this.onChange.bind(this), plugins: plugins }),
+        _react2.default.createElement(_draftJsPluginsEditor2.default, { editorState: this.state.editorState, onChange: this.onChange.bind(this), plugins: plugins, ref: function ref(element) {
+            _this6.editor = element;
+          } }),
         this.props.toolbar == undefined || this.props.toolbar == true ? _react2.default.createElement(Toolbar, null) : null,
         this.state.suggestions && this.props.mentions && this.props.mentions.length > 0 ? _react2.default.createElement(MentionSuggestions, {
           onSearchChange: this.onSearchChange.bind(this),

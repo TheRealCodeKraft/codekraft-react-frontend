@@ -131,7 +131,7 @@ class Wysiwyg extends React.Component {
     super(props);
     this.state = {
       loaded: false,
-      raw: "",
+      raw: undefined,
       editorState: EditorState.createEmpty(),
       suggestions: null
     }
@@ -140,7 +140,9 @@ class Wysiwyg extends React.Component {
   componentWillReceiveProps(props) {
     if (props.value && (!this.state.raw || props.value == "RESET")) {
       var editorState
-      if (props.value == "RESET") {
+console.log("VALUE")
+console.log(props.value)
+      if (props.value == "RESET" || props.value == "") {
         editorState = EditorState.createEmpty()
       } else {
         editorState = EditorState.create({currentContent: convertFromRaw(props.value), selection: this.state.editorState.getSelection()})
@@ -156,10 +158,14 @@ class Wysiwyg extends React.Component {
     }
   }
 
+  focus = () => {
+    this.editor.focus();
+  };
+
   render() {
     return (
       <div>
-        <Editor editorState={this.state.editorState} onChange={this.onChange.bind(this)} plugins={plugins} />
+        <Editor editorState={this.state.editorState} onChange={this.onChange.bind(this)} plugins={plugins} ref={(element) => { this.editor = element }} />
         {(this.props.toolbar == undefined || this.props.toolbar == true) ? <Toolbar /> : null}
         {(this.state.suggestions && this.props.mentions && this.props.mentions.length > 0)
          ? <MentionSuggestions
