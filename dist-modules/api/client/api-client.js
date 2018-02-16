@@ -18,7 +18,7 @@ var Logger = require('js-logger');
 
 var STORAGE_KEY_FOR_TOKEN = "token";
 
-require('es6-promise').polyfill();
+//require('es6-promise').polyfill();
 
 
 var ApiClient = function ApiClient(store) {

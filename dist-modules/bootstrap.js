@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-require('babel-polyfill');
-
 var _reactRedux = require('react-redux');
 
 var _reactHotLoader = require('react-hot-loader');
@@ -57,9 +55,7 @@ var _momentTimezone2 = _interopRequireDefault(_momentTimezone);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var React = require('react');
-
 var ReactDOM = require('react-dom');
-
 
 var Logger = require('js-logger');
 Logger.useDefaults();
