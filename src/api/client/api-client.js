@@ -5,7 +5,7 @@ import StorageService from './storage/storage'
 const STORAGE_KEY_FOR_TOKEN = "token";
 
 require('es6-promise').polyfill();
-import "isomorphic-fetch"
+import fetch from "isomorphic-fetch"
 
 var ApiClient = function(store) {
   var call = function(method, endpoint, params, callback, offline=false, defaultParams=false, baseParams) {
