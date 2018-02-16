@@ -8,11 +8,18 @@ var _storage = require('./storage/storage');
 
 var _storage2 = _interopRequireDefault(_storage);
 
+var _isomorphicFetch = require('isomorphic-fetch');
+
+var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Logger = require('js-logger');
 
 var STORAGE_KEY_FOR_TOKEN = "token";
+
+//require('es6-promise').polyfill();
+
 
 var ApiClient = function ApiClient(store) {
   var call = function call(method, endpoint, params, callback) {
@@ -76,7 +83,7 @@ var ApiClient = function ApiClient(store) {
       data: params
     });
 
-    fetch(process.env.API_URL + endpoint, fetchParams).then(function (promise) {
+    (0, _isomorphicFetch2.default)(process.env.API_URL + endpoint, fetchParams).then(function (promise) {
       promise.json().then(function (response) {
 
         /*if (response.json) response = response.json*/

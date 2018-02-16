@@ -57,7 +57,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-
 var Logger = require('js-logger');
 Logger.useDefaults();
 

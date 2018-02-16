@@ -1,5 +1,6 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
+
 import { connect } from 'react-redux'
 
 var Logger = require('js-logger')
