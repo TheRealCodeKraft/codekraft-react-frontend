@@ -83,6 +83,18 @@ var Bootstrap = function () {
     var clients = (0, _createClients2.default)(config.clients, store);
     var version = config.version ? config.version : 1;
 
+    console.log("HISTORY");
+
+    var history = config.history == "hash" ? (0, _createHashHistory2.default)() : (0, _createBrowserHistory2.default)();
+    history.listen(function (location, action) {
+      console.log("HISTORY LISTENER");
+      if (process.env.UA_ID) {
+        _reactGa2.default.set({ page: location.pathname });
+        _reactGa2.default.pageview(location.pathname);
+      }
+    });
+    console.log(history);
+
     var mainComponent = _app2.default,
         bootstrapConfig = _default2.default;
     if (version === 2) {
@@ -100,18 +112,6 @@ var Bootstrap = function () {
         type: "NAVIGATION",
         navigation: nav
       });
-
-      console.log("HISTORY");
-
-      var history = bootstrapConfig.history == "hash" ? (0, _createHashHistory2.default)() : (0, _createBrowserHistory2.default)();
-      history.listen(function (location, action) {
-        console.log("HISTORY LISTENER");
-        if (process.env.UA_ID) {
-          _reactGa2.default.set({ page: location.pathname });
-          _reactGa2.default.pageview(location.pathname);
-        }
-      });
-      console.log(history);
 
       //document.addEventListener('DOMContentLoaded', function() {
       ReactDOM.render(React.createElement(
