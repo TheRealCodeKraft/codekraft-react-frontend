@@ -44,6 +44,10 @@ var _createBrowserHistory = require('history/createBrowserHistory');
 
 var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 
+var _createHashHistory = require('history/createHashHistory');
+
+var _createHashHistory2 = _interopRequireDefault(_createHashHistory);
+
 var _reactGa = require('react-ga');
 
 var _reactGa2 = _interopRequireDefault(_reactGa);
@@ -70,17 +74,9 @@ _momentTimezone2.default.locale('fr');
 
 var Bootstrap = function () {
 
-  var history = (0, _createBrowserHistory2.default)();
-
   if (process.env.UA_ID) {
     _reactGa2.default.initialize(process.env.UA_ID);
   }
-  history.listen(function (location, action) {
-    if (process.env.UA_ID) {
-      _reactGa2.default.set({ page: location.pathname });
-      _reactGa2.default.pageview(location.pathname);
-    }
-  });
 
   var launch = function launch(config, callback) {
     var store = (0, _createStore2.default)(config.clients);
@@ -106,7 +102,17 @@ var Bootstrap = function () {
       });
 
       console.log("HISTORY");
+
+      var history = bootstrapConfig.history == "hash" ? (0, _createHashHistory2.default)() : (0, _createBrowserHistory2.default)();
+      history.listen(function (location, action) {
+        console.log("HISTORY LISTENER");
+        if (process.env.UA_ID) {
+          _reactGa2.default.set({ page: location.pathname });
+          _reactGa2.default.pageview(location.pathname);
+        }
+      });
       console.log(history);
+
       //document.addEventListener('DOMContentLoaded', function() {
       ReactDOM.render(React.createElement(
         Provider,

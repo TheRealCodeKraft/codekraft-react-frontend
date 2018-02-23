@@ -23,7 +23,8 @@ import BootstrapConfig from './config/navigation/default'
 import BootstrapConfigV2 from './config/navigation/v2/default'
 
 import Popup from 'react-popup'
-import createHistory from 'history/createBrowserHistory'
+import createBrowserHistory from 'history/createBrowserHistory'
+import createHashHistory from 'history/createHashHistory'
 import ReactGA from 'react-ga'
 
 import moment from 'moment-timezone'
@@ -31,17 +32,10 @@ moment.locale('fr')
 
 var Bootstrap = function() {
 
-  const history = createHistory()
 
   if (process.env.UA_ID) {
     ReactGA.initialize(process.env.UA_ID)
   }
-  history.listen((location, action) => {
-    if (process.env.UA_ID) {
-      ReactGA.set({ page: location.pathname })
-      ReactGA.pageview(location.pathname)
-    }
-  });
 
   var launch = function(config, callback) {
     const store = createStore(config.clients)
@@ -66,7 +60,17 @@ var Bootstrap = function() {
       })
 
       console.log("HISTORY")
+
+			const history = bootstrapConfig.history == "hash" ? createHashHistory() : createBrowserHistory()
+			history.listen((location, action) => {
+console.log("HISTORY LISTENER")
+				if (process.env.UA_ID) {
+					ReactGA.set({ page: location.pathname })
+					ReactGA.pageview(location.pathname)
+				}
+			});
       console.log(history)
+
       //document.addEventListener('DOMContentLoaded', function() {
         ReactDOM.render(
           <Provider store={store}>

@@ -1,6 +1,6 @@
 {
   "name": "codekraft-react-frontend",
-  "version": "1.0.84",
+  "version": "1.0.85",
   "description": "The react frontend from CodeKraft Corporation",
   "main": "dist-modules/index.js",
   "scripts": {
@@ -81,7 +81,8 @@
     "redux-thunk": "^2.2.0",
     "style-loader": "^0.19.1",
     "es6-promise": "^4.1.1",
-    "isomorphic-fetch": "^2.2.1"
+    "isomorphic-fetch": "^2.2.1",
+		"mobile-detect": "^1.4.1"
   },
   "eslintConfig": {
     "extends": "react-app",
