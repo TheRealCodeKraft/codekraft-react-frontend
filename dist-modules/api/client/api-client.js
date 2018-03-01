@@ -238,7 +238,9 @@ var ApiClient = function ApiClient(store) {
   };
 
   var login = function login(params, callback) {
-    if (checkForToken()) {
+    var forceLogout = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
+    if (checkForToken() && forceLogout) {
       logout(function () {
         login(params, callback);
       });
@@ -248,7 +250,19 @@ var ApiClient = function ApiClient(store) {
         if (data.error) {
           if (callback) callback(data);
         } else {
-          storeToken(data, callback);
+          storeToken(data, function (data) {
+            get("users/me", {}, function (me) {
+              if (me.error) {
+                if (callback) callback(data);
+              } else {
+                store.dispatch({
+                  type: "ME",
+                  user: me
+                });
+                if (callback) callback(data);
+              }
+            });
+          });
         }
       }, false, true);
     }

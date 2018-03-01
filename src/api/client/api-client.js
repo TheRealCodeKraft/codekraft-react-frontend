@@ -212,8 +212,8 @@ var ApiClient = function(store) {
     callback(data)
   }
 
-  var login = function(params, callback) {
-    if (checkForToken()) {
+  var login = function(params, callback, forceLogout=true) {
+    if (checkForToken() && forceLogout) {
       logout(function() {
         login(params, callback)
       })
@@ -223,7 +223,19 @@ var ApiClient = function(store) {
         if (data.error) {
           if (callback) callback(data)
         } else {
-          storeToken(data, callback)
+          storeToken(data, (data) => {
+						get("users/me", {}, function(me) {
+        			if (me.error) {
+          			if (callback) callback(data)
+        			} else {
+          			store.dispatch({
+            			type: "ME",
+            			user: me
+          			})
+          			if (callback) callback(data)
+        			}
+      			})
+					})
         }
       }, false, true)
     }

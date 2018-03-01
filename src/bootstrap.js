@@ -42,17 +42,13 @@ var Bootstrap = function() {
     const clients = createClients(config.clients, store)
     const version = config.version ? config.version : 1
 
-    console.log("HISTORY")
-
 		const history = config.history == "hash" ? createHashHistory() : createBrowserHistory()
 		history.listen((location, action) => {
-console.log("HISTORY LISTENER")
 			if (process.env.UA_ID) {
 				ReactGA.set({ page: location.pathname })
 				ReactGA.pageview(location.pathname)
 			}
 		});
-		console.log(history)
 
     var mainComponent = App, bootstrapConfig = BootstrapConfig
     if (version === 2) {

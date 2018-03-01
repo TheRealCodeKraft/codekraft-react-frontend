@@ -22,12 +22,6 @@ exports.default = function (name, config) {
     _createClass(Root, [{
       key: "componentWillMount",
       value: function componentWillMount() {
-        var self = this;
-        this.props.clients.UserClient.me(function (me) {
-          if (!me.error) {
-            self.setState({ me: me });
-          }
-        });
 
         var groups = config.menu;
         var pages = [],

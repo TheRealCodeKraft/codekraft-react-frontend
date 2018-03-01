@@ -17,12 +17,19 @@ class App extends React.Component {
     super(props);
 
     this.state = {
+			loaded: false,
       token: null
     }
   }
 
   componentWillMount() {
-    this.props.clients.ApiClient.getToken()
+		var self = this
+		this.props.clients.UserClient.me(function(me) {
+			if (!me.error) {
+			  self.props.clients.ApiClient.getToken()
+			}
+			self.setState({loaded: true})
+		})
   }
 
   componentWillReceiveProps(props) {
@@ -35,6 +42,8 @@ class App extends React.Component {
   }
 
   render() {
+
+		if (!this.state.loaded) return null
 
     return (
       <this.props.navigation.mainWrapper navigation={this.props.navigation} location={this.props.location}>

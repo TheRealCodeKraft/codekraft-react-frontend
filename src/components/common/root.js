@@ -20,12 +20,6 @@ export default function(name, config) {
     }
 
     componentWillMount() {
-      var self = this
-      this.props.clients.UserClient.me(function(me) {
-        if (!me.error) {
-          self.setState({me: me})
-        }
-      })
 
       var groups = config.menu
       var pages = [], pageIndex=0

@@ -48,6 +48,7 @@ var App = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
     _this.state = {
+      loaded: false,
       token: null
     };
     return _this;
@@ -56,7 +57,13 @@ var App = function (_React$Component) {
   _createClass(App, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
-      this.props.clients.ApiClient.getToken();
+      var self = this;
+      this.props.clients.UserClient.me(function (me) {
+        if (!me.error) {
+          self.props.clients.ApiClient.getToken();
+        }
+        self.setState({ loaded: true });
+      });
     }
   }, {
     key: 'componentWillReceiveProps',
@@ -72,6 +79,8 @@ var App = function (_React$Component) {
     key: 'render',
     value: function render() {
       var _this2 = this;
+
+      if (!this.state.loaded) return null;
 
       return _react2.default.createElement(
         this.props.navigation.mainWrapper,
