@@ -124,7 +124,15 @@ var Bootstrap = function () {
       ReactDOM.render(React.createElement(
         Provider,
         { store: store },
-        React.createElement(_reactPopup2.default, { escToClose: true, closeOnOutsideClick: false, defaultOk: 'OK', defaultCancel: 'Annuler' })
+        React.createElement(_reactPopup2.default, {
+          escToClose: true,
+          closeOnOutsideClick: false,
+          defaultOk: 'OK',
+          defaultCancel: 'Annuler',
+          className: config.popup && config.popup.className ? config.popup.className : "mm-popup",
+          btnClass: config.popup && config.popup.bntClass ? config.popup.btnClass : "mm-popup__btn",
+          wildClasses: !config.popup
+        })
       ), document.getElementById('popup-container'));
       if (callback) callback();
     });

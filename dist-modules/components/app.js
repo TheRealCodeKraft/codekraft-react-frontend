@@ -57,6 +57,7 @@ var App = function (_React$Component) {
   _createClass(App, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
+      console.log("WILL MOUNT");
       var self = this;
       this.props.clients.UserClient.me(function (me) {
         if (!me.error) {
@@ -79,6 +80,8 @@ var App = function (_React$Component) {
     key: 'render',
     value: function render() {
       var _this2 = this;
+
+      console.log("rENDER");
 
       if (!this.state.loaded) return null;
 

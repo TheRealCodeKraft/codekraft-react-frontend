@@ -28,7 +28,12 @@ class MultipleUpload extends React.Component {
         <div className="files">
           {this.state.files.map((file, index) => (
             <div className="file-thumbnail">
-              <a onClick={this.handleRemove.bind(this, index)}><i className="fa fa-remove" /></a>
+              <a onClick={this.handleRemove.bind(this, index)}>
+								{ this.props.removeIcon
+									? this.props.removeIcon
+									: <i className="fa fa-remove" />
+								}
+							</a>
               <img src={file.preview ? file.preview : file.file_url} />
             </div>
           ))}

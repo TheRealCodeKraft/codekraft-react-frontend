@@ -65,7 +65,7 @@ var MultipleUpload = function (_React$Component) {
               _react2.default.createElement(
                 "a",
                 { onClick: _this2.handleRemove.bind(_this2, index) },
-                _react2.default.createElement("i", { className: "fa fa-remove" })
+                _this2.props.removeIcon ? _this2.props.removeIcon : _react2.default.createElement("i", { className: "fa fa-remove" })
               ),
               _react2.default.createElement("img", { src: file.preview ? file.preview : file.file_url })
             );

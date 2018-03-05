@@ -23,6 +23,7 @@ class App extends React.Component {
   }
 
   componentWillMount() {
+console.log("WILL MOUNT")
 		var self = this
 		this.props.clients.UserClient.me(function(me) {
 			if (!me.error) {
@@ -42,6 +43,7 @@ class App extends React.Component {
   }
 
   render() {
+console.log("rENDER")
 
 		if (!this.state.loaded) return null
 
