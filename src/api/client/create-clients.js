@@ -98,7 +98,7 @@ function createClient(name, plural, store, ApiClient, localConfig) {
         })
       }
 
-      var pushInState = function(data, update=true, target=undefined) {
+      var pushInState = function(data, update=true, target=undefined, callback) {
         var toDispatch = {
           type: (update ? "UPDATE_" : "NEW_") + name.toUpperCase()
         }
@@ -107,8 +107,10 @@ function createClient(name, plural, store, ApiClient, localConfig) {
         if (target) {
           toDispatch = {type: target}
           toDispatch[name] = data
+console.log(toDispatch)
           store.dispatch(toDispatch)
         }
+				if (callback) callback()
       }
 
       var functions = {

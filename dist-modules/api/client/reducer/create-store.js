@@ -76,7 +76,7 @@ function createReducer(reducerName, plural, extension, insertOn) {
         case plural.toUpperCase():
           var list;
           if (action.append && state[plural]) {
-            list = action[plural].concat(state[plural]);
+            list = state[plural].concat(action[plural]);
           } else {
             list = action[plural];
           }

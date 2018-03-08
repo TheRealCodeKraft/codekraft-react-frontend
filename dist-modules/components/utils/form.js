@@ -201,6 +201,9 @@ var Form = function (_React$Component) {
         }
       }
 
+      console.log("VALUES");
+      console.log(valuesState);
+
       this.setState({ values: valuesState });
     }
   }, {
