@@ -201,9 +201,6 @@ var Form = function (_React$Component) {
         }
       }
 
-      console.log("VALUES");
-      console.log(valuesState);
-
       this.setState({ values: valuesState });
     }
   }, {
@@ -461,7 +458,7 @@ var Form = function (_React$Component) {
           input = React.createElement(_reactColor.SketchPicker, { color: value, onChangeComplete: this.handleInputChange.bind(this, field) });
           break;
         case "multiple-upload":
-          input = React.createElement(_multipleUpload2.default, { onChange: this.handleInputChange.bind(this, field), showZone: field.showZone, value: value, removeIcon: field.removeIcon });
+          input = React.createElement(_multipleUpload2.default, { onChange: this.handleInputChange.bind(this, field), showZone: field.showZone, value: value, removeIcon: field.removeIcon, dropComponent: field.dropComponent });
           break;
         default:
           if (value == null) value = "";

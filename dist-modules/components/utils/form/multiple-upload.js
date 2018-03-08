@@ -55,10 +55,32 @@ var MultipleUpload = function (_React$Component) {
       return _react2.default.createElement(
         "div",
         { className: "multiple-upload" },
+        this.props.showZone == undefined || this.props.showZone === true ? _react2.default.createElement(
+          _reactDropzone2.default,
+          {
+            onDrop: this.handleDrop.bind(this),
+            className: "multiple-upload-zone",
+            activeClassName: "active-zone"
+          },
+          this.props.dropComponent ? this.props.dropComponent : [_react2.default.createElement(
+            "span",
+            null,
+            "D\xE9posez des fichiers ici"
+          ), _react2.default.createElement(
+            "span",
+            null,
+            "ou cliquez pour s\xE9lectionner des fichiers"
+          )]
+        ) : null,
+        _react2.default.createElement(
+          "h6",
+          { className: "selected-title" },
+          "Fichiers s\xE9lectionn\xE9s"
+        ),
         _react2.default.createElement(
           "div",
           { className: "files" },
-          this.state.files.map(function (file, index) {
+          this.state.files.length ? this.state.files.map(function (file, index) {
             return _react2.default.createElement(
               "div",
               { className: "file-thumbnail" },
@@ -69,26 +91,12 @@ var MultipleUpload = function (_React$Component) {
               ),
               _react2.default.createElement("img", { src: file.preview ? file.preview : file.file_url })
             );
-          })
-        ),
-        this.props.showZone == undefined || this.props.showZone === true ? _react2.default.createElement(
-          _reactDropzone2.default,
-          {
-            onDrop: this.handleDrop.bind(this),
-            className: "multiple-upload-zone",
-            activeClassName: "active-zone"
-          },
-          _react2.default.createElement(
+          }) : _react2.default.createElement(
             "span",
-            null,
-            "D\xE9posez des fichiers ici"
-          ),
-          _react2.default.createElement(
-            "span",
-            null,
-            "ou cliquez pour s\xE9lectionner des fichiers"
+            { className: "no-files" },
+            "Aucun fichier"
           )
-        ) : null
+        )
       );
     }
   }, {
