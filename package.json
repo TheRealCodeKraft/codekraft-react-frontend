@@ -1,6 +1,6 @@
 {
   "name": "codekraft-react-frontend",
-  "version": "1.0.87",
+  "version": "1.0.88",
   "description": "The react frontend from CodeKraft Corporation",
   "main": "dist-modules/index.js",
   "scripts": {
@@ -83,7 +83,8 @@
     "es6-promise": "^4.1.1",
     "isomorphic-fetch": "^2.2.1",
 		"mobile-detect": "^1.4.1",
-		"is-webview": "^1.0.1"
+		"is-webview": "^1.0.1",
+		"react-scroll-to-component": "^1.0.2"
   },
   "eslintConfig": {
     "extends": "react-app",
