@@ -220,7 +220,7 @@ var Form = function (_React$Component) {
 
       return React.createElement(
         "div",
-        { className: "form-container" },
+        { className: "form-container " + (this.props.className ? this.props.className : "") },
         this.props.entityId ? this.buildImageUploaders() : null,
         React.createElement(
           "form",
@@ -458,7 +458,7 @@ var Form = function (_React$Component) {
           input = React.createElement(_reactColor.SketchPicker, { color: value, onChangeComplete: this.handleInputChange.bind(this, field) });
           break;
         case "multiple-upload":
-          input = React.createElement(_multipleUpload2.default, { onChange: this.handleInputChange.bind(this, field), showZone: field.showZone, value: value });
+          input = React.createElement(_multipleUpload2.default, { onChange: this.handleInputChange.bind(this, field), showZone: field.showZone, value: value, removeIcon: field.removeIcon, dropComponent: field.dropComponent });
           break;
         default:
           if (value == null) value = "";
@@ -501,6 +501,8 @@ var Form = function (_React$Component) {
   }, {
     key: "handleInputChange",
     value: function handleInputChange(field, e) {
+      var _this5 = this;
+
       if (Object.keys(this.state.values).length > 0) {
         var values = this.state.values;
         var value = e.target ? e.target.value : e;
@@ -536,7 +538,9 @@ var Form = function (_React$Component) {
           default:
             break;
         }
-        this.setState({ values: values });
+        this.setState({ values: values }, function () {
+          if (_this5.props.onInputChange) _this5.props.onInputChange(values);
+        });
       }
     }
   }, {

@@ -55,22 +55,6 @@ var MultipleUpload = function (_React$Component) {
       return _react2.default.createElement(
         "div",
         { className: "multiple-upload" },
-        _react2.default.createElement(
-          "div",
-          { className: "files" },
-          this.state.files.map(function (file, index) {
-            return _react2.default.createElement(
-              "div",
-              { className: "file-thumbnail" },
-              _react2.default.createElement(
-                "a",
-                { onClick: _this2.handleRemove.bind(_this2, index) },
-                _react2.default.createElement("i", { className: "fa fa-remove" })
-              ),
-              _react2.default.createElement("img", { src: file.preview ? file.preview : file.file_url })
-            );
-          })
-        ),
         this.props.showZone == undefined || this.props.showZone === true ? _react2.default.createElement(
           _reactDropzone2.default,
           {
@@ -78,17 +62,41 @@ var MultipleUpload = function (_React$Component) {
             className: "multiple-upload-zone",
             activeClassName: "active-zone"
           },
-          _react2.default.createElement(
+          this.props.dropComponent ? this.props.dropComponent : [_react2.default.createElement(
             "span",
             null,
             "D\xE9posez des fichiers ici"
-          ),
-          _react2.default.createElement(
+          ), _react2.default.createElement(
             "span",
             null,
             "ou cliquez pour s\xE9lectionner des fichiers"
+          )]
+        ) : null,
+        _react2.default.createElement(
+          "h6",
+          { className: "selected-title" },
+          "Fichiers s\xE9lectionn\xE9s"
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "files" },
+          this.state.files.length ? this.state.files.map(function (file, index) {
+            return _react2.default.createElement(
+              "div",
+              { className: "file-thumbnail" },
+              _react2.default.createElement(
+                "a",
+                { onClick: _this2.handleRemove.bind(_this2, index) },
+                _this2.props.removeIcon ? _this2.props.removeIcon : _react2.default.createElement("i", { className: "fa fa-remove" })
+              ),
+              _react2.default.createElement("img", { src: file.preview ? file.preview : file.file_url })
+            );
+          }) : _react2.default.createElement(
+            "span",
+            { className: "no-files" },
+            "Aucun fichier"
           )
-        ) : null
+        )
       );
     }
   }, {

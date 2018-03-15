@@ -80,7 +80,15 @@ var Bootstrap = function() {
       
       ReactDOM.render(
           <Provider store={store}>
-            <Popup escToClose={true} closeOnOutsideClick={false} defaultOk="OK" defaultCancel="Annuler" />
+            <Popup 
+							escToClose={true} 
+							closeOnOutsideClick={false} 
+							defaultOk="OK" 
+							defaultCancel="Annuler" 
+							className={(config.popup && config.popup.className) ? config.popup.className : "mm-popup"}
+							btnClass={(config.popup && config.popup.bntClass) ? config.popup.btnClass : "mm-popup__btn"}
+							wildClasses={!config.popup}
+						/>
           </Provider>,
         document.getElementById('popup-container')
       )

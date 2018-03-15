@@ -155,7 +155,7 @@ class Form extends React.Component {
                           : null)
 
     return (
-      <div className="form-container">
+      <div className={"form-container " + (this.props.className ? this.props.className : "")}>
         {this.props.entityId ? this.buildImageUploaders() : null}
         <form encType='multipart/form-data' id={this.props.id} onSubmit={this.handleFormSubmit}>
           {this.props.fields.map(field => {
@@ -360,7 +360,7 @@ class Form extends React.Component {
         input = <SketchPicker color={value} onChangeComplete={this.handleInputChange.bind(this, field)} />
         break
       case "multiple-upload":
-        input = <MultipleUpload onChange={this.handleInputChange.bind(this, field)} showZone={field.showZone} value={value} />
+        input = <MultipleUpload onChange={this.handleInputChange.bind(this, field)} showZone={field.showZone} value={value} removeIcon={field.removeIcon} dropComponent={field.dropComponent} />
         break
       default:
         if (value == null) value = ""
@@ -434,7 +434,9 @@ class Form extends React.Component {
         default:
           break
       }
-      this.setState({values: values});
+      this.setState({values: values}, () => {
+				if (this.props.onInputChange) this.props.onInputChange(values)
+			})
     }
   }
 

@@ -25,24 +25,37 @@ class MultipleUpload extends React.Component {
   render() {
     return (
       <div className="multiple-upload">
-        <div className="files">
-          {this.state.files.map((file, index) => (
-            <div className="file-thumbnail">
-              <a onClick={this.handleRemove.bind(this, index)}><i className="fa fa-remove" /></a>
-              <img src={file.preview ? file.preview : file.file_url} />
-            </div>
-          ))}
-        </div>
         { (this.props.showZone == undefined || this.props.showZone === true)
           ? <DropZone 
               onDrop={this.handleDrop.bind(this)}
               className="multiple-upload-zone"
               activeClassName="active-zone"
             >
-              <span>Déposez des fichiers ici</span>
-              <span>ou cliquez pour sélectionner des fichiers</span>
+							{ this.props.dropComponent
+								? this.props.dropComponent
+              	: [	<span>Déposez des fichiers ici</span>,
+              			<span>ou cliquez pour sélectionner des fichiers</span>
+									]
+							}
             </DropZone>
           : null}
+				<h6 className="selected-title">Fichiers sélectionnés</h6>
+        <div className="files">
+          { this.state.files.length
+						?	this.state.files.map((file, index) => (
+								<div className="file-thumbnail">
+									<a onClick={this.handleRemove.bind(this, index)}>
+										{ this.props.removeIcon
+											? this.props.removeIcon
+											: <i className="fa fa-remove" />
+										}
+									</a>
+									<img src={file.preview ? file.preview : file.file_url} />
+								</div>
+							))
+						: <span className="no-files">Aucun fichier</span>
+					}
+        </div>
       </div>
     )
   }
