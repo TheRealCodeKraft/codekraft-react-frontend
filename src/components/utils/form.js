@@ -376,24 +376,24 @@ class Form extends React.Component {
   }
 
   decorateInput(input, field) {
-    input = <div className="form-group" key={this.props.id + "-field-" + field.name}>
-              {
-                (field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off")
-                ? <label className="control-label" htmlFor={field.name}>{field.label}</label> 
-                : null
-              }
-              {input}
-              {
-                (field.label !== undefined && field.type == "checkbox")
-                ? <label className="control-label" htmlFor={field.name}>{field.label}</label> 
-                : null
-              }
-              {
-                this.state.errors[field.name] !== undefined
-                ? <span className="form-error">{this.state.errors[field.name].includes("_required") ? (field.label + " est obligatoire") : this.state.errors[field.name]}</span>
-                : null
-              }
-            </div>
+    var wrapper = (children) => ( <div className="form-group" key={this.props.id + "-field-" + field.name}>{children}</div> )
+		if (field.wrapper) {
+			wrapper = field.wrapper
+		} else if (this.props.fieldWrapper) {
+			wrapper = this.props.fieldWrapper
+		}
+		input = wrapper([
+								(field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off")
+								? <label className="control-label" htmlFor={field.name}>{field.label}</label> 
+								: null,
+							input,
+								(field.label !== undefined && field.type == "checkbox")
+								? <label className="control-label" htmlFor={field.name}>{field.label}</label> 
+								: null,
+								this.state.errors[field.name] !== undefined
+								? <span className="form-error">{this.state.errors[field.name].includes("_required") ? (field.label + " est obligatoire") : this.state.errors[field.name]}</span>
+								: null
+					])
 
     return input 
   }

@@ -475,33 +475,40 @@ var Form = function (_React$Component) {
   }, {
     key: "decorateInput",
     value: function decorateInput(input, field) {
-      input = React.createElement(
-        "div",
-        { className: "form-group", key: this.props.id + "-field-" + field.name },
-        field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off" ? React.createElement(
-          "label",
-          { className: "control-label", htmlFor: field.name },
-          field.label
-        ) : null,
-        input,
-        field.label !== undefined && field.type == "checkbox" ? React.createElement(
-          "label",
-          { className: "control-label", htmlFor: field.name },
-          field.label
-        ) : null,
-        this.state.errors[field.name] !== undefined ? React.createElement(
-          "span",
-          { className: "form-error" },
-          this.state.errors[field.name].includes("_required") ? field.label + " est obligatoire" : this.state.errors[field.name]
-        ) : null
-      );
+      var _this5 = this;
+
+      var wrapper = function wrapper(children) {
+        return React.createElement(
+          "div",
+          { className: "form-group", key: _this5.props.id + "-field-" + field.name },
+          children
+        );
+      };
+      if (field.wrapper) {
+        wrapper = field.wrapper;
+      } else if (this.props.fieldWrapper) {
+        wrapper = this.props.fieldWrapper;
+      }
+      input = wrapper([field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off" ? React.createElement(
+        "label",
+        { className: "control-label", htmlFor: field.name },
+        field.label
+      ) : null, input, field.label !== undefined && field.type == "checkbox" ? React.createElement(
+        "label",
+        { className: "control-label", htmlFor: field.name },
+        field.label
+      ) : null, this.state.errors[field.name] !== undefined ? React.createElement(
+        "span",
+        { className: "form-error" },
+        this.state.errors[field.name].includes("_required") ? field.label + " est obligatoire" : this.state.errors[field.name]
+      ) : null]);
 
       return input;
     }
   }, {
     key: "handleInputChange",
     value: function handleInputChange(field, e) {
-      var _this5 = this;
+      var _this6 = this;
 
       if (Object.keys(this.state.values).length > 0) {
         var values = this.state.values;
@@ -539,7 +546,7 @@ var Form = function (_React$Component) {
             break;
         }
         this.setState({ values: values }, function () {
-          if (_this5.props.onInputChange) _this5.props.onInputChange(values);
+          if (_this6.props.onInputChange) _this6.props.onInputChange(values);
         });
       }
     }
