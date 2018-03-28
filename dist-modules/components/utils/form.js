@@ -576,10 +576,18 @@ var Form = function (_React$Component) {
             if (this.props.fields[fIndex].name.indexOf('[') !== -1) {
               var splitted = this.props.fields[fIndex].name.split("[");
               if (splitted.length === 2) {
-                currentValues[splitted[0] + "_" + splitted[1].replace(']', '')] = this.state.values[this.props.fields[fIndex].name];
+                if (!currentValues[splitted[0]]) {
+                  currentValues[splitted[0]] = {};
+                }
+                currentValues[splitted[0]][splitted[1].replace(']', '')] = this.state.values[this.props.fields[fIndex].name];
               } else {
-                currentValues[splitted[0]] = {};
-                currentValues[splitted[0]][splitted[1].replace(']', '') + "_" + splitted[2].replace(']', '')] = this.state.values[this.props.fields[fIndex].name];
+                if (!currentValues[splitted[0]]) {
+                  currentValues[splitted[0]] = {};
+                }
+                if (!currentValues[splitted[0]][splitted[2]]) {
+                  currentValues[splitted[0]][splitted[1].replace(']', '')] = {};
+                }
+                currentValues[splitted[0]][splitted[1]][splitted[2].replace(']', '')] = this.state.values[this.props.fields[fIndex].name];
               }
             } else {
               if (this.props.fields[fIndex].type == "wysiwyg") {
@@ -589,7 +597,11 @@ var Form = function (_React$Component) {
                 if (this.props.fields[fIndex].type == "datehour") {
                   currentValues[this.props.fields[fIndex].name] = moment(this.state.values[this.props.fields[fIndex].name]).format("DD/MM/YYYY HH:mm");
                 } else {
-                  currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name];
+                  if (this.props.fields[fIndex].type == "date") {
+                    currentValues[this.props.fields[fIndex].name] = moment(this.state.values[this.props.fields[fIndex].name]).format("DD/MM/YYYY") + " 00:00";
+                  } else {
+                    currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name];
+                  }
                 }
               }
             }
