@@ -1,6 +1,6 @@
 {
   "name": "codekraft-react-frontend",
-  "version": "1.0.91",
+  "version": "1.0.92",
   "description": "The react frontend from CodeKraft Corporation",
   "main": "dist-modules/index.js",
   "scripts": {
@@ -81,6 +81,7 @@
     "react-router-dom": "^4.2.2",
     "react-scroll-to-component": "^1.0.2",
     "react-select2-wrapper": "^1.0.4-beta6",
+		"react-select": "^1.2.1",
     "react-sidebar": "^2.3.2",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",

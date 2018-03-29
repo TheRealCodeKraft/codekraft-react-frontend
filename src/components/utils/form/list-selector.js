@@ -1,6 +1,7 @@
 var React = require("react")
 
 import Select2 from 'react-select2-wrapper'
+import Select from 'react-select'
 
 class ListSelector extends React.Component {
 
@@ -8,6 +9,7 @@ class ListSelector extends React.Component {
     super(props)
 
     this.state = {
+			isSelectOpen: false,
       values: []
     }
 
@@ -45,15 +47,31 @@ class ListSelector extends React.Component {
     if (!this.props.tags) {
       props.data = this.state.options
     }
+	  return (
+      <Select ref="select" multiple {...props}
+               value={this.state.values}
+               placeholder={this.props.field.placeholder}
+               options={{tags: this.props.tags ? this.state.values : false, width: "100%"}}
+							 onOpen={() => this.setState({isSelectOpen: true})}
+         			 onClose={() => this.setState({isSelectOpen: false})}
+               onSelect={this.handleSelectionChange} 
+							 onChange={this.handleChange.bind(this)}
+               onUnselect={this.handleSelectionChange} />
+    )
 
+/*
     return (
       <Select2 ref="select" multiple {...props}
                value={this.state.values}
                placeholder={this.props.field.placeholder}
                options={{tags: this.props.tags ? this.state.values : false, width: "100%"}}
+							 onOpen={() => this.setState({isSelectOpen: true})}
+         			 onClose={() => this.setState({isSelectOpen: false})}
                onSelect={this.handleSelectionChange} 
+							 onChange={this.handleChange.bind(this)}
                onUnselect={this.handleSelectionChange} />
     )
+*/
   }
 
   getAvailableValues() {
@@ -69,6 +87,13 @@ class ListSelector extends React.Component {
       return self.state.values && self.state.values.indexOf(v[self.props.field.listKey]) >= 0
     })
   }
+
+	handleChange(value) {
+		if (this.state.isSelectOpen) {
+			console.log("CHANGE")
+			this.setState({isSelectOpen: false})
+		}
+	}
 
   handleSelectionChange(e, obj) {
     var newValues = this.refs.select.el.val()
