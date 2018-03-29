@@ -534,6 +534,8 @@ var Form = function (_React$Component) {
             values[field.name] = value === "true" ? true : false;
             break;
           case "list-selector":
+            console.log("VALUE");
+            console.log(value);
             values[field.name] = value;
             break;
           case "color":

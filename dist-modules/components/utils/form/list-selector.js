@@ -35,11 +35,8 @@ var ListSelector = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (ListSelector.__proto__ || Object.getPrototypeOf(ListSelector)).call(this, props));
 
     _this.state = {
-      isSelectOpen: false,
       values: []
     };
-
-    _this.handleSelectionChange = _this.handleSelectionChange.bind(_this);
     return _this;
   }
 
@@ -71,7 +68,11 @@ var ListSelector = function (_React$Component) {
           for (var i in splitted) {
             val += value[splitted[i]] + " ";
           }
-          return { text: val, id: value[_this2.props.field.listKey] };
+          var item = {};
+          item[_this2.props.field.listKey] = value[_this2.props.field.listKey];
+          item[_this2.props.field.listValue] = val;
+          return item;
+          //return {name: val, id: value[this.props.field.listKey]}
         });
       }
       this.setState({ values: props.defaultValue, options: options });
@@ -79,84 +80,39 @@ var ListSelector = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
-
       var props = {};
       if (!this.props.tags) {
         props.data = this.state.options;
       }
-      return React.createElement(_reactSelect2.default, _extends({ ref: 'select', multiple: true }, props, {
+      return React.createElement(_reactSelect2.default.Creatable, _extends({
+        ref: 'select',
+        multi: true,
+        valueKey: this.props.field.listKey,
+        labelKey: this.props.field.listValue
+      }, props, {
         value: this.state.values,
         placeholder: this.props.field.placeholder,
-        options: { tags: this.props.tags ? this.state.values : false, width: "100%" },
-        onOpen: function onOpen() {
-          return _this3.setState({ isSelectOpen: true });
-        },
-        onClose: function onClose() {
-          return _this3.setState({ isSelectOpen: false });
-        },
-        onSelect: this.handleSelectionChange,
-        onChange: this.handleChange.bind(this),
-        onUnselect: this.handleSelectionChange }));
+        options: this.state.options,
+        onChange: this.handleChange.bind(this)
+      }));
+    }
+  }, {
+    key: 'handleChange',
+    value: function handleChange(values) {
+      var _this3 = this;
 
-      /*
-          return (
-            <Select2 ref="select" multiple {...props}
-                     value={this.state.values}
-                     placeholder={this.props.field.placeholder}
-                     options={{tags: this.props.tags ? this.state.values : false, width: "100%"}}
-      							 onOpen={() => this.setState({isSelectOpen: true})}
-               			 onClose={() => this.setState({isSelectOpen: false})}
-                     onSelect={this.handleSelectionChange} 
-      							 onChange={this.handleChange.bind(this)}
-                     onUnselect={this.handleSelectionChange} />
-          )
-      */
-    }
-  }, {
-    key: 'getAvailableValues',
-    value: function getAvailableValues() {
-      var self = this;
-      return this.props.options.filter(function (v) {
-        return self.state.values && self.state.values.indexOf(v[self.props.field.listKey]) === -1;
+      this.setState({ values: values.map(function (val) {
+          return val[_this3.props.field.listKey] == val[_this3.props.field.listValue] ? val : val[_this3.props.field.listKey];
+        }) }, function () {
+        if (_this3.props.onChange) {
+          _this3.props.onChange({
+            target: {
+              name: _this3.props.field.name,
+              value: _this3.state.values
+            }
+          });
+        }
       });
-    }
-  }, {
-    key: 'getCurrentValues',
-    value: function getCurrentValues() {
-      var self = this;
-      return this.props.options.filter(function (v) {
-        return self.state.values && self.state.values.indexOf(v[self.props.field.listKey]) >= 0;
-      });
-    }
-  }, {
-    key: 'handleChange',
-    value: function handleChange(value) {
-      if (this.state.isSelectOpen) {
-        console.log("CHANGE");
-        this.setState({ isSelectOpen: false });
-      }
-    }
-  }, {
-    key: 'handleSelectionChange',
-    value: function handleSelectionChange(e, obj) {
-      var newValues = this.refs.select.el.val();
-      newValues = newValues.filter(function (item, pos) {
-        return newValues.indexOf(item) == pos;
-      });
-      this.setState({ values: newValues }, this.handleChange);
-    }
-  }, {
-    key: 'handleChange',
-    value: function handleChange() {
-      if (this.props.onChange) {
-        this.props.onChange({
-          target: {
-            name: this.props.field.name,
-            value: this.state.values
-          }
-        });
-      }
     }
   }]);
 

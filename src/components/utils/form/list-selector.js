@@ -9,11 +9,8 @@ class ListSelector extends React.Component {
     super(props)
 
     this.state = {
-			isSelectOpen: false,
       values: []
     }
-
-    this.handleSelectionChange = this.handleSelectionChange.bind(this)
   }
 
   componentWillMount() {
@@ -36,7 +33,11 @@ class ListSelector extends React.Component {
                   for (var i in splitted) {
                     val += value[splitted[i]] + " "
                   }
-                  return {text: val, id: value[this.props.field.listKey]}
+									var item = {}
+									item[this.props.field.listKey] = value[this.props.field.listKey]
+									item[this.props.field.listValue] = val
+									return item
+                  //return {name: val, id: value[this.props.field.listKey]}
       })
     }
     this.setState({values: props.defaultValue, options: options})
@@ -48,70 +49,31 @@ class ListSelector extends React.Component {
       props.data = this.state.options
     }
 	  return (
-      <Select ref="select" multiple {...props}
-               value={this.state.values}
-               placeholder={this.props.field.placeholder}
-               options={{tags: this.props.tags ? this.state.values : false, width: "100%"}}
-							 onOpen={() => this.setState({isSelectOpen: true})}
-         			 onClose={() => this.setState({isSelectOpen: false})}
-               onSelect={this.handleSelectionChange} 
-							 onChange={this.handleChange.bind(this)}
-               onUnselect={this.handleSelectionChange} />
+      <Select.Creatable
+				ref="select" 
+				multi={true} 
+				valueKey={this.props.field.listKey}
+				labelKey={this.props.field.listValue}
+				{...props}
+				value={this.state.values}
+				placeholder={this.props.field.placeholder}
+				options={this.state.options}
+				onChange={this.handleChange.bind(this)}
+			/>
     )
-
-/*
-    return (
-      <Select2 ref="select" multiple {...props}
-               value={this.state.values}
-               placeholder={this.props.field.placeholder}
-               options={{tags: this.props.tags ? this.state.values : false, width: "100%"}}
-							 onOpen={() => this.setState({isSelectOpen: true})}
-         			 onClose={() => this.setState({isSelectOpen: false})}
-               onSelect={this.handleSelectionChange} 
-							 onChange={this.handleChange.bind(this)}
-               onUnselect={this.handleSelectionChange} />
-    )
-*/
   }
 
-  getAvailableValues() {
-    var self=this
-    return this.props.options.filter(function(v) {
-      return (self.state.values && self.state.values.indexOf(v[self.props.field.listKey]) === -1)
-    })
-  }
-
-  getCurrentValues() {
-    var self=this
-    return this.props.options.filter(function(v) { 
-      return self.state.values && self.state.values.indexOf(v[self.props.field.listKey]) >= 0
-    })
-  }
-
-	handleChange(value) {
-		if (this.state.isSelectOpen) {
-			console.log("CHANGE")
-			this.setState({isSelectOpen: false})
-		}
-	}
-
-  handleSelectionChange(e, obj) {
-    var newValues = this.refs.select.el.val()
-    newValues = newValues.filter(function(item, pos) {
-      return newValues.indexOf(item) == pos
-    })
-    this.setState({values: newValues}, this.handleChange)
-  }
-
-  handleChange() {
-    if (this.props.onChange) {
-      this.props.onChange({
-        target: {
-          name: this.props.field.name,
-          value: this.state.values
-        }
-      })
-    }
+  handleChange(values) {
+		this.setState({values: values.map((val) => (val[this.props.field.listKey] == val[this.props.field.listValue] ? val : val[this.props.field.listKey]))}, () => {
+			if (this.props.onChange) {
+				this.props.onChange({
+					target: {
+						name: this.props.field.name,
+						value: this.state.values
+					}
+				})
+			}
+		})
   }
 
 }
