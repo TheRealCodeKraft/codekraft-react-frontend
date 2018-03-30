@@ -8,6 +8,8 @@ var _reactRedux = require('react-redux');
 
 var _reactHotLoader = require('react-hot-loader');
 
+var _reactHotLoader2 = _interopRequireDefault(_reactHotLoader);
+
 var _createStore = require('./api/client/reducer/create-store');
 
 var _createStore2 = _interopRequireDefault(_createStore);
@@ -72,6 +74,8 @@ var Router = require('react-router-dom').Router;
 
 _momentTimezone2.default.locale('fr');
 
+console.log(_reactHotLoader2.default);
+
 var Bootstrap = function () {
 
   if (process.env.UA_ID) {
@@ -116,15 +120,43 @@ var Bootstrap = function () {
           React.createElement(
             Router,
             { history: history },
-            React.createElement(mainComponent, { config: config })
+            React.createElement(
+              _reactHotLoader.AppContainer,
+              null,
+              React.createElement(mainComponent, { config: config })
+            )
           )
         );
       };
-      App = (0, _reactHotLoader.hot)(module)(App);
+      //App = hot(module)(App)
 
       //document.addEventListener('DOMContentLoaded', function() {
       ReactDOM.render(React.createElement(App, null), document.getElementById('app-root'));
       //});
+
+      // Webpack Hot Module Replacement API
+      if (module.hot) {
+        console.log(module);
+        console.log(module.hot);
+        console.log("HOT HOT HOT");
+        console.log("HOT HOT HOT");
+        console.log("HOT HOT HOT");
+        console.log("HOT HOT HOT");
+        console.log("HOT HOT HOT");
+        console.log("HOT HOT HOT");
+        console.log("HOT HOT HOT");
+        console.log("HOT HOT HOT");
+        var component_path = "./components/app";
+        if (version === 2) {
+          component_path = "./component/v2/app";
+        }
+        module.hot.accept(component_path, function () {
+          // if you are using harmony modules ({modules:false})
+          render(React.createElement(mainComponent, { config: config }));
+          // in all other cases - re-require App manually
+          // render(require('./containers/App'))
+        });
+      }
 
       ReactDOM.render(React.createElement(
         Provider,

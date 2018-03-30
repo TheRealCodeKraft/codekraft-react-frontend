@@ -27,10 +27,12 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import createHashHistory from 'history/createHashHistory'
 import ReactGA from 'react-ga'
 
-import { hot } from "react-hot-loader"
+import hotLoader from "react-hot-loader"
 
 import moment from 'moment-timezone'
 moment.locale('fr')
+
+console.log(hotLoader)
 
 var Bootstrap = function() {
 
@@ -72,10 +74,12 @@ var Bootstrap = function() {
 			var App = () => 
           <Provider store={store}>
             <Router history={history}>
+							<AppContainer>
               {React.createElement(mainComponent, {config: config})}
+							</AppContainer>
             </Router>
           </Provider>
-			App = hot(module)(App)
+			//App = hot(module)(App)
 
       //document.addEventListener('DOMContentLoaded', function() {
         ReactDOM.render(
@@ -83,6 +87,30 @@ var Bootstrap = function() {
           document.getElementById('app-root')
         );
       //});
+
+// Webpack Hot Module Replacement API
+if (module.hot) {
+console.log(module)
+console.log(module.hot)
+console.log("HOT HOT HOT")
+console.log("HOT HOT HOT")
+console.log("HOT HOT HOT")
+console.log("HOT HOT HOT")
+console.log("HOT HOT HOT")
+console.log("HOT HOT HOT")
+console.log("HOT HOT HOT")
+console.log("HOT HOT HOT")
+	var component_path = "./components/app"
+	if (version === 2) {
+		component_path = "./component/v2/app"
+	}
+  module.hot.accept(component_path, () => {
+    // if you are using harmony modules ({modules:false})
+    render(React.createElement(mainComponent, {config: config}))
+    // in all other cases - re-require App manually
+    // render(require('./containers/App'))
+  })
+}
       
       ReactDOM.render(
           <Provider store={store}>
