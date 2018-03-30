@@ -1,6 +1,6 @@
 {
   "name": "codekraft-react-frontend",
-  "version": "1.0.92",
+  "version": "1.0.93",
   "description": "The react frontend from CodeKraft Corporation",
   "main": "dist-modules/index.js",
   "scripts": {
@@ -72,7 +72,7 @@
     "react-file-input": "^0.2.5",
     "react-flex-proto": "^1.0.0",
     "react-ga": "^2.4.1",
-    "react-hot-loader": "^1.3.1",
+    "react-hot-loader": "^4.0.0",
     "react-images": "^0.5.17",
     "react-native-link-preview": "^1.3.0",
     "react-popup": "^0.8.0",

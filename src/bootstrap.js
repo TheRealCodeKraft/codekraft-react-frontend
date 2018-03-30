@@ -27,6 +27,8 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import createHashHistory from 'history/createHashHistory'
 import ReactGA from 'react-ga'
 
+import { hot } from "react-hot-loader"
+
 import moment from 'moment-timezone'
 moment.locale('fr')
 
@@ -67,13 +69,17 @@ var Bootstrap = function() {
         navigation: nav
       })
 
-      //document.addEventListener('DOMContentLoaded', function() {
-        ReactDOM.render(
+			var App = () => 
           <Provider store={store}>
             <Router history={history}>
               {React.createElement(mainComponent, {config: config})}
             </Router>
-          </Provider>,
+          </Provider>
+			App = hot(module)(App)
+
+      //document.addEventListener('DOMContentLoaded', function() {
+        ReactDOM.render(
+					<App />,
           document.getElementById('app-root')
         );
       //});

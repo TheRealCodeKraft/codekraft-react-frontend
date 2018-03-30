@@ -109,16 +109,21 @@ var Bootstrap = function () {
         navigation: nav
       });
 
+      var App = function App() {
+        return React.createElement(
+          Provider,
+          { store: store },
+          React.createElement(
+            Router,
+            { history: history },
+            React.createElement(mainComponent, { config: config })
+          )
+        );
+      };
+      App = (0, _reactHotLoader.hot)(module)(App);
+
       //document.addEventListener('DOMContentLoaded', function() {
-      ReactDOM.render(React.createElement(
-        Provider,
-        { store: store },
-        React.createElement(
-          Router,
-          { history: history },
-          React.createElement(mainComponent, { config: config })
-        )
-      ), document.getElementById('app-root'));
+      ReactDOM.render(React.createElement(App, null), document.getElementById('app-root'));
       //});
 
       ReactDOM.render(React.createElement(
