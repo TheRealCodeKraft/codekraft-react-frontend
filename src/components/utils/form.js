@@ -170,7 +170,7 @@ class Form extends React.Component {
           })}
           {(this.state.submitError) ? [<span>{this.state.submitError}</span>, <br />] : null}
           {this.props.submitLabel !== "none"
-           ? submitButton
+           ? <div className="submit-container">{submitButton}</div>
            : null
           }
         </form>

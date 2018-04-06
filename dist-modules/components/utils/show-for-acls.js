@@ -47,9 +47,9 @@ var ShowForAcls = function (_Component) {
                 return false;
             }
 
-            var found = !this.props.grants || this.props.grants.filter(function (gl) {
+            var found = this.props.grants ? this.props.grants.filter(function (gl) {
                 return gl === self.props.userGrant;
-            });
+            }) : ["ok"];
             if (found.length === 0) {
                 return false;
             }

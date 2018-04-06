@@ -23,9 +23,9 @@ class DeleteForm extends React.Component {
                     Suppression <strong>{this.props.delete ? (" de " + this.props.entity[this.props.delete.labels.identifier]) : ""}</strong> en cours ...
                   </div>
       } else {
-        content = <div style={{padding: 20, display: "flex", flexDirection: "column"}}>
+        content = <div className="deletion-container" style={{display: "flex", flexDirection: "column"}}>
                     <span>Êtes-vous sûr de vouloir supprimer {this.props.delete ? (<span>{this.props.delete.labels.entity} <strong>{this.props.entity[this.props.delete.labels.identifier]} </strong></span>) : null}?</span>
-                    <div>
+                    <div className="delete-confirm-buttons">
                       <button onClick={this.handleCancel} className="btn btn-danger">Non</button>
                       <button onClick={this.handleConfirm} className="btn btn-accent">Oui</button>
                     </div>

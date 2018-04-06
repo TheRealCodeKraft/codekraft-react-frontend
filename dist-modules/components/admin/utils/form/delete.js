@@ -53,7 +53,7 @@ var DeleteForm = function (_React$Component) {
         } else {
           content = React.createElement(
             "div",
-            { style: { padding: 20, display: "flex", flexDirection: "column" } },
+            { className: "deletion-container", style: { display: "flex", flexDirection: "column" } },
             React.createElement(
               "span",
               null,
@@ -74,7 +74,7 @@ var DeleteForm = function (_React$Component) {
             ),
             React.createElement(
               "div",
-              null,
+              { className: "delete-confirm-buttons" },
               React.createElement(
                 "button",
                 { onClick: this.handleCancel, className: "btn btn-danger" },

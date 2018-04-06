@@ -244,7 +244,11 @@ var Form = function (_React$Component) {
             null,
             this.state.submitError
           ), React.createElement("br", null)] : null,
-          this.props.submitLabel !== "none" ? submitButton : null
+          this.props.submitLabel !== "none" ? React.createElement(
+            "div",
+            { className: "submit-container" },
+            submitButton
+          ) : null
         )
       );
     }
