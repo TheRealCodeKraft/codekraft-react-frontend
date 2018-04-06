@@ -18,7 +18,7 @@ class ShowForAcls extends Component {
             return false
         }
 
-        const found = this.props.grants.filter(gl => gl === self.props.userGrant);
+        const found = !this.props.grants || this.props.grants.filter(gl => gl === self.props.userGrant);
         if(found.length === 0) {
             return false
         }

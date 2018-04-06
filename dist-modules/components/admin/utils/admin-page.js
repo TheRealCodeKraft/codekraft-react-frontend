@@ -55,7 +55,7 @@ exports.default = function (config, globalConfig) {
 
         return React.createElement(
           _reactBootstrap.Grid,
-          { fluid: true, className: 'admin-page' },
+          { fluid: true, className: 'admin-page container' },
           globalConfig.subHeader ? React.createElement(globalConfig.subHeader, _extends({}, globalConfig, { config: config, globalConfig: globalConfig, location: this.props.location, onNew: this.handleNew })) : React.createElement(
             'div',
             { className: 'admin-page-header' },

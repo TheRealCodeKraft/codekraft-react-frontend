@@ -76,8 +76,6 @@ var _userReducer = function _userReducer() {
       newState["notFound"] = false;
       break;
     case 'ME':
-      console.log("ME???");
-      console.log(action.user);
       newState["newUser"] = null;
       newState["me"] = action.user;
       newState["authenticated"] = true;

@@ -23,7 +23,7 @@ class AdminPageListRow extends React.Component {
   }
 
   render() {
-    var row = [], attribute = undefined, name = undefined
+    var row = [], attribute = undefined, name = undefined, style = undefined
     for (var attrIndex in this.props.attributes) {
       attribute = this.props.attributes[attrIndex]
       if (attribute instanceof Object) {
@@ -33,7 +33,9 @@ class AdminPageListRow extends React.Component {
         name = attribute
       }
       if (this.props.attributes[attrIndex]) {
-        row.push(<div key={"row-" + this.props.item.id + "-attr-" + attrIndex} style={this.tableCellStyles}>{this.buildDisplayValue(name, attribute)}</div>)
+				style = JSON.parse(JSON.stringify(this.tableCellStyles))
+				if (attribute.style) style = Object.assign({}, this.tableCellStyles, attribute.style)
+        row.push(<div key={"row-" + this.props.item.id + "-attr-" + attrIndex} style={style}>{this.buildDisplayValue(name, attribute)}</div>)
       }
     }
     row.push(this.buildActions(this.props.item))
@@ -64,7 +66,7 @@ class AdminPageListRow extends React.Component {
        value = <a href={link} target="_blank">{value}</a>
      }
      if (attribute.type === "image") {
-       value = <img src={value} style={{height: 50}} className="img-rounded" alt={value} />
+       value = <img src={value} style={{height: 50, width: 50, borderRadius: "100%"}} className="img-rounded" alt={value} />
      }
      if (attribute.type === "date") {
        value = moment(value).format('DD/MM/YYYY')

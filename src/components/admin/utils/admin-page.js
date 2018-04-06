@@ -58,7 +58,7 @@ export default function(config, globalConfig) {
       const pluralName = getPluralName()
 
       return (
-        <Grid fluid className="admin-page">
+        <Grid fluid className="admin-page container">
 
           {globalConfig.subHeader
             ? <globalConfig.subHeader {...globalConfig}  config={config} globalConfig={globalConfig} location={this.props.location} onNew={this.handleNew} />

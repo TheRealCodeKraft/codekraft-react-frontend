@@ -45,7 +45,8 @@ var AdminPageListRow = function (_React$Component) {
     value: function render() {
       var row = [],
           attribute = undefined,
-          name = undefined;
+          name = undefined,
+          style = undefined;
       for (var attrIndex in this.props.attributes) {
         attribute = this.props.attributes[attrIndex];
         if (attribute instanceof Object) {
@@ -55,9 +56,11 @@ var AdminPageListRow = function (_React$Component) {
           name = attribute;
         }
         if (this.props.attributes[attrIndex]) {
+          style = JSON.parse(JSON.stringify(this.tableCellStyles));
+          if (attribute.style) style = Object.assign({}, this.tableCellStyles, attribute.style);
           row.push(React.createElement(
             "div",
-            { key: "row-" + this.props.item.id + "-attr-" + attrIndex, style: this.tableCellStyles },
+            { key: "row-" + this.props.item.id + "-attr-" + attrIndex, style: style },
             this.buildDisplayValue(name, attribute)
           ));
         }
@@ -99,7 +102,7 @@ var AdminPageListRow = function (_React$Component) {
           );
         }
         if (attribute.type === "image") {
-          value = React.createElement("img", { src: value, style: { height: 50 }, className: "img-rounded", alt: value });
+          value = React.createElement("img", { src: value, style: { height: 50, width: 50, borderRadius: "100%" }, className: "img-rounded", alt: value });
         }
         if (attribute.type === "date") {
           value = moment(value).format('DD/MM/YYYY');
