@@ -117,6 +117,7 @@ var config = {
           title: "Administration",
           faIcon: "cogs",
           switch: "/admin",
+          route: "/admin",
           grants: ["admin"]
         }, {
           title: "Se déconnecter",

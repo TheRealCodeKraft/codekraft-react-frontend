@@ -16,6 +16,7 @@ var UserClient = function UserClient(store, ApiClient) {
   };
 
   var me = function me(callback) {
+    console.log("GETTING ME ????");
     if (ApiClient.checkForToken()) {
       ApiClient.get("users/me", {}, function (data) {
         if (data.error) {
@@ -34,6 +35,7 @@ var UserClient = function UserClient(store, ApiClient) {
   };
 
   var resetMe = function resetMe(callback) {
+    console.log("RESET ME ???");
     store.dispatch({
       type: "RESET_ME"
     });
@@ -72,5 +74,7 @@ var UserClient = function UserClient(store, ApiClient) {
     updatePassword: updatePassword
   };
 };
+
+console.log("OH OH OOOOH");
 
 exports.default = UserClient;

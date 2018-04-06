@@ -43,6 +43,41 @@ class Header extends React.Component {
     )
   }
 
+	buildNavFor(navKey) {
+    const nav = this.props.menu[navKey]
+		return {
+			label: nav.label,
+			items: nav.items.map((item, index) => (this.getRawItem(item))).filter((item) => (item !== null))
+		}
+	}
+
+	getRawItem(item) {
+		if (item.display !== false && !(this.props.token && item.discardOnLogin || !this.props.token && item.onlyOnLogin)) {
+			var route=undefined
+			if (item.type) {
+				switch(item.type) {
+					case "logout":
+						route = "/logout"
+						break
+				}
+
+			} else if (item.root === true) {
+				route = this.props.root 
+			} else if (item.switch) {
+				route = item.switch
+			} else if (item.route){
+				route = (item.route[0] !== "/" ? this.props.root : "") + (item.route ? ((item.route[0] !== "/" && this.props.root !== "/") ? "/" : "") + item.route : "")
+			}
+			
+			// Clone the item in order to not change the base item
+			item = JSON.parse(JSON.stringify(item))
+			item.route = route
+			return item
+		} else {
+			return null
+		}
+	}
+
   buildItemsFor(navKey) {
     var nav = this.props.menu[navKey]
     var menu_entries = []
@@ -72,26 +107,10 @@ class Header extends React.Component {
     var menu_entries = []
     var menu_entry, menu, item, route
     for (var index in items) {  
-      item = items[index]
-      if (item.display !== false && !(this.props.token && item.discardOnLogin || !this.props.token && item.onlyOnLogin)) {
-        route=undefined
-        if (item.type) {
-          switch(item.type) {
-            case "logout":
-              route = "/logout"
-              break
-          }
-
-        } else if (item.root === true) {
-          route = this.props.root 
-        } else if (item.switch) {
-          route = item.switch
-        } else if (item.route){
-          route = (item.route[0] !== "/" ? this.props.root : "") + (item.route ? ((item.route[0] !== "/" && this.props.root !== "/") ? "/" : "") + item.route : "")
-        }
-        
-        if (route !== undefined) {
-          menu_entry = this.buildItem(nav, item, route)
+      item = this.getRawItem(items[index])
+			if (item !== null) {
+        if (item.route !== undefined) {
+          menu_entry = this.buildItem(nav, item, item.route)
 
           if (item.grants) {
             menu_entry = <ShowForAcls grants={item.grants}>{menu_entry}</ShowForAcls>

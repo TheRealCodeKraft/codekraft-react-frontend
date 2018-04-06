@@ -57,6 +57,8 @@ export default function(name, config) {
         content = <Switch>
                    {this.state.pages.map(item => {
                      var url = config.root + ((item.route && item.route !== "") ? ((config.root !== "/" ? "/" : "") + item.route) : "")
+console.log("URL")
+console.log(url)
                      var component = null
                      if (item.component) {
                        component = item.component

@@ -107,7 +107,6 @@ function createClient(name, plural, store, ApiClient, localConfig) {
         if (target) {
           toDispatch = {type: target}
           toDispatch[name] = data
-console.log(toDispatch)
           store.dispatch(toDispatch)
         }
 				if (callback) callback()

@@ -56,17 +56,21 @@ export default function(ComposedComponent, offline=false) {
           }
           else { 
             // I NEED ONLINE GRANTS
+/*
             if (this.props.me === null) {
+*/
               // NOT ME DATA
               this.setState({checking: true}, function () {
                 UserClient.me()
               })
+/*
             } else {
              // RESETTING ME DATA
               this.setState({resetting: true}, function() {
                 UserClient.resetMe()
               })
             }
+*/
           }
         } else {
           // I HAVE NO TOKEN
