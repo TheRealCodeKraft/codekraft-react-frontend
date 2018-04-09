@@ -77,22 +77,29 @@ var AdminPageListRow = function (_React$Component) {
     key: "buildDisplayValue",
     value: function buildDisplayValue(name, attribute) {
       var value = undefined;
-      if (name.indexOf(".") !== -1) {
-        var splitted = name.split('.');
-        value = this.props.item[splitted[0]];
-        for (var i = 1; i < splitted.length; i++) {
-          if (value) {
-            value = value[splitted[i]];
-          } else {
-            console.log("Subproperty error for '" + name + "' at '" + splitted[i]);
-            break;
+      if (name) {
+        if (name.indexOf(".") !== -1) {
+          var splitted = name.split('.');
+          value = this.props.item[splitted[0]];
+          for (var i = 1; i < splitted.length; i++) {
+            if (value) {
+              value = value[splitted[i]];
+            } else {
+              console.log("Subproperty error for '" + name + "' at '" + splitted[i]);
+              break;
+            }
           }
+        } else {
+          value = this.props.item[name];
         }
       } else {
-        value = this.props.item[name];
+        value = this.props.item;
       }
 
       if (attribute instanceof Object) {
+        if (attribute.wrapper) {
+          value = attribute.wrapper(value);
+        }
         if (attribute.link) {
           var link = attribute.link.replace("[[VALUE]]", value);
           value = React.createElement(
