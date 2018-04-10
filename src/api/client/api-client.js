@@ -68,14 +68,29 @@ var ApiClient = function(store) {
 
     fetch(process.env.API_URL + endpoint, fetchParams)
     .then(promise => {
+			const headers = promise.headers
       promise.json().then(response => {
 
         /*if (response.json) response = response.json*/
+				var pagination = null
+				if (headers.get("X-Next-Page") !== null) {
+					response = {
+						list: response,
+						pagination: {
+							next: headers.get("X-Next-Page"),
+							previous: headers.get("X-Prev-Page"),
+							total: headers.get("X-Total"),
+							totalPages: headers.get("X-Total-Pages"),
+							perPage: headers.get("X-Per-Page")
+						}
+					}
+				}
 
         Logger.debug({
           method: method,
           response: endpoint,
-          data: response
+          data: response,
+					headers: headers
         })  
 
         if (response.error) {
@@ -86,7 +101,7 @@ var ApiClient = function(store) {
           } else {
             callback(response)
           }
-        } else if (callback) callback(response);
+        } else if (callback) callback(response)
       });
     }).catch(exception => {
 

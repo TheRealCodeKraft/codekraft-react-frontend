@@ -14,9 +14,8 @@ import { Grid } from 'react-bootstrap';
 import { Row } from 'react-bootstrap';
 import { Col } from 'react-bootstrap';
 
-/*
-import * as CustomComponents from "../custom"
-*/
+import Loader from "react-loaders"
+
 export default function(config, globalConfig) {
 
 
@@ -26,9 +25,12 @@ export default function(config, globalConfig) {
       super(props)
 
       this.state = {
+				loading: true,
         currentId: undefined,
         mode: "list",
         currentAction: undefined,
+				current_page: 1,
+				per_page: 10,
       }
 
       this.handleCloseSidebar = this.handleCloseSidebar.bind(this)
@@ -49,7 +51,8 @@ export default function(config, globalConfig) {
     componentWillMount() {
       if (config.client) {
         if (config.client["fetchAll"]) {
-          config.client["fetchAll"]()
+					var self=this
+          config.client["fetchAll"](config.pagination ? {page: this.state.current_page, per_page: config.pagination.per_page ? config.pagination.per_page : 10} : {}, () => { self.setState({loading: false})})
         }
       }
     }
@@ -76,14 +79,36 @@ export default function(config, globalConfig) {
             <AdminPageList attributes={config.list.attributes} 
                            actions={config.list.actions}
                            form={config.form}
-                           items={this.props[pluralName]}
+                           items={(config.pagination && this.props[pluralName]["pagination"]) ? this.props[pluralName].list : this.props[pluralName]}
                            onDelete={this.handleDelete}
                            onSee={this.handleSee}
                            onEdit={this.handleEdit}
                            onCustomAction={this.handleCustomAction}
                            config={globalConfig}
+													 current_page={this.state.current_page}
             />
 
+						{ config.pagination
+							? <div className="pagination-buttons">
+									{ this.state.loading
+										? <Loader type="ball-rotate" />
+										: null
+									}
+									{ !this.state.loading && this.props[pluralName].pagination.previous !== ""
+										? <a className="paginate-previous-btn" href="javascript:void" onClick={this.handlePreviousPage.bind(this)}>{"<<"}</a>
+										: null
+									}
+									{ !this.state.loading && [...Array(parseInt(this.props[pluralName].pagination.totalPages))].map((_, i) => (
+											<a href="javascript:void(0)" onClick={this.handleChangePage.bind(this, i + 1)} className={"page-btn" + (((i + 1) == this.state.current_page) ? " active" : "")}>{i + 1}</a>
+										))
+									}
+									{ !this.state.loading && this.props[pluralName].pagination.next !== ""
+										? <a className="paginate-next-btn" href="javascript:void" onClick={this.handleNextPage.bind(this)}>{">>"}</a>
+										: null
+									}
+								</div>
+							: null
+						}
             <AdminSidebar ref="sidebar" 
                           onClose={this.handleCloseSidebar}
                           tinify={this.state.mode === "delete" || (this.state.currentAction && this.state.currentAction.tinify)}
@@ -144,7 +169,6 @@ export default function(config, globalConfig) {
       var content = null
       
       var entity = null
-console.log(this.state.currentId)
       if (this.state.currentId !== undefined) {
         entity = this.props[getPluralName()].filter(item => { return item.id === this.state.currentId })[0]
       }
@@ -170,6 +194,28 @@ console.log(this.state.currentId)
       }
       return content
     }
+
+		handleChangePage(i, e) {
+			if (e) e.preventDefault()
+				if (this.state.current_page !== i) {
+				this.setState({current_page: i, loading: true}, () => {
+						config.client["fetchAll"]({page: this.state.current_page, per_page: config.pagination.per_page ? config.pagination.per_page : 10}, () => {
+							this.setState({loading: false})
+						})
+				})
+			}
+		}
+
+		handlePreviousPage(e) {
+			if (this.state.current_page > 1) {
+				this.handleChangePage(this.state.current_page - 1, e)
+			}
+		}
+
+		handleNextPage(e) {
+			e.preventDefault()
+			this.handleChangePage(this.state.current_page + 1, e)
+		}
 
     openSidebar() {
       this.refs.sidebar.open()

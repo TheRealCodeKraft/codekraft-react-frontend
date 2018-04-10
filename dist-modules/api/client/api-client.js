@@ -84,14 +84,29 @@ var ApiClient = function ApiClient(store) {
     });
 
     (0, _isomorphicFetch2.default)(process.env.API_URL + endpoint, fetchParams).then(function (promise) {
+      var headers = promise.headers;
       promise.json().then(function (response) {
 
         /*if (response.json) response = response.json*/
+        var pagination = null;
+        if (headers.get("X-Next-Page") !== null) {
+          response = {
+            list: response,
+            pagination: {
+              next: headers.get("X-Next-Page"),
+              previous: headers.get("X-Prev-Page"),
+              total: headers.get("X-Total"),
+              totalPages: headers.get("X-Total-Pages"),
+              perPage: headers.get("X-Per-Page")
+            }
+          };
+        }
 
         Logger.debug({
           method: method,
           response: endpoint,
-          data: response
+          data: response,
+          headers: headers
         });
 
         if (response.error) {

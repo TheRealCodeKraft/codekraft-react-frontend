@@ -48,7 +48,7 @@ var AdminSidebar = function (_React$Component) {
           rootClassName: "admin-sidebar",
           sidebarClassName: "admin-sidebar-container" + (this.props.tinify ? " tiny-sidebar" : ""),
           overlayClassName: "admin-sidebar-overlay",
-          pullRight: true },
+          pullRight: true, style: { top: 0 } },
         React.createElement("span", null)
       );
     }
