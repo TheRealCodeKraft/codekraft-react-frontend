@@ -191,7 +191,7 @@ exports.default = function (config, globalConfig) {
 
         var entity = null;
         if (this.state.currentId !== undefined) {
-          entity = this.props[getPluralName()].filter(function (item) {
+          entity = (config.pagination ? this.props[getPluralName()].list : this.props[getPluralName()]).filter(function (item) {
             return item.id === _this4.state.currentId;
           })[0];
         }

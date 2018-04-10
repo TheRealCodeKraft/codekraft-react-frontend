@@ -170,7 +170,7 @@ export default function(config, globalConfig) {
       
       var entity = null
       if (this.state.currentId !== undefined) {
-        entity = this.props[getPluralName()].filter(item => { return item.id === this.state.currentId })[0]
+        entity = (config.pagination ? this.props[getPluralName()].list : this.props[getPluralName()]).filter(item => { return item.id === this.state.currentId })[0]
       }
 
       switch(this.state.mode) {
