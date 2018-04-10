@@ -23,7 +23,7 @@ class AdminSidebar extends React.Component {
                rootClassName="admin-sidebar"
                sidebarClassName={"admin-sidebar-container" + (this.props.tinify ? " tiny-sidebar" : "")}
                overlayClassName="admin-sidebar-overlay"
-               pullRight={true} style={{top: 0}}>
+               pullRight={true} style={{top: 90}}>
         <span />
       </Sidebar>
     )

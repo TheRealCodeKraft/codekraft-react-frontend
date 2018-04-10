@@ -7,7 +7,7 @@ var Logger = require('js-logger')
 Logger.useDefaults();
 
 var Provider = require('react-redux').Provider
-import { AppContainer } from 'react-hot-loader';
+//import { AppContainer } from 'react-hot-loader';
 
 import createStore from './api/client/reducer/create-store'
 import createClients from './api/client/create-clients'
@@ -27,12 +27,12 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import createHashHistory from 'history/createHashHistory'
 import ReactGA from 'react-ga'
 
-import hotLoader from "react-hot-loader"
+//import hotLoader from "react-hot-loader"
 
 import moment from 'moment-timezone'
 moment.locale('fr')
 
-console.log(hotLoader)
+//console.log(hotLoader)
 
 var Bootstrap = function() {
 
@@ -74,9 +74,9 @@ var Bootstrap = function() {
 			var App = () => 
           <Provider store={store}>
             <Router history={history}>
-							<AppContainer>
+							{/*<AppContainer>*/}
               {React.createElement(mainComponent, {config: config})}
-							</AppContainer>
+							{/*</AppContainer>*/}
             </Router>
           </Provider>
 			//App = hot(module)(App)
@@ -89,6 +89,7 @@ var Bootstrap = function() {
       //});
 
 // Webpack Hot Module Replacement API
+/*
 if (module.hot) {
 console.log(module)
 console.log(module.hot)
@@ -111,6 +112,7 @@ console.log("HOT HOT HOT")
     // render(require('./containers/App'))
   })
 }
+*/
       
       ReactDOM.render(
           <Provider store={store}>

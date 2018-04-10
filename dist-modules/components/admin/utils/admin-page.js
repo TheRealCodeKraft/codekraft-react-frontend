@@ -103,7 +103,7 @@ exports.default = function (config, globalConfig) {
             config.pagination ? React.createElement(
               'div',
               { className: 'pagination-buttons' },
-              this.state.loading ? React.createElement(_reactLoaders2.default, { type: 'ball-rotate' }) : null,
+              this.state.loading ? React.createElement(_reactLoaders2.default, { type: 'ball-pulse' }) : null,
               !this.state.loading && this.props[pluralName].pagination.previous !== "" ? React.createElement(
                 'a',
                 { className: 'paginate-previous-btn', href: 'javascript:void', onClick: this.handlePreviousPage.bind(this) },
