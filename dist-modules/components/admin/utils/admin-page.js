@@ -70,7 +70,7 @@ exports.default = function (config, globalConfig) {
             React.createElement(
               'h1',
               null,
-              React.createElement('i', { className: (globalConfig.iconSet ? globalConfig.iconSet : "fa fa-") + (config.icon ? config.icon : "terminal") + " text-warning" }),
+              React.createElement('i', { className: config.icon ? (globalConfig.iconSet ? globalConfig.iconSet : "fa fa-") + (config.icon ? config.icon : "terminal") + " text-warning" : "" }),
               ' ',
               config.title
             ),

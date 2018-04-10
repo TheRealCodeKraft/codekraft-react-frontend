@@ -82,11 +82,11 @@ function createReducer(reducerName, plural, extension, insertOn) {
         case plural.toUpperCase():
           var list;
           if (action.append && state[plural]) {
-            list = state[plural].concat(action[plural]);
+            if (state[plural].list) list = state[plural].list.concat(action[plural].list);else list = state[plural].concat(action[plural]);
           } else {
-            list = action[plural];
+            if (action[plural].list) list = action[plural].list;else list = action[plural];
           }
-          newState[plural] = list;
+          if (action[plural].list) newState[plural] = { list: list };else newState[plural] = list;
           break;
         case reducerName.toUpperCase():
           items = mergeEntityAndState(action[reducerName], state, plural);

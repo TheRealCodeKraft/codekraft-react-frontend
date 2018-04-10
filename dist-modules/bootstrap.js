@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _reactRedux = require('react-redux');
 
-var _reactHotLoader = require('react-hot-loader');
-
 var _createStore = require('./api/client/reducer/create-store');
 
 var _createStore2 = _interopRequireDefault(_createStore);
@@ -65,7 +63,7 @@ var Logger = require('js-logger');
 Logger.useDefaults();
 
 var Provider = require('react-redux').Provider;
-
+//import { AppContainer } from 'react-hot-loader';
 
 var BrowserRouter = require('react-router-dom').BrowserRouter;
 var Router = require('react-router-dom').Router;
