@@ -23,10 +23,9 @@ class App extends React.Component {
   }
 
   componentWillMount() {
-console.log("WILL MOUNT")
 		var self = this
 		this.props.clients.UserClient.me(function(me) {
-			if (!me.error) {
+			if (me && !me.error) {
 			  self.props.clients.ApiClient.getToken()
 			}
 			self.setState({loaded: true})
@@ -43,8 +42,6 @@ console.log("WILL MOUNT")
   }
 
   render() {
-console.log("rENDER")
-
 		if (!this.state.loaded) return null
 
     return (
