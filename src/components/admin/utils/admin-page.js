@@ -60,6 +60,8 @@ export default function(config, globalConfig) {
     render() {
       const pluralName = getPluralName()
 
+console.log(this.props[pluralName])
+
       return (
         <Grid fluid className="admin-page container">
 
@@ -76,18 +78,20 @@ export default function(config, globalConfig) {
                </div>}
           {this.buildWatchers()}
           <div>
-            <AdminPageList attributes={config.list.attributes} 
-                           actions={config.list.actions}
-                           form={config.form}
-                           items={(config.pagination && this.props[pluralName]["pagination"]) ? this.props[pluralName].list : this.props[pluralName]}
-                           onDelete={this.handleDelete}
-                           onSee={this.handleSee}
-                           onEdit={this.handleEdit}
-                           onCustomAction={this.handleCustomAction}
-                           config={globalConfig}
-													 current_page={this.state.current_page}
-            />
-
+						{ this.props[pluralName]
+            	? <AdminPageList attributes={config.list.attributes} 
+															 actions={config.list.actions}
+															 form={config.form}
+															 items={(config.pagination) ? this.props[pluralName].list : this.props[pluralName]}
+															 onDelete={this.handleDelete}
+															 onSee={this.handleSee}
+															 onEdit={this.handleEdit}
+															 onCustomAction={this.handleCustomAction}
+															 config={globalConfig}
+															 current_page={this.state.current_page}
+								/>
+							: null
+						}
 						{ config.pagination
 							? <div className="pagination-buttons">
 									{ this.state.loading
@@ -279,7 +283,7 @@ export default function(config, globalConfig) {
     var pluralName = getPluralName()
 
     var props = {}
-    props[pluralName] = state[config.client.name + "State"][pluralName] || []
+    props[pluralName] = state[config.client.name + "State"][pluralName] || (config.pagination ? {list: [], pagination: {}} : [])
     return props
   }
 

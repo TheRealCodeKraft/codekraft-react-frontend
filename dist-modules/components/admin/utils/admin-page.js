@@ -61,6 +61,8 @@ exports.default = function (config, globalConfig) {
 
         var pluralName = getPluralName();
 
+        console.log(this.props[pluralName]);
+
         return React.createElement(
           _reactBootstrap.Grid,
           { fluid: true, className: 'admin-page container' },
@@ -89,17 +91,17 @@ exports.default = function (config, globalConfig) {
           React.createElement(
             'div',
             null,
-            React.createElement(_list2.default, { attributes: config.list.attributes,
+            this.props[pluralName] ? React.createElement(_list2.default, { attributes: config.list.attributes,
               actions: config.list.actions,
               form: config.form,
-              items: config.pagination && this.props[pluralName]["pagination"] ? this.props[pluralName].list : this.props[pluralName],
+              items: config.pagination ? this.props[pluralName].list : this.props[pluralName],
               onDelete: this.handleDelete,
               onSee: this.handleSee,
               onEdit: this.handleEdit,
               onCustomAction: this.handleCustomAction,
               config: globalConfig,
               current_page: this.state.current_page
-            }),
+            }) : null,
             config.pagination ? React.createElement(
               'div',
               { className: 'pagination-buttons' },
@@ -323,7 +325,7 @@ exports.default = function (config, globalConfig) {
     var pluralName = getPluralName();
 
     var props = {};
-    props[pluralName] = state[config.client.name + "State"][pluralName] || [];
+    props[pluralName] = state[config.client.name + "State"][pluralName] || (config.pagination ? { list: [], pagination: {} } : []);
     return props;
   }
 

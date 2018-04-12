@@ -86,7 +86,7 @@ function createReducer(reducerName, plural, extension, insertOn) {
           } else {
             if (action[plural].list) list = action[plural].list;else list = action[plural];
           }
-          if (action[plural].list) newState[plural] = { list: list };else newState[plural] = list;
+          if (action[plural].list) newState[plural] = { list: list, pagination: action[plural].pagination };else newState[plural] = list;
           break;
         case reducerName.toUpperCase():
           items = mergeEntityAndState(action[reducerName], state, plural);

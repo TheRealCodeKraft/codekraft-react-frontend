@@ -72,7 +72,7 @@ function createReducer(reducerName, plural, extension, insertOn) {
 						if (action[plural].list) list = action[plural].list
             else list = action[plural]
           }
-					if (action[plural].list) newState[plural] = {list: list}
+					if (action[plural].list) newState[plural] = {list: list, pagination: action[plural].pagination}
           else newState[plural] = list 
           break
         case reducerName.toUpperCase():
