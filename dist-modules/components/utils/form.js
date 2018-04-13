@@ -44,6 +44,10 @@ var _draftJsExportHtml = require("draft-js-export-html");
 
 var _draftJs = require("draft-js");
 
+var _reactLoaders = require("react-loaders");
+
+var _reactLoaders2 = _interopRequireDefault(_reactLoaders);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -92,7 +96,8 @@ var Form = function (_React$Component) {
       for (var index in this.props.fields) {
         field = this.props.fields[index];
         if (field.values && field.values.targetState !== undefined) {
-          if (this.props.reduxState[field.values.targetState][field.values.targetValue]) {
+          // Hook to reload data if paginated data already loaded
+          if (this.props.reduxState[field.values.targetState][field.values.targetValue] && !this.props.reduxState[field.values.targetState][field.values.targetValue].pagination) {
             loadedData[field.name] = this.props.reduxState[field.values.targetState][field.values.targetValue];
           } else {
             this.props.clients[field.values.client][field.values.func]();
@@ -134,7 +139,7 @@ var Form = function (_React$Component) {
         var current = undefined;
         for (var index in this.state.loadingData) {
           current = this.state.loadingData[index];
-          if (props.reduxState[current.values.targetState][current.values.targetValue]) {
+          if (props.reduxState[current.values.targetState][current.values.targetValue] && !props.reduxState[current.values.targetState][current.values.targetValue].pagination) {
             loadedData[current.name] = props.reduxState[current.values.targetState][current.values.targetValue];
           } else {
             loadingData.push(current);
@@ -249,7 +254,12 @@ var Form = function (_React$Component) {
             { className: "submit-container" },
             submitButton
           ) : null
-        )
+        ),
+        this.state.loadingData.length > 0 ? React.createElement(
+          "div",
+          { className: "form-loader" },
+          this.props.loadingComponent ? React.createElement(this.props.loadingComponent, null) : React.createElement(_reactLoaders2.default, { type: "ball-pulse" })
+        ) : null
       );
     }
   }, {

@@ -15,6 +15,8 @@ import { SketchPicker } from 'react-color'
 import {stateToHTML} from 'draft-js-export-html'
 import {convertToRaw, convertFromRaw} from 'draft-js';
 
+import Loader from "react-loaders"
+
 class Form extends React.Component {
 
   constructor(props) {
@@ -42,8 +44,9 @@ class Form extends React.Component {
     for (var index in this.props.fields) {
       field = this.props.fields[index]
       if (field.values && field.values.targetState !== undefined) {
-        if (this.props.reduxState[field.values.targetState][field.values.targetValue]) {
-          loadedData[field.name] = this.props.reduxState[field.values.targetState][field.values.targetValue]
+				// Hook to reload data if paginated data already loaded
+        if (this.props.reduxState[field.values.targetState][field.values.targetValue] && !this.props.reduxState[field.values.targetState][field.values.targetValue].pagination) {
+	      	loadedData[field.name] = this.props.reduxState[field.values.targetState][field.values.targetValue]
         } else {
           this.props.clients[field.values.client][field.values.func]()
           loadingData.push(field)
@@ -82,7 +85,7 @@ class Form extends React.Component {
       var current = undefined
       for (var index in this.state.loadingData) {
         current = this.state.loadingData[index]
-        if (props.reduxState[current.values.targetState][current.values.targetValue]) {
+        if (props.reduxState[current.values.targetState][current.values.targetValue] && !props.reduxState[current.values.targetState][current.values.targetValue].pagination) {
           loadedData[current.name] = props.reduxState[current.values.targetState][current.values.targetValue]
         } else {
           loadingData.push(current)
@@ -174,6 +177,7 @@ class Form extends React.Component {
            : null
           }
         </form>
+				{this.state.loadingData.length > 0 ? <div className="form-loader">{this.props.loadingComponent ? <this.props.loadingComponent /> : <Loader type="ball-pulse" />}</div> : null}
       </div>
     )
   }

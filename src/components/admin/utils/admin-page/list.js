@@ -22,20 +22,23 @@ class AdminPageList extends React.Component {
              <div className="loader-dots"></div>
            </section>
          : null*/}
-        {this.props.items.map((item, index) => {
-          return <AdminPageListRow key={"admin-list-row-" + index}
-                                   index={index}
-                                   item={item} 
-                                   attributes={this.props.attributes} 
-                                   actions={this.props.actions}
-                                   form={this.props.form}
-                                   onDelete={this.handleDelete}
-                                   onSee={this.handleSee}
-                                   onEdit={this.handleEdit}
-                                   onCustomAction={this.handleCustomAction}
-                                   config={this.props.config}
-                 />
-        })}
+        { this.props.items
+					? this.props.items.map((item, index) => {
+							return <AdminPageListRow key={"admin-list-row-" + index}
+																			 index={index}
+																			 item={item} 
+																			 attributes={this.props.attributes} 
+																			 actions={this.props.actions}
+																			 form={this.props.form}
+																			 onDelete={this.handleDelete}
+																			 onSee={this.handleSee}
+																			 onEdit={this.handleEdit}
+																			 onCustomAction={this.handleCustomAction}
+																			 config={this.props.config}
+										 />
+						})
+					: null
+				}
       </div>
     )
   }

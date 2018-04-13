@@ -60,8 +60,6 @@ export default function(config, globalConfig) {
     render() {
       const pluralName = getPluralName()
 
-console.log(this.props[pluralName])
-
       return (
         <Grid fluid className="admin-page container">
 

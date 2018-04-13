@@ -48,7 +48,7 @@ var AdminPageList = function (_React$Component) {
         'div',
         { style: { display: "table", width: "100%" } },
         React.createElement(_header2.default, { attributes: this.props.attributes }),
-        this.props.items.map(function (item, index) {
+        this.props.items ? this.props.items.map(function (item, index) {
           return React.createElement(_row2.default, { key: "admin-list-row-" + index,
             index: index,
             item: item,
@@ -61,7 +61,7 @@ var AdminPageList = function (_React$Component) {
             onCustomAction: _this2.handleCustomAction,
             config: _this2.props.config
           });
-        })
+        }) : null
       );
     }
   }, {

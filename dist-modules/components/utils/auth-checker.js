@@ -73,9 +73,7 @@ exports.default = function (ComposedComponent) {
               */
               // NOT ME DATA
               this.setState({ checking: true }, function () {
-                UserClient.me(function (data) {
-                  console.log("WAT??");console.log(data);
-                });
+                UserClient.me();
               });
               /*
                           } else {
