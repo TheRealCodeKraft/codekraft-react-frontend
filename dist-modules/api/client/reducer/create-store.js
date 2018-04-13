@@ -106,7 +106,7 @@ function createReducer(reducerName, plural, extension, insertOn) {
           break;
         case "DESTROY_" + reducerName.toUpperCase():
           if (state[plural]) {
-            var deletedItem = state[plural].filter(function (item) {
+            var deletedItem = (state[plural].list ? state[plural].list : state[plural]).filter(function (item) {
               return item.id === action.id;
             })[0];
             items = removeEntityFromState(action.id, state, plural);

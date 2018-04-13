@@ -66,7 +66,7 @@ class AdminPageListRow extends React.Component {
 
    if (attribute instanceof Object) {
 		 if (attribute.wrapper) {
-			 value = attribute.wrapper(value)
+			 value = attribute.wrapper(value, this.props.item)
 		 }
      if (attribute.link) {
        var link = attribute.link.replace("[[VALUE]]", value)

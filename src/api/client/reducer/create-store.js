@@ -93,7 +93,7 @@ function createReducer(reducerName, plural, extension, insertOn) {
           break
         case "DESTROY_" + reducerName.toUpperCase():
           if (state[plural]) {
-            var deletedItem = state[plural].filter(item => { return item.id === action.id })[0]
+            var deletedItem = (state[plural].list ? state[plural].list : state[plural]).filter(item => { return item.id === action.id })[0]
             items = removeEntityFromState(action.id, state, plural)
             newState[plural] = items
             newState["deleted" + capitalizeFirstLetter(reducerName)] = deletedItem
