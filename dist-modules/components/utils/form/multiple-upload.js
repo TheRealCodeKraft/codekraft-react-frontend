@@ -55,7 +55,7 @@ var MultipleUpload = function (_React$Component) {
       return _react2.default.createElement(
         "div",
         { className: "multiple-upload" },
-        this.props.showZone == undefined || this.props.showZone === true ? _react2.default.createElement(
+        (this.props.showZone == undefined || this.props.showZone === true) && (this.props.mode !== "single" || !this.state.files || this.state.files.length == 0) ? _react2.default.createElement(
           _reactDropzone2.default,
           {
             onDrop: this.handleDrop.bind(this),
@@ -72,12 +72,26 @@ var MultipleUpload = function (_React$Component) {
             "ou cliquez pour s\xE9lectionner des fichiers"
           )]
         ) : null,
-        _react2.default.createElement(
+        this.props.mode !== "single" ? _react2.default.createElement(
           "h6",
           { className: "selected-title" },
-          "Fichiers s\xE9lectionn\xE9s"
-        ),
-        _react2.default.createElement(
+          "Fichier",
+          this.props.mode == "single" ? "" : "s",
+          " s\xE9lectionn\xE9",
+          this.props.mode == "single" ? "" : "s"
+        ) : null,
+        this.props.mode == "single" ? !(this.state.files instanceof Array) ? _react2.default.createElement(
+          "div",
+          { className: "single-file" },
+          this.state.files.name,
+          " [",
+          _react2.default.createElement(
+            "a",
+            { onClick: this.reset.bind(this) },
+            "modifier"
+          ),
+          "]"
+        ) : null : _react2.default.createElement(
           "div",
           { className: "files" },
           this.state.files.length ? this.state.files.map(function (file, index) {
@@ -105,11 +119,28 @@ var MultipleUpload = function (_React$Component) {
       var _this3 = this;
 
       var files = this.state.files;
-      for (var i in acceptedFiles) {
-        files.push(acceptedFiles[i]);
+
+      if (this.props.mode == "single") {
+        console.log(acceptedFiles[0]);
+        files = acceptedFiles[0];
+      } else {
+        for (var i in acceptedFiles) {
+          files.push(acceptedFiles[i]);
+        }
       }
+
       this.setState({ files: files }, function () {
         _this3.props.onChange(_this3.state.files);
+      });
+    }
+  }, {
+    key: "reset",
+    value: function reset(e) {
+      var _this4 = this;
+
+      if (e) e.preventDefault();
+      this.setState({ files: [] }, function () {
+        _this4.props.onChange(_this4.state.files);
       });
     }
   }, {
