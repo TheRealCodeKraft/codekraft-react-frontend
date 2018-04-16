@@ -115,7 +115,8 @@ console.log("HOT HOT HOT")
 */
       
       ReactDOM.render(
-          <Provider store={store}>
+        <Provider store={store}>
+          <Router history={history}>
             <Popup 
 							escToClose={true} 
 							closeOnOutsideClick={false} 
@@ -125,7 +126,8 @@ console.log("HOT HOT HOT")
 							btnClass={(config.popup && config.popup.bntClass) ? config.popup.btnClass : "mm-popup__btn"}
 							wildClasses={!config.popup}
 						/>
-          </Provider>,
+					</Router>
+        </Provider>,
         document.getElementById('popup-container')
       )
       if (callback) callback()

@@ -76,8 +76,10 @@ function createReducer(reducerName, plural, extension, insertOn) {
           else newState[plural] = list 
           break
         case reducerName.toUpperCase():
-          items = mergeEntityAndState(action[reducerName], state, plural)
-          newState[plural] = items
+					if (state[plural]) {
+						items = mergeEntityAndState(action[reducerName], state, plural)
+						newState[plural] = items
+					}
           newState[reducerName] = action[reducerName]
           break
         case "NEW_" + reducerName.toUpperCase():
