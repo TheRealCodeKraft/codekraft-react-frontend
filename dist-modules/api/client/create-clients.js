@@ -128,8 +128,6 @@ function createClient(name, plural, store, ApiClient, localConfig) {
         if (target) {
           toDispatch = { type: target };
           toDispatch[to_plural ? plural : name] = data;
-          console.log("TO DISPATCH");
-          console.log(toDispatch);
           store.dispatch(toDispatch);
         }
         if (callback) callback();

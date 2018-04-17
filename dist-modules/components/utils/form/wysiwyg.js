@@ -201,7 +201,7 @@ var Wysiwyg = function (_React$Component3) {
     var _this5 = _possibleConstructorReturn(this, (Wysiwyg.__proto__ || Object.getPrototypeOf(Wysiwyg)).call(this, props));
 
     _this5.focus = function () {
-      _this5.editor.focus();
+      //this.editor.focus();
     };
 
     _this5.onSearchChange = function (_ref3) {
@@ -228,12 +228,11 @@ var Wysiwyg = function (_React$Component3) {
     value: function componentWillReceiveProps(props) {
       if (props.value && (!this.state.raw || props.value == "RESET")) {
         var editorState;
-        console.log("VALUE");
-        console.log(props.value);
         if (props.value == "RESET" || props.value == "") {
           editorState = _draftJs.EditorState.createEmpty();
         } else {
-          editorState = _draftJs.EditorState.create({ currentContent: (0, _draftJs.convertFromRaw)(props.value), selection: this.state.editorState.getSelection() });
+          editorState = _draftJs.EditorState.create({ currentContent: (0, _draftJs.convertFromRaw)(props.value), selection: _draftJs.SelectionState.createEmpty(props.value.blocks[0].key) });
+          editorState = _draftJs.EditorState.forceSelection(editorState, editorState.getSelection());
         }
 
         this.setState({
