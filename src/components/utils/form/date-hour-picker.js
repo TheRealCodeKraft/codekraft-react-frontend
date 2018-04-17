@@ -14,8 +14,6 @@ class DateHourPicker extends React.Component {
 
   componentWillReceiveProps(props) {
     if (props.value) {
-      console.log(props.value)
-      console.log(moment(props.value).format("HH"))
       this.setState({date: props.value, hours: parseInt(props.value.format("HH")), minutes: parseInt(props.value.format("mm"))})
     }
   }
