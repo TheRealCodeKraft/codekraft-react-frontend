@@ -338,7 +338,7 @@ class Form extends React.Component {
         input = <textarea className="form-control" title={field.title} name={fieldName} value={value} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} rows={5} />
         break
       case "wysiwyg":
-        input = <Wysiwyg value={this.state.values[field.name + "_raw"]} toolbar={field.toolbar} onChange={this.handleInputChange.bind(this, field)} mentions={field.mentions} />
+        input = <Wysiwyg value={this.state.values[field.name + "_raw"]} toolbar={field.toolbar} onChange={this.handleInputChange.bind(this, field)} mentions={field.mentions} emoji={field.emoji} />
         break
       case "date":
         if (!value) value=""

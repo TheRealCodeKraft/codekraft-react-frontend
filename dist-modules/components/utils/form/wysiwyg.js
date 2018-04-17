@@ -34,6 +34,10 @@ var _draftJsHashtagPlugin = require("draft-js-hashtag-plugin");
 
 var _draftJsHashtagPlugin2 = _interopRequireDefault(_draftJsHashtagPlugin);
 
+var _draftJsEmojiPlugin = require("draft-js-emoji-plugin");
+
+var _draftJsEmojiPlugin2 = _interopRequireDefault(_draftJsEmojiPlugin);
+
 var _draftJsButtons = require("draft-js-buttons");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -195,7 +199,12 @@ var mentionPlugin = (0, _draftJsMentionPlugin2.default)();
 var MentionSuggestions = mentionPlugin.MentionSuggestions;
 
 
-var plugins = [toolbarPlugin, linkifyPlugin, mentionPlugin, hashtagPlugin];
+var emojiPlugin = (0, _draftJsEmojiPlugin2.default)();
+var EmojiSuggestions = emojiPlugin.EmojiSuggestions,
+    EmojiSelect = emojiPlugin.EmojiSelect;
+
+
+var plugins = [toolbarPlugin, linkifyPlugin, mentionPlugin, hashtagPlugin, emojiPlugin];
 
 var Wysiwyg = function (_React$Component3) {
   _inherits(Wysiwyg, _React$Component3);
@@ -265,7 +274,8 @@ var Wysiwyg = function (_React$Component3) {
           onSearchChange: this.onSearchChange.bind(this),
           suggestions: this.state.suggestions,
           onAddMention: this.onAddMention.bind(this)
-        }) : null
+        }) : null,
+        this.props.emoji ? [_react2.default.createElement(EmojiSuggestions, null), _react2.default.createElement(EmojiSelect, null)] : null
       );
     }
   }, {
