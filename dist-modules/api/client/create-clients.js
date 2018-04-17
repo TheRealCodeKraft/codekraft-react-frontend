@@ -118,15 +118,18 @@ function createClient(name, plural, store, ApiClient, localConfig) {
         var update = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
         var target = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
         var callback = arguments[3];
+        var to_plural = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
         var toDispatch = {
           type: (update ? "UPDATE_" : "NEW_") + name.toUpperCase()
         };
-        toDispatch[name] = data;
+        toDispatch[to_plural ? plural : name] = data;
         store.dispatch(toDispatch);
         if (target) {
           toDispatch = { type: target };
-          toDispatch[name] = data;
+          toDispatch[to_plural ? plural : name] = data;
+          console.log("TO DISPATCH");
+          console.log(toDispatch);
           store.dispatch(toDispatch);
         }
         if (callback) callback();
