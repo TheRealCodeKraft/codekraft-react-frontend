@@ -1,11 +1,12 @@
 import React from "react"
 
 import Editor from "draft-js-plugins-editor"
-import {Draft, EditorState, SelectionState, ContentState, RichUtils, convertFromRaw} from 'draft-js';
+import {Draft, EditorState, SelectionState, ContentState, RichUtils, convertFromRaw} from 'draft-js'
 
-import createToolbarPlugin, { Separator } from 'draft-js-static-toolbar-plugin';
+import createToolbarPlugin, { Separator } from 'draft-js-static-toolbar-plugin'
 import createLinkifyPlugin from 'draft-js-linkify-plugin'
-import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
+import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin'
+import createHashtagPlugin from 'draft-js-hashtag-plugin'
 
 import {
   ItalicButton,
@@ -116,6 +117,7 @@ const toolbarPlugin = createToolbarPlugin({
   ]
 });
 const { Toolbar } = toolbarPlugin
+const hashtagPlugin = createHashtagPlugin()
 
 const linkifyPlugin = createLinkifyPlugin({
   target: '_blank'  // default is '_self'
@@ -124,7 +126,7 @@ const linkifyPlugin = createLinkifyPlugin({
 const mentionPlugin = createMentionPlugin();
 const { MentionSuggestions } = mentionPlugin
 
-const plugins = [toolbarPlugin, linkifyPlugin, mentionPlugin];
+const plugins = [toolbarPlugin, linkifyPlugin, mentionPlugin, hashtagPlugin];
 
 class Wysiwyg extends React.Component {
   constructor(props) {

@@ -51,8 +51,6 @@ var DateHourPicker = function (_React$Component) {
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(props) {
       if (props.value) {
-        console.log(props.value);
-        console.log((0, _moment2.default)(props.value).format("HH"));
         this.setState({ date: props.value, hours: parseInt(props.value.format("HH")), minutes: parseInt(props.value.format("mm")) });
       }
     }

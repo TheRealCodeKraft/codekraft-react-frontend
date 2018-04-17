@@ -30,6 +30,10 @@ var _draftJsMentionPlugin = require("draft-js-mention-plugin");
 
 var _draftJsMentionPlugin2 = _interopRequireDefault(_draftJsMentionPlugin);
 
+var _draftJsHashtagPlugin = require("draft-js-hashtag-plugin");
+
+var _draftJsHashtagPlugin2 = _interopRequireDefault(_draftJsHashtagPlugin);
+
 var _draftJsButtons = require("draft-js-buttons");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -181,6 +185,7 @@ var toolbarPlugin = (0, _draftJsStaticToolbarPlugin2.default)({
 });
 var Toolbar = toolbarPlugin.Toolbar;
 
+var hashtagPlugin = (0, _draftJsHashtagPlugin2.default)();
 
 var linkifyPlugin = (0, _draftJsLinkifyPlugin2.default)({
   target: '_blank' // default is '_self'
@@ -190,7 +195,7 @@ var mentionPlugin = (0, _draftJsMentionPlugin2.default)();
 var MentionSuggestions = mentionPlugin.MentionSuggestions;
 
 
-var plugins = [toolbarPlugin, linkifyPlugin, mentionPlugin];
+var plugins = [toolbarPlugin, linkifyPlugin, mentionPlugin, hashtagPlugin];
 
 var Wysiwyg = function (_React$Component3) {
   _inherits(Wysiwyg, _React$Component3);
