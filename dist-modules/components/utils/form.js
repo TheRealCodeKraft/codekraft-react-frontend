@@ -465,6 +465,7 @@ var Form = function (_React$Component) {
           }
           input = React.createElement(_dateHourPicker2.default, {
             value: value,
+            onlyHours: field.onlyHours,
             onChange: this.handleInputChange.bind(this, field)
           });
           break;

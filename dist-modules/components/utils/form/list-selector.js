@@ -62,8 +62,6 @@ var ListSelector = function (_React$Component) {
       if (this.props.tags) {
         options = props.options;
       } else if (props.options && props.options.map) {
-        console.log("OPTIONS");
-        console.log(props.options);
         options = props.options.map(function (value) {
           splitted = _this2.props.field.listValue.split(' ');
           val = "";

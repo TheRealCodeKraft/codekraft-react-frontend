@@ -60,7 +60,7 @@ var DateHourPicker = function (_React$Component) {
       return _react2.default.createElement(
         "div",
         { className: "date-hour-picker" },
-        _react2.default.createElement(_reactDatetime2.default, { value: this.state.date.format("DD/MM/YYYY"),
+        this.props.onlyHours ? null : _react2.default.createElement(_reactDatetime2.default, { value: this.state.date.format("DD/MM/YYYY"),
           dateFormat: "DD/MM/YYYY",
           onChange: this.handleDateChange.bind(this)
         }),
@@ -82,6 +82,7 @@ var DateHourPicker = function (_React$Component) {
     key: "handleHoursChange",
     value: function handleHoursChange(e) {
       var value = e.target.value;
+      console.log(e.target.value);
       if (value == "" || isNaN(value)) value = this.state.hours;
       value = parseInt(value);
       if (value < 0) value = 0;

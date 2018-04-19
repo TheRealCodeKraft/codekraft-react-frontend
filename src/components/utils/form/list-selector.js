@@ -27,8 +27,6 @@ class ListSelector extends React.Component {
     if (this.props.tags) {
       options = props.options
     } else if (props.options && props.options.map) {
-console.log("OPTIONS")
-console.log(props.options)
       options = props.options.map(value => {
                   splitted = this.props.field.listValue.split(' ')
                   val = ""

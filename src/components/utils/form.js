@@ -357,6 +357,7 @@ class Form extends React.Component {
         }
         input = <DateHourPicker 
                   value={value} 
+									onlyHours={field.onlyHours}
                   onChange={this.handleInputChange.bind(this, field)}
                 />
         break
