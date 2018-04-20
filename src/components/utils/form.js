@@ -1,7 +1,8 @@
 var React = require("react")
 import { connect } from 'react-redux';
 
-var moment = require("moment")
+var m = require("moment")
+const moment = m.parseZone
 
 import Switch from 'react-bootstrap-switch'
 import DatePicker from 'react-datetime'

@@ -2,7 +2,8 @@ import React from "react"
 
 import DatePicker from 'react-datetime'
 
-import moment from "moment"
+import m from "moment"
+const moment = m.parseZone
 
 class DateHourPicker extends React.Component {
 
@@ -41,7 +42,6 @@ class DateHourPicker extends React.Component {
 
   handleHoursChange(e) {
     var value = e.target.value
-console.log(e.target.value)
     if (value == "" || isNaN(value)) value = this.state.hours
     value = parseInt(value)
     if (value < 0) value = 0

@@ -59,7 +59,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var React = require("react");
 
 
-var moment = require("moment");
+var m = require("moment");
+var moment = m.parseZone;
 
 var Form = function (_React$Component) {
   _inherits(Form, _React$Component);
