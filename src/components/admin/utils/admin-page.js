@@ -18,7 +18,6 @@ import Loader from "react-loaders"
 
 export default function(config, globalConfig) {
 
-
   class AdminPage extends React.Component {
 
     constructor(props) {
@@ -127,16 +126,18 @@ export default function(config, globalConfig) {
     }
 
     buildWatchers() {
-      var watchers = []
+      var watchers = [], channel
       if (config.watcher) {
         if (this.props[getPluralName()]) {
           this.props[getPluralName()].map(entity => {
+						channel = { channel: config.watcher.channel }
+						channel[config.client.name] = entity.id
             if (config.watcher.if) {
               if (entity[config.watcher.if.property] === config.watcher.if.value) {
-                watchers.push(<ActionCable channel={{channel: config.watcher.channel, session: entity.id}} onReceived={this.handleCableReceived} />)
+                watchers.push(<ActionCable channel={channel} onReceived={this.handleCableReceived} />)
               }
             } else {
-             watchers.push(<ActionCable channel={{channel: config.watcher, session: entity.id}} onReceived={this.handleCableReceived} />)
+             watchers.push(<ActionCable channel={channel} onReceived={this.handleCableReceived} />)
             }
           })
         }

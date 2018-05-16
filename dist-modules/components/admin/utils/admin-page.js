@@ -143,16 +143,19 @@ exports.default = function (config, globalConfig) {
       value: function buildWatchers() {
         var _this3 = this;
 
-        var watchers = [];
+        var watchers = [],
+            channel;
         if (config.watcher) {
           if (this.props[getPluralName()]) {
             this.props[getPluralName()].map(function (entity) {
+              channel = { channel: config.watcher.channel };
+              channel[config.client.name] = entity.id;
               if (config.watcher.if) {
                 if (entity[config.watcher.if.property] === config.watcher.if.value) {
-                  watchers.push(React.createElement(_reactActioncableProvider.ActionCable, { channel: { channel: config.watcher.channel, session: entity.id }, onReceived: _this3.handleCableReceived }));
+                  watchers.push(React.createElement(_reactActioncableProvider.ActionCable, { channel: channel, onReceived: _this3.handleCableReceived }));
                 }
               } else {
-                watchers.push(React.createElement(_reactActioncableProvider.ActionCable, { channel: { channel: config.watcher, session: entity.id }, onReceived: _this3.handleCableReceived }));
+                watchers.push(React.createElement(_reactActioncableProvider.ActionCable, { channel: channel, onReceived: _this3.handleCableReceived }));
               }
             });
           }

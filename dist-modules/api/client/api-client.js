@@ -142,8 +142,6 @@ var ApiClient = function ApiClient(store) {
     var formData = false;
     for (var i in keys) {
       key = keys[i];
-      console.log("KEY");
-      console.log(key);
       if (key == "attachments") {
         formData = true;
         for (var j in params[key]) {
