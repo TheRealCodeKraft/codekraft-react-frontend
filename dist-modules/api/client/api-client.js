@@ -142,11 +142,16 @@ var ApiClient = function ApiClient(store) {
     var formData = false;
     for (var i in keys) {
       key = keys[i];
+      console.log("KEY");
+      console.log(key);
       if (key == "attachments") {
         formData = true;
         for (var j in params[key]) {
           ps.append("attachments[]", params[key][j]);
         }
+      } else if (key == "attachment") {
+        formData = true;
+        ps.append("attachment", params[key]);
       } else {
         ps.append(key, params[key] instanceof Object ? JSON.stringify(params[key]) : params[key]);
       }
@@ -179,6 +184,9 @@ var ApiClient = function ApiClient(store) {
         } else {
           ps.append("attachments", "");
         }
+      } else if (key == "attachment") {
+        formData = true;
+        ps.append("attachment", params[key]);
       } else {
         ps.append(key, params[key] instanceof Object ? JSON.stringify(params[key]) : params[key]);
       }
