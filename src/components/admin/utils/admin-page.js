@@ -279,7 +279,10 @@ export default function(config, globalConfig) {
   }
 
   function mapStateToProps(state) {
+		console.log("STATE TO PROPS")
+		console.log(state)
     var pluralName = getPluralName()
+		console.log(pluralName)
 
     var props = {}
     props[pluralName] = state[config.client.name + "State"][pluralName] || (config.pagination ? {list: [], pagination: {}} : [])

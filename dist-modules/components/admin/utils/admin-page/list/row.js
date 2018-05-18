@@ -114,6 +114,9 @@ var AdminPageListRow = function (_React$Component) {
         if (attribute.type === "date") {
           value = moment(value).format('DD/MM/YYYY');
         }
+        if (attribute.type === "datetime") {
+          value = moment(value).format('DD/MM/YYYY HH:MM');
+        }
         if (attribute.replaceWith && attribute.replaceWith[value] !== undefined) {
           value = attribute.replaceWith[value];
         }

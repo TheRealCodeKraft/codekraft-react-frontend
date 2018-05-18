@@ -67,7 +67,6 @@ var AdminPageList = function (_React$Component) {
   }, {
     key: 'handleDelete',
     value: function handleDelete(id) {
-      console.log("ID : " + id);
       if (this.props.onDelete) this.props.onDelete(id);
     }
   }, {

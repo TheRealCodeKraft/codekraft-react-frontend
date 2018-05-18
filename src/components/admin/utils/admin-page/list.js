@@ -44,7 +44,6 @@ class AdminPageList extends React.Component {
   }
 
   handleDelete(id) {
-console.log("ID : " + id)
     if (this.props.onDelete) this.props.onDelete(id)
   }
 

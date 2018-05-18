@@ -89,6 +89,8 @@ var ApiClient = function ApiClient(store) {
 
         /*if (response.json) response = response.json*/
         var pagination = null;
+        console.log("HEADERS");
+        console.log(headers);
         if (headers.get("X-Next-Page") !== null) {
           response = {
             list: response,
