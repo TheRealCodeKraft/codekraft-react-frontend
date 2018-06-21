@@ -127,7 +127,7 @@ const config = {
           {
             title: "Retour au site",
             faIcon: "step-backward",
-            switch: "/dashboard"
+            switch: "/"
           },
           {
             title: "Se déconnecter",

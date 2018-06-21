@@ -27,7 +27,7 @@ exports.default = function (name, config) {
         var pages = [],
             pageIndex = 0;
         for (var index in groups) {
-          if (!groups[index].items.error) {
+          if (groups[index] && groups[index].items && !groups[index].items.error) {
             for (var pIndex in groups[index].items) {
               pages.push(groups[index].items[pIndex]);
               if (!(pages[pageIndex].client instanceof Object)) {
@@ -79,7 +79,9 @@ exports.default = function (name, config) {
                   component = (0, _checkForAcls2.default)(item.grants, component);
                 }
 
-                if (config.restricted && !item.discardOnLogin) {
+                console.log(item.title);
+                if ((config.restricted || item.restricted) && !item.discardOnLogin) {
+                  console.log("RESTRICTED");
                   component = (0, _authChecker2.default)(component);
                 }
 

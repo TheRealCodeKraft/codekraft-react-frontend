@@ -42,10 +42,12 @@ var ShowForAcls = function (_Component) {
     _createClass(ShowForAcls, [{
         key: 'render',
         value: function render() {
+            console.log("ACLS");
             var self = this;
             if (!this.props.authenticated && this.props.needAuthenticated === true || !this.props.userGrant) {
                 return false;
             }
+            console.log("1");
 
             var found = this.props.grants ? this.props.grants.filter(function (gl) {
                 return gl === self.props.userGrant;
@@ -53,6 +55,7 @@ var ShowForAcls = function (_Component) {
             if (found.length === 0) {
                 return false;
             }
+            console.log("2");
             return _react2.default.Children.only(this.props.children);
         }
     }]);

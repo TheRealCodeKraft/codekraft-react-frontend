@@ -118,6 +118,17 @@ var Header = function (_React$Component) {
       }
     }
   }, {
+    key: 'getRawItems',
+    value: function getRawItems(menuKey) {
+      var _this3 = this;
+
+      return this.props.menu[menuKey].items.map(function (item) {
+        return _this3.getRawItem(item);
+      }).filter(function (item) {
+        return item && item.display !== false;
+      });
+    }
+  }, {
     key: 'buildItemsFor',
     value: function buildItemsFor(navKey) {
       var nav = this.props.menu[navKey];

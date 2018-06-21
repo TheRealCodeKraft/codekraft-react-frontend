@@ -304,6 +304,9 @@ class Form extends React.Component {
       case "switch":
         input = <Switch title={field.title} name={fieldName} onChange={this.handleInputChange.bind(this, field, !this.state.values[field.name])} onText="OUI" offText="NON" value={value} defaultValue={field.defaultValue} bsSize="mini" />
         break
+			case "slider":
+
+				break
       case "select":
         if (field.values instanceof Array) {
           options = field.values

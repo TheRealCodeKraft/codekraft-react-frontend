@@ -52,7 +52,7 @@ export default function(ComposedComponent, offline=false) {
           // I HAVE A TOKEN
           if (offline) { 
             // I NEED OFFLINE GRANTS
-            this.props.history.push("/dashboard") 
+            this.props.history.push("/") 
           }
           else { 
             // I NEED ONLINE GRANTS

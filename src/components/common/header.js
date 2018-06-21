@@ -78,6 +78,10 @@ class Header extends React.Component {
 		}
 	}
 
+	getRawItems(menuKey) {
+		return this.props.menu[menuKey].items.map(item => (this.getRawItem(item))).filter(item => (item && item.display !== false))
+	}
+
   buildItemsFor(navKey) {
     var nav = this.props.menu[navKey]
     var menu_entries = []
