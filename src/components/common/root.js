@@ -74,9 +74,7 @@ export default function(name, config) {
                          component = CheckForAcls(item.grants, component)
                        }
  
-													console.log(item.title)
                        if ((config.restricted || item.restricted) && !item.discardOnLogin) {
-												console.log("RESTRICTED")
                          component = AuthChecker(component)
                        }
 

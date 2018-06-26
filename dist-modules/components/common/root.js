@@ -79,9 +79,7 @@ exports.default = function (name, config) {
                   component = (0, _checkForAcls2.default)(item.grants, component);
                 }
 
-                console.log(item.title);
                 if ((config.restricted || item.restricted) && !item.discardOnLogin) {
-                  console.log("RESTRICTED");
                   component = (0, _authChecker2.default)(component);
                 }
 
