@@ -38,6 +38,10 @@ var _dateHourPicker = require("./form/date-hour-picker");
 
 var _dateHourPicker2 = _interopRequireDefault(_dateHourPicker);
 
+var _rcSlider = require("rc-slider");
+
+var _rcSlider2 = _interopRequireDefault(_rcSlider);
+
 var _reactColor = require("react-color");
 
 var _draftJsExportHtml = require("draft-js-export-html");
@@ -101,7 +105,7 @@ var Form = function (_React$Component) {
           if (this.props.reduxState[field.values.targetState][field.values.targetValue] && !this.props.reduxState[field.values.targetState][field.values.targetValue].pagination) {
             loadedData[field.name] = this.props.reduxState[field.values.targetState][field.values.targetValue];
           } else {
-            this.props.clients[field.values.client][field.values.func]();
+            this.props.clients[field.values.client][field.values.func]({}, null, field.values.offline || false);
             loadingData.push(field);
           }
         }
@@ -403,7 +407,15 @@ var Form = function (_React$Component) {
           input = React.createElement(_reactBootstrapSwitch2.default, { title: field.title, name: fieldName, onChange: this.handleInputChange.bind(this, field, !this.state.values[field.name]), onText: "OUI", offText: "NON", value: value, defaultValue: field.defaultValue, bsSize: "mini" });
           break;
         case "slider":
-
+          input = field.range ? React.createElement(_rcSlider.Range, { onChange: this.handleInputChange.bind(this, field) }) : React.createElement(_rcSlider2.default, { step: field.step, onChange: this.handleInputChange.bind(this, field), value: this.state.values[field.name] });
+          if (field.subComponent) {
+            input = React.createElement(
+              "div",
+              { className: "slider-with-component" },
+              input,
+              React.createElement(field.subComponent, { value: this.state.values[field.name] })
+            );
+          }
           break;
         case "select":
           if (field.values instanceof Array) {
@@ -426,14 +438,14 @@ var Form = function (_React$Component) {
               { value: "-1" },
               field.placeholder
             ) : null,
-            options.map(function (val) {
+            options.map(function (val, index) {
               var properties = {};
               if (val[field.key] === value) {
                 properties.selected = "selected";
               }
               return React.createElement(
                 "option",
-                _extends({ value: val[field.key] }, properties),
+                _extends({ key: "select-option-for-" + field.name + "-" + index, value: val[field.key] }, properties),
                 val[field.value]
               );
             })
@@ -510,15 +522,15 @@ var Form = function (_React$Component) {
       }
       input = wrapper([field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off" ? React.createElement(
         "label",
-        { className: "control-label", htmlFor: field.name },
+        { key: "label-for-" + field.name, className: "control-label", htmlFor: field.name },
         field.label
       ) : null, input, field.label !== undefined && field.type == "checkbox" ? React.createElement(
         "label",
-        { className: "control-label", htmlFor: field.name },
+        { key: "label-for-" + field.name, className: "control-label", htmlFor: field.name },
         field.label
       ) : null, this.state.errors[field.name] !== undefined ? React.createElement(
         "span",
-        { className: "form-error" },
+        { key: "error-for-" + field.name, className: "form-error" },
         this.state.errors[field.name].includes("_required") ? field.label + " est obligatoire" : this.state.errors[field.name]
       ) : null]);
 
@@ -553,8 +565,6 @@ var Form = function (_React$Component) {
             values[field.name] = value === "true" ? true : false;
             break;
           case "list-selector":
-            console.log("VALUE");
-            console.log(value);
             values[field.name] = value;
             break;
           case "color":

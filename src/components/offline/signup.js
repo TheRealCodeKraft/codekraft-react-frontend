@@ -95,10 +95,15 @@ class Signup extends React.Component {
   }
 
   handleSubmit(values) {
+		this.setState({values})
   }
 
   handleSubmitComplete(data) {
-    this.props.history.push("/login")
+		if (this.props.onSignedIn) {
+			this.props.onSignedIn(this.state.values, data)
+		} else {
+	    this.props.history.push("/login")
+		}
   }
 
   handleSubmitError(data) {

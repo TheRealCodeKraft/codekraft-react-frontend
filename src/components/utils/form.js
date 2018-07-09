@@ -11,6 +11,7 @@ import Wysiwyg from './form/wysiwyg'
 import FileInput from "react-file-input"
 import MultipleUpload from './form/multiple-upload'
 import DateHourPicker from './form/date-hour-picker'
+import Slider, { Range } from 'rc-slider'
 import { SketchPicker } from 'react-color'
 
 import {stateToHTML} from 'draft-js-export-html'
@@ -49,7 +50,7 @@ class Form extends React.Component {
         if (this.props.reduxState[field.values.targetState][field.values.targetValue] && !this.props.reduxState[field.values.targetState][field.values.targetValue].pagination) {
 	      	loadedData[field.name] = this.props.reduxState[field.values.targetState][field.values.targetValue]
         } else {
-          this.props.clients[field.values.client][field.values.func]()
+          this.props.clients[field.values.client][field.values.func]({}, null, field.values.offline || false)
           loadingData.push(field)
         }
       }
@@ -305,7 +306,15 @@ class Form extends React.Component {
         input = <Switch title={field.title} name={fieldName} onChange={this.handleInputChange.bind(this, field, !this.state.values[field.name])} onText="OUI" offText="NON" value={value} defaultValue={field.defaultValue} bsSize="mini" />
         break
 			case "slider":
-
+				input = field.range
+								? <Range onChange={this.handleInputChange.bind(this, field)} />
+								: <Slider step={field.step} onChange={this.handleInputChange.bind(this, field)} value={this.state.values[field.name]} />
+				if (field.subComponent) {
+					input = <div className="slider-with-component">
+									 	{input}
+										<field.subComponent value={this.state.values[field.name]} />
+									</div>
+				}
 				break
       case "select":
         if (field.values instanceof Array) {
@@ -320,12 +329,12 @@ class Form extends React.Component {
 
         input = <select className="form-control" title={field.title} name={fieldName} onChange={this.handleInputChange.bind(this, field)} value={value}>
                   {field.placeholder ? <option value="-1">{field.placeholder}</option> : null}
-                  {options.map(val => {
+                  {options.map((val, index) => {
                     var properties = {}
                     if (val[field.key] === value) {
                       properties.selected = "selected"
                     }
-                    return <option value={val[field.key]} {...properties}>{val[field.value]}</option>
+                    return <option key={"select-option-for-" + field.name + "-" + index} value={val[field.key]} {...properties}>{val[field.value]}</option>
                   })}
                 </select>
         break
@@ -393,14 +402,14 @@ class Form extends React.Component {
 		}
 		input = wrapper([
 								(field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off")
-								? <label className="control-label" htmlFor={field.name}>{field.label}</label> 
+								? <label key={"label-for-" + field.name} className="control-label" htmlFor={field.name}>{field.label}</label> 
 								: null,
 							input,
 								(field.label !== undefined && field.type == "checkbox")
-								? <label className="control-label" htmlFor={field.name}>{field.label}</label> 
+								? <label key={"label-for-" + field.name} className="control-label" htmlFor={field.name}>{field.label}</label> 
 								: null,
 								this.state.errors[field.name] !== undefined
-								? <span className="form-error">{this.state.errors[field.name].includes("_required") ? (field.label + " est obligatoire") : this.state.errors[field.name]}</span>
+								? <span key={"error-for-" + field.name} className="form-error">{this.state.errors[field.name].includes("_required") ? (field.label + " est obligatoire") : this.state.errors[field.name]}</span>
 								: null
 					])
 
@@ -432,8 +441,6 @@ class Form extends React.Component {
           values[field.name] = (value === "true" ? true : false)
           break
         case "list-selector":
-					console.log("VALUE")
-					console.log(value)
           values[field.name] = value
           break
         case "color":

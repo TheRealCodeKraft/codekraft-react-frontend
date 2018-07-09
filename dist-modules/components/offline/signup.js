@@ -118,11 +118,17 @@ var Signup = function (_React$Component) {
     }
   }, {
     key: "handleSubmit",
-    value: function handleSubmit(values) {}
+    value: function handleSubmit(values) {
+      this.setState({ values: values });
+    }
   }, {
     key: "handleSubmitComplete",
     value: function handleSubmitComplete(data) {
-      this.props.history.push("/login");
+      if (this.props.onSignedIn) {
+        this.props.onSignedIn(this.state.values, data);
+      } else {
+        this.props.history.push("/login");
+      }
     }
   }, {
     key: "handleSubmitError",
