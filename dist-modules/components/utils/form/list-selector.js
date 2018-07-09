@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -8,9 +8,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _reactSelect2Wrapper = require("react-select2-wrapper");
+var _reactSelect2Wrapper = require('react-select2-wrapper');
 
 var _reactSelect2Wrapper2 = _interopRequireDefault(_reactSelect2Wrapper);
+
+var _reactSelect = require('react-select');
+
+var _reactSelect2 = _interopRequireDefault(_reactSelect);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33,23 +37,21 @@ var ListSelector = function (_React$Component) {
     _this.state = {
       values: []
     };
-
-    _this.handleSelectionChange = _this.handleSelectionChange.bind(_this);
     return _this;
   }
 
   _createClass(ListSelector, [{
-    key: "componentWillMount",
+    key: 'componentWillMount',
     value: function componentWillMount() {
       this.setValues(this.props);
     }
   }, {
-    key: "componentWillReceiveProps",
+    key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(props) {
       this.setValues(props);
     }
   }, {
-    key: "setValues",
+    key: 'setValues',
     value: function setValues(props) {
       var _this2 = this;
 
@@ -59,69 +61,58 @@ var ListSelector = function (_React$Component) {
           values = [];
       if (this.props.tags) {
         options = props.options;
-      } else {
+      } else if (props.options && props.options.map) {
         options = props.options.map(function (value) {
           splitted = _this2.props.field.listValue.split(' ');
           val = "";
           for (var i in splitted) {
             val += value[splitted[i]] + " ";
           }
-          return { text: val, id: value[_this2.props.field.listKey] };
+          var item = {};
+          item[_this2.props.field.listKey] = value[_this2.props.field.listKey];
+          item[_this2.props.field.listValue] = val;
+          return item;
+          //return {name: val, id: value[this.props.field.listKey]}
         });
       }
       this.setState({ values: props.defaultValue, options: options });
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       var props = {};
       if (!this.props.tags) {
         props.data = this.state.options;
       }
-
-      return React.createElement(_reactSelect2Wrapper2.default, _extends({ ref: "select", multiple: true }, props, {
+      return React.createElement(_reactSelect2.default.Creatable, _extends({
+        ref: 'select',
+        multi: true,
+        valueKey: this.props.field.listKey,
+        labelKey: this.props.field.listValue
+      }, props, {
         value: this.state.values,
         placeholder: this.props.field.placeholder,
-        options: { tags: this.props.tags ? this.state.values : false, width: "100%" },
-        onSelect: this.handleSelectionChange,
-        onUnselect: this.handleSelectionChange }));
+        options: this.state.options,
+        onChange: this.handleChange.bind(this)
+      }));
     }
   }, {
-    key: "getAvailableValues",
-    value: function getAvailableValues() {
-      var self = this;
-      return this.props.options.filter(function (v) {
-        return self.state.values && self.state.values.indexOf(v[self.props.field.listKey]) === -1;
+    key: 'handleChange',
+    value: function handleChange(values) {
+      var _this3 = this;
+
+      this.setState({ values: values.map(function (val) {
+          return val[_this3.props.field.listKey] == val[_this3.props.field.listValue] ? val : val[_this3.props.field.listKey];
+        }) }, function () {
+        if (_this3.props.onChange) {
+          _this3.props.onChange({
+            target: {
+              name: _this3.props.field.name,
+              value: _this3.state.values
+            }
+          });
+        }
       });
-    }
-  }, {
-    key: "getCurrentValues",
-    value: function getCurrentValues() {
-      var self = this;
-      return this.props.options.filter(function (v) {
-        return self.state.values && self.state.values.indexOf(v[self.props.field.listKey]) >= 0;
-      });
-    }
-  }, {
-    key: "handleSelectionChange",
-    value: function handleSelectionChange(e, obj) {
-      var newValues = this.refs.select.el.val();
-      newValues = newValues.filter(function (item, pos) {
-        return newValues.indexOf(item) == pos;
-      });
-      this.setState({ values: newValues }, this.handleChange);
-    }
-  }, {
-    key: "handleChange",
-    value: function handleChange() {
-      if (this.props.onChange) {
-        this.props.onChange({
-          target: {
-            name: this.props.field.name,
-            value: this.state.values
-          }
-        });
-      }
     }
   }]);
 

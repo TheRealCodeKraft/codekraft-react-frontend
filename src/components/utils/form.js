@@ -1,7 +1,8 @@
 var React = require("react")
 import { connect } from 'react-redux';
 
-var moment = require("moment")
+var m = require("moment")
+const moment = m.parseZone
 
 import Switch from 'react-bootstrap-switch'
 import DatePicker from 'react-datetime'
@@ -14,6 +15,8 @@ import { SketchPicker } from 'react-color'
 
 import {stateToHTML} from 'draft-js-export-html'
 import {convertToRaw, convertFromRaw} from 'draft-js';
+
+import Loader from "react-loaders"
 
 class Form extends React.Component {
 
@@ -42,8 +45,9 @@ class Form extends React.Component {
     for (var index in this.props.fields) {
       field = this.props.fields[index]
       if (field.values && field.values.targetState !== undefined) {
-        if (this.props.reduxState[field.values.targetState][field.values.targetValue]) {
-          loadedData[field.name] = this.props.reduxState[field.values.targetState][field.values.targetValue]
+				// Hook to reload data if paginated data already loaded
+        if (this.props.reduxState[field.values.targetState][field.values.targetValue] && !this.props.reduxState[field.values.targetState][field.values.targetValue].pagination) {
+	      	loadedData[field.name] = this.props.reduxState[field.values.targetState][field.values.targetValue]
         } else {
           this.props.clients[field.values.client][field.values.func]()
           loadingData.push(field)
@@ -82,7 +86,7 @@ class Form extends React.Component {
       var current = undefined
       for (var index in this.state.loadingData) {
         current = this.state.loadingData[index]
-        if (props.reduxState[current.values.targetState][current.values.targetValue]) {
+        if (props.reduxState[current.values.targetState][current.values.targetValue] && !props.reduxState[current.values.targetState][current.values.targetValue].pagination) {
           loadedData[current.name] = props.reduxState[current.values.targetState][current.values.targetValue]
         } else {
           loadingData.push(current)
@@ -121,7 +125,7 @@ class Form extends React.Component {
            }
         } else if (props.fields[index].type == "wysiwyg") {
           currentValue = props.values[props.fields[index].name + "_raw"]
-          if (!(currentValue instanceof Object) && !(currentValue == "")) {
+          if (currentValue && !(currentValue instanceof Object) && !(currentValue == "")) {
             currentValue = JSON.parse(currentValue)
           }
           currentHtmlValue = props.values[props.fields[index].name + "_html"]
@@ -155,7 +159,7 @@ class Form extends React.Component {
                           : null)
 
     return (
-      <div className="form-container">
+      <div className={"form-container " + (this.props.className ? this.props.className : "")}>
         {this.props.entityId ? this.buildImageUploaders() : null}
         <form encType='multipart/form-data' id={this.props.id} onSubmit={this.handleFormSubmit}>
           {this.props.fields.map(field => {
@@ -170,10 +174,11 @@ class Form extends React.Component {
           })}
           {(this.state.submitError) ? [<span>{this.state.submitError}</span>, <br />] : null}
           {this.props.submitLabel !== "none"
-           ? submitButton
+           ? <div className="submit-container">{submitButton}</div>
            : null
           }
         </form>
+				{this.state.loadingData.length > 0 ? <div className="form-loader">{this.props.loadingComponent ? <this.props.loadingComponent /> : <Loader type="ball-pulse" />}</div> : null}
       </div>
     )
   }
@@ -299,6 +304,9 @@ class Form extends React.Component {
       case "switch":
         input = <Switch title={field.title} name={fieldName} onChange={this.handleInputChange.bind(this, field, !this.state.values[field.name])} onText="OUI" offText="NON" value={value} defaultValue={field.defaultValue} bsSize="mini" />
         break
+			case "slider":
+
+				break
       case "select":
         if (field.values instanceof Array) {
           options = field.values
@@ -334,7 +342,7 @@ class Form extends React.Component {
         input = <textarea className="form-control" title={field.title} name={fieldName} value={value} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} rows={5} />
         break
       case "wysiwyg":
-        input = <Wysiwyg value={this.state.values[field.name + "_raw"]} toolbar={field.toolbar} onChange={this.handleInputChange.bind(this, field)} mentions={field.mentions} />
+        input = <Wysiwyg value={this.state.values[field.name + "_raw"]} toolbar={field.toolbar} onChange={this.handleInputChange.bind(this, field)} mentions={field.mentions} emoji={field.emoji} />
         break
       case "date":
         if (!value) value=""
@@ -353,6 +361,7 @@ class Form extends React.Component {
         }
         input = <DateHourPicker 
                   value={value} 
+									onlyHours={field.onlyHours}
                   onChange={this.handleInputChange.bind(this, field)}
                 />
         break
@@ -360,7 +369,7 @@ class Form extends React.Component {
         input = <SketchPicker color={value} onChangeComplete={this.handleInputChange.bind(this, field)} />
         break
       case "multiple-upload":
-        input = <MultipleUpload onChange={this.handleInputChange.bind(this, field)} showZone={field.showZone} value={value} />
+        input = <MultipleUpload onChange={this.handleInputChange.bind(this, field)} showZone={field.showZone} value={value} removeIcon={field.removeIcon} dropComponent={field.dropComponent} mode={field.mode} />
         break
       default:
         if (value == null) value = ""
@@ -376,24 +385,24 @@ class Form extends React.Component {
   }
 
   decorateInput(input, field) {
-    input = <div className="form-group" key={this.props.id + "-field-" + field.name}>
-              {
-                (field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off")
-                ? <label className="control-label" htmlFor={field.name}>{field.label}</label> 
-                : null
-              }
-              {input}
-              {
-                (field.label !== undefined && field.type == "checkbox")
-                ? <label className="control-label" htmlFor={field.name}>{field.label}</label> 
-                : null
-              }
-              {
-                this.state.errors[field.name] !== undefined
-                ? <span className="form-error">{this.state.errors[field.name].includes("_required") ? (field.label + " est obligatoire") : this.state.errors[field.name]}</span>
-                : null
-              }
-            </div>
+    var wrapper = (children) => ( <div className="form-group" key={this.props.id + "-field-" + field.name}>{children}</div> )
+		if (field.wrapper) {
+			wrapper = field.wrapper
+		} else if (this.props.fieldWrapper) {
+			wrapper = this.props.fieldWrapper
+		}
+		input = wrapper([
+								(field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off")
+								? <label className="control-label" htmlFor={field.name}>{field.label}</label> 
+								: null,
+							input,
+								(field.label !== undefined && field.type == "checkbox")
+								? <label className="control-label" htmlFor={field.name}>{field.label}</label> 
+								: null,
+								this.state.errors[field.name] !== undefined
+								? <span className="form-error">{this.state.errors[field.name].includes("_required") ? (field.label + " est obligatoire") : this.state.errors[field.name]}</span>
+								: null
+					])
 
     return input 
   }
@@ -423,6 +432,8 @@ class Form extends React.Component {
           values[field.name] = (value === "true" ? true : false)
           break
         case "list-selector":
+					console.log("VALUE")
+					console.log(value)
           values[field.name] = value
           break
         case "color":
@@ -434,7 +445,9 @@ class Form extends React.Component {
         default:
           break
       }
-      this.setState({values: values});
+      this.setState({values: values}, () => {
+				if (this.props.onInputChange) this.props.onInputChange(values)
+			})
     }
   }
 
@@ -458,10 +471,18 @@ class Form extends React.Component {
           if (this.props.fields[fIndex].name.indexOf('[') !== -1) {
             var splitted = this.props.fields[fIndex].name.split("[")
             if (splitted.length === 2) { 
-              currentValues[splitted[0] + "_" + splitted[1].replace(']', '')] = this.state.values[this.props.fields[fIndex].name]
+							if (!currentValues[splitted[0]]) {
+              	currentValues[splitted[0]] = {}
+							}
+							currentValues[splitted[0]][splitted[1].replace(']', '')] = this.state.values[this.props.fields[fIndex].name]
             } else {
-              currentValues[splitted[0]] = {}
-              currentValues[splitted[0]][splitted[1].replace(']', '') + "_" + splitted[2].replace(']', '')] = this.state.values[this.props.fields[fIndex].name]
+							if (!currentValues[splitted[0]]) {
+	              currentValues[splitted[0]] = {}
+							}
+							if (!currentValues[splitted[0]][splitted[2]]) {
+	              currentValues[splitted[0]][splitted[1].replace(']', '')] = {}
+							}
+              currentValues[splitted[0]][splitted[1]][splitted[2].replace(']', '')] = this.state.values[this.props.fields[fIndex].name]
             }
           } else {
             if (this.props.fields[fIndex].type == "wysiwyg") {
@@ -471,7 +492,11 @@ class Form extends React.Component {
               if (this.props.fields[fIndex].type == "datehour") {
                 currentValues[this.props.fields[fIndex].name] = moment(this.state.values[this.props.fields[fIndex].name]).format("DD/MM/YYYY HH:mm")
               } else {
-                currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name]
+								if (this.props.fields[fIndex].type == "date") {
+									currentValues[this.props.fields[fIndex].name] = moment(this.state.values[this.props.fields[fIndex].name]).format("DD/MM/YYYY") + " 00:00"
+								} else {
+	                currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name]
+								}
               }
             }
           }

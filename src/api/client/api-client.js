@@ -68,14 +68,29 @@ var ApiClient = function(store) {
 
     fetch(process.env.API_URL + endpoint, fetchParams)
     .then(promise => {
+			const headers = promise.headers
       promise.json().then(response => {
 
         /*if (response.json) response = response.json*/
+				var pagination = null
+				if (headers.get("X-Next-Page") !== null) {
+					response = {
+						list: response,
+						pagination: {
+							next: headers.get("X-Next-Page"),
+							previous: headers.get("X-Prev-Page"),
+							total: headers.get("X-Total"),
+							totalPages: headers.get("X-Total-Pages"),
+							perPage: headers.get("X-Per-Page")
+						}
+					}
+				}
 
         Logger.debug({
           method: method,
           response: endpoint,
-          data: response
+          data: response,
+					headers: headers
         })  
 
         if (response.error) {
@@ -86,7 +101,7 @@ var ApiClient = function(store) {
           } else {
             callback(response)
           }
-        } else if (callback) callback(response);
+        } else if (callback) callback(response)
       });
     }).catch(exception => {
 
@@ -112,6 +127,9 @@ var ApiClient = function(store) {
         for (var j in params[key]) {
           ps.append("attachments[]", params[key][j])
         }
+			} else if (key == "attachment") {
+				formData=true
+				ps.append("attachment", params[key])
       } else {
         ps.append(key, (params[key] instanceof Object) ? JSON.stringify(params[key]) : params[key])
       }
@@ -138,6 +156,9 @@ var ApiClient = function(store) {
         } else {
           ps.append("attachments", "")
         }
+			} else if (key == "attachment") {
+				formData=true
+				ps.append("attachment", params[key])
       } else {
         ps.append(key, (params[key] instanceof Object) ? JSON.stringify(params[key]) : params[key])
       }
@@ -212,8 +233,8 @@ var ApiClient = function(store) {
     callback(data)
   }
 
-  var login = function(params, callback) {
-    if (checkForToken()) {
+  var login = function(params, callback, forceLogout=true) {
+    if (checkForToken() && forceLogout) {
       logout(function() {
         login(params, callback)
       })
@@ -223,7 +244,19 @@ var ApiClient = function(store) {
         if (data.error) {
           if (callback) callback(data)
         } else {
-          storeToken(data, callback)
+          storeToken(data, (data) => {
+						get("users/me", {}, function(me) {
+        			if (me.error) {
+          			if (callback) callback(data)
+        			} else {
+          			store.dispatch({
+            			type: "ME",
+            			user: me
+          			})
+          			if (callback) callback(data)
+        			}
+      			})
+					})
         }
       }, false, true)
     }

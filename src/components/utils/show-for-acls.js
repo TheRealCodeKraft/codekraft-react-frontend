@@ -13,15 +13,18 @@ import { connect } from 'react-redux';
  */
 class ShowForAcls extends Component {
     render() {
+			console.log("ACLS")
         const self = this;
         if((!this.props.authenticated && this.props.needAuthenticated === true) || !this.props.userGrant) {
             return false
         }
+console.log("1")
 
-        const found = this.props.grants.filter(gl => gl === self.props.userGrant);
+        const found = this.props.grants ? this.props.grants.filter(gl => gl === self.props.userGrant) : ["ok"]
         if(found.length === 0) {
             return false
         }
+console.log("2")
         return React.Children.only(this.props.children);
     }
 }

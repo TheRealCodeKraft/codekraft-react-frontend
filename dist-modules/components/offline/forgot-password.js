@@ -10,6 +10,8 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = require('react-redux');
+
 var _form = require('../utils/form');
 
 var _form2 = _interopRequireDefault(_form);
@@ -84,7 +86,7 @@ var ForgotPassword = function (_React$Component) {
         submitClass: "btn btn-accent btn-signup",
         service: { client: this.props.clients.UserClient, func: "forgotPassword" },
         onSubmitComplete: this.handleSubmitComplete
-      }), _react2.default.createElement(
+      }), this.props.showLoseLinks ? [_react2.default.createElement(
         _reactRouterDom.Link,
         { className: "btn btn-default", to: '/login' },
         'J\'ai d\xE9j\xE0 un compte'
@@ -92,7 +94,7 @@ var ForgotPassword = function (_React$Component) {
         _reactRouterDom.Link,
         { className: "btn btn-default", to: '/signup' },
         'Cr\xE9er un compte'
-      )];
+      )] : null];
     }
   }, {
     key: 'found',
@@ -110,11 +112,23 @@ var ForgotPassword = function (_React$Component) {
   }, {
     key: 'handleSubmitComplete',
     value: function handleSubmitComplete(data) {
-      this.setState({ found: data.found });
+      if (this.props.onSubmitComplete) {
+        this.props.onSubmitComplete(data);
+      } else {
+        this.setState({ found: data.found });
+      }
     }
   }]);
 
   return ForgotPassword;
 }(_react2.default.Component);
 
-exports.default = ForgotPassword;
+function mapStateToProps(state) {
+  return {
+    clients: state.bootstrap.clients,
+    newUser: state.userState.newUser || null,
+    passwordUpdated: state.userState.password_updated || null
+  };
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(ForgotPassword);

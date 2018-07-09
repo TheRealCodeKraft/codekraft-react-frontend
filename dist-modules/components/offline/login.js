@@ -61,7 +61,7 @@ var Login = function (_React$Component) {
   _createClass(Login, [{
     key: "render",
     value: function render() {
-      if (this.state.loggedIn) return React.createElement(_reactRouterDom.Redirect, { to: "/dashboard" });
+      if (this.state.loggedIn) return React.createElement(_reactRouterDom.Redirect, { to: "/" });
       return React.createElement(
         "div",
         null,
@@ -89,11 +89,11 @@ var Login = function (_React$Component) {
         }),
         this.props.showLoseLinks !== false ? [React.createElement(
           _reactRouterDom.Link,
-          { className: "btn btn-default", to: "/signup" },
+          { key: "signup-button", className: "btn btn-default", to: "/signup" },
           "Cr\xE9er un compte"
         ), React.createElement(
           _reactRouterDom.Link,
-          { to: "/forgot-password" },
+          { key: "forgot-password-button", to: "/forgot-password" },
           "Mot de passe oubli\xE9"
         )] : null
       );
@@ -104,7 +104,9 @@ var Login = function (_React$Component) {
   }, {
     key: "handleSubmitComplete",
     value: function handleSubmitComplete(data) {
-      this.setState({ loggedIn: true });
+      if (this.props.onLoggedIn) this.props.onLoggedIn();else {
+        this.setState({ loggedIn: true });
+      }
     }
   }]);
 

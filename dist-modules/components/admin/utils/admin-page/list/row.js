@@ -45,7 +45,8 @@ var AdminPageListRow = function (_React$Component) {
     value: function render() {
       var row = [],
           attribute = undefined,
-          name = undefined;
+          name = undefined,
+          style = undefined;
       for (var attrIndex in this.props.attributes) {
         attribute = this.props.attributes[attrIndex];
         if (attribute instanceof Object) {
@@ -55,9 +56,11 @@ var AdminPageListRow = function (_React$Component) {
           name = attribute;
         }
         if (this.props.attributes[attrIndex]) {
+          style = JSON.parse(JSON.stringify(this.tableCellStyles));
+          if (attribute.style) style = Object.assign({}, this.tableCellStyles, attribute.style);
           row.push(React.createElement(
             "div",
-            { key: "row-" + this.props.item.id + "-attr-" + attrIndex, style: this.tableCellStyles },
+            { key: "row-" + this.props.item.id + "-attr-" + attrIndex, style: style },
             this.buildDisplayValue(name, attribute)
           ));
         }
@@ -74,22 +77,29 @@ var AdminPageListRow = function (_React$Component) {
     key: "buildDisplayValue",
     value: function buildDisplayValue(name, attribute) {
       var value = undefined;
-      if (name.indexOf(".") !== -1) {
-        var splitted = name.split('.');
-        value = this.props.item[splitted[0]];
-        for (var i = 1; i < splitted.length; i++) {
-          if (value) {
-            value = value[splitted[i]];
-          } else {
-            console.log("Subproperty error for '" + name + "' at '" + splitted[i]);
-            break;
+      if (name) {
+        if (name.indexOf(".") !== -1) {
+          var splitted = name.split('.');
+          value = this.props.item[splitted[0]];
+          for (var i = 1; i < splitted.length; i++) {
+            if (value) {
+              value = value[splitted[i]];
+            } else {
+              console.log("Subproperty error for '" + name + "' at '" + splitted[i]);
+              break;
+            }
           }
+        } else {
+          value = this.props.item[name];
         }
       } else {
-        value = this.props.item[name];
+        value = this.props.item;
       }
 
       if (attribute instanceof Object) {
+        if (attribute.wrapper) {
+          value = attribute.wrapper(value, this.props.item);
+        }
         if (attribute.link) {
           var link = attribute.link.replace("[[VALUE]]", value);
           value = React.createElement(
@@ -99,10 +109,13 @@ var AdminPageListRow = function (_React$Component) {
           );
         }
         if (attribute.type === "image") {
-          value = React.createElement("img", { src: value, style: { height: 50 }, className: "img-rounded", alt: value });
+          value = React.createElement("img", { src: value, style: { height: 50, width: 50, borderRadius: "100%" }, className: "img-rounded", alt: value });
         }
         if (attribute.type === "date") {
           value = moment(value).format('DD/MM/YYYY');
+        }
+        if (attribute.type === "datetime") {
+          value = moment(value).format('DD/MM/YYYY HH:MM');
         }
         if (attribute.replaceWith && attribute.replaceWith[value] !== undefined) {
           value = attribute.replaceWith[value];
@@ -132,7 +145,7 @@ var AdminPageListRow = function (_React$Component) {
             if (_this2.acceptCustomAction(action)) {
               actions.push(React.createElement(
                 "a",
-                { key: "action-" + action.action + "-" + _this2.props.item.id, onClick: _this2.handleCustomAction.bind(_this2, action), className: "admin-action-button " + _this2.getIcon(action.icon, "eye"), alt: action.label, title: action.label },
+                { href: "#", key: "action-" + action.action + "-" + _this2.props.item.id, onClick: _this2.handleCustomAction.bind(_this2, action), className: "admin-action-button " + _this2.getIcon(action.icon, "eye"), alt: action.label, title: action.label },
                 action.icon ? "" : action.label
               ));
             }

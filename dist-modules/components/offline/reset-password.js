@@ -18,6 +18,8 @@ var _form2 = _interopRequireDefault(_form);
 
 var _reactRouterDom = require('react-router-dom');
 
+var _reactRouter = require('react-router');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -175,4 +177,4 @@ function mapStateToProps(state) {
   };
 }
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(ResetPassword);
+exports.default = (0, _reactRedux.connect)(mapStateToProps)((0, _reactRouter.withRouter)(ResetPassword));

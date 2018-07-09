@@ -84,14 +84,29 @@ var ApiClient = function ApiClient(store) {
     });
 
     (0, _isomorphicFetch2.default)(process.env.API_URL + endpoint, fetchParams).then(function (promise) {
+      var headers = promise.headers;
       promise.json().then(function (response) {
 
         /*if (response.json) response = response.json*/
+        var pagination = null;
+        if (headers.get("X-Next-Page") !== null) {
+          response = {
+            list: response,
+            pagination: {
+              next: headers.get("X-Next-Page"),
+              previous: headers.get("X-Prev-Page"),
+              total: headers.get("X-Total"),
+              totalPages: headers.get("X-Total-Pages"),
+              perPage: headers.get("X-Per-Page")
+            }
+          };
+        }
 
         Logger.debug({
           method: method,
           response: endpoint,
-          data: response
+          data: response,
+          headers: headers
         });
 
         if (response.error) {
@@ -132,6 +147,9 @@ var ApiClient = function ApiClient(store) {
         for (var j in params[key]) {
           ps.append("attachments[]", params[key][j]);
         }
+      } else if (key == "attachment") {
+        formData = true;
+        ps.append("attachment", params[key]);
       } else {
         ps.append(key, params[key] instanceof Object ? JSON.stringify(params[key]) : params[key]);
       }
@@ -164,6 +182,9 @@ var ApiClient = function ApiClient(store) {
         } else {
           ps.append("attachments", "");
         }
+      } else if (key == "attachment") {
+        formData = true;
+        ps.append("attachment", params[key]);
       } else {
         ps.append(key, params[key] instanceof Object ? JSON.stringify(params[key]) : params[key]);
       }
@@ -238,7 +259,9 @@ var ApiClient = function ApiClient(store) {
   };
 
   var login = function login(params, callback) {
-    if (checkForToken()) {
+    var forceLogout = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
+    if (checkForToken() && forceLogout) {
       logout(function () {
         login(params, callback);
       });
@@ -248,7 +271,19 @@ var ApiClient = function ApiClient(store) {
         if (data.error) {
           if (callback) callback(data);
         } else {
-          storeToken(data, callback);
+          storeToken(data, function (data) {
+            get("users/me", {}, function (me) {
+              if (me.error) {
+                if (callback) callback(data);
+              } else {
+                store.dispatch({
+                  type: "ME",
+                  user: me
+                });
+                if (callback) callback(data);
+              }
+            });
+          });
         }
       }, false, true);
     }

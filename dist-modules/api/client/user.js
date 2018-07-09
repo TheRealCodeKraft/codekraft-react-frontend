@@ -19,7 +19,9 @@ var UserClient = function UserClient(store, ApiClient) {
     if (ApiClient.checkForToken()) {
       ApiClient.get("users/me", {}, function (data) {
         if (data.error) {
-          if (callback) callback(data);
+          if (data.status == 404) {
+            ApiClient.logout(callback);
+          } else if (callback) callback(data);
         } else {
           store.dispatch({
             type: "ME",

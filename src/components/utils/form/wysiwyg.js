@@ -1,11 +1,13 @@
 import React from "react"
 
 import Editor from "draft-js-plugins-editor"
-import {Draft, EditorState, ContentState, RichUtils, convertFromRaw} from 'draft-js';
+import {Draft, EditorState, SelectionState, ContentState, RichUtils, convertFromRaw} from 'draft-js'
 
-import createToolbarPlugin, { Separator } from 'draft-js-static-toolbar-plugin';
+import createToolbarPlugin, { Separator } from 'draft-js-static-toolbar-plugin'
 import createLinkifyPlugin from 'draft-js-linkify-plugin'
-import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
+import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin'
+import createHashtagPlugin from 'draft-js-hashtag-plugin'
+import createEmojiPlugin from 'draft-js-emoji-plugin';
 
 import {
   ItalicButton,
@@ -116,6 +118,7 @@ const toolbarPlugin = createToolbarPlugin({
   ]
 });
 const { Toolbar } = toolbarPlugin
+const hashtagPlugin = createHashtagPlugin()
 
 const linkifyPlugin = createLinkifyPlugin({
   target: '_blank'  // default is '_self'
@@ -124,7 +127,10 @@ const linkifyPlugin = createLinkifyPlugin({
 const mentionPlugin = createMentionPlugin();
 const { MentionSuggestions } = mentionPlugin
 
-const plugins = [toolbarPlugin, linkifyPlugin, mentionPlugin];
+const emojiPlugin = createEmojiPlugin();
+const { EmojiSuggestions, EmojiSelect } = emojiPlugin	
+
+const plugins = [toolbarPlugin, linkifyPlugin, mentionPlugin, hashtagPlugin, emojiPlugin];
 
 class Wysiwyg extends React.Component {
   constructor(props) {
@@ -140,12 +146,11 @@ class Wysiwyg extends React.Component {
   componentWillReceiveProps(props) {
     if (props.value && (!this.state.raw || props.value == "RESET")) {
       var editorState
-console.log("VALUE")
-console.log(props.value)
       if (props.value == "RESET" || props.value == "") {
         editorState = EditorState.createEmpty()
       } else {
-        editorState = EditorState.create({currentContent: convertFromRaw(props.value), selection: this.state.editorState.getSelection()})
+        editorState = EditorState.create({currentContent: convertFromRaw(props.value), selection: SelectionState.createEmpty(props.value.blocks[0].key)})
+				editorState = EditorState.forceSelection(editorState, editorState.getSelection())
       }
 
       this.setState({
@@ -159,7 +164,7 @@ console.log(props.value)
   }
 
   focus = () => {
-    this.editor.focus();
+    //this.editor.focus();
   };
 
   render() {
@@ -174,6 +179,11 @@ console.log(props.value)
              onAddMention={this.onAddMention.bind(this)}
            />
          : null}
+				{ this.props.emoji
+					? [<EmojiSuggestions />,
+    				 <EmojiSelect />]
+					: null
+				}
       </div>
     );
   }

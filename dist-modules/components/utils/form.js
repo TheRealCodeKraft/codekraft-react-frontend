@@ -44,6 +44,10 @@ var _draftJsExportHtml = require("draft-js-export-html");
 
 var _draftJs = require("draft-js");
 
+var _reactLoaders = require("react-loaders");
+
+var _reactLoaders2 = _interopRequireDefault(_reactLoaders);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -55,7 +59,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var React = require("react");
 
 
-var moment = require("moment");
+var m = require("moment");
+var moment = m.parseZone;
 
 var Form = function (_React$Component) {
   _inherits(Form, _React$Component);
@@ -92,7 +97,8 @@ var Form = function (_React$Component) {
       for (var index in this.props.fields) {
         field = this.props.fields[index];
         if (field.values && field.values.targetState !== undefined) {
-          if (this.props.reduxState[field.values.targetState][field.values.targetValue]) {
+          // Hook to reload data if paginated data already loaded
+          if (this.props.reduxState[field.values.targetState][field.values.targetValue] && !this.props.reduxState[field.values.targetState][field.values.targetValue].pagination) {
             loadedData[field.name] = this.props.reduxState[field.values.targetState][field.values.targetValue];
           } else {
             this.props.clients[field.values.client][field.values.func]();
@@ -134,7 +140,7 @@ var Form = function (_React$Component) {
         var current = undefined;
         for (var index in this.state.loadingData) {
           current = this.state.loadingData[index];
-          if (props.reduxState[current.values.targetState][current.values.targetValue]) {
+          if (props.reduxState[current.values.targetState][current.values.targetValue] && !props.reduxState[current.values.targetState][current.values.targetValue].pagination) {
             loadedData[current.name] = props.reduxState[current.values.targetState][current.values.targetValue];
           } else {
             loadingData.push(current);
@@ -177,7 +183,7 @@ var Form = function (_React$Component) {
             }
           } else if (props.fields[index].type == "wysiwyg") {
             currentValue = props.values[props.fields[index].name + "_raw"];
-            if (!(currentValue instanceof Object) && !(currentValue == "")) {
+            if (currentValue && !(currentValue instanceof Object) && !(currentValue == "")) {
               currentValue = JSON.parse(currentValue);
             }
             currentHtmlValue = props.values[props.fields[index].name + "_html"];
@@ -220,7 +226,7 @@ var Form = function (_React$Component) {
 
       return React.createElement(
         "div",
-        { className: "form-container" },
+        { className: "form-container " + (this.props.className ? this.props.className : "") },
         this.props.entityId ? this.buildImageUploaders() : null,
         React.createElement(
           "form",
@@ -244,8 +250,17 @@ var Form = function (_React$Component) {
             null,
             this.state.submitError
           ), React.createElement("br", null)] : null,
-          this.props.submitLabel !== "none" ? submitButton : null
-        )
+          this.props.submitLabel !== "none" ? React.createElement(
+            "div",
+            { className: "submit-container" },
+            submitButton
+          ) : null
+        ),
+        this.state.loadingData.length > 0 ? React.createElement(
+          "div",
+          { className: "form-loader" },
+          this.props.loadingComponent ? React.createElement(this.props.loadingComponent, null) : React.createElement(_reactLoaders2.default, { type: "ball-pulse" })
+        ) : null
       );
     }
   }, {
@@ -387,6 +402,9 @@ var Form = function (_React$Component) {
         case "switch":
           input = React.createElement(_reactBootstrapSwitch2.default, { title: field.title, name: fieldName, onChange: this.handleInputChange.bind(this, field, !this.state.values[field.name]), onText: "OUI", offText: "NON", value: value, defaultValue: field.defaultValue, bsSize: "mini" });
           break;
+        case "slider":
+
+          break;
         case "select":
           if (field.values instanceof Array) {
             options = field.values;
@@ -434,7 +452,7 @@ var Form = function (_React$Component) {
           input = React.createElement("textarea", { className: "form-control", title: field.title, name: fieldName, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field), rows: 5 });
           break;
         case "wysiwyg":
-          input = React.createElement(_wysiwyg2.default, { value: this.state.values[field.name + "_raw"], toolbar: field.toolbar, onChange: this.handleInputChange.bind(this, field), mentions: field.mentions });
+          input = React.createElement(_wysiwyg2.default, { value: this.state.values[field.name + "_raw"], toolbar: field.toolbar, onChange: this.handleInputChange.bind(this, field), mentions: field.mentions, emoji: field.emoji });
           break;
         case "date":
           if (!value) value = "";else if (value !== "") {
@@ -451,6 +469,7 @@ var Form = function (_React$Component) {
           }
           input = React.createElement(_dateHourPicker2.default, {
             value: value,
+            onlyHours: field.onlyHours,
             onChange: this.handleInputChange.bind(this, field)
           });
           break;
@@ -458,7 +477,7 @@ var Form = function (_React$Component) {
           input = React.createElement(_reactColor.SketchPicker, { color: value, onChangeComplete: this.handleInputChange.bind(this, field) });
           break;
         case "multiple-upload":
-          input = React.createElement(_multipleUpload2.default, { onChange: this.handleInputChange.bind(this, field), showZone: field.showZone, value: value });
+          input = React.createElement(_multipleUpload2.default, { onChange: this.handleInputChange.bind(this, field), showZone: field.showZone, value: value, removeIcon: field.removeIcon, dropComponent: field.dropComponent, mode: field.mode });
           break;
         default:
           if (value == null) value = "";
@@ -475,32 +494,41 @@ var Form = function (_React$Component) {
   }, {
     key: "decorateInput",
     value: function decorateInput(input, field) {
-      input = React.createElement(
-        "div",
-        { className: "form-group", key: this.props.id + "-field-" + field.name },
-        field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off" ? React.createElement(
-          "label",
-          { className: "control-label", htmlFor: field.name },
-          field.label
-        ) : null,
-        input,
-        field.label !== undefined && field.type == "checkbox" ? React.createElement(
-          "label",
-          { className: "control-label", htmlFor: field.name },
-          field.label
-        ) : null,
-        this.state.errors[field.name] !== undefined ? React.createElement(
-          "span",
-          { className: "form-error" },
-          this.state.errors[field.name].includes("_required") ? field.label + " est obligatoire" : this.state.errors[field.name]
-        ) : null
-      );
+      var _this5 = this;
+
+      var wrapper = function wrapper(children) {
+        return React.createElement(
+          "div",
+          { className: "form-group", key: _this5.props.id + "-field-" + field.name },
+          children
+        );
+      };
+      if (field.wrapper) {
+        wrapper = field.wrapper;
+      } else if (this.props.fieldWrapper) {
+        wrapper = this.props.fieldWrapper;
+      }
+      input = wrapper([field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off" ? React.createElement(
+        "label",
+        { className: "control-label", htmlFor: field.name },
+        field.label
+      ) : null, input, field.label !== undefined && field.type == "checkbox" ? React.createElement(
+        "label",
+        { className: "control-label", htmlFor: field.name },
+        field.label
+      ) : null, this.state.errors[field.name] !== undefined ? React.createElement(
+        "span",
+        { className: "form-error" },
+        this.state.errors[field.name].includes("_required") ? field.label + " est obligatoire" : this.state.errors[field.name]
+      ) : null]);
 
       return input;
     }
   }, {
     key: "handleInputChange",
     value: function handleInputChange(field, e) {
+      var _this6 = this;
+
       if (Object.keys(this.state.values).length > 0) {
         var values = this.state.values;
         var value = e.target ? e.target.value : e;
@@ -525,6 +553,8 @@ var Form = function (_React$Component) {
             values[field.name] = value === "true" ? true : false;
             break;
           case "list-selector":
+            console.log("VALUE");
+            console.log(value);
             values[field.name] = value;
             break;
           case "color":
@@ -536,7 +566,9 @@ var Form = function (_React$Component) {
           default:
             break;
         }
-        this.setState({ values: values });
+        this.setState({ values: values }, function () {
+          if (_this6.props.onInputChange) _this6.props.onInputChange(values);
+        });
       }
     }
   }, {
@@ -565,10 +597,18 @@ var Form = function (_React$Component) {
             if (this.props.fields[fIndex].name.indexOf('[') !== -1) {
               var splitted = this.props.fields[fIndex].name.split("[");
               if (splitted.length === 2) {
-                currentValues[splitted[0] + "_" + splitted[1].replace(']', '')] = this.state.values[this.props.fields[fIndex].name];
+                if (!currentValues[splitted[0]]) {
+                  currentValues[splitted[0]] = {};
+                }
+                currentValues[splitted[0]][splitted[1].replace(']', '')] = this.state.values[this.props.fields[fIndex].name];
               } else {
-                currentValues[splitted[0]] = {};
-                currentValues[splitted[0]][splitted[1].replace(']', '') + "_" + splitted[2].replace(']', '')] = this.state.values[this.props.fields[fIndex].name];
+                if (!currentValues[splitted[0]]) {
+                  currentValues[splitted[0]] = {};
+                }
+                if (!currentValues[splitted[0]][splitted[2]]) {
+                  currentValues[splitted[0]][splitted[1].replace(']', '')] = {};
+                }
+                currentValues[splitted[0]][splitted[1]][splitted[2].replace(']', '')] = this.state.values[this.props.fields[fIndex].name];
               }
             } else {
               if (this.props.fields[fIndex].type == "wysiwyg") {
@@ -578,7 +618,11 @@ var Form = function (_React$Component) {
                 if (this.props.fields[fIndex].type == "datehour") {
                   currentValues[this.props.fields[fIndex].name] = moment(this.state.values[this.props.fields[fIndex].name]).format("DD/MM/YYYY HH:mm");
                 } else {
-                  currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name];
+                  if (this.props.fields[fIndex].type == "date") {
+                    currentValues[this.props.fields[fIndex].name] = moment(this.state.values[this.props.fields[fIndex].name]).format("DD/MM/YYYY") + " 00:00";
+                  } else {
+                    currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name];
+                  }
                 }
               }
             }

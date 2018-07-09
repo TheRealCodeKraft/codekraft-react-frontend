@@ -18,9 +18,12 @@ exports.default = function (config, globalConfig) {
       var _this = _possibleConstructorReturn(this, (AdminPage.__proto__ || Object.getPrototypeOf(AdminPage)).call(this, props));
 
       _this.state = {
+        loading: true,
         currentId: undefined,
         mode: "list",
-        currentAction: undefined
+        currentAction: undefined,
+        current_page: 1,
+        per_page: 10
       };
 
       _this.handleCloseSidebar = _this.handleCloseSidebar.bind(_this);
@@ -44,25 +47,30 @@ exports.default = function (config, globalConfig) {
       value: function componentWillMount() {
         if (config.client) {
           if (config.client["fetchAll"]) {
-            config.client["fetchAll"]();
+            var self = this;
+            config.client["fetchAll"](config.pagination ? { page: this.state.current_page, per_page: config.pagination.per_page ? config.pagination.per_page : 10 } : {}, function () {
+              self.setState({ loading: false });
+            });
           }
         }
       }
     }, {
       key: 'render',
       value: function render() {
+        var _this2 = this;
+
         var pluralName = getPluralName();
 
         return React.createElement(
           _reactBootstrap.Grid,
-          { fluid: true, className: 'admin-page' },
+          { fluid: true, className: 'admin-page container' },
           globalConfig.subHeader ? React.createElement(globalConfig.subHeader, _extends({}, globalConfig, { config: config, globalConfig: globalConfig, location: this.props.location, onNew: this.handleNew })) : React.createElement(
             'div',
             { className: 'admin-page-header' },
             React.createElement(
               'h1',
               null,
-              React.createElement('i', { className: (globalConfig.iconSet ? globalConfig.iconSet : "fa fa-") + (config.icon ? config.icon : "terminal") + " text-warning" }),
+              React.createElement('i', { className: config.icon ? (globalConfig.iconSet ? globalConfig.iconSet : "fa fa-") + (config.icon ? config.icon : "terminal") + " text-warning" : "" }),
               ' ',
               config.title
             ),
@@ -81,16 +89,39 @@ exports.default = function (config, globalConfig) {
           React.createElement(
             'div',
             null,
-            React.createElement(_list2.default, { attributes: config.list.attributes,
+            this.props[pluralName] ? React.createElement(_list2.default, { attributes: config.list.attributes,
               actions: config.list.actions,
               form: config.form,
-              items: this.props[pluralName],
+              items: config.pagination ? this.props[pluralName].list : this.props[pluralName],
               onDelete: this.handleDelete,
               onSee: this.handleSee,
               onEdit: this.handleEdit,
               onCustomAction: this.handleCustomAction,
-              config: globalConfig
-            }),
+              config: globalConfig,
+              current_page: this.state.current_page
+            }) : null,
+            config.pagination ? React.createElement(
+              'div',
+              { className: 'pagination-buttons' },
+              this.state.loading ? React.createElement(_reactLoaders2.default, { type: 'ball-pulse' }) : null,
+              !this.state.loading && this.props[pluralName].pagination.previous !== "" ? React.createElement(
+                'a',
+                { className: 'paginate-previous-btn', href: 'javascript:void', onClick: this.handlePreviousPage.bind(this) },
+                "<<"
+              ) : null,
+              !this.state.loading && [].concat(_toConsumableArray(Array(parseInt(this.props[pluralName].pagination.totalPages)))).map(function (_, i) {
+                return React.createElement(
+                  'a',
+                  { href: 'javascript:void(0)', onClick: _this2.handleChangePage.bind(_this2, i + 1), className: "page-btn" + (i + 1 == _this2.state.current_page ? " active" : "") },
+                  i + 1
+                );
+              }),
+              !this.state.loading && this.props[pluralName].pagination.next !== "" ? React.createElement(
+                'a',
+                { className: 'paginate-next-btn', href: 'javascript:void', onClick: this.handleNextPage.bind(this) },
+                ">>"
+              ) : null
+            ) : null,
             React.createElement(
               _sidebar2.default,
               { ref: 'sidebar',
@@ -110,18 +141,21 @@ exports.default = function (config, globalConfig) {
     }, {
       key: 'buildWatchers',
       value: function buildWatchers() {
-        var _this2 = this;
+        var _this3 = this;
 
-        var watchers = [];
+        var watchers = [],
+            channel;
         if (config.watcher) {
           if (this.props[getPluralName()]) {
             this.props[getPluralName()].map(function (entity) {
+              channel = { channel: config.watcher.channel };
+              channel[config.client.name] = entity.id;
               if (config.watcher.if) {
                 if (entity[config.watcher.if.property] === config.watcher.if.value) {
-                  watchers.push(React.createElement(_reactActioncableProvider.ActionCable, { channel: { channel: config.watcher.channel, session: entity.id }, onReceived: _this2.handleCableReceived }));
+                  watchers.push(React.createElement(_reactActioncableProvider.ActionCable, { channel: channel, onReceived: _this3.handleCableReceived }));
                 }
               } else {
-                watchers.push(React.createElement(_reactActioncableProvider.ActionCable, { channel: { channel: config.watcher, session: entity.id }, onReceived: _this2.handleCableReceived }));
+                watchers.push(React.createElement(_reactActioncableProvider.ActionCable, { channel: channel, onReceived: _this3.handleCableReceived }));
               }
             });
           }
@@ -154,15 +188,14 @@ exports.default = function (config, globalConfig) {
     }, {
       key: 'getSidebarContent',
       value: function getSidebarContent() {
-        var _this3 = this;
+        var _this4 = this;
 
         var content = null;
 
         var entity = null;
-        console.log(this.state.currentId);
         if (this.state.currentId !== undefined) {
-          entity = this.props[getPluralName()].filter(function (item) {
-            return item.id === _this3.state.currentId;
+          entity = (config.pagination ? this.props[getPluralName()].list : this.props[getPluralName()]).filter(function (item) {
+            return item.id === _this4.state.currentId;
           })[0];
         }
 
@@ -186,6 +219,33 @@ exports.default = function (config, globalConfig) {
             break;
         }
         return content;
+      }
+    }, {
+      key: 'handleChangePage',
+      value: function handleChangePage(i, e) {
+        var _this5 = this;
+
+        if (e) e.preventDefault();
+        if (this.state.current_page !== i) {
+          this.setState({ current_page: i, loading: true }, function () {
+            config.client["fetchAll"]({ page: _this5.state.current_page, per_page: config.pagination.per_page ? config.pagination.per_page : 10 }, function () {
+              _this5.setState({ loading: false });
+            });
+          });
+        }
+      }
+    }, {
+      key: 'handlePreviousPage',
+      value: function handlePreviousPage(e) {
+        if (this.state.current_page > 1) {
+          this.handleChangePage(this.state.current_page - 1, e);
+        }
+      }
+    }, {
+      key: 'handleNextPage',
+      value: function handleNextPage(e) {
+        e.preventDefault();
+        this.handleChangePage(this.state.current_page + 1, e);
       }
     }, {
       key: 'openSidebar',
@@ -263,10 +323,13 @@ exports.default = function (config, globalConfig) {
   }
 
   function mapStateToProps(state) {
+    console.log("STATE TO PROPS");
+    console.log(state);
     var pluralName = getPluralName();
+    console.log(pluralName);
 
     var props = {};
-    props[pluralName] = state[config.client.name + "State"][pluralName] || [];
+    props[pluralName] = state[config.client.name + "State"][pluralName] || (config.pagination ? { list: [], pagination: {} } : []);
     return props;
   }
 
@@ -297,7 +360,13 @@ var _reactActioncableProvider = require('react-actioncable-provider');
 
 var _reactBootstrap = require('react-bootstrap');
 
+var _reactLoaders = require('react-loaders');
+
+var _reactLoaders2 = _interopRequireDefault(_reactLoaders);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -306,7 +375,3 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require("react");
-
-/*
-import * as CustomComponents from "../custom"
-*/

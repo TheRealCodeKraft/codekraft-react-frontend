@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _reactRedux = require('react-redux');
 
-var _reactHotLoader = require('react-hot-loader');
-
 var _createStore = require('./api/client/reducer/create-store');
 
 var _createStore2 = _interopRequireDefault(_createStore);
@@ -44,6 +42,10 @@ var _createBrowserHistory = require('history/createBrowserHistory');
 
 var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 
+var _createHashHistory = require('history/createHashHistory');
+
+var _createHashHistory2 = _interopRequireDefault(_createHashHistory);
+
 var _reactGa = require('react-ga');
 
 var _reactGa2 = _interopRequireDefault(_reactGa);
@@ -61,31 +63,35 @@ var Logger = require('js-logger');
 Logger.useDefaults();
 
 var Provider = require('react-redux').Provider;
-
+//import { AppContainer } from 'react-hot-loader';
 
 var BrowserRouter = require('react-router-dom').BrowserRouter;
 var Router = require('react-router-dom').Router;
 
+//import hotLoader from "react-hot-loader"
+
 _momentTimezone2.default.locale('fr');
 
-var Bootstrap = function () {
+//console.log(hotLoader)
 
-  var history = (0, _createBrowserHistory2.default)();
+var Bootstrap = function () {
 
   if (process.env.UA_ID) {
     _reactGa2.default.initialize(process.env.UA_ID);
   }
-  history.listen(function (location, action) {
-    if (process.env.UA_ID) {
-      _reactGa2.default.set({ page: location.pathname });
-      _reactGa2.default.pageview(location.pathname);
-    }
-  });
 
   var launch = function launch(config, callback) {
     var store = (0, _createStore2.default)(config.clients);
     var clients = (0, _createClients2.default)(config.clients, store);
     var version = config.version ? config.version : 1;
+
+    var history = config.history == "hash" ? (0, _createHashHistory2.default)() : (0, _createBrowserHistory2.default)();
+    history.listen(function (location, action) {
+      if (process.env.UA_ID) {
+        _reactGa2.default.set({ page: location.pathname });
+        _reactGa2.default.pageview(location.pathname);
+      }
+    });
 
     var mainComponent = _app2.default,
         bootstrapConfig = _default2.default;
@@ -105,24 +111,65 @@ var Bootstrap = function () {
         navigation: nav
       });
 
-      console.log("HISTORY");
-      console.log(history);
+      var App = function App() {
+        return React.createElement(
+          Provider,
+          { store: store },
+          React.createElement(
+            Router,
+            { history: history },
+            React.createElement(mainComponent, { config: config })
+          )
+        );
+      };
+      //App = hot(module)(App)
+
       //document.addEventListener('DOMContentLoaded', function() {
+      ReactDOM.render(React.createElement(App, null), document.getElementById('app-root'));
+      //});
+
+      // Webpack Hot Module Replacement API
+      /*
+      if (module.hot) {
+      console.log(module)
+      console.log(module.hot)
+      console.log("HOT HOT HOT")
+      console.log("HOT HOT HOT")
+      console.log("HOT HOT HOT")
+      console.log("HOT HOT HOT")
+      console.log("HOT HOT HOT")
+      console.log("HOT HOT HOT")
+      console.log("HOT HOT HOT")
+      console.log("HOT HOT HOT")
+      	var component_path = "./components/app"
+      	if (version === 2) {
+      		component_path = "./component/v2/app"
+      	}
+        module.hot.accept(component_path, () => {
+          // if you are using harmony modules ({modules:false})
+          render(React.createElement(mainComponent, {config: config}))
+          // in all other cases - re-require App manually
+          // render(require('./containers/App'))
+        })
+      }
+      */
+
       ReactDOM.render(React.createElement(
         Provider,
         { store: store },
         React.createElement(
           Router,
           { history: history },
-          React.createElement(mainComponent, { config: config })
+          React.createElement(_reactPopup2.default, {
+            escToClose: true,
+            closeOnOutsideClick: false,
+            defaultOk: 'OK',
+            defaultCancel: 'Annuler',
+            className: config.popup && config.popup.className ? config.popup.className : "mm-popup",
+            btnClass: config.popup && config.popup.bntClass ? config.popup.btnClass : "mm-popup__btn",
+            wildClasses: !config.popup
+          })
         )
-      ), document.getElementById('app-root'));
-      //});
-
-      ReactDOM.render(React.createElement(
-        Provider,
-        { store: store },
-        React.createElement(_reactPopup2.default, { escToClose: true, closeOnOutsideClick: false, defaultOk: 'OK', defaultCancel: 'Annuler' })
       ), document.getElementById('popup-container'));
       if (callback) callback();
     });

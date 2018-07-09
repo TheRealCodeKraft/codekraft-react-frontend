@@ -40,7 +40,7 @@ class Login extends React.Component {
   }
 
   render() {
-    if (this.state.loggedIn) return <Redirect to="/dashboard" />
+    if (this.state.loggedIn) return <Redirect to="/" />
     return (
       <div>  
         {this.props.newUser
@@ -68,8 +68,8 @@ class Login extends React.Component {
               onSubmitComplete={this.handleSubmitComplete}
         />
         { this.props.showLoseLinks !== false
-          ? [<Link className={"btn btn-default"} to="/signup">Créer un compte</Link>,
-             <Link to="/forgot-password">Mot de passe oublié</Link>]
+          ? [<Link key="signup-button" className={"btn btn-default"} to="/signup">Créer un compte</Link>,
+             <Link key="forgot-password-button" to="/forgot-password">Mot de passe oublié</Link>]
           : null}
       </div>
     )
@@ -79,7 +79,10 @@ class Login extends React.Component {
   }
 
   handleSubmitComplete(data) {
-    this.setState({loggedIn: true})
+		if (this.props.onLoggedIn) this.props.onLoggedIn()
+		else {
+	    this.setState({loggedIn: true})
+		}
   }
 }
 

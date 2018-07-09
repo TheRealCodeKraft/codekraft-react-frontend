@@ -11,9 +11,11 @@ function pushNewEntityToState(entity, state, name, insertOn) {
   if (entity !== undefined) {
     list = JSON.parse(JSON.stringify(list))
     if (insertOn == "bottom") {
-      list.push(entity)
+			if (list.list) { list.list.push(entity) }
+      else list.push(entity)
     } else {
-      list.unshift(entity)
+			if (list.list) { list.list.unshift(entity) }
+      else list.unshift(entity)
     }
   }
   return list
@@ -22,31 +24,33 @@ function pushNewEntityToState(entity, state, name, insertOn) {
 function removeEntityFromState(id, state, name) {
   var list = state[name] || [], newList = []
   if (list && id !== undefined) {
-    for(var index in list) {
-      if (list[index].id.toString() !== id.toString()) {
-        newList.push(list[index])
+		var daList = list.list ? list.list : list
+    for(var index in daList) {
+      if (daList[index].id.toString() !== id.toString()) {
+        newList.push(daList[index])
       }
     }
   } else {
-    newList = list
+    newList = (list.list ? list.list : list)
   }
-  return newList
+  return list.list ? {list: newList, pagination: list.pagination} : newList
 }
 
 function mergeEntityAndState(entity, state, name) {
   var list = state[name] || [], newList = []
   if (list && entity !== undefined) {
-    for(var index in list) {
-      if (list[index].id === entity.id) {
+		var daList = list.list ? list.list : list
+    for(var index in daList) {
+      if (daList[index].id === entity.id) {
         newList.push(entity)
       } else {
-        newList.push(list[index])
+        newList.push(daList[index])
       }
     }
   } else {
-    newList = list
+    newList = list.list ? list.list : list
   }
-  return newList
+  return list.list ? {list: newList, pagination: list.pagination} : newList
 }
 
 function capitalizeFirstLetter(string) {
@@ -62,15 +66,20 @@ function createReducer(reducerName, plural, extension, insertOn) {
         case plural.toUpperCase():
           var list
           if (action.append && state[plural]) {
-            list = action[plural].concat(state[plural])
+						if (state[plural].list) list = state[plural].list.concat(action[plural].list)
+            else list = state[plural].concat(action[plural])
           } else {
-            list = action[plural]
+						if (action[plural].list) list = action[plural].list
+            else list = action[plural]
           }
-          newState[plural] = list 
+					if (action[plural].list) newState[plural] = {list: list, pagination: action[plural].pagination}
+          else newState[plural] = list 
           break
         case reducerName.toUpperCase():
-          items = mergeEntityAndState(action[reducerName], state, plural)
-          newState[plural] = items
+					if (state[plural]) {
+						items = mergeEntityAndState(action[reducerName], state, plural)
+						newState[plural] = items
+					}
           newState[reducerName] = action[reducerName]
           break
         case "NEW_" + reducerName.toUpperCase():
@@ -86,7 +95,7 @@ function createReducer(reducerName, plural, extension, insertOn) {
           break
         case "DESTROY_" + reducerName.toUpperCase():
           if (state[plural]) {
-            var deletedItem = state[plural].filter(item => { return item.id === action.id })[0]
+            var deletedItem = (state[plural].list ? state[plural].list : state[plural]).filter(item => { return item.id === action.id })[0]
             items = removeEntityFromState(action.id, state, plural)
             newState[plural] = items
             newState["deleted" + capitalizeFirstLetter(reducerName)] = deletedItem

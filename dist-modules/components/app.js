@@ -48,6 +48,7 @@ var App = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
     _this.state = {
+      loaded: false,
       token: null
     };
     return _this;
@@ -56,7 +57,13 @@ var App = function (_React$Component) {
   _createClass(App, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
-      this.props.clients.ApiClient.getToken();
+      var self = this;
+      this.props.clients.UserClient.me(function (me) {
+        if (me && !me.error) {
+          self.props.clients.ApiClient.getToken();
+        }
+        self.setState({ loaded: true });
+      });
     }
   }, {
     key: 'componentWillReceiveProps',
@@ -73,10 +80,28 @@ var App = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
+      if (!this.state.loaded) return null;
+
       return _react2.default.createElement(
         this.props.navigation.mainWrapper,
         { navigation: this.props.navigation, location: this.props.location },
-        _react2.default.createElement(
+        this.props.token ? _react2.default.createElement(
+          _reactActioncableProvider2.default,
+          { url: process.env.CABLE_URL + "/?token=" + this.props.token.access_token },
+          _react2.default.createElement(
+            _reactRouterDom.Switch,
+            null,
+            _react2.default.createElement(_reactRouterDom.Route, { path: '/dashboard', render: function render() {
+                return _react2.default.createElement(_header2.default, { menu: _this2.props.navigation.dashboard.menu, root: _this2.props.navigation.dashboard.root, custom: _this2.props.navigation.dashboard.header, location: _this2.props.location, name: 'dashboard', mainTitle: _this2.props.config.mainTitle });
+              } }),
+            _react2.default.createElement(_reactRouterDom.Route, { path: '/admin', render: function render() {
+                return _react2.default.createElement(_header2.default, { menu: _this2.props.navigation.admin.menu, root: _this2.props.navigation.admin.root, custom: _this2.props.navigation.admin.header, location: _this2.props.location, admin: true, name: 'admin', mainTitle: _this2.props.config.mainTitle });
+              } }),
+            _react2.default.createElement(_reactRouterDom.Route, { path: '/', render: function render() {
+                return _react2.default.createElement(_header2.default, { menu: false ? _this2.props.navigation.dashboard.menu : _this2.props.navigation.offline.menu, root: _this2.props.navigation.offline.root, custom: _this2.props.navigation.offline.header, location: _this2.props.location, token: _this2.props.token, name: 'offline', mainTitle: _this2.props.config.mainTitle });
+              } })
+          )
+        ) : _react2.default.createElement(
           _reactRouterDom.Switch,
           null,
           _react2.default.createElement(_reactRouterDom.Route, { path: '/dashboard', render: function render() {

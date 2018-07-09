@@ -22,18 +22,12 @@ exports.default = function (name, config) {
     _createClass(Root, [{
       key: "componentWillMount",
       value: function componentWillMount() {
-        var self = this;
-        this.props.clients.UserClient.me(function (me) {
-          if (!me.error) {
-            self.setState({ me: me });
-          }
-        });
 
         var groups = config.menu;
         var pages = [],
             pageIndex = 0;
         for (var index in groups) {
-          if (!groups[index].items.error) {
+          if (groups[index] && groups[index].items && !groups[index].items.error) {
             for (var pIndex in groups[index].items) {
               pages.push(groups[index].items[pIndex]);
               if (!(pages[pageIndex].client instanceof Object)) {
@@ -85,7 +79,9 @@ exports.default = function (name, config) {
                   component = (0, _checkForAcls2.default)(item.grants, component);
                 }
 
-                if (config.restricted && !item.discardOnLogin) {
+                console.log(item.title);
+                if ((config.restricted || item.restricted) && !item.discardOnLogin) {
+                  console.log("RESTRICTED");
                   component = (0, _authChecker2.default)(component);
                 }
 

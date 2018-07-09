@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import Form from '../utils/form'
 import { Link } from 'react-router-dom'
 
+import { withRouter } from "react-router"
+
 class ResetPassword extends React.Component {
 
   constructor(props) {
@@ -109,4 +111,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(ResetPassword)
+export default connect(mapStateToProps)(withRouter(ResetPassword))

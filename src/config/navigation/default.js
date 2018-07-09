@@ -92,6 +92,7 @@ const config = {
             title: "Administration",
             faIcon: "cogs",
             switch: "/admin",
+						route: "/admin",
             grants: ["admin"]
           },
           { 
@@ -126,7 +127,7 @@ const config = {
           {
             title: "Retour au site",
             faIcon: "step-backward",
-            switch: "/dashboard"
+            switch: "/"
           },
           {
             title: "Se déconnecter",

@@ -30,6 +30,14 @@ var _draftJsMentionPlugin = require("draft-js-mention-plugin");
 
 var _draftJsMentionPlugin2 = _interopRequireDefault(_draftJsMentionPlugin);
 
+var _draftJsHashtagPlugin = require("draft-js-hashtag-plugin");
+
+var _draftJsHashtagPlugin2 = _interopRequireDefault(_draftJsHashtagPlugin);
+
+var _draftJsEmojiPlugin = require("draft-js-emoji-plugin");
+
+var _draftJsEmojiPlugin2 = _interopRequireDefault(_draftJsEmojiPlugin);
+
 var _draftJsButtons = require("draft-js-buttons");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -181,6 +189,7 @@ var toolbarPlugin = (0, _draftJsStaticToolbarPlugin2.default)({
 });
 var Toolbar = toolbarPlugin.Toolbar;
 
+var hashtagPlugin = (0, _draftJsHashtagPlugin2.default)();
 
 var linkifyPlugin = (0, _draftJsLinkifyPlugin2.default)({
   target: '_blank' // default is '_self'
@@ -190,7 +199,12 @@ var mentionPlugin = (0, _draftJsMentionPlugin2.default)();
 var MentionSuggestions = mentionPlugin.MentionSuggestions;
 
 
-var plugins = [toolbarPlugin, linkifyPlugin, mentionPlugin];
+var emojiPlugin = (0, _draftJsEmojiPlugin2.default)();
+var EmojiSuggestions = emojiPlugin.EmojiSuggestions,
+    EmojiSelect = emojiPlugin.EmojiSelect;
+
+
+var plugins = [toolbarPlugin, linkifyPlugin, mentionPlugin, hashtagPlugin, emojiPlugin];
 
 var Wysiwyg = function (_React$Component3) {
   _inherits(Wysiwyg, _React$Component3);
@@ -201,7 +215,7 @@ var Wysiwyg = function (_React$Component3) {
     var _this5 = _possibleConstructorReturn(this, (Wysiwyg.__proto__ || Object.getPrototypeOf(Wysiwyg)).call(this, props));
 
     _this5.focus = function () {
-      _this5.editor.focus();
+      //this.editor.focus();
     };
 
     _this5.onSearchChange = function (_ref3) {
@@ -228,12 +242,11 @@ var Wysiwyg = function (_React$Component3) {
     value: function componentWillReceiveProps(props) {
       if (props.value && (!this.state.raw || props.value == "RESET")) {
         var editorState;
-        console.log("VALUE");
-        console.log(props.value);
         if (props.value == "RESET" || props.value == "") {
           editorState = _draftJs.EditorState.createEmpty();
         } else {
-          editorState = _draftJs.EditorState.create({ currentContent: (0, _draftJs.convertFromRaw)(props.value), selection: this.state.editorState.getSelection() });
+          editorState = _draftJs.EditorState.create({ currentContent: (0, _draftJs.convertFromRaw)(props.value), selection: _draftJs.SelectionState.createEmpty(props.value.blocks[0].key) });
+          editorState = _draftJs.EditorState.forceSelection(editorState, editorState.getSelection());
         }
 
         this.setState({
@@ -261,7 +274,8 @@ var Wysiwyg = function (_React$Component3) {
           onSearchChange: this.onSearchChange.bind(this),
           suggestions: this.state.suggestions,
           onAddMention: this.onAddMention.bind(this)
-        }) : null
+        }) : null,
+        this.props.emoji ? [_react2.default.createElement(EmojiSuggestions, null), _react2.default.createElement(EmojiSelect, null)] : null
       );
     }
   }, {

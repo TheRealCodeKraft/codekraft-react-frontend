@@ -76,6 +76,59 @@ var Header = function (_React$Component) {
       );
     }
   }, {
+    key: 'buildNavFor',
+    value: function buildNavFor(navKey) {
+      var _this2 = this;
+
+      var nav = this.props.menu[navKey];
+      return {
+        label: nav.label,
+        items: nav.items.map(function (item, index) {
+          return _this2.getRawItem(item);
+        }).filter(function (item) {
+          return item !== null;
+        })
+      };
+    }
+  }, {
+    key: 'getRawItem',
+    value: function getRawItem(item) {
+      if (item.display !== false && !(this.props.token && item.discardOnLogin || !this.props.token && item.onlyOnLogin)) {
+        var route = undefined;
+        if (item.type) {
+          switch (item.type) {
+            case "logout":
+              route = "/logout";
+              break;
+          }
+        } else if (item.root === true) {
+          route = this.props.root;
+        } else if (item.switch) {
+          route = item.switch;
+        } else if (item.route) {
+          route = (item.route[0] !== "/" ? this.props.root : "") + (item.route ? (item.route[0] !== "/" && this.props.root !== "/" ? "/" : "") + item.route : "");
+        }
+
+        // Clone the item in order to not change the base item
+        item = JSON.parse(JSON.stringify(item));
+        item.route = route;
+        return item;
+      } else {
+        return null;
+      }
+    }
+  }, {
+    key: 'getRawItems',
+    value: function getRawItems(menuKey) {
+      var _this3 = this;
+
+      return this.props.menu[menuKey].items.map(function (item) {
+        return _this3.getRawItem(item);
+      }).filter(function (item) {
+        return item && item.display !== false;
+      });
+    }
+  }, {
     key: 'buildItemsFor',
     value: function buildItemsFor(navKey) {
       var nav = this.props.menu[navKey];
@@ -116,25 +169,10 @@ var Header = function (_React$Component) {
       var menu_entries = [];
       var menu_entry, menu, item, route;
       for (var index in items) {
-        item = items[index];
-        if (item.display !== false && !(this.props.token && item.discardOnLogin || !this.props.token && item.onlyOnLogin)) {
-          route = undefined;
-          if (item.type) {
-            switch (item.type) {
-              case "logout":
-                route = "/logout";
-                break;
-            }
-          } else if (item.root === true) {
-            route = this.props.root;
-          } else if (item.switch) {
-            route = item.switch;
-          } else if (item.route) {
-            route = (item.route[0] !== "/" ? this.props.root : "") + (item.route ? (item.route[0] !== "/" && this.props.root !== "/" ? "/" : "") + item.route : "");
-          }
-
-          if (route !== undefined) {
-            menu_entry = this.buildItem(nav, item, route);
+        item = this.getRawItem(items[index]);
+        if (item !== null) {
+          if (item.route !== undefined) {
+            menu_entry = this.buildItem(nav, item, item.route);
 
             if (item.grants) {
               menu_entry = React.createElement(

@@ -23,7 +23,7 @@ class AdminPageListRow extends React.Component {
   }
 
   render() {
-    var row = [], attribute = undefined, name = undefined
+    var row = [], attribute = undefined, name = undefined, style = undefined
     for (var attrIndex in this.props.attributes) {
       attribute = this.props.attributes[attrIndex]
       if (attribute instanceof Object) {
@@ -33,7 +33,9 @@ class AdminPageListRow extends React.Component {
         name = attribute
       }
       if (this.props.attributes[attrIndex]) {
-        row.push(<div key={"row-" + this.props.item.id + "-attr-" + attrIndex} style={this.tableCellStyles}>{this.buildDisplayValue(name, attribute)}</div>)
+				style = JSON.parse(JSON.stringify(this.tableCellStyles))
+				if (attribute.style) style = Object.assign({}, this.tableCellStyles, attribute.style)
+        row.push(<div key={"row-" + this.props.item.id + "-attr-" + attrIndex} style={style}>{this.buildDisplayValue(name, attribute)}</div>)
       }
     }
     row.push(this.buildActions(this.props.item))
@@ -43,31 +45,41 @@ class AdminPageListRow extends React.Component {
 
   buildDisplayValue(name, attribute) {
     var value = undefined;
-    if (name.indexOf(".") !== -1) {
-      var splitted = name.split('.')
-      value = this.props.item[splitted[0]]
-      for (var i=1; i<splitted.length; i++) {
-        if (value) {
-          value = value[splitted[i]]
-        } else {
-          console.log("Subproperty error for '" + name + "' at '" + splitted[i])
-          break
-        }
-      }
-    } else {
-      value = this.props.item[name]
-    }
+		if (name) {
+			if (name.indexOf(".") !== -1) {
+				var splitted = name.split('.')
+				value = this.props.item[splitted[0]]
+				for (var i=1; i<splitted.length; i++) {
+					if (value) {
+						value = value[splitted[i]]
+					} else {
+						console.log("Subproperty error for '" + name + "' at '" + splitted[i])
+						break
+					}
+				}
+			} else {
+				value = this.props.item[name]
+			}
+		} else {
+			value = this.props.item
+		}
 
    if (attribute instanceof Object) {
+		 if (attribute.wrapper) {
+			 value = attribute.wrapper(value, this.props.item)
+		 }
      if (attribute.link) {
        var link = attribute.link.replace("[[VALUE]]", value)
        value = <a href={link} target="_blank">{value}</a>
      }
      if (attribute.type === "image") {
-       value = <img src={value} style={{height: 50}} className="img-rounded" alt={value} />
+       value = <img src={value} style={{height: 50, width: 50, borderRadius: "100%"}} className="img-rounded" alt={value} />
      }
      if (attribute.type === "date") {
        value = moment(value).format('DD/MM/YYYY')
+     }
+     if (attribute.type === "datetime") {
+       value = moment(value).format('DD/MM/YYYY HH:MM')
      }
      if (attribute.replaceWith && attribute.replaceWith[value] !== undefined) {
        value = attribute.replaceWith[value]
@@ -92,7 +104,7 @@ class AdminPageListRow extends React.Component {
       this.props.actions.map(action => {
         if (action instanceof Object) {
           if (this.acceptCustomAction(action)) {
-            actions.push(<a key={"action-" + action.action + "-" + this.props.item.id} onClick={this.handleCustomAction.bind(this, action)} className={"admin-action-button " + this.getIcon(action.icon, "eye")} alt={action.label} title={action.label}>{action.icon ? "" : action.label}</a>)
+            actions.push(<a href="#" key={"action-" + action.action + "-" + this.props.item.id} onClick={this.handleCustomAction.bind(this, action)} className={"admin-action-button " + this.getIcon(action.icon, "eye")} alt={action.label} title={action.label}>{action.icon ? "" : action.label}</a>)
           }
         } else {
           switch(action) {

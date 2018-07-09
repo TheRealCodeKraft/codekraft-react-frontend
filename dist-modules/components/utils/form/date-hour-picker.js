@@ -26,6 +26,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var moment = _moment2.default.parseZone;
+
 var DateHourPicker = function (_React$Component) {
   _inherits(DateHourPicker, _React$Component);
 
@@ -41,7 +43,7 @@ var DateHourPicker = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = DateHourPicker.__proto__ || Object.getPrototypeOf(DateHourPicker)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      date: (0, _moment2.default)(),
+      date: moment(),
       minutes: 0,
       hours: 12
     }, _temp), _possibleConstructorReturn(_this, _ret);
@@ -51,8 +53,6 @@ var DateHourPicker = function (_React$Component) {
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(props) {
       if (props.value) {
-        console.log(props.value);
-        console.log((0, _moment2.default)(props.value).format("HH"));
         this.setState({ date: props.value, hours: parseInt(props.value.format("HH")), minutes: parseInt(props.value.format("mm")) });
       }
     }
@@ -62,7 +62,7 @@ var DateHourPicker = function (_React$Component) {
       return _react2.default.createElement(
         "div",
         { className: "date-hour-picker" },
-        _react2.default.createElement(_reactDatetime2.default, { value: this.state.date.format("DD/MM/YYYY"),
+        this.props.onlyHours ? null : _react2.default.createElement(_reactDatetime2.default, { value: this.state.date.format("DD/MM/YYYY"),
           dateFormat: "DD/MM/YYYY",
           onChange: this.handleDateChange.bind(this)
         }),
@@ -104,7 +104,7 @@ var DateHourPicker = function (_React$Component) {
     key: "onChange",
     value: function onChange() {
       if (this.props.onChange) {
-        this.props.onChange((0, _moment2.default)(this.state.date.format("MM/DD/YYYY") + " " + this.state.hours.toString().padStart(2, "0") + ":" + this.state.minutes.toString().padStart(2, "0")).format("MM/DD/YYYY HH:mm"));
+        this.props.onChange(moment(this.state.date.format("MM/DD/YYYY") + " " + this.state.hours.toString().padStart(2, "0") + ":" + this.state.minutes.toString().padStart(2, "0")).format("MM/DD/YYYY HH:mm"));
       }
     }
   }]);

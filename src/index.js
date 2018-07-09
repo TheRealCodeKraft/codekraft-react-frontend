@@ -11,16 +11,23 @@ import _ApiClient from './api/client/api-client'
 import _AuthChecker from './components/utils/auth-checker'
 
 import _Login from './components/offline/login'
+import _ForgotPassword from './components/offline/forgot-password'
 import _Signup from './components/offline/signup'
+import _ResetPassword from './components/offline/reset-password'
 
 import _ShowForAcls from './components/utils/show-for-acls'
 
 import _Header from './components/common/header'
 
+import _StorageService from './api/client/storage/storage'
+
 exports.Bootstrap = _Bootstrap
 exports.Form = _Form
 exports.ApiClient = _ApiClient
 exports.Login = _Login
+exports.ForgotPassword = _ForgotPassword
 exports.Signup = _Signup
+exports.ResetPassword = _ResetPassword
 exports.ShowForAcls = _ShowForAcls
 exports.Header = _Header
+exports.StorageService = _StorageService

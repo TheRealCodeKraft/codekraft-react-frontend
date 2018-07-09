@@ -14,11 +14,9 @@ import { Grid } from 'react-bootstrap';
 import { Row } from 'react-bootstrap';
 import { Col } from 'react-bootstrap';
 
-/*
-import * as CustomComponents from "../custom"
-*/
-export default function(config, globalConfig) {
+import Loader from "react-loaders"
 
+export default function(config, globalConfig) {
 
   class AdminPage extends React.Component {
 
@@ -26,9 +24,12 @@ export default function(config, globalConfig) {
       super(props)
 
       this.state = {
+				loading: true,
         currentId: undefined,
         mode: "list",
         currentAction: undefined,
+				current_page: 1,
+				per_page: 10,
       }
 
       this.handleCloseSidebar = this.handleCloseSidebar.bind(this)
@@ -49,7 +50,8 @@ export default function(config, globalConfig) {
     componentWillMount() {
       if (config.client) {
         if (config.client["fetchAll"]) {
-          config.client["fetchAll"]()
+					var self=this
+          config.client["fetchAll"](config.pagination ? {page: this.state.current_page, per_page: config.pagination.per_page ? config.pagination.per_page : 10} : {}, () => { self.setState({loading: false})})
         }
       }
     }
@@ -58,12 +60,12 @@ export default function(config, globalConfig) {
       const pluralName = getPluralName()
 
       return (
-        <Grid fluid className="admin-page">
+        <Grid fluid className="admin-page container">
 
           {globalConfig.subHeader
             ? <globalConfig.subHeader {...globalConfig}  config={config} globalConfig={globalConfig} location={this.props.location} onNew={this.handleNew} />
            :   <div className="admin-page-header">
-                 <h1><i className={(globalConfig.iconSet ? globalConfig.iconSet : "fa fa-") + (config.icon ? config.icon : "terminal") + " text-warning"}></i> {config.title}</h1>
+                 <h1><i className={config.icon ? ((globalConfig.iconSet ? globalConfig.iconSet : "fa fa-") + (config.icon ? config.icon : "terminal") + " text-warning") : ""}></i> {config.title}</h1>
                {(!config.list.actions || config.list.actions.indexOf("new") !== -1)
                 ? <Col xs={12} className="admin-new-button-row">
                    <a href="#" onClick={this.handleNew} className="admin-new-button"><i className={this.getIcon("new", "plus")} /> Nouveau</a>
@@ -73,17 +75,41 @@ export default function(config, globalConfig) {
                </div>}
           {this.buildWatchers()}
           <div>
-            <AdminPageList attributes={config.list.attributes} 
-                           actions={config.list.actions}
-                           form={config.form}
-                           items={this.props[pluralName]}
-                           onDelete={this.handleDelete}
-                           onSee={this.handleSee}
-                           onEdit={this.handleEdit}
-                           onCustomAction={this.handleCustomAction}
-                           config={globalConfig}
-            />
-
+						{ this.props[pluralName]
+            	? <AdminPageList attributes={config.list.attributes} 
+															 actions={config.list.actions}
+															 form={config.form}
+															 items={(config.pagination) ? this.props[pluralName].list : this.props[pluralName]}
+															 onDelete={this.handleDelete}
+															 onSee={this.handleSee}
+															 onEdit={this.handleEdit}
+															 onCustomAction={this.handleCustomAction}
+															 config={globalConfig}
+															 current_page={this.state.current_page}
+								/>
+							: null
+						}
+						{ config.pagination
+							? <div className="pagination-buttons">
+									{ this.state.loading
+										? <Loader type="ball-pulse" />
+										: null
+									}
+									{ !this.state.loading && this.props[pluralName].pagination.previous !== ""
+										? <a className="paginate-previous-btn" href="javascript:void" onClick={this.handlePreviousPage.bind(this)}>{"<<"}</a>
+										: null
+									}
+									{ !this.state.loading && [...Array(parseInt(this.props[pluralName].pagination.totalPages))].map((_, i) => (
+											<a href="javascript:void(0)" onClick={this.handleChangePage.bind(this, i + 1)} className={"page-btn" + (((i + 1) == this.state.current_page) ? " active" : "")}>{i + 1}</a>
+										))
+									}
+									{ !this.state.loading && this.props[pluralName].pagination.next !== ""
+										? <a className="paginate-next-btn" href="javascript:void" onClick={this.handleNextPage.bind(this)}>{">>"}</a>
+										: null
+									}
+								</div>
+							: null
+						}
             <AdminSidebar ref="sidebar" 
                           onClose={this.handleCloseSidebar}
                           tinify={this.state.mode === "delete" || (this.state.currentAction && this.state.currentAction.tinify)}
@@ -100,16 +126,18 @@ export default function(config, globalConfig) {
     }
 
     buildWatchers() {
-      var watchers = []
+      var watchers = [], channel
       if (config.watcher) {
         if (this.props[getPluralName()]) {
           this.props[getPluralName()].map(entity => {
+						channel = { channel: config.watcher.channel }
+						channel[config.client.name] = entity.id
             if (config.watcher.if) {
               if (entity[config.watcher.if.property] === config.watcher.if.value) {
-                watchers.push(<ActionCable channel={{channel: config.watcher.channel, session: entity.id}} onReceived={this.handleCableReceived} />)
+                watchers.push(<ActionCable channel={channel} onReceived={this.handleCableReceived} />)
               }
             } else {
-             watchers.push(<ActionCable channel={{channel: config.watcher, session: entity.id}} onReceived={this.handleCableReceived} />)
+             watchers.push(<ActionCable channel={channel} onReceived={this.handleCableReceived} />)
             }
           })
         }
@@ -144,9 +172,8 @@ export default function(config, globalConfig) {
       var content = null
       
       var entity = null
-console.log(this.state.currentId)
       if (this.state.currentId !== undefined) {
-        entity = this.props[getPluralName()].filter(item => { return item.id === this.state.currentId })[0]
+        entity = (config.pagination ? this.props[getPluralName()].list : this.props[getPluralName()]).filter(item => { return item.id === this.state.currentId })[0]
       }
 
       switch(this.state.mode) {
@@ -170,6 +197,28 @@ console.log(this.state.currentId)
       }
       return content
     }
+
+		handleChangePage(i, e) {
+			if (e) e.preventDefault()
+				if (this.state.current_page !== i) {
+				this.setState({current_page: i, loading: true}, () => {
+						config.client["fetchAll"]({page: this.state.current_page, per_page: config.pagination.per_page ? config.pagination.per_page : 10}, () => {
+							this.setState({loading: false})
+						})
+				})
+			}
+		}
+
+		handlePreviousPage(e) {
+			if (this.state.current_page > 1) {
+				this.handleChangePage(this.state.current_page - 1, e)
+			}
+		}
+
+		handleNextPage(e) {
+			e.preventDefault()
+			this.handleChangePage(this.state.current_page + 1, e)
+		}
 
     openSidebar() {
       this.refs.sidebar.open()
@@ -230,10 +279,13 @@ console.log(this.state.currentId)
   }
 
   function mapStateToProps(state) {
+		console.log("STATE TO PROPS")
+		console.log(state)
     var pluralName = getPluralName()
+		console.log(pluralName)
 
     var props = {}
-    props[pluralName] = state[config.client.name + "State"][pluralName] || []
+    props[pluralName] = state[config.client.name + "State"][pluralName] || (config.pagination ? {list: [], pagination: {}} : [])
     return props
   }
 

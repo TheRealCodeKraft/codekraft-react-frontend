@@ -14,6 +14,7 @@ class CreateEditForm extends React.Component {
       <Form id={this.props.client.name + "-form"}
             entityId={this.props.entity ? this.props.entity.id : undefined}
             fields={this.props.form.attributes} 
+						fieldWrapper={this.props.form.fieldWrapper}
             values={this.props.entity}
             submitLabel={this.props.form.submitLabel ? this.props.form.submitLabel : "Enregistrer"} 
             service={{client: this.props.client, func: this.props.mode === "edit" ? "update" : "create"}}

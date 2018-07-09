@@ -1,4 +1,5 @@
 import React from "react"
+import { connect } from 'react-redux'
 
 import Form from '../utils/form'
 import { Link } from 'react-router-dom'
@@ -55,8 +56,11 @@ class ForgotPassword extends React.Component {
             service={{client: this.props.clients.UserClient, func: "forgotPassword"}}
             onSubmitComplete={this.handleSubmitComplete}
        />,
-      <Link className={"btn btn-default"} to="/login">J'ai déjà un compte</Link>,
-      <Link className={"btn btn-default"} to="/signup">Créer un compte</Link>]
+			 this.props.showLoseLinks
+	      ? [<Link className={"btn btn-default"} to="/login">J'ai déjà un compte</Link>,
+      		<Link className={"btn btn-default"} to="/signup">Créer un compte</Link>]
+				: null
+			]
   }
 
   found() {
@@ -66,9 +70,21 @@ class ForgotPassword extends React.Component {
   }
 
   handleSubmitComplete(data) {
-    this.setState({found: data.found})
+		if (this.props.onSubmitComplete) {
+			this.props.onSubmitComplete(data)
+		} else {
+	    this.setState({found: data.found})
+		}
   }
 
 }
 
-export default ForgotPassword
+function mapStateToProps(state) {
+  return {
+    clients: state.bootstrap.clients,
+    newUser: state.userState.newUser || null,
+    passwordUpdated: state.userState.password_updated || null
+  }
+}
+
+export default connect(mapStateToProps)(ForgotPassword)

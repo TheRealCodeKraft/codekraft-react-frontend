@@ -19,29 +19,7 @@ exports.default = function (item, config) {
     _createClass(Page, [{
       key: "render",
       value: function render() {
-        return _react2.default.createElement(
-          "div",
-          { className: "login" },
-          _react2.default.createElement(
-            "section",
-            { id: "mu-hero" },
-            _react2.default.createElement(
-              "div",
-              { className: "container" },
-              _react2.default.createElement(
-                "div",
-                { className: "row" },
-                _react2.default.createElement("div", { className: "col-md-6 col-sm-6 col-sm-push-6 mu-contact-form" }),
-                _react2.default.createElement(
-                  "div",
-                  { className: "col-md-6 col-sm-6 col-sm-pull-6" },
-                  _react2.default.createElement("div", { className: "mu-hero-left" })
-                )
-              )
-            )
-          ),
-          _react2.default.createElement("main", { dangerouslySetInnerHTML: { __html: item.body } })
-        );
+        return _react2.default.createElement("div", { dangerouslySetInnerHTML: { __html: item.body } });
       }
     }]);
 
