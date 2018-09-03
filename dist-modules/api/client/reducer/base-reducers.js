@@ -37,7 +37,11 @@ var _authReducer = function _authReducer() {
   var newState = {};
   switch (action.type) {
     case "TOKEN":
+      //if (action.token) {
       newState["token"] = action.token;
+      //} else {
+
+      //}
       break;
     default:
       break;

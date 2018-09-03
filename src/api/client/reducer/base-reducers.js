@@ -29,7 +29,11 @@ const _authReducer = function(state = {}, action) {
   var newState = {}
   switch(action.type) {
     case "TOKEN":
-      newState["token"] = action.token
+			//if (action.token) {
+	      newState["token"] = action.token
+			//} else {
+
+			//}
       break
     default:
       break

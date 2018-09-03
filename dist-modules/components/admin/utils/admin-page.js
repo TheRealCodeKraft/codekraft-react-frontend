@@ -48,7 +48,7 @@ exports.default = function (config, globalConfig) {
         if (config.client) {
           if (config.client["fetchAll"]) {
             var self = this;
-            config.client["fetchAll"](config.pagination ? { page: this.state.current_page, per_page: config.pagination.per_page ? config.pagination.per_page : 10 } : {}, function () {
+            config.client["fetchAll"](config.pagination ? { page: this.state.current_page, per_page: config.pagination.per_page ? config.pagination.per_page : 10, all: true } : { all: true }, function () {
               self.setState({ loading: false });
             });
           }
@@ -323,11 +323,7 @@ exports.default = function (config, globalConfig) {
   }
 
   function mapStateToProps(state) {
-    console.log("STATE TO PROPS");
-    console.log(state);
     var pluralName = getPluralName();
-    console.log(pluralName);
-
     var props = {};
     props[pluralName] = state[config.client.name + "State"][pluralName] || (config.pagination ? { list: [], pagination: {} } : []);
     return props;
