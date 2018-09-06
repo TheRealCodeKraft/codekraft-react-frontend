@@ -46,7 +46,7 @@ class App extends React.Component {
 
     return (
       <this.props.navigation.mainWrapper navigation={this.props.navigation} location={this.props.location}>
-        {this.props.token
+        {this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined)
          ? <ActionCableProvider url={process.env.CABLE_URL + "/?token=" + this.props.token.access_token}>
         		<Switch>
 							 <Route path="/dashboard" render={() => <Header menu={this.props.navigation.dashboard.menu} root={this.props.navigation.dashboard.root} custom={this.props.navigation.dashboard.header} location={this.props.location} name="dashboard" mainTitle={this.props.config.mainTitle} />} />
@@ -61,7 +61,7 @@ class App extends React.Component {
 					</Switch>
 				}
  
-        {this.props.token
+        {this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined)
          ? <ActionCableProvider url={process.env.CABLE_URL + "/?token=" + this.props.token.access_token}>
              <Switch>
                <Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />

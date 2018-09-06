@@ -44,7 +44,7 @@ class App extends React.Component {
            <Route path="/" render={() => <Header menu={false ? this.props.navigation.dashboard.menu : this.props.navigation.offline.menu} root={this.props.navigation.offline.root} custom={this.props.navigation.offline.header} location={this.props.location} token={this.props.token} name="offline" mainTitle={this.props.config.mainTitle} />} />
         </Switch>
  
-          {this.props.token
+        	{this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined)
            ? <ActionCableProvider url={process.env.CABLE_URL + "/?token=" + this.props.token.access_token}>
                <Switch>
                  <Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />

@@ -85,7 +85,7 @@ var App = function (_React$Component) {
       return _react2.default.createElement(
         this.props.navigation.mainWrapper,
         { navigation: this.props.navigation, location: this.props.location },
-        this.props.token ? _react2.default.createElement(
+        this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined) ? _react2.default.createElement(
           _reactActioncableProvider2.default,
           { url: process.env.CABLE_URL + "/?token=" + this.props.token.access_token },
           _react2.default.createElement(
@@ -114,7 +114,7 @@ var App = function (_React$Component) {
               return _react2.default.createElement(_header2.default, { menu: false ? _this2.props.navigation.dashboard.menu : _this2.props.navigation.offline.menu, root: _this2.props.navigation.offline.root, custom: _this2.props.navigation.offline.header, location: _this2.props.location, token: _this2.props.token, name: 'offline', mainTitle: _this2.props.config.mainTitle });
             } })
         ),
-        this.props.token ? _react2.default.createElement(
+        this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined) ? _react2.default.createElement(
           _reactActioncableProvider2.default,
           { url: process.env.CABLE_URL + "/?token=" + this.props.token.access_token },
           _react2.default.createElement(
