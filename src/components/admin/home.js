@@ -24,15 +24,15 @@ class Home extends React.Component {
 
     return (
       <section className="admin-home">
-        {groups.map(group => {
+        {groups.map((group, index) => {
           if (group.hiddenOnHome) return null
           return (
-            <div className="admin-home-group">
+            <div className="admin-home-group" key={`admin-home-group-${index}`}>
               {group.label ? <h1>{group.label}</h1> : null}
                 <div className="admin-home-group-items">
-                {group.items.map(item => {
+                {group.items.map((item, index) => {
                   return [<Link to={"/admin/" + item.route}>
-                            <div className="admin-home-item">
+                            <div className="admin-home-item" key={`admin-home-item-${index}`}>
                               <h2>{item.title}</h2>
                               <p>{item.description ? item.description : ""}</p>
                             </div>
