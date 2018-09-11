@@ -155,8 +155,8 @@ class Form extends React.Component {
     var submitButton = this.state.submitting
                        ? <div className="loader-dots"></div>
                        : (this.props.hideSubmit !== true
-                          ? [<button type="submit" className={this.props.submitClass}>{this.props.submitLabel !== undefined ? this.props.submitLabel : "Enregistrer"}</button>,
-                             this.props.cancelButton === true ? <button className={this.props.submitClass} onClick={this.handleCancelButton}>Ignorer</button> : null]
+                          ? [<button key={`${this.props.id}-button`} type="submit" className={this.props.submitClass}>{this.props.submitLabel !== undefined ? this.props.submitLabel : "Enregistrer"}</button>,
+                             this.props.cancelButton === true ? <button key={`${this.props.id}-cancel`} className={this.props.submitClass} onClick={this.handleCancelButton}>Ignorer</button> : null]
                           : null)
 
     return (
@@ -186,7 +186,7 @@ class Form extends React.Component {
 
   buildImageUploaders() {
     return this.props.fields.filter(field => { return field.type === "image-uploader" }).map(field => {
-      return <form encType='multipart/form-data' className="upload-form">
+      return <form key={`${this.props.id}-image-uploader`} encType='multipart/form-data' className="upload-form">
                {(field.showImage === undefined || field.showImage)
                ? <img src={this.state.values[field.name]} className={"img-rounded"} style={{width: 100}} alt={this.state.values[field.name]} />
                : null}
@@ -297,7 +297,7 @@ class Form extends React.Component {
             val = field.values[index]
             radioId = this.props.id + "-" + field.name + "-" + index
             radios.push(<input key={radioId} id={radioId} title={field.title} name={fieldName} type={field.type} value={val.value} onChange={this.handleInputChange.bind(this, field)} checked={value === val.value ? "checked" : ""} />)
-            radios.push(<label key={radioId + "_label"} htmlFor={radioId}>{val.label}</label>)
+            radios.push(<label key={`${radioId}_label`} htmlFor={radioId}>{val.label}</label>)
           }
         }
         input = radios
@@ -310,7 +310,7 @@ class Form extends React.Component {
 								? <Range onChange={this.handleInputChange.bind(this, field)} />
 								: <Slider step={field.step} onChange={this.handleInputChange.bind(this, field)} value={this.state.values[field.name]} />
 				if (field.subComponent) {
-					input = <div className="slider-with-component">
+					input = <div key={`${this.props.id}-slider-${fieldName}`} className="slider-with-component">
 									 	{input}
 										<field.subComponent value={this.state.values[field.name]} />
 									</div>
@@ -327,14 +327,14 @@ class Form extends React.Component {
           options = options.filter(o => o[field.dependant] == this.state.values[field.dependant])
         }
 
-        input = <select className="form-control" title={field.title} name={fieldName} onChange={this.handleInputChange.bind(this, field)} value={value}>
+        input = <select key={`${this.props.id}-select-${fieldName}`} className="form-control" title={field.title} name={fieldName} onChange={this.handleInputChange.bind(this, field)} value={value}>
                   {field.placeholder ? <option value="-1">{field.placeholder}</option> : null}
                   {options.map((val, index) => {
                     var properties = {}
                     if (val[field.key] === value) {
                       properties.selected = "selected"
                     }
-                    return <option key={"select-option-for-" + field.name + "-" + index} value={val[field.key]} {...properties}>{val[field.value]}</option>
+                    return <option key={`select-option-for-${field.name}-${index}`} value={val[field.key]} {...properties}>{val[field.value]}</option>
                   })}
                 </select>
         break
@@ -344,21 +344,22 @@ class Form extends React.Component {
         } else if (field.values instanceof Object) {
           options = this.state.loadedData[field.name] || []
         }
-        input = <ListSelector className="form-control" field={field} defaultValue={value} options={options} tags={field.tags ? field.tags : false} onChange={this.handleInputChange.bind(this, field)} />
+        input = <ListSelector key={`${this.props.id}-list-selector-${field.name}`} className="form-control" field={field} defaultValue={value} options={options} tags={field.tags ? field.tags : false} onChange={this.handleInputChange.bind(this, field)} />
         break
       case "textarea":
         if (value == null) value = ""
-        input = <textarea className="form-control" title={field.title} name={fieldName} value={value} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} rows={5} />
+        input = <textarea key={`${this.props.id}-textarea-${field.name}`} className="form-control" title={field.title} name={fieldName} value={value} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} rows={5} />
         break
       case "wysiwyg":
-        input = <Wysiwyg value={this.state.values[field.name + "_raw"]} toolbar={field.toolbar} onChange={this.handleInputChange.bind(this, field)} mentions={field.mentions} emoji={field.emoji} />
+        input = <Wysiwyg key={`${this.props.id}-wysiwyg-${field.name}`} value={this.state.values[field.name + "_raw"]} toolbar={field.toolbar} onChange={this.handleInputChange.bind(this, field)} mentions={field.mentions} emoji={field.emoji} />
         break
       case "date":
         if (!value) value=""
         else if (value !== "") {
           value=moment(value).format("DD/MM/YYYY")
         }
-        input = <DatePicker value={value} 
+        input = <DatePicker key={`${this.props.id}-date-${field.name}`}
+														value={value}
                             dateFormat="DD/MM/YYYY"
                             onChange={this.handleInputChange.bind(this, field)}
                 />
@@ -368,8 +369,8 @@ class Form extends React.Component {
         else if (value !== "") {
           value=moment(value)//.format("DD/MM/YYYY HH:mm")
         }
-        input = <DateHourPicker 
-                  value={value} 
+        input = <DateHourPicker key={`${this.props.id}-date-hour-${field.name}`}
+                  value={value}
 									onlyHours={field.onlyHours}
                   onChange={this.handleInputChange.bind(this, field)}
                 />
@@ -383,9 +384,9 @@ class Form extends React.Component {
       default:
         if (value == null) value = ""
         if (field.component) {
-          input = <field.component className="form-control" field={field} name={fieldName} value={value} onChange={this.handleInputChange.bind(this, field)} />
+          input = <field.component key={`${this.props.id}-{field.component.name}-{field.name}`} className="form-control" field={field} name={fieldName} value={value} onChange={this.handleInputChange.bind(this, field)} />
         } else {
-          input = <input className="form-control" title={field.title} name={fieldName} type={field.type} value={value} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} />
+          input = <input key={`${this.props.id}-input-default-${fieldName}`} className="form-control" title={field.title} name={fieldName} id={fieldName} type={field.type} value={value} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} />
         }
         break
     }
@@ -394,7 +395,7 @@ class Form extends React.Component {
   }
 
   decorateInput(input, field) {
-    var wrapper = (children) => ( <div className="form-group" key={this.props.id + "-field-" + field.name}>{children}</div> )
+    var wrapper = (children) => ( <div className="form-group" key={`${this.props.id}-field-${field.name}`}>{children}</div> )
 		if (field.wrapper) {
 			wrapper = field.wrapper
 		} else if (this.props.fieldWrapper) {
@@ -402,14 +403,14 @@ class Form extends React.Component {
 		}
 		input = wrapper([
 								(field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off")
-								? <label key={"label-for-" + field.name} className="control-label" htmlFor={field.name}>{field.label}</label> 
+								? <label key={`label-for-${field.name}`} className="control-label" htmlFor={field.name}>{field.label}</label>
 								: null,
 							input,
 								(field.label !== undefined && field.type == "checkbox")
-								? <label key={"label-for-" + field.name} className="control-label" htmlFor={field.name}>{field.label}</label> 
+								? <label key={`label-for-${field.name}`} className="control-label" htmlFor={field.name}>{field.label}</label>
 								: null,
 								this.state.errors[field.name] !== undefined
-								? <span key={"error-for-" + field.name} className="form-error">{this.state.errors[field.name].includes("_required") ? (field.label + " est obligatoire") : this.state.errors[field.name]}</span>
+								? <span key={`error-for-${field.name}`} className="form-error">{this.state.errors[field.name].includes("_required") ? (field.label + " est obligatoire") : this.state.errors[field.name]}</span>
 								: null
 					])
 
