@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
 
-set -e
-set -u
-
 npm install
 npm run watch
