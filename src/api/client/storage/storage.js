@@ -21,6 +21,15 @@ StorageService.prototype.get = function(key, defaultValue) {
 	return this.storage.get(key, defaultValue);
 };
 
+StorageService.prototype.getParsed = function(key, defaultValue) {
+	const value = this.storage.get(key);
+	if (value === undefined) {
+		return defaultValue;
+	}
+
+	return JSON.parse(value);
+};
+
 StorageService.prototype.delete = function(key) {
 	return this.storage.delete(key);
 };
