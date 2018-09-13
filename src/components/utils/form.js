@@ -327,14 +327,10 @@ getInput(field) {
 			options = options.filter(o => o[field.dependant] == this.state.values[field.dependant])
 		}
 
-		input = <select key={`${this.props.id}-select-${fieldName}`} className="form-control" title={field.title} name={fieldName} onChange={this.handleInputChange.bind(this, field)} value={value}>
+		input = <select key={`${this.props.id}-select-${fieldName}`} className="form-control" title={field.title} name={fieldName} onChange={this.handleInputChange.bind(this, field)} value={value || ''}>
 		{field.placeholder ? <option value="-1">{field.placeholder}</option> : null}
 		{options.map((val, index) => {
-			var properties = {}
-			if (val[field.key] === value) {
-				properties.selected = "selected"
-			}
-			return <option key={`select-option-for-${field.name}-${index}`} value={val[field.key]} {...properties}>{val[field.value]}</option>
+			return <option key={`select-option-for-${field.name}-${index}`} value={val[field.key]}>{val[field.value]}</option>
 		})}
 		</select>
 		break
