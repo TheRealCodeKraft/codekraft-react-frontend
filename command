@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 
-npm install
-npm run watch
+set -eu
+
+npm install >> log/development.log 2>&1
+npm run watch >> log/development.log 2>&1
+
