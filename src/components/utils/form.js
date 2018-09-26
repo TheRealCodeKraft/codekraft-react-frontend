@@ -404,11 +404,11 @@ decorateInput(input, field) {
 	}
 	input = wrapper([
 		(field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off")
-		? <label key={`label-for-${field.name}`} className="control-label" htmlFor={field.name}>{field.label}</label>
+		? <label key={`label-for-${field.name}`} className={`control-label ${field.labelClassName}`} htmlFor={field.name}>{field.label}</label>
 		: null,
 		input,
 		(field.label !== undefined && field.type == "checkbox")
-		? <label key={`label-for-${field.name}`} className="control-label" htmlFor={field.name}>{field.label}</label>
+		? <label key={`label-for-${field.name}`} className={`control-label ${field.labelClassName}`} htmlFor={field.name}>{field.label}</label>
 		: null,
 		this.state.errors[field.name] !== undefined
 		? <span key={`error-for-${field.name}`} className="form-error">{this.state.errors[field.name].includes("_required") ? (field.label + " est obligatoire") : this.state.errors[field.name]}</span>
