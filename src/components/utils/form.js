@@ -394,9 +394,13 @@ getInput(field) {
 decorateInput(input, field) {
 	var wrapper = (children) => ( <div className="form-group" key={`${this.props.id}-field-${field.name}`}>{children}</div> )
 	if (field.wrapper) {
-		wrapper = field.wrapper
+		wrapper = (children) => {
+			return field.wrapper(children, field, this)
+		}
 	} else if (this.props.fieldWrapper) {
-		wrapper = this.props.fieldWrapper
+		wrapper = (children) => {
+			return this.props.fieldWrapper(children, field, this)
+		}
 	}
 	input = wrapper([
 		(field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off")
