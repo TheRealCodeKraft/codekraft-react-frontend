@@ -52,34 +52,15 @@ class Header extends React.Component {
 	}
 
 	getRawItem(item) {
-		if (item.display !== false && !(this.props.token && item.discardOnLogin || !this.props.token && item.onlyOnLogin)) {
-			var route=undefined
-			if (item.type) {
-				switch(item.type) {
-					case "logout":
-						route = "/logout"
-						break
-				}
-
-			} else if (item.root === true) {
-				route = this.props.root 
-			} else if (item.switch) {
-				route = item.switch
-			} else if (item.route){
-				route = (item.route[0] !== "/" ? this.props.root : "") + (item.route ? ((item.route[0] !== "/" && this.props.root !== "/") ? "/" : "") + item.route : "")
-			}
-			
-			// Clone the item in order to not change the base item
-			item = JSON.parse(JSON.stringify(item))
-			item.route = route
-			return item
-		} else {
-			return null
-		}
+		return getRawItem({ item, token: this.props.token, root: this.props.root })
 	}
 
 	getRawItems(menuKey) {
-		return this.props.menu[menuKey].items.map(item => (this.getRawItem(item))).filter(item => (item && item.display !== false))
+		return getRawItems({
+			items: this.props.menu[menuKey].items,
+			token: this.props.token,
+			root: this.props.root
+		})
 	}
 
   buildItemsFor(navKey) {
@@ -110,7 +91,7 @@ class Header extends React.Component {
   getItems(items, nav) {
     var menu_entries = []
     var menu_entry, menu, item, route
-    for (var index in items) {  
+    for (var index in items) {
       item = this.getRawItem(items[index])
 			if (item !== null) {
         if (item.route !== undefined) {
@@ -128,7 +109,7 @@ class Header extends React.Component {
 
   buildItem(nav, item, route) {
     var LinkComponent = nav.navLink ? nav.navLink : NavLink
-    var className 
+    var className
     if (nav.linkClassName) {
       className = nav.linkClassName
     }
@@ -164,3 +145,34 @@ class Header extends React.Component {
 }
 
 export default Header
+
+export function getRawItem({ item, token, root }) {
+	if (item.display !== false && !(token && item.discardOnLogin || !token && item.onlyOnLogin)) {
+		var route=undefined
+		if (item.type) {
+			switch(item.type) {
+				case "logout":
+				route = "/logout"
+				break
+			}
+
+		} else if (item.root === true) {
+			route = root
+		} else if (item.switch) {
+			route = item.switch
+		} else if (item.route){
+			route = (item.route[0] !== "/" ? root : "") + (item.route ? ((item.route[0] !== "/" && root !== "/") ? "/" : "") + item.route : "")
+		}
+
+		// Clone the item in order to not change the base item
+		item = JSON.parse(JSON.stringify(item))
+		item.route = route
+		return item
+	} else {
+		return null
+	}
+}
+
+export function getRawItems({ items, token, root }) {
+	return items.map(item => (getRawItem({ item, token, root }))).filter(item => (item && item.display !== false))
+}
