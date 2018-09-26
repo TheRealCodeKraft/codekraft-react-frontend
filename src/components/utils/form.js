@@ -152,6 +152,7 @@ class Form extends React.Component {
 	}
 
 	render() {
+		const wrapper = this.props.wrapper || function(children) { return children }
 		var submitButton = this.state.submitting
 		? <div className="loader-dots"></div>
 		: (this.props.hideSubmit !== true
@@ -163,7 +164,7 @@ class Form extends React.Component {
 				<div className={"form-container " + (this.props.className ? this.props.className : "")}>
 				{this.props.entityId ? this.buildImageUploaders() : null}
 				<form encType='multipart/form-data' id={this.props.id} onSubmit={this.handleFormSubmit}>
-				{this.props.fields.map(field => {
+				{wrapper(this.props.fields.map(field => {
 					if (field.show === false) { return null }
 					if (field.type === "image-uploader") { return null }
 
@@ -172,7 +173,7 @@ class Form extends React.Component {
 					}
 
 					return this.getInputs(field)
-				})}
+				}))}
 				{(this.state.submitError) ? [<span>{this.state.submitError}</span>, <br />] : null}
 				{this.props.submitLabel !== "none"
 				? <div className="submit-container">{submitButton}</div>
