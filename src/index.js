@@ -17,8 +17,6 @@ import _ResetPassword from './components/offline/reset-password'
 
 import _ShowForAcls from './components/utils/show-for-acls'
 
-import _Header from './components/common/header'
-
 import _StorageService from './api/client/storage/storage'
 
 exports.Bootstrap = _Bootstrap
@@ -29,5 +27,6 @@ exports.ForgotPassword = _ForgotPassword
 exports.Signup = _Signup
 exports.ResetPassword = _ResetPassword
 exports.ShowForAcls = _ShowForAcls
-exports.Header = _Header
 exports.StorageService = _StorageService
+
+export * from './components/common/header'

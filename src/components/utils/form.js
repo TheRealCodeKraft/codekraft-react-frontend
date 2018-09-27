@@ -152,6 +152,7 @@ class Form extends React.Component {
 	}
 
 	render() {
+		const wrapper = this.props.wrapper || function(children) { return children }
 		var submitButton = this.state.submitting
 		? <div className="loader-dots"></div>
 		: (this.props.hideSubmit !== true
@@ -163,7 +164,7 @@ class Form extends React.Component {
 				<div className={"form-container " + (this.props.className ? this.props.className : "")}>
 				{this.props.entityId ? this.buildImageUploaders() : null}
 				<form encType='multipart/form-data' id={this.props.id} onSubmit={this.handleFormSubmit}>
-				{this.props.fields.map(field => {
+				{wrapper(this.props.fields.map(field => {
 					if (field.show === false) { return null }
 					if (field.type === "image-uploader") { return null }
 
@@ -172,7 +173,7 @@ class Form extends React.Component {
 					}
 
 					return this.getInputs(field)
-				})}
+				}))}
 				{(this.state.submitError) ? [<span>{this.state.submitError}</span>, <br />] : null}
 				{this.props.submitLabel !== "none"
 				? <div className="submit-container">{submitButton}</div>
@@ -393,17 +394,21 @@ getInput(field) {
 decorateInput(input, field) {
 	var wrapper = (children) => ( <div className="form-group" key={`${this.props.id}-field-${field.name}`}>{children}</div> )
 	if (field.wrapper) {
-		wrapper = field.wrapper
+		wrapper = (children) => {
+			return field.wrapper(children, field, this)
+		}
 	} else if (this.props.fieldWrapper) {
-		wrapper = this.props.fieldWrapper
+		wrapper = (children) => {
+			return this.props.fieldWrapper(children, field, this)
+		}
 	}
 	input = wrapper([
 		(field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off")
-		? <label key={`label-for-${field.name}`} className="control-label" htmlFor={field.name}>{field.label}</label>
+		? <label key={`label-for-${field.name}`} className={`control-label ${field.labelClassName}`} htmlFor={field.name}>{field.label}</label>
 		: null,
 		input,
 		(field.label !== undefined && field.type == "checkbox")
-		? <label key={`label-for-${field.name}`} className="control-label" htmlFor={field.name}>{field.label}</label>
+		? <label key={`label-for-${field.name}`} className={`control-label ${field.labelClassName}`} htmlFor={field.name}>{field.label}</label>
 		: null,
 		this.state.errors[field.name] !== undefined
 		? <span key={`error-for-${field.name}`} className="form-error">{this.state.errors[field.name].includes("_required") ? (field.label + " est obligatoire") : this.state.errors[field.name]}</span>
