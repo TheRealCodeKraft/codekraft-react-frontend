@@ -83,14 +83,6 @@ $white: #fff;
   }
 }
 
-.admin-sidebar-overlay {
-  background-color:#44464F;
-}
-
-.admin-sidebar-container {
-  /*padding:20px;*/
-  overflow:scroll;
-}
 
 /*************
  * HOME PAGE *
@@ -118,70 +110,6 @@ $white: #fff;
     }
   }
 }
-
-/****************** SIDEBAR **********************/
-.admin-sidebar {
-   height: 0px;
-   //z-index: 1000;
-}
-.admin-sidebar .admin-sidebar-container {
-  position: fixed !important;
-  top: 90px;
-  background: #fff;
-  left: 20px;
-  z-index: 1000 !important;
-  overflow: hidden !important;
-  @media screen and (max-width: 650px ) {
-    width: 400px;
-  }
-  @media screen and (max-width: 400px ) {
-    width: 350px;
-  }
-}
-
-.admin-sidebar .admin-sidebar-container.tiny-sidebar {
-  bottom: auto !important;
-  left: auto;
-  width: 400px;
-}
-
-.admin-sidebar .admin-sidebar-overlay {
-  z-index: 999 !important;
-}
-
-.admin-sidebar .session-table-form-container {
-  margin-top:15px;
-}
-
-.sidebar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 20px;
-  padding-right: 20px;
-  background: $grey-text;
-  color: #fff;
-}
-
-.sidebar-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.sidebar-close-icon {
-  color: #ffffff;
-  font-size: 2em;
-}
-
-.sidebar-content-container {
-  flex: 1;
-  height: 100%;
-  overflow: auto;
-  padding: 20px;
-}
-
-/****************** END SIDEBAR **********************/
 
 /***********************
  * CLUE/LEVELS MANAGER *

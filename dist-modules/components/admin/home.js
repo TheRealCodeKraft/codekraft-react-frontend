@@ -63,11 +63,11 @@ var Home = function (_React$Component) {
       return React.createElement(
         "section",
         { className: "admin-home" },
-        groups.map(function (group) {
+        groups.map(function (group, index) {
           if (group.hiddenOnHome) return null;
           return React.createElement(
             "div",
-            { className: "admin-home-group" },
+            { className: "admin-home-group", key: "admin-home-group-" + index },
             group.label ? React.createElement(
               "h1",
               null,
@@ -76,13 +76,13 @@ var Home = function (_React$Component) {
             React.createElement(
               "div",
               { className: "admin-home-group-items" },
-              group.items.map(function (item) {
+              group.items.map(function (item, index) {
                 return [React.createElement(
                   _reactRouterDom.Link,
                   { to: "/admin/" + item.route },
                   React.createElement(
                     "div",
-                    { className: "admin-home-item" },
+                    { className: "admin-home-item", key: "admin-home-item-" + index },
                     React.createElement(
                       "h2",
                       null,
