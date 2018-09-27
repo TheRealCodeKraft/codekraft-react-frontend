@@ -1,5 +1,21 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _header = require('./components/common/header');
+
+Object.keys(_header).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _header[key];
+    }
+  });
+});
+
 var _bootstrap = require('./bootstrap');
 
 var _bootstrap2 = _interopRequireDefault(_bootstrap);
@@ -15,6 +31,8 @@ var _apiClient2 = _interopRequireDefault(_apiClient);
 var _authChecker = require('./components/utils/auth-checker');
 
 var _authChecker2 = _interopRequireDefault(_authChecker);
+
+var _header2 = _interopRequireDefault(_header);
 
 var _login = require('./components/offline/login');
 
@@ -36,10 +54,6 @@ var _showForAcls = require('./components/utils/show-for-acls');
 
 var _showForAcls2 = _interopRequireDefault(_showForAcls);
 
-var _header = require('./components/common/header');
-
-var _header2 = _interopRequireDefault(_header);
-
 var _storage = require('./api/client/storage/storage');
 
 var _storage2 = _interopRequireDefault(_storage);
@@ -53,10 +67,10 @@ exports.Bootstrap = _bootstrap2.default; /*
 
 exports.Form = _form2.default;
 exports.ApiClient = _apiClient2.default;
+exports.Header = _header2.default;
 exports.Login = _login2.default;
 exports.ForgotPassword = _forgotPassword2.default;
 exports.Signup = _signup2.default;
 exports.ResetPassword = _resetPassword2.default;
 exports.ShowForAcls = _showForAcls2.default;
-exports.Header = _header2.default;
 exports.StorageService = _storage2.default;

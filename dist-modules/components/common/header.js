@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.getRawItems = exports.getRawItem = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -93,39 +94,15 @@ var Header = function (_React$Component) {
   }, {
     key: 'getRawItem',
     value: function getRawItem(item) {
-      if (item.display !== false && !(this.props.token && item.discardOnLogin || !this.props.token && item.onlyOnLogin)) {
-        var route = undefined;
-        if (item.type) {
-          switch (item.type) {
-            case "logout":
-              route = "/logout";
-              break;
-          }
-        } else if (item.root === true) {
-          route = this.props.root;
-        } else if (item.switch) {
-          route = item.switch;
-        } else if (item.route) {
-          route = (item.route[0] !== "/" ? this.props.root : "") + (item.route ? (item.route[0] !== "/" && this.props.root !== "/" ? "/" : "") + item.route : "");
-        }
-
-        // Clone the item in order to not change the base item
-        item = JSON.parse(JSON.stringify(item));
-        item.route = route;
-        return item;
-      } else {
-        return null;
-      }
+      return _getRawItem({ item: item, token: this.props.token, root: this.props.root });
     }
   }, {
     key: 'getRawItems',
     value: function getRawItems(menuKey) {
-      var _this3 = this;
-
-      return this.props.menu[menuKey].items.map(function (item) {
-        return _this3.getRawItem(item);
-      }).filter(function (item) {
-        return item && item.display !== false;
+      return _getRawItems({
+        items: this.props.menu[menuKey].items,
+        token: this.props.token,
+        root: this.props.root
       });
     }
   }, {
@@ -230,3 +207,46 @@ var Header = function (_React$Component) {
 }(React.Component);
 
 exports.default = Header;
+function _getRawItem(_ref) {
+  var item = _ref.item,
+      token = _ref.token,
+      root = _ref.root;
+
+  if (item.display !== false && !(token && item.discardOnLogin || !token && item.onlyOnLogin)) {
+    var route = undefined;
+    if (item.type) {
+      switch (item.type) {
+        case "logout":
+          route = "/logout";
+          break;
+      }
+    } else if (item.root === true) {
+      route = root;
+    } else if (item.switch) {
+      route = item.switch;
+    } else if (item.route) {
+      route = (item.route[0] !== "/" ? root : "") + (item.route ? (item.route[0] !== "/" && root !== "/" ? "/" : "") + item.route : "");
+    }
+
+    // Clone the item in order to not change the base item
+    item = JSON.parse(JSON.stringify(item));
+    item.route = route;
+    return item;
+  } else {
+    return null;
+  }
+}
+
+exports.getRawItem = _getRawItem;
+function _getRawItems(_ref2) {
+  var items = _ref2.items,
+      token = _ref2.token,
+      root = _ref2.root;
+
+  return items.map(function (item) {
+    return _getRawItem({ item: item, token: token, root: root });
+  }).filter(function (item) {
+    return item && item.display !== false;
+  });
+}
+exports.getRawItems = _getRawItems;

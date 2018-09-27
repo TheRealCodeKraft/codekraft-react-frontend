@@ -216,6 +216,9 @@ var Form = function (_React$Component) {
 		value: function render() {
 			var _this2 = this;
 
+			var wrapper = this.props.wrapper || function (children) {
+				return children;
+			};
 			var submitButton = this.state.submitting ? React.createElement("div", { className: "loader-dots" }) : this.props.hideSubmit !== true ? [React.createElement(
 				"button",
 				{ key: this.props.id + "-button", type: "submit", className: this.props.submitClass },
@@ -233,7 +236,7 @@ var Form = function (_React$Component) {
 				React.createElement(
 					"form",
 					{ encType: "multipart/form-data", id: this.props.id, onSubmit: this.handleFormSubmit },
-					this.props.fields.map(function (field) {
+					wrapper(this.props.fields.map(function (field) {
 						if (field.show === false) {
 							return null;
 						}
@@ -246,7 +249,7 @@ var Form = function (_React$Component) {
 						}
 
 						return _this2.getInputs(field);
-					}),
+					})),
 					this.state.submitError ? [React.createElement(
 						"span",
 						null,
@@ -511,17 +514,21 @@ var Form = function (_React$Component) {
 				);
 			};
 			if (field.wrapper) {
-				wrapper = field.wrapper;
+				wrapper = function wrapper(children) {
+					return field.wrapper(children, field, _this5);
+				};
 			} else if (this.props.fieldWrapper) {
-				wrapper = this.props.fieldWrapper;
+				wrapper = function wrapper(children) {
+					return _this5.props.fieldWrapper(children, field, _this5);
+				};
 			}
 			input = wrapper([field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off" ? React.createElement(
 				"label",
-				{ key: "label-for-" + field.name, className: "control-label", htmlFor: field.name },
+				{ key: "label-for-" + field.name, className: "control-label " + field.labelClassName, htmlFor: field.name },
 				field.label
 			) : null, input, field.label !== undefined && field.type == "checkbox" ? React.createElement(
 				"label",
-				{ key: "label-for-" + field.name, className: "control-label", htmlFor: field.name },
+				{ key: "label-for-" + field.name, className: "control-label " + field.labelClassName, htmlFor: field.name },
 				field.label
 			) : null, this.state.errors[field.name] !== undefined ? React.createElement(
 				"span",
