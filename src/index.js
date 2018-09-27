@@ -30,3 +30,5 @@ exports.ShowForAcls = _ShowForAcls
 exports.StorageService = _StorageService
 
 export * from './components/common/header'
+import configureReducers from './api/client/reducer/reducers-config'
+exports.configureReducers = configureReducers
