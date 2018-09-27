@@ -5,6 +5,7 @@ var {Router} = require('react-router')
 
 var configureStore = require('./store-config')
 var ReducerRegistry = require('./registry')
+import configureReducers from './reducers-config'
 
 function pushNewEntityToState(entity, state, name, insertOn) {
   var list = state[name] || []
@@ -145,14 +146,19 @@ module.exports = function createStore(config) {
     } else {
       coreReducers[reducerName + "State"] = createReducer(reducerName, plural, extension, insertOn)
     }
-  }
+  })
 
   if (!coreReducers["userState"]) {
     coreReducers["userState"] = createReducer("user", "users", userReducer)
   }
+
   if (!coreReducers["pageState"]) {
     coreReducers["pageState"] = createReducer("page", "pages")
   }
+
+	if (config.ui && config.ui.reducers) {
+		coreReducers["ui"] = configureReducers(config.ui.reducers)
+	}
 
   var reducerRegistry = new ReducerRegistry(coreReducers)
 
