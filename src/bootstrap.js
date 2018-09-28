@@ -39,7 +39,7 @@ function launch(config, callback) {
 			ReactGA.set({ page: location.pathname })
 			ReactGA.pageview(location.pathname)
 		}
-	});
+	})
 
 	let mainComponent = App, bootstrapConfig = BootstrapConfig
 	if (version === 2) {
@@ -66,10 +66,10 @@ function launch(config, callback) {
 			</Provider>
 		)
 
-			ReactDOM.render(
-				<App />,
-				document.getElementById("app-root")
-			);
+		ReactDOM.render(
+			<App />,
+			document.getElementById("app-root")
+		)
 
 		ReactDOM.render(
 			<Provider store={store}>
