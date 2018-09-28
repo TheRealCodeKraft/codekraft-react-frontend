@@ -5,6 +5,7 @@ var {Router} = require('react-router')
 
 var configureStore = require('./store-config')
 var ReducerRegistry = require('./registry')
+import configureReducers from './reducers-config'
 
 function pushNewEntityToState(entity, state, name, insertOn) {
   var list = state[name] || []
@@ -128,16 +129,14 @@ module.exports = function createStore(config) {
     "authState": authReducer,
   }
   var reducerName, plural, extension, insertOn
-  for (var index in config) {
-
-    if (config[index] instanceof Object) {
-      reducerName = config[index].name
-      plural = config[index].plural ? config[index].plural : reducerName + "s"
-      extension = config[index].reducer
-      insertOn = config[index].insertOn || "bottom"
+  config.clients.forEach(client => {
+    if (client instanceof Object) {
+      reducerName = client.name
+      plural = client.plural ? client.plural : reducerName + "s"
+      extension = client.reducer
+      insertOn = client.insertOn || "bottom"
     } else {
-      //.reducerName = toCamel(config[index])
-      reducerName = config[index]
+      reducerName = client
       plural = reducerName + "s"
       insertOn = "bottom"
     }
@@ -147,14 +146,19 @@ module.exports = function createStore(config) {
     } else {
       coreReducers[reducerName + "State"] = createReducer(reducerName, plural, extension, insertOn)
     }
-  }
+  })
 
   if (!coreReducers["userState"]) {
     coreReducers["userState"] = createReducer("user", "users", userReducer)
   }
+
   if (!coreReducers["pageState"]) {
     coreReducers["pageState"] = createReducer("page", "pages")
   }
+
+	if (config.ui && config.ui.reducers) {
+		coreReducers["ui"] = configureReducers(config.ui.reducers)
+	}
 
   var reducerRegistry = new ReducerRegistry(coreReducers)
 
