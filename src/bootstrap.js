@@ -24,78 +24,72 @@ import createHashHistory from "history/createHashHistory"
 import moment from "moment-timezone"
 moment.locale("fr")
 
-var Bootstrap = function() {
+if (process.env.UA_ID) {
+	ReactGA.initialize(process.env.UA_ID)
+}
 
+function launch(config, callback) {
+	const store = createStore(config)
+	const clients = createClients(config.clients, store)
+	const version = config.version ? config.version : 1
 
-	if (process.env.UA_ID) {
-		ReactGA.initialize(process.env.UA_ID)
+	const history = config.history == "hash" ? createHashHistory() : createBrowserHistory()
+	history.listen((location, action) => {
+		if (process.env.UA_ID) {
+			ReactGA.set({ page: location.pathname })
+			ReactGA.pageview(location.pathname)
+		}
+	});
+
+	var mainComponent = App, bootstrapConfig = BootstrapConfig
+	if (version === 2) {
+		mainComponent = AppV2
+		bootstrapConfig = BootstrapConfigV2
 	}
 
-	var launch = function(config, callback) {
-		const store = createStore(config)
-		const clients = createClients(config.clients, store)
-		const version = config.version ? config.version : 1
+	store.dispatch({
+		type: "CLIENTS",
+		clients: clients
+	})
 
-		const history = config.history == "hash" ? createHashHistory() : createBrowserHistory()
-		history.listen((location, action) => {
-			if (process.env.UA_ID) {
-				ReactGA.set({ page: location.pathname })
-				ReactGA.pageview(location.pathname)
-			}
-		});
-
-		var mainComponent = App, bootstrapConfig = BootstrapConfig
-		if (version === 2) {
-			mainComponent = AppV2
-			bootstrapConfig = BootstrapConfigV2
-		}
-
+	createNavigation(bootstrapConfig, config.navigation, clients, function(nav) {
 		store.dispatch({
-			type: "CLIENTS",
-			clients: clients
+			type: "NAVIGATION",
+			navigation: nav
 		})
 
-		createNavigation(bootstrapConfig, config.navigation, clients, function(nav) {
-			store.dispatch({
-				type: "NAVIGATION",
-				navigation: nav
-			})
-
-			var App = () =>
-					<Provider store={store}>
-						<Router history={history}>
-							{React.createElement(mainComponent, {config: config})}
-						</Router>
-					</Provider>
-
-				ReactDOM.render(
-					<App />,
-					document.getElementById("app-root")
-				);
-
-			ReactDOM.render(
+		var App = () =>
 				<Provider store={store}>
 					<Router history={history}>
-						<Popup
-							escToClose={true}
-							closeOnOutsideClick={false}
-							defaultOk="OK"
-							defaultCancel="Annuler"
-							className={(config.popup && config.popup.className) ? config.popup.className : "mm-popup"}
-							btnClass={(config.popup && config.popup.bntClass) ? config.popup.btnClass : "mm-popup__btn"}
-							wildClasses={!config.popup}
-						/>
+						{React.createElement(mainComponent, {config: config})}
 					</Router>
-				</Provider>,
-				document.getElementById("popup-container")
-			)
-			if (callback) callback()
-		})
-	}
+				</Provider>
 
-	return {
-		launch: launch
-	}
-}()
+			ReactDOM.render(
+				<App />,
+				document.getElementById("app-root")
+			);
 
-export default Bootstrap
+		ReactDOM.render(
+			<Provider store={store}>
+				<Router history={history}>
+					<Popup
+						escToClose={true}
+						closeOnOutsideClick={false}
+						defaultOk="OK"
+						defaultCancel="Annuler"
+						className={(config.popup && config.popup.className) ? config.popup.className : "mm-popup"}
+						btnClass={(config.popup && config.popup.bntClass) ? config.popup.btnClass : "mm-popup__btn"}
+						wildClasses={!config.popup}
+					/>
+				</Router>
+			</Provider>,
+			document.getElementById("popup-container")
+		)
+		if (callback) callback()
+	})
+}
+
+export default {
+	launch
+}
