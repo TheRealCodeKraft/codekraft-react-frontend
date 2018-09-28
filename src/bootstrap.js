@@ -41,7 +41,7 @@ function launch(config, callback) {
 		}
 	});
 
-	var mainComponent = App, bootstrapConfig = BootstrapConfig
+	let mainComponent = App, bootstrapConfig = BootstrapConfig
 	if (version === 2) {
 		mainComponent = AppV2
 		bootstrapConfig = BootstrapConfigV2
@@ -58,7 +58,7 @@ function launch(config, callback) {
 			navigation: nav
 		})
 
-		var App = () =>
+		const App = () =>
 				<Provider store={store}>
 					<Router history={history}>
 						{React.createElement(mainComponent, {config: config})}
