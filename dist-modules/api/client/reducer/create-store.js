@@ -2,6 +2,12 @@
 
 var _baseReducers = require('./base-reducers');
 
+var _reducersConfig = require('./reducers-config');
+
+var _reducersConfig2 = _interopRequireDefault(_reducersConfig);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var _require = require('react-redux'),
     Provider = _require.Provider;
 
@@ -13,6 +19,7 @@ var _require3 = require('react-router'),
 
 var configureStore = require('./store-config');
 var ReducerRegistry = require('./registry');
+
 
 function pushNewEntityToState(entity, state, name, insertOn) {
   var list = state[name] || [];
@@ -143,16 +150,14 @@ module.exports = function createStore(config) {
     "authState": _baseReducers.authReducer
   };
   var reducerName, plural, extension, insertOn;
-  for (var index in config) {
-
-    if (config[index] instanceof Object) {
-      reducerName = config[index].name;
-      plural = config[index].plural ? config[index].plural : reducerName + "s";
-      extension = config[index].reducer;
-      insertOn = config[index].insertOn || "bottom";
+  config.clients.forEach(function (client) {
+    if (client instanceof Object) {
+      reducerName = client.name;
+      plural = client.plural ? client.plural : reducerName + "s";
+      extension = client.reducer;
+      insertOn = client.insertOn || "bottom";
     } else {
-      //.reducerName = toCamel(config[index])
-      reducerName = config[index];
+      reducerName = client;
       plural = reducerName + "s";
       insertOn = "bottom";
     }
@@ -162,13 +167,18 @@ module.exports = function createStore(config) {
     } else {
       coreReducers[reducerName + "State"] = createReducer(reducerName, plural, extension, insertOn);
     }
-  }
+  });
 
   if (!coreReducers["userState"]) {
     coreReducers["userState"] = createReducer("user", "users", _baseReducers.userReducer);
   }
+
   if (!coreReducers["pageState"]) {
     coreReducers["pageState"] = createReducer("page", "pages");
+  }
+
+  if (config.ui && config.ui.reducers) {
+    coreReducers["ui"] = (0, _reducersConfig2.default)(config.ui.reducers);
   }
 
   var reducerRegistry = new ReducerRegistry(coreReducers);

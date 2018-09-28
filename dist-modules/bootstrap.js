@@ -81,7 +81,7 @@ var Bootstrap = function () {
   }
 
   var launch = function launch(config, callback) {
-    var store = (0, _createStore2.default)(config.clients);
+    var store = (0, _createStore2.default)(config);
     var clients = (0, _createClients2.default)(config.clients, store);
     var version = config.version ? config.version : 1;
 
