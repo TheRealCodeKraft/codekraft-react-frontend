@@ -87,7 +87,10 @@ function launch(config, callback) {
 			</Provider>,
 			document.getElementById("popup-container")
 		)
-		if (callback) callback()
+
+		if (callback) {
+			callback()
+		}
 	})
 }
 
