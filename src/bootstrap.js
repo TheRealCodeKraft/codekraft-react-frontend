@@ -58,12 +58,13 @@ function launch(config, callback) {
 			navigation: nav
 		})
 
-		const App = () =>
-				<Provider store={store}>
-					<Router history={history}>
-						{React.createElement(mainComponent, {config: config})}
-					</Router>
-				</Provider>
+		const App = () => (
+			<Provider store={store}>
+				<Router history={history}>
+					{React.createElement(mainComponent, {config: config})}
+				</Router>
+			</Provider>
+		)
 
 			ReactDOM.render(
 				<App />,
