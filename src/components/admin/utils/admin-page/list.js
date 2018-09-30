@@ -14,31 +14,31 @@ class AdminPageList extends React.Component {
   }
 
   render() {
+		let rows = null
+		if (this.props.items) {
+			rows = this.props.items.map((item, index) => (
+				<AdminPageListRow
+					key={"admin-list-row-" + index}
+					index={index}
+					item={item}
+					attributes={this.props.attributes}
+					actions={this.props.actions}
+					form={this.props.form}
+					onDelete={this.handleDelete}
+					onSee={this.handleSee}
+					onEdit={this.handleEdit}
+					onCustomAction={this.handleCustomAction}
+					config={this.props.config}
+				/>
+			))
+		}
+
     return (
-      <div style={{display: "table", width: "100%"}}>
+      <div className="admin-list">
         <AdminPageListHeader attributes={this.props.attributes} />
-        {/*this.props.items.length === 0
-         ? <section className="content">
-             <div className="loader-dots"></div>
-           </section>
-         : null*/}
-        { this.props.items
-					? this.props.items.map((item, index) => {
-							return <AdminPageListRow key={"admin-list-row-" + index}
-																			 index={index}
-																			 item={item} 
-																			 attributes={this.props.attributes} 
-																			 actions={this.props.actions}
-																			 form={this.props.form}
-																			 onDelete={this.handleDelete}
-																			 onSee={this.handleSee}
-																			 onEdit={this.handleEdit}
-																			 onCustomAction={this.handleCustomAction}
-																			 config={this.props.config}
-										 />
-						})
-					: null
-				}
+				<div className="admin-list-body">
+	        {rows}
+				</div>
       </div>
     )
   }

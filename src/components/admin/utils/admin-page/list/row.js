@@ -10,16 +10,6 @@ class AdminPageListRow extends React.Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.handleSee = this.handleSee.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
-
-    this.tableRowStyles = {
-      display: "table-row"
-    }
-
-    this.tableCellStyles = {
-      display: "table-cell",
-      padding: 5,
-      verticalAlign: "middle"
-    }
   }
 
   render() {
@@ -33,14 +23,14 @@ class AdminPageListRow extends React.Component {
         name = attribute
       }
       if (this.props.attributes[attrIndex]) {
-				style = JSON.parse(JSON.stringify(this.tableCellStyles))
-				if (attribute.style) style = Object.assign({}, this.tableCellStyles, attribute.style)
-        row.push(<div key={"row-" + this.props.item.id + "-attr-" + attrIndex} style={style}>{this.buildDisplayValue(name, attribute)}</div>)
+				style = {}
+				if (attribute.style) style = Object.assign({}, attribute.style)
+        row.push(<div key={"row-" + this.props.item.id + "-attr-" + attrIndex} className="admin-list-cell" style={style}>{this.buildDisplayValue(name, attribute)}</div>)
       }
     }
     row.push(this.buildActions(this.props.item))
-  
-    return <div className={this.props.index % 2 ? "odd": "even"} style={this.tableRowStyles}>{row}</div>
+
+    return <div className="admin-list-row">{row}</div>
   }
 
   buildDisplayValue(name, attribute) {

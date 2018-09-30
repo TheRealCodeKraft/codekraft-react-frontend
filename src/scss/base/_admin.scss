@@ -1,10 +1,8 @@
+
+@import "admin/colors";
+
 $font-family-serif: "Open Sans", Garamond, "Times New Roman", serif;
 $font-family-sans-serif: "Open Sans","Helvetica Neue", Helvetica, Arial, sans-serif;
-
-$grey-border: #eee;
-$grey-text: #2f323b;
-$black: #000;
-$white: #fff;
 
 
 .navbar-default .navbar-admin, .navbar-default .navbar-admin:hover {
@@ -12,34 +10,11 @@ $white: #fff;
 }
 
 
-.admin-action-button {
-  padding: 5px;
-  margin: 5px;
-  cursor: pointer;
-  border-radius: 20%;
-  background: $grey-text;
-  color: $white;
-  width:36px;
-  height:36px;
-  font-size: 21px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  justify-content: center;
-}
-
-.admin-action-button:hover {
-  background: $black;
-  color: #fff;
-  text-decoration: none;
-}
-
 .admin-page {
   color: $grey-text;
+
   .odd {
     background: rgba(255, 255, 255, 0.2);
-    //color: #fff;
   }
 
   .even {
@@ -53,63 +28,6 @@ $white: #fff;
   align-items: center;
 }
 
-.admin-new-button-row {
-  text-align: right;
-  padding-top:10px;
-  padding-bottom:10px;
-}
-
-.admin-new-button {
-  background: $grey-text;
-  color: $white;
-  padding: 5px;
-  padding-right: 10px;
-  padding-left: 10px;
-  border-radius: 10px;
-  height: 35px;
-  text-decoration: none;
-}
-
-.admin-new-button:hover {
-  background: $black;
-  color: $white;
-}
-
-.admin-list-header {
-  div {
-    display: table-cell;
-    background: $grey-text;
-    color: #fff;
-  }
-}
-
-
-/*************
- * HOME PAGE *
- *************/
-.admin-home {
-  .admin-home-group {
-    .admin-home-group-items {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      a {
-        text-decoration: none;
-        .admin-home-item {
-          padding: 20px;
-          padding-top: 10px;
-          margin: 20px;
-          background: #fff;
-          border-radius: 20px;
-          max-width: 350px;
-          min-width: 350px;
-        }
-        .admin-home-item:hover {
-        }
-      }
-    }
-  }
-}
 
 /***********************
  * CLUE/LEVELS MANAGER *
@@ -173,4 +91,3 @@ $white: #fff;
   background: #000000;
   z-index: 10000;
 }
-
