@@ -1,23 +1,6 @@
 var React = require("react")
 
 class AdminPageListHeader extends React.Component {
- 
-  constructor(props) {
-    super(props)
-
-    this.tableRowStyles = {
-      display: "table-row",
-      color: "#ffffff"
-    }
-
-    this.tableCellStyles = {
-      padding: 5
-    }
-
-    this.tableCellActionStyles = JSON.parse(JSON.stringify(this.tableCellStyles))
-    this.tableCellActionStyles.textAlign = "right"
-
-  }
 
   render() {
     var header = [], label = undefined
@@ -27,10 +10,10 @@ class AdminPageListHeader extends React.Component {
         if (label.hidden) continue
         label = label.label
       }
-      header.push(<div key={"header-row-attr-" + attrIndex} style={this.tableCellStyles}>{label}</div>)
+      header.push(<div key={"header-row-attr-" + attrIndex}>{label}</div>)
     }
-    header.push(<div key="header-row-attr-actions" style={this.tableCellActionsStyles}></div>)
-    return <div className="admin-list-header" style={this.tableRowStyles}>{header}</div>
+    header.push(<div key="header-row-attr-actions admin-list-header-actions"></div>)
+    return <div className="admin-list-header">{header}</div>
   }
 
 }
