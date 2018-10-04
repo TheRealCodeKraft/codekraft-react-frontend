@@ -384,7 +384,7 @@ var Form = function (_React$Component) {
 
 			switch (field.type) {
 				case "checkbox":
-					input = React.createElement("input", { id: field.name, className: field.inputClass, title: field.title, name: fieldName, type: field.type, value: value === true ? "on" : "off", placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field) });
+					input = React.createElement("input", { id: field.name, className: field.inputClass, title: field.title, name: fieldName, type: field.type, defaultChecked: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field) });
 					break;
 				case "radio":
 					var radios = [];
@@ -554,14 +554,16 @@ var Form = function (_React$Component) {
     var fieldName = splitted[2].replace(']', '')
     values[parentFieldName][index][fieldName] = value
     } else {*/
-				values[field.name] = value;
+				if (field.type !== "checkbox") {
+					values[field.name] = value;
+				}
 				//}
 
 				//console.log(value)
 
 				switch (field.type) {
 					case "checkbox":
-						values[field.name] = value === "on" ? false : true;
+						values[field.name] = !values[field.name]; //(value === "on" ? true : false)
 						break;
 					case "radio":
 						values[field.name] = value === "true" ? true : false;
