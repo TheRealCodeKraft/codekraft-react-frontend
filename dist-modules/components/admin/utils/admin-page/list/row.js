@@ -27,16 +27,6 @@ var AdminPageListRow = function (_React$Component) {
     _this.handleDelete = _this.handleDelete.bind(_this);
     _this.handleSee = _this.handleSee.bind(_this);
     _this.handleEdit = _this.handleEdit.bind(_this);
-
-    _this.tableRowStyles = {
-      display: "table-row"
-    };
-
-    _this.tableCellStyles = {
-      display: "table-cell",
-      padding: 5,
-      verticalAlign: "middle"
-    };
     return _this;
   }
 
@@ -56,11 +46,11 @@ var AdminPageListRow = function (_React$Component) {
           name = attribute;
         }
         if (this.props.attributes[attrIndex]) {
-          style = JSON.parse(JSON.stringify(this.tableCellStyles));
-          if (attribute.style) style = Object.assign({}, this.tableCellStyles, attribute.style);
+          style = {};
+          if (attribute.style) style = Object.assign({}, attribute.style);
           row.push(React.createElement(
             "div",
-            { key: "row-" + this.props.item.id + "-attr-" + attrIndex, style: style },
+            { key: "row-" + this.props.item.id + "-attr-" + attrIndex, className: "admin-list-cell", style: style },
             this.buildDisplayValue(name, attribute)
           ));
         }
@@ -69,7 +59,7 @@ var AdminPageListRow = function (_React$Component) {
 
       return React.createElement(
         "div",
-        { className: this.props.index % 2 ? "odd" : "even", style: this.tableRowStyles },
+        { className: "admin-list-row" },
         row
       );
     }
