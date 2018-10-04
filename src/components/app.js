@@ -13,42 +13,42 @@ import Root from './common/root'
  * OBL Main App Container
  **/
 class App extends React.Component {
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
 
-    this.state = {
+		this.state = {
 			loaded: false,
-      token: null
-    }
-  }
+			token: null
+		}
+	}
 
-  componentWillMount() {
+	componentWillMount() {
 		var self = this
 		this.props.clients.UserClient.me(function(me) {
 			if (me && !me.error) {
-			  self.props.clients.ApiClient.getToken()
+				self.props.clients.ApiClient.getToken()
 			}
 			self.setState({loaded: true})
 		})
-  }
+	}
 
-  componentWillReceiveProps(props) {
-    if (props.location && (props.location.pathname === '/logout' || this.props.location.pathname === '/logout')) {
-      var self = this
-      this.props.clients.ApiClient.logout(function(data) {
-        self.props.history.push("/")
-      })
-    }
-  }
+	componentWillReceiveProps(props) {
+		if (props.location && (props.location.pathname === '/logout' || this.props.location.pathname === '/logout')) {
+			var self = this
+			this.props.clients.ApiClient.logout(function(data) {
+				self.props.history.push("/")
+			})
+		}
+	}
 
-  render() {
+	render() {
 		if (!this.state.loaded) return null
 
-    return (
-      <this.props.navigation.mainWrapper navigation={this.props.navigation} location={this.props.location}>
-        {this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined)
-         ? <ActionCableProvider url={process.env.CABLE_URL + "/?token=" + this.props.token.access_token}>
-        		<Switch>
+		return (
+			<this.props.navigation.mainWrapper navigation={this.props.navigation} location={this.props.location}>
+				{this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined)
+				 ? <ActionCableProvider url={process.env.CABLE_URL + "/?token=" + this.props.token.access_token}>
+						<Switch>
 							 <Route path="/dashboard" render={() => <Header menu={this.props.navigation.dashboard.menu} root={this.props.navigation.dashboard.root} custom={this.props.navigation.dashboard.header} location={this.props.location} name="dashboard" mainTitle={this.props.config.mainTitle} />} />
 							 <Route path="/admin" render={() => <Header menu={this.props.navigation.admin.menu} root={this.props.navigation.admin.root} custom={this.props.navigation.admin.header} location={this.props.location} admin={true} name="admin" mainTitle={this.props.config.mainTitle} />} />
 							 <Route path="/" render={() => <Header menu={false ? this.props.navigation.dashboard.menu : this.props.navigation.offline.menu} root={this.props.navigation.offline.root} custom={this.props.navigation.offline.header} location={this.props.location} token={this.props.token} name="offline" mainTitle={this.props.config.mainTitle} />} />
@@ -60,34 +60,34 @@ class App extends React.Component {
 						 <Route path="/" render={() => <Header menu={false ? this.props.navigation.dashboard.menu : this.props.navigation.offline.menu} root={this.props.navigation.offline.root} custom={this.props.navigation.offline.header} location={this.props.location} token={this.props.token} name="offline" mainTitle={this.props.config.mainTitle} />} />
 					</Switch>
 				}
- 
-        {this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined)
-         ? <ActionCableProvider url={process.env.CABLE_URL + "/?token=" + this.props.token.access_token}>
-             <Switch>
-               <Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />
-               <Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
-               <Route path="/" component={Root("offline", this.props.navigation.offline)} />
-             </Switch>
-           </ActionCableProvider>
-         : <Switch>
-             <Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />
-             <Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
-             <Route path="/" component={Root("offline", this.props.navigation.offline)} />
-           </Switch>}
-        {this.props.navigation.footer
-         ? <this.props.navigation.footer />
-         : null}
-      </this.props.navigation.mainWrapper>
-    );
-  }
+
+				{this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined)
+				 ? <ActionCableProvider url={process.env.CABLE_URL + "/?token=" + this.props.token.access_token}>
+						 <Switch>
+							 <Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />
+							 <Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
+							 <Route path="/" component={Root("offline", this.props.navigation.offline)} />
+						 </Switch>
+					 </ActionCableProvider>
+				 : <Switch>
+						 <Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />
+						 <Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
+						 <Route path="/" component={Root("offline", this.props.navigation.offline)} />
+					 </Switch>}
+				{this.props.navigation.footer
+				 ? <this.props.navigation.footer />
+				 : null}
+			</this.props.navigation.mainWrapper>
+		);
+	}
 }
 
 function mapStateToProps(state) {
-  return {
-    clients: state.bootstrap.clients,
-    token: state.authState.token || null,
-    navigation: state.bootstrap.navigation,
-  }
+	return {
+		clients: state.bootstrap.clients,
+		token: state.authState.token || null,
+		navigation: state.bootstrap.navigation,
+	}
 }
 
 export default withRouter(connect(mapStateToProps)(App))
