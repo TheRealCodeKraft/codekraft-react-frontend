@@ -1,6 +1,6 @@
 {
   "name": "codekraft-react-frontend",
-  "version": "1.1.28",
+  "version": "1.1.29",
   "description": "The react frontend from CodeKraft Corporation",
   "main": "dist-modules/index.js",
   "scripts": {
@@ -59,6 +59,7 @@
     "json-loader": "^0.5.7",
     "linkify-it": "^2.0.3",
     "loaders.css": "^0.1.2",
+    "lodash.clone": "^4.5.0",
     "mobile-detect": "^1.4.2",
     "moment": "2.18.1",
     "moment-timezone": "^0.5.21",
