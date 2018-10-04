@@ -44,12 +44,11 @@ var AdminPageList = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      return React.createElement(
-        'div',
-        { style: { display: "table", width: "100%" } },
-        React.createElement(_header2.default, { attributes: this.props.attributes }),
-        this.props.items ? this.props.items.map(function (item, index) {
-          return React.createElement(_row2.default, { key: "admin-list-row-" + index,
+      var rows = null;
+      if (this.props.items) {
+        rows = this.props.items.map(function (item, index) {
+          return React.createElement(_row2.default, {
+            key: "admin-list-row-" + index,
             index: index,
             item: item,
             attributes: _this2.props.attributes,
@@ -61,7 +60,18 @@ var AdminPageList = function (_React$Component) {
             onCustomAction: _this2.handleCustomAction,
             config: _this2.props.config
           });
-        }) : null
+        });
+      }
+
+      return React.createElement(
+        'div',
+        { className: 'admin-list' },
+        React.createElement(_header2.default, { attributes: this.props.attributes }),
+        React.createElement(
+          'div',
+          { className: 'admin-list-body' },
+          rows
+        )
       );
     }
   }, {

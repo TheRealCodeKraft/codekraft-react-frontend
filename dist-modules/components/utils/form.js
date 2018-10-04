@@ -320,49 +320,48 @@ var Form = function (_React$Component) {
 		value: function getInputs(field) {
 			var inputs = null;
 			if (field.type === "component") {
-				/*
-    inputs = []
-    	if (field.multiple) {
-    var occurences = field.occurences
-    if (occurences.indexOf("/") !== -1) {
-    var splitted = occurences.split("/")
-    var dividing = parseInt(splitted[0])
-    var key = splitted[1].replace(' ', '')
-    occurences = dividing / this.state.values[key]
-    } else {
-    occurences = this.state.values[field.occurences]
-    }
-    var input = null
-    for (var i=0; i < occurences; i++) {
-    input = []
-    for (var j in field.components) {
-    field.components[j].name = field.name + "[" + i + "][" + field.components[j].name + "]"
-    field.components[j].parent = field
-    input.push(this.getInput(field.components[j]))
-    }
-    input = <div className={field.name}>{input}</div>
-    inputs.push(input)
-    }
-    } else {
-    var input = []
-    for (var i in field.components) {
-    input.push(this.getInput(field.components[i]))
-    }
-    input = <div className={field.name}>{input}</div>
-    inputs.push(input)
-    }
-    */
-				/*
-    inputs = []
-    for (var i=0; i < occurences; i++) {
-    for (var component in field.components) {
-    inputs.push(this.getInput(
-    }
-    }
-    */
+				// inputs = []
+				//
+				// if (field.multiple) {
+				// 	var occurences = field.occurences
+				// 	if (occurences.indexOf("/") !== -1) {
+				// 		var splitted = occurences.split("/")
+				// 		var dividing = parseInt(splitted[0])
+				// 		var key = splitted[1].replace(' ', '')
+				// 		occurences = dividing / this.state.values[key]
+				// 	} else {
+				// 		occurences = this.state.values[field.occurences]
+				// 	}
+				//
+				// 	var input = null
+				// 	for (var i=0; i < occurences; i++) {
+				// 		input = []
+				// 		for (var j in field.components) {
+				// 			field.components[j].name = field.name + "[" + i + "][" + field.components[j].name + "]"
+				// 			field.components[j].parent = field
+				// 			input.push(this.getInput(field.components[j]))
+				// 		}
+				// 		input = <div className={field.name}>{input}</div>
+				// 		inputs.push(input)
+				// 	}
+				// } else {
+				// 	var input = []
+				// 	for (var i in field.components) {
+				// 		input.push(this.getInput(field.components[i]))
+				// 	}
+				// 	input = <div className={field.name}>{input}</div>
+				// 	inputs.push(input)
+				// }
+				// inputs = []
+				// for (var i=0; i < occurences; i++) {
+				// 	for (var component in field.components) {
+				// 		inputs.push(this.getInput())
+				// 	}
+				// }
 			} else {
 				inputs = this.getInput(field);
 			}
+
 			return inputs;
 		}
 	}, {
@@ -375,16 +374,10 @@ var Form = function (_React$Component) {
 			    options = [];
 			var fieldName = field.name;
 
-			if (field.name.indexOf('[') !== -1) {
-				var splitted = field.name.split('[');
-				if (this.state.values[splitted[0]]) {
-					value = this.state.values[splitted[0]][splitted[1].replace(']', '')][splitted[2].replace(']', '')];
-				}
-			}
-
 			switch (field.type) {
 				case "checkbox":
 					input = React.createElement("input", { id: field.name, className: field.inputClass, title: field.title, name: fieldName, type: field.type, defaultChecked: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field) });
+					input = React.createElement("input", { id: field.name, className: field.inputClass, title: field.title, name: fieldName, type: field.type, value: value === true ? "on" : "off", placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field) });
 					break;
 				case "radio":
 					var radios = [];
@@ -546,24 +539,21 @@ var Form = function (_React$Component) {
 			if (Object.keys(this.state.values).length > 0) {
 				var values = this.state.values;
 				var value = e.target ? e.target.value : e;
-				/*
-    if (field.name.indexOf("[") !== -1) {
-    var splitted = field.name.split("[")
-    var parentFieldName = splitted[0]
-    var index = splitted[1].replace(']', '')
-    var fieldName = splitted[2].replace(']', '')
-    values[parentFieldName][index][fieldName] = value
-    } else {*/
-				if (field.type !== "checkbox") {
-					values[field.name] = value;
-				}
-				//}
+				// if (field.name.indexOf("[") !== -1) {
+				// 	var splitted = field.name.split("[")
+				// 	var parentFieldName = splitted[0]
+				// 	var index = splitted[1].replace(']', '')
+				// 	var fieldName = splitted[2].replace(']', '')
+				// 	values[parentFieldName][index][fieldName] = value
+				// } else {
+				// 	values[field.name] = value
+				// }
 
-				//console.log(value)
+				values[field.name] = value;
 
 				switch (field.type) {
 					case "checkbox":
-						values[field.name] = !values[field.name]; //(value === "on" ? true : false)
+						values[field.name] = value === "on" ? false : true;
 						break;
 					case "radio":
 						values[field.name] = value === "true" ? true : false;
@@ -577,9 +567,9 @@ var Form = function (_React$Component) {
 					case "wysiwyg":
 						values[field.name + "_raw"] = (0, _draftJs.convertToRaw)(value);
 						values[field.name + "_html"] = (0, _draftJsExportHtml.stateToHTML)(value);
-					default:
 						break;
 				}
+
 				this.setState({ values: values }, function () {
 					if (_this6.props.onInputChange) _this6.props.onInputChange(values);
 				});

@@ -1,0 +1,49 @@
+
+@import "colors";
+
+// New button
+.admin-new-button-row {
+  text-align: right;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
+.admin-new-button {
+  background: $grey-text;
+  color: $light-color;
+  padding: 5px;
+  padding-right: 10px;
+  padding-left: 10px;
+  border-radius: 10px;
+  height: 35px;
+  text-decoration: none;
+}
+
+.admin-new-button:hover {
+  background: $black;
+  color: $light-color;
+}
+
+// Action button
+.admin-action-button {
+  padding: 5px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 20%;
+  background: $grey-text;
+  color: $light-color;
+  width:36px;
+  height:36px;
+  font-size: 21px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  justify-content: center;
+}
+
+.admin-action-button:hover {
+  background: $black;
+  color: #fff;
+  text-decoration: none;
+}

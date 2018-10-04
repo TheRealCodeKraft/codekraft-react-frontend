@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -7,11 +7,15 @@ exports.getRawItems = exports.getRawItem = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _link = require('./header/link');
+var _lodash = require("lodash.clone");
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _link = require("./header/link");
 
 var _link2 = _interopRequireDefault(_link);
 
-var _showForAcls = require('../utils/show-for-acls');
+var _showForAcls = require("../utils/show-for-acls");
 
 var _showForAcls2 = _interopRequireDefault(_showForAcls);
 
@@ -43,7 +47,7 @@ var Header = function (_React$Component) {
   }
 
   _createClass(Header, [{
-    key: 'render',
+    key: "render",
     value: function render() {
 
       if (this.props.custom !== undefined) {
@@ -57,27 +61,27 @@ var Header = function (_React$Component) {
       var side_menu_entries = this.buildItemsFor("side");
 
       return React.createElement(
-        'div',
-        { className: 'Menu' },
+        "div",
+        { className: "Menu" },
         React.createElement(
-          'div',
-          { className: 'Menu-logo' },
-          React.createElement('div', { className: 'logo-img' }),
+          "div",
+          { className: "Menu-logo" },
+          React.createElement("div", { className: "logo-img" }),
           React.createElement(
-            'div',
-            { className: 'Side-Menu' },
+            "div",
+            { className: "Side-Menu" },
             side_menu_entries
           )
         ),
         React.createElement(
-          'div',
-          { className: 'Menu-links' },
+          "div",
+          { className: "Menu-links" },
           default_menu_entries
         )
       );
     }
   }, {
-    key: 'buildNavFor',
+    key: "buildNavFor",
     value: function buildNavFor(navKey) {
       var _this2 = this;
 
@@ -92,12 +96,12 @@ var Header = function (_React$Component) {
       };
     }
   }, {
-    key: 'getRawItem',
+    key: "getRawItem",
     value: function getRawItem(item) {
       return _getRawItem({ item: item, token: this.props.token, root: this.props.root });
     }
   }, {
-    key: 'getRawItems',
+    key: "getRawItems",
     value: function getRawItems(menuKey) {
       return _getRawItems({
         items: this.props.menu[menuKey].items,
@@ -106,14 +110,14 @@ var Header = function (_React$Component) {
       });
     }
   }, {
-    key: 'buildItemsFor',
+    key: "buildItemsFor",
     value: function buildItemsFor(navKey) {
       var nav = this.props.menu[navKey];
       var menu_entries = [];
       if (nav) {
         if (nav.label) {
           menu_entries.push(React.createElement(
-            'li',
+            "li",
             { className: "nav-category" },
             nav.label
           ));
@@ -127,13 +131,13 @@ var Header = function (_React$Component) {
       return menu_entries;
     }
   }, {
-    key: 'getGroups',
+    key: "getGroups",
     value: function getGroups(groups, nav) {
       var menu_entries = [];
       for (var index in nav.groups) {
         menu_entries.push(React.createElement(
-          'li',
-          { className: 'nav-category' },
+          "li",
+          { className: "nav-category" },
           nav.groups[index]["label"]
         ));
         menu_entries.push(this.getItems(nav.groups[index]["items"], nav));
@@ -141,7 +145,7 @@ var Header = function (_React$Component) {
       return menu_entries;
     }
   }, {
-    key: 'getItems',
+    key: "getItems",
     value: function getItems(items, nav) {
       var menu_entries = [];
       var menu_entry, menu, item, route;
@@ -165,7 +169,7 @@ var Header = function (_React$Component) {
       return menu_entries;
     }
   }, {
-    key: 'buildItem',
+    key: "buildItem",
     value: function buildItem(nav, item, route) {
       var LinkComponent = nav.navLink ? nav.navLink : _link2.default;
       var className;
@@ -181,16 +185,16 @@ var Header = function (_React$Component) {
       }
     }
   }, {
-    key: 'embedSandwich',
+    key: "embedSandwich",
     value: function embedSandwich(items) {
-      items = [React.createElement('a', { href: '#', onClick: this.handleHamburgerClick, className: 'Menu-link toggle-sidebar fa fa-bars' })].concat(items);
+      items = [React.createElement("a", { href: "#", onClick: this.handleHamburgerClick, className: "Menu-link toggle-sidebar fa fa-bars" })].concat(items);
       if (!this.state.menu) {
-        items = [React.createElement('div', { className: 'logo-img menu-logo' })].concat(items);
+        items = [React.createElement("div", { className: "logo-img menu-logo" })].concat(items);
       }
       return items;
     }
   }, {
-    key: 'handleHamburgerClick',
+    key: "handleHamburgerClick",
     value: function handleHamburgerClick(e) {
       e.preventDefault();
       this.setState({ menu: !this.state.menu }, function () {
@@ -229,7 +233,7 @@ function _getRawItem(_ref) {
     }
 
     // Clone the item in order to not change the base item
-    item = JSON.parse(JSON.stringify(item));
+    item = (0, _lodash2.default)(item);
     item.route = route;
     return item;
   } else {

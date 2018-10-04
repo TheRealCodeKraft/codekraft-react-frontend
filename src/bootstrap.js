@@ -1,111 +1,99 @@
-var React = require('react')
-var ReactDOM = require('react-dom')
+import React from "react"
+import ReactDOM from "react-dom"
+import { connect, Provider } from "react-redux"
+import { BrowserRouter, Router } from "react-router-dom"
+import Popup from "react-popup"
+import ReactGA from "react-ga"
 
-import { connect } from 'react-redux'
+import Logger from "js-logger"
+Logger.useDefaults()
 
-var Logger = require('js-logger')
-Logger.useDefaults();
+import createStore from "./api/client/reducer/create-store"
+import createClients from "./api/client/create-clients"
+import createNavigation from "./navigation/create-navigation"
 
-var Provider = require('react-redux').Provider
-//import { AppContainer } from 'react-hot-loader';
+import App from "./components/app"
+import AppV2 from "./components/v2/app"
 
-import createStore from './api/client/reducer/create-store'
-import createClients from './api/client/create-clients'
-import createNavigation from './navigation/create-navigation'
+import BootstrapConfig from "./config/navigation/default"
+import BootstrapConfigV2 from "./config/navigation/v2/default"
 
-var BrowserRouter = require('react-router-dom').BrowserRouter
-var Router = require('react-router-dom').Router
+import createBrowserHistory from "history/createBrowserHistory"
+import createHashHistory from "history/createHashHistory"
 
-import App from './components/app'
-import AppV2 from './components/v2/app'
+import moment from "moment-timezone"
+moment.locale("fr")
 
-import BootstrapConfig from './config/navigation/default'
-import BootstrapConfigV2 from './config/navigation/v2/default'
+if (process.env.UA_ID) {
+	ReactGA.initialize(process.env.UA_ID)
+}
 
-import Popup from 'react-popup'
-import createBrowserHistory from 'history/createBrowserHistory'
-import createHashHistory from 'history/createHashHistory'
-import ReactGA from 'react-ga'
+function launch(config, callback) {
+	const store = createStore(config)
+	const clients = createClients(config.clients, store)
+	const version = config.version ? config.version : 1
 
-//import hotLoader from "react-hot-loader"
+	const history = config.history == "hash" ? createHashHistory() : createBrowserHistory()
+	history.listen((location, action) => {
+		if (process.env.UA_ID) {
+			ReactGA.set({ page: location.pathname })
+			ReactGA.pageview(location.pathname)
+		}
+	})
 
-import moment from 'moment-timezone'
-moment.locale('fr')
+	let mainComponent = App, bootstrapConfig = BootstrapConfig
+	if (version === 2) {
+		mainComponent = AppV2
+		bootstrapConfig = BootstrapConfigV2
+	}
 
-//console.log(hotLoader)
+	store.dispatch({
+		type: "CLIENTS",
+		clients: clients
+	})
 
-var Bootstrap = function() {
+	createNavigation(bootstrapConfig, config.navigation, clients, function(nav) {
+		store.dispatch({
+			type: "NAVIGATION",
+			navigation: nav
+		})
 
+		const App = () => (
+			<Provider store={store}>
+				<Router history={history}>
+					{React.createElement(mainComponent, {config: config})}
+				</Router>
+			</Provider>
+		)
 
-  if (process.env.UA_ID) {
-    ReactGA.initialize(process.env.UA_ID)
-  }
+		ReactDOM.render(
+			<App />,
+			document.getElementById("app-root")
+		)
 
-  var launch = function(config, callback) {
-    const store = createStore(config.clients)
-    const clients = createClients(config.clients, store)
-    const version = config.version ? config.version : 1
+		ReactDOM.render(
+			<Provider store={store}>
+				<Router history={history}>
+					<Popup
+						escToClose={true}
+						closeOnOutsideClick={false}
+						defaultOk="OK"
+						defaultCancel="Annuler"
+						className={(config.popup && config.popup.className) ? config.popup.className : "mm-popup"}
+						btnClass={(config.popup && config.popup.bntClass) ? config.popup.btnClass : "mm-popup__btn"}
+						wildClasses={!config.popup}
+					/>
+				</Router>
+			</Provider>,
+			document.getElementById("popup-container")
+		)
 
-		const history = config.history == "hash" ? createHashHistory() : createBrowserHistory()
-		history.listen((location, action) => {
-			if (process.env.UA_ID) {
-				ReactGA.set({ page: location.pathname })
-				ReactGA.pageview(location.pathname)
-			}
-		});
+		if (callback) {
+			callback()
+		}
+	})
+}
 
-    var mainComponent = App, bootstrapConfig = BootstrapConfig
-    if (version === 2) {
-      mainComponent = AppV2
-      bootstrapConfig = BootstrapConfigV2
-    }
-
-    store.dispatch({
-      type: "CLIENTS",
-      clients: clients
-    })
-
-    createNavigation(bootstrapConfig, config.navigation, clients, function(nav) {
-      store.dispatch({
-        type: "NAVIGATION",
-        navigation: nav
-      })
-
-			var App = () => 
-          <Provider store={store}>
-            <Router history={history}>
-              {React.createElement(mainComponent, {config: config})}
-            </Router>
-          </Provider>
-
-        ReactDOM.render(
-					<App />,
-          document.getElementById('app-root')
-        );
-      
-      ReactDOM.render(
-        <Provider store={store}>
-          <Router history={history}>
-            <Popup 
-							escToClose={true} 
-							closeOnOutsideClick={false} 
-							defaultOk="OK" 
-							defaultCancel="Annuler" 
-							className={(config.popup && config.popup.className) ? config.popup.className : "mm-popup"}
-							btnClass={(config.popup && config.popup.bntClass) ? config.popup.btnClass : "mm-popup__btn"}
-							wildClasses={!config.popup}
-						/>
-					</Router>
-        </Provider>,
-        document.getElementById('popup-container')
-      )
-      if (callback) callback()
-    })
-  }
-
-  return {
-    launch: launch
-  }
-}()
-
-export default Bootstrap
+export default {
+	launch
+}

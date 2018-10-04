@@ -17,24 +17,10 @@ var React = require("react");
 var AdminPageListHeader = function (_React$Component) {
   _inherits(AdminPageListHeader, _React$Component);
 
-  function AdminPageListHeader(props) {
+  function AdminPageListHeader() {
     _classCallCheck(this, AdminPageListHeader);
 
-    var _this = _possibleConstructorReturn(this, (AdminPageListHeader.__proto__ || Object.getPrototypeOf(AdminPageListHeader)).call(this, props));
-
-    _this.tableRowStyles = {
-      display: "table-row",
-      color: "#ffffff"
-    };
-
-    _this.tableCellStyles = {
-      padding: 5
-    };
-
-    _this.tableCellActionStyles = JSON.parse(JSON.stringify(_this.tableCellStyles));
-    _this.tableCellActionStyles.textAlign = "right";
-
-    return _this;
+    return _possibleConstructorReturn(this, (AdminPageListHeader.__proto__ || Object.getPrototypeOf(AdminPageListHeader)).apply(this, arguments));
   }
 
   _createClass(AdminPageListHeader, [{
@@ -50,14 +36,14 @@ var AdminPageListHeader = function (_React$Component) {
         }
         header.push(React.createElement(
           "div",
-          { key: "header-row-attr-" + attrIndex, style: this.tableCellStyles },
+          { key: "header-row-attr-" + attrIndex },
           label
         ));
       }
-      header.push(React.createElement("div", { key: "header-row-attr-actions", style: this.tableCellActionsStyles }));
+      header.push(React.createElement("div", { key: "header-row-attr-actions admin-list-header-actions" }));
       return React.createElement(
         "div",
-        { className: "admin-list-header", style: this.tableRowStyles },
+        { className: "admin-list-header" },
         header
       );
     }

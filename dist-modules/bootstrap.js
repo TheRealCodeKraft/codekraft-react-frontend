@@ -1,154 +1,152 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 
-var _reactRedux = require('react-redux');
+var _react = require("react");
 
-var _createStore = require('./api/client/reducer/create-store');
+var _react2 = _interopRequireDefault(_react);
 
-var _createStore2 = _interopRequireDefault(_createStore);
+var _reactDom = require("react-dom");
 
-var _createClients = require('./api/client/create-clients');
+var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _createClients2 = _interopRequireDefault(_createClients);
+var _reactRedux = require("react-redux");
 
-var _createNavigation = require('./navigation/create-navigation');
+var _reactRouterDom = require("react-router-dom");
 
-var _createNavigation2 = _interopRequireDefault(_createNavigation);
-
-var _app = require('./components/app');
-
-var _app2 = _interopRequireDefault(_app);
-
-var _app3 = require('./components/v2/app');
-
-var _app4 = _interopRequireDefault(_app3);
-
-var _default = require('./config/navigation/default');
-
-var _default2 = _interopRequireDefault(_default);
-
-var _default3 = require('./config/navigation/v2/default');
-
-var _default4 = _interopRequireDefault(_default3);
-
-var _reactPopup = require('react-popup');
+var _reactPopup = require("react-popup");
 
 var _reactPopup2 = _interopRequireDefault(_reactPopup);
 
-var _createBrowserHistory = require('history/createBrowserHistory');
-
-var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
-
-var _createHashHistory = require('history/createHashHistory');
-
-var _createHashHistory2 = _interopRequireDefault(_createHashHistory);
-
-var _reactGa = require('react-ga');
+var _reactGa = require("react-ga");
 
 var _reactGa2 = _interopRequireDefault(_reactGa);
 
-var _momentTimezone = require('moment-timezone');
+var _jsLogger = require("js-logger");
+
+var _jsLogger2 = _interopRequireDefault(_jsLogger);
+
+var _createStore = require("./api/client/reducer/create-store");
+
+var _createStore2 = _interopRequireDefault(_createStore);
+
+var _createClients = require("./api/client/create-clients");
+
+var _createClients2 = _interopRequireDefault(_createClients);
+
+var _createNavigation = require("./navigation/create-navigation");
+
+var _createNavigation2 = _interopRequireDefault(_createNavigation);
+
+var _app = require("./components/app");
+
+var _app2 = _interopRequireDefault(_app);
+
+var _app3 = require("./components/v2/app");
+
+var _app4 = _interopRequireDefault(_app3);
+
+var _default = require("./config/navigation/default");
+
+var _default2 = _interopRequireDefault(_default);
+
+var _default3 = require("./config/navigation/v2/default");
+
+var _default4 = _interopRequireDefault(_default3);
+
+var _createBrowserHistory = require("history/createBrowserHistory");
+
+var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
+
+var _createHashHistory = require("history/createHashHistory");
+
+var _createHashHistory2 = _interopRequireDefault(_createHashHistory);
+
+var _momentTimezone = require("moment-timezone");
 
 var _momentTimezone2 = _interopRequireDefault(_momentTimezone);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+_jsLogger2.default.useDefaults();
 
-var Logger = require('js-logger');
-Logger.useDefaults();
+_momentTimezone2.default.locale("fr");
 
-var Provider = require('react-redux').Provider;
-//import { AppContainer } from 'react-hot-loader';
+if (process.env.UA_ID) {
+	_reactGa2.default.initialize(process.env.UA_ID);
+}
 
-var BrowserRouter = require('react-router-dom').BrowserRouter;
-var Router = require('react-router-dom').Router;
+function launch(config, callback) {
+	var store = (0, _createStore2.default)(config);
+	var clients = (0, _createClients2.default)(config.clients, store);
+	var version = config.version ? config.version : 1;
 
-//import hotLoader from "react-hot-loader"
+	var history = config.history == "hash" ? (0, _createHashHistory2.default)() : (0, _createBrowserHistory2.default)();
+	history.listen(function (location, action) {
+		if (process.env.UA_ID) {
+			_reactGa2.default.set({ page: location.pathname });
+			_reactGa2.default.pageview(location.pathname);
+		}
+	});
 
-_momentTimezone2.default.locale('fr');
+	var mainComponent = _app2.default,
+	    bootstrapConfig = _default2.default;
+	if (version === 2) {
+		mainComponent = _app4.default;
+		bootstrapConfig = _default4.default;
+	}
 
-//console.log(hotLoader)
+	store.dispatch({
+		type: "CLIENTS",
+		clients: clients
+	});
 
-var Bootstrap = function () {
+	(0, _createNavigation2.default)(bootstrapConfig, config.navigation, clients, function (nav) {
+		store.dispatch({
+			type: "NAVIGATION",
+			navigation: nav
+		});
 
-  if (process.env.UA_ID) {
-    _reactGa2.default.initialize(process.env.UA_ID);
-  }
+		var App = function App() {
+			return _react2.default.createElement(
+				_reactRedux.Provider,
+				{ store: store },
+				_react2.default.createElement(
+					_reactRouterDom.Router,
+					{ history: history },
+					_react2.default.createElement(mainComponent, { config: config })
+				)
+			);
+		};
 
-  var launch = function launch(config, callback) {
-    var store = (0, _createStore2.default)(config.clients);
-    var clients = (0, _createClients2.default)(config.clients, store);
-    var version = config.version ? config.version : 1;
+		_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById("app-root"));
 
-    var history = config.history == "hash" ? (0, _createHashHistory2.default)() : (0, _createBrowserHistory2.default)();
-    history.listen(function (location, action) {
-      if (process.env.UA_ID) {
-        _reactGa2.default.set({ page: location.pathname });
-        _reactGa2.default.pageview(location.pathname);
-      }
-    });
+		_reactDom2.default.render(_react2.default.createElement(
+			_reactRedux.Provider,
+			{ store: store },
+			_react2.default.createElement(
+				_reactRouterDom.Router,
+				{ history: history },
+				_react2.default.createElement(_reactPopup2.default, {
+					escToClose: true,
+					closeOnOutsideClick: false,
+					defaultOk: "OK",
+					defaultCancel: "Annuler",
+					className: config.popup && config.popup.className ? config.popup.className : "mm-popup",
+					btnClass: config.popup && config.popup.bntClass ? config.popup.btnClass : "mm-popup__btn",
+					wildClasses: !config.popup
+				})
+			)
+		), document.getElementById("popup-container"));
 
-    var mainComponent = _app2.default,
-        bootstrapConfig = _default2.default;
-    if (version === 2) {
-      mainComponent = _app4.default;
-      bootstrapConfig = _default4.default;
-    }
+		if (callback) {
+			callback();
+		}
+	});
+}
 
-    store.dispatch({
-      type: "CLIENTS",
-      clients: clients
-    });
-
-    (0, _createNavigation2.default)(bootstrapConfig, config.navigation, clients, function (nav) {
-      store.dispatch({
-        type: "NAVIGATION",
-        navigation: nav
-      });
-
-      var App = function App() {
-        return React.createElement(
-          Provider,
-          { store: store },
-          React.createElement(
-            Router,
-            { history: history },
-            React.createElement(mainComponent, { config: config })
-          )
-        );
-      };
-
-      ReactDOM.render(React.createElement(App, null), document.getElementById('app-root'));
-
-      ReactDOM.render(React.createElement(
-        Provider,
-        { store: store },
-        React.createElement(
-          Router,
-          { history: history },
-          React.createElement(_reactPopup2.default, {
-            escToClose: true,
-            closeOnOutsideClick: false,
-            defaultOk: 'OK',
-            defaultCancel: 'Annuler',
-            className: config.popup && config.popup.className ? config.popup.className : "mm-popup",
-            btnClass: config.popup && config.popup.bntClass ? config.popup.btnClass : "mm-popup__btn",
-            wildClasses: !config.popup
-          })
-        )
-      ), document.getElementById('popup-container'));
-      if (callback) callback();
-    });
-  };
-
-  return {
-    launch: launch
-  };
-}();
-
-exports.default = Bootstrap;
+exports.default = {
+	launch: launch
+};

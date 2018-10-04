@@ -1,0 +1,13 @@
+
+$grey-text: #2f323b !default;
+
+// Deprecated
+$black: #000 !default;
+$white: #fff !default;
+
+$color: grey !default;
+$light-color: $white !default;
+$dark-color: $black !default;
+
+$even-color: rgba($dark-color, .1) !default;
+$odd-color: rgba(255, 255, 255, .2) !default;

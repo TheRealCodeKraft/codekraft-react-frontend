@@ -58,6 +58,10 @@ var _storage = require('./api/client/storage/storage');
 
 var _storage2 = _interopRequireDefault(_storage);
 
+var _reducersConfig = require('./api/client/reducer/reducers-config');
+
+var _reducersConfig2 = _interopRequireDefault(_reducersConfig);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.Bootstrap = _bootstrap2.default; /*
@@ -74,3 +78,5 @@ exports.Signup = _signup2.default;
 exports.ResetPassword = _resetPassword2.default;
 exports.ShowForAcls = _showForAcls2.default;
 exports.StorageService = _storage2.default;
+
+exports.configureReducers = _reducersConfig2.default;

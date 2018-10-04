@@ -1,4 +1,5 @@
 var React = require("react")
+import clone from "lodash.clone"
 
 import NavLink from './header/link'
 import ShowForAcls from '../utils/show-for-acls'
@@ -165,7 +166,7 @@ export function getRawItem({ item, token, root }) {
 		}
 
 		// Clone the item in order to not change the base item
-		item = JSON.parse(JSON.stringify(item))
+		item = clone(item)
 		item.route = route
 		return item
 	} else {

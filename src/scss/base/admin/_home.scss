@@ -1,0 +1,28 @@
+
+@import "variables";
+
+/*************
+ * HOME PAGE *
+ *************/
+.admin-home {
+  .admin-home-group {
+    .admin-home-group-items {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      a {
+        text-decoration: none;
+        .admin-home-item {
+          padding: 20px;
+          padding-top: 10px;
+          margin: 20px;
+          background: #fff;
+          border-radius: 20px;
+					width: $admin-home-button-width;
+        }
+        .admin-home-item:hover {
+        }
+      }
+    }
+  }
+}
