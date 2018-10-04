@@ -40,6 +40,9 @@ function launch(config, callback) {
 			ReactGA.pageview(location.pathname)
 		}
 	})
+	if (config.listenHistory) {
+		history.listen(config.listenHistory(store))
+	}
 
 	let mainComponent = App, bootstrapConfig = BootstrapConfig
 	if (version === 2) {
