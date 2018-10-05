@@ -90,6 +90,9 @@ function launch(config, callback) {
 			_reactGa2.default.pageview(location.pathname);
 		}
 	});
+	if (config.listenHistory) {
+		history.listen(config.listenHistory(store));
+	}
 
 	var mainComponent = _app2.default,
 	    bootstrapConfig = _default2.default;
