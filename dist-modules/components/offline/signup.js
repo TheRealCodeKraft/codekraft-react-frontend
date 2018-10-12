@@ -32,6 +32,20 @@ var Signup = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Signup.__proto__ || Object.getPrototypeOf(Signup)).call(this, props));
 
+    var termsOfUseLabel = "J'accepte les condition générales d'utilisation";
+    if (_this.props.termsOfUseLink) {
+      termsOfUseLabel = React.createElement(
+        "span",
+        null,
+        "J'accepte les ",
+        React.createElement(
+          "a",
+          { href: _this.props.termsOfUseLink, title: "Conditions g\xE9n\xE9rales d'utilisation", target: "_blank" },
+          "condition g\xE9n\xE9rales d'utilisation"
+        )
+      );
+    }
+
     _this.fields = [{
       name: "firstname",
       title: "Entrez votre prénom",
@@ -70,7 +84,7 @@ var Signup = function (_React$Component) {
       confirmFor: "password"
     }, {
       name: "cgu",
-      label: "J'accepte les condition générales d'utilisation",
+      label: termsOfUseLabel,
       title: "J'accepte les condition générales d'utilisation",
       type: "checkbox",
       required: true,
