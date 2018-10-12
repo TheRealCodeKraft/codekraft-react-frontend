@@ -45,7 +45,6 @@
     "dotenv": "^4.0.0",
     "draft-js": "^0.10.5",
     "draft-js-buttons": "^2.0.1",
-    "draft-js-emoji-plugin": "^2.0.6",
     "draft-js-export-html": "^1.2.0",
     "draft-js-hashtag-plugin": "^2.0.3",
     "draft-js-import-html": "^1.2.1",

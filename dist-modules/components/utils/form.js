@@ -20,10 +20,6 @@ var _listSelector = require("./form/list-selector");
 
 var _listSelector2 = _interopRequireDefault(_listSelector);
 
-var _wysiwyg = require("./form/wysiwyg");
-
-var _wysiwyg2 = _interopRequireDefault(_wysiwyg);
-
 var _reactFileInput = require("react-file-input");
 
 var _reactFileInput2 = _interopRequireDefault(_reactFileInput);
@@ -167,8 +163,7 @@ var Form = function (_React$Component) {
 
 			if (!props) props = this.props;
 			var valuesState = {};
-			var currentValue = undefined,
-			    currentHtmlValue = undefined;
+			var currentValue = undefined;
 
 			for (var index in props.fields) {
 				if (props.values) {
@@ -183,12 +178,6 @@ var Form = function (_React$Component) {
 						} else {
 							currentValue = undefined;
 						}
-					} else if (props.fields[index].type == "wysiwyg") {
-						currentValue = props.values[props.fields[index].name + "_raw"];
-						if (currentValue && !(currentValue instanceof Object) && !(currentValue == "")) {
-							currentValue = JSON.parse(currentValue);
-						}
-						currentHtmlValue = props.values[props.fields[index].name + "_html"];
 					} else {
 						currentValue = props.values[props.fields[index].name];
 					}
@@ -201,12 +190,7 @@ var Form = function (_React$Component) {
 					currentValue = props.fields[index].defaultValue;
 				}
 
-				if (props.fields[index].type == "wysiwyg") {
-					valuesState[props.fields[index].name + "_raw"] = currentValue;
-					valuesState[props.fields[index].name + "_html"] = currentHtmlValue;
-				} else {
-					valuesState[props.fields[index].name] = currentValue;
-				}
+				valuesState[props.fields[index].name] = currentValue;
 			}
 
 			this.setState({ values: valuesState });
@@ -454,7 +438,7 @@ var Form = function (_React$Component) {
 					input = React.createElement("textarea", { key: this.props.id + "-textarea-" + field.name, className: "form-control", title: field.title, name: fieldName, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field), rows: 5 });
 					break;
 				case "wysiwyg":
-					input = React.createElement(_wysiwyg2.default, { key: this.props.id + "-wysiwyg-" + field.name, value: this.state.values[field.name + "_raw"], toolbar: field.toolbar, onChange: this.handleInputChange.bind(this, field), mentions: field.mentions, emoji: field.emoji });
+					throw new Error('Wysiwyg module has to be refactored in codekraft-react-frontend');
 					break;
 				case "date":
 					if (!value) value = "";else if (value !== "") {
@@ -564,10 +548,6 @@ var Form = function (_React$Component) {
 					case "color":
 						values[field.name] = value.hex;
 						break;
-					case "wysiwyg":
-						values[field.name + "_raw"] = (0, _draftJs.convertToRaw)(value);
-						values[field.name + "_html"] = (0, _draftJsExportHtml.stateToHTML)(value);
-						break;
 				}
 
 				this.setState({ values: values }, function () {
@@ -615,18 +595,13 @@ var Form = function (_React$Component) {
 								currentValues[splitted[0]][splitted[1]][splitted[2].replace(']', '')] = this.state.values[this.props.fields[fIndex].name];
 							}
 						} else {
-							if (this.props.fields[fIndex].type == "wysiwyg") {
-								currentValues[this.props.fields[fIndex].name + "_raw"] = this.state.values[this.props.fields[fIndex].name + "_raw"];
-								currentValues[this.props.fields[fIndex].name + "_html"] = this.state.values[this.props.fields[fIndex].name + "_html"];
+							if (this.props.fields[fIndex].type == "datehour") {
+								currentValues[this.props.fields[fIndex].name] = moment(this.state.values[this.props.fields[fIndex].name]).format("DD/MM/YYYY HH:mm");
 							} else {
-								if (this.props.fields[fIndex].type == "datehour") {
-									currentValues[this.props.fields[fIndex].name] = moment(this.state.values[this.props.fields[fIndex].name]).format("DD/MM/YYYY HH:mm");
+								if (this.props.fields[fIndex].type == "date") {
+									currentValues[this.props.fields[fIndex].name] = moment(this.state.values[this.props.fields[fIndex].name]).format("DD/MM/YYYY") + " 00:00";
 								} else {
-									if (this.props.fields[fIndex].type == "date") {
-										currentValues[this.props.fields[fIndex].name] = moment(this.state.values[this.props.fields[fIndex].name]).format("DD/MM/YYYY") + " 00:00";
-									} else {
-										currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name];
-									}
+									currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name];
 								}
 							}
 						}
@@ -673,12 +648,6 @@ var Form = function (_React$Component) {
 						if (field.type === "select" && (this.state.values[field.name] === -1 || this.state.values[field.name] === "-1")) {
 							errors[field.name] = field.name + "_required";
 						}
-						if (field.type === "wysiwyg") {
-							//&& this.state.values[field.name + "_html"] === undefined) {
-							if (!this.state.values[field.name + "_raw"] || !(0, _draftJs.convertFromRaw)(this.state.values[field.name + "_raw"]).hasText()) {
-								errors[field.name] = field.name + "_required";
-							}
-						}
 					}
 				}
 
@@ -710,9 +679,7 @@ var Form = function (_React$Component) {
 		value: function reset() {
 			var newValues = {};
 			for (var key in this.props.fields) {
-				if (this.props.fields[key].type == "wysiwyg") {
-					newValues[this.props.fields[key].name + "_raw"] = "RESET";
-				} else if (this.props.fields[key].type == "multiple-upload") {
+				if (this.props.fields[key].type == "multiple-upload") {
 					newValues[this.props.fields[key].name] = "RESET";
 				} else if (this.props.fields[key].defaultValue) {
 					newValues[this.props.fields[key].name] = this.props.fields[key].defaultValue;
