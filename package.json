@@ -63,7 +63,7 @@
     "loaders.css": "^0.1.2",
     "lodash.clone": "^4.5.0",
     "mobile-detect": "^1.4.2",
-    "moment": "2.18.1",
+    "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
     "rc-slider": "^8.6.1",
     "react": "^15.6.2",
