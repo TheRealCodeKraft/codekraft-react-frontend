@@ -38,10 +38,6 @@ var _rcSlider2 = _interopRequireDefault(_rcSlider);
 
 var _reactColor = require("react-color");
 
-var _draftJsExportHtml = require("draft-js-export-html");
-
-var _draftJs = require("draft-js");
-
 var _reactLoaders = require("react-loaders");
 
 var _reactLoaders2 = _interopRequireDefault(_reactLoaders);

@@ -13,9 +13,6 @@ import DateHourPicker from './form/date-hour-picker'
 import Slider, { Range } from 'rc-slider'
 import { SketchPicker } from 'react-color'
 
-import {stateToHTML} from 'draft-js-export-html'
-import {convertToRaw, convertFromRaw} from 'draft-js';
-
 import Loader from "react-loaders"
 
 class Form extends React.Component {
