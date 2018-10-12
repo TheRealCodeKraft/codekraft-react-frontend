@@ -10,6 +10,11 @@ class Signup extends React.Component {
   constructor(props) {
     super(props);
 
+    let termsOfUseLabel = "J'accepte les condition générales d'utilisation"
+    if (this.props.termsOfUseLink) {
+      termsOfUseLabel = (<span>J'accepte les <a href={this.props.termsOfUseLink} title="Conditions générales d'utilisation" target="_blank">condition générales d'utilisation</a></span>)
+    }
+
     this.fields = [
       {
         name: "firstname",
@@ -54,7 +59,7 @@ class Signup extends React.Component {
       },
       {
         name: "cgu",
-        label: "J'accepte les condition générales d'utilisation",
+        label: termsOfUseLabel,
         title: "J'accepte les condition générales d'utilisation",
         type: "checkbox",
         required: true,
