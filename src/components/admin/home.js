@@ -30,7 +30,7 @@ class Home extends React.Component {
             <div className="admin-home-group" key={`admin-home-group-${index}`}>
               {group.label ? <h1>{group.label}</h1> : null}
                 <div className="admin-home-group-items">
-                {group.items.map((item, index) => {
+                {group.items.filter(item => item.display !== false).map((item, index) => {
                   return [<Link to={"/admin/" + item.route}>
                             <div className="admin-home-item" key={`admin-home-item-${index}`}>
                               <h2>{item.title}</h2>
