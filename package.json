@@ -1,6 +1,6 @@
 {
   "name": "codekraft-react-frontend",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "The react frontend from CodeKraft Corporation",
   "main": "dist-modules/index.js",
   "scripts": {
