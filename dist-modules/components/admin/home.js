@@ -76,7 +76,9 @@ var Home = function (_React$Component) {
             React.createElement(
               "div",
               { className: "admin-home-group-items" },
-              group.items.map(function (item, index) {
+              group.items.filter(function (item) {
+                return item.display !== false;
+              }).map(function (item, index) {
                 return [React.createElement(
                   _reactRouterDom.Link,
                   { to: "/admin/" + item.route },
