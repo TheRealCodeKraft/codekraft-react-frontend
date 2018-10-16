@@ -548,7 +548,9 @@ var Form = function (_React$Component) {
 				// 	values[field.name] = value
 				// }
 
-				values[field.name] = value;
+				if (field.type !== "checkbox") {
+					values[field.name] = value;
+				}
 
 				switch (field.type) {
 					case "checkbox":
