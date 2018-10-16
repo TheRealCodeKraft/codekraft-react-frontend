@@ -376,8 +376,7 @@ var Form = function (_React$Component) {
 
 			switch (field.type) {
 				case "checkbox":
-					input = React.createElement("input", { id: field.name, className: field.inputClass, title: field.title, name: fieldName, type: field.type, defaultChecked: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field) });
-					input = React.createElement("input", { id: field.name, className: field.inputClass, title: field.title, name: fieldName, type: field.type, value: value === true ? "on" : "off", placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field) });
+					input = React.createElement("input", { key: this.props.id + "-checkbox-" + fieldName, id: field.name, className: field.inputClass, title: field.title, name: fieldName, type: field.type, defaultChecked: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field) });
 					break;
 				case "radio":
 					var radios = [];
@@ -502,7 +501,7 @@ var Form = function (_React$Component) {
 			var wrapper = function wrapper(children) {
 				return React.createElement(
 					"div",
-					{ className: "form-group", key: _this5.props.id + "-field-" + field.name },
+					{ className: "form-group", key: _this5.props.id + "-field-" + field.name, style: field.inlineStyle },
 					children
 				);
 			};
@@ -553,7 +552,7 @@ var Form = function (_React$Component) {
 
 				switch (field.type) {
 					case "checkbox":
-						values[field.name] = value === "on" ? false : true;
+						values[field.name] = !values[field.name];
 						break;
 					case "radio":
 						values[field.name] = value === "true" ? true : false;
