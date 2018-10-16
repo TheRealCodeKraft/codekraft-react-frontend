@@ -277,8 +277,7 @@ class Form extends React.Component {
 
 		switch(field.type) {
 			case "checkbox":
-				input = <input id={field.name} className={field.inputClass} title={field.title} name={fieldName} type={field.type} defaultChecked={value} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} />
-				input = <input id={field.name} className={field.inputClass} title={field.title} name={fieldName} type={field.type} value={value === true ? "on" : "off"} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} />
+				input = <input key={`${this.props.id}-checkbox-${fieldName}`} id={field.name} className={field.inputClass} title={field.title} name={fieldName} type={field.type} defaultChecked={value} placeholder={field.placeholder} onChange={this.handleInputChange.bind(this, field)} />
 				break
 			case "radio":
 				var radios = []
@@ -383,7 +382,7 @@ class Form extends React.Component {
 	}
 
 	decorateInput(input, field) {
-		var wrapper = (children) => ( <div className="form-group" key={`${this.props.id}-field-${field.name}`}>{children}</div> )
+		var wrapper = (children) => ( <div className="form-group" key={`${this.props.id}-field-${field.name}`} style={field.inlineStyle}>{children}</div> )
 		if (field.wrapper) {
 			wrapper = (children) => {
 				return field.wrapper(children, field, this)
@@ -423,11 +422,13 @@ class Form extends React.Component {
 			// 	values[field.name] = value
 			// }
 
-			values[field.name] = value
+			if (field.type !== "checkbox") {
+				values[field.name] = value
+			}
 
 			switch(field.type) {
 				case "checkbox":
-					values[field.name] = (value === "on" ? false : true)
+					values[field.name] = !values[field.name]
 					break
 				case "radio":
 					values[field.name] = (value === "true" ? true : false)
