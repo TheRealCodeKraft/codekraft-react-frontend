@@ -52,6 +52,8 @@ var _reactLoaders2 = _interopRequireDefault(_reactLoaders);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -278,11 +280,21 @@ var Form = function (_React$Component) {
 			}).map(function (field) {
 				return React.createElement(
 					"form",
-					{ key: _this3.props.id + "-image-uploader", encType: "multipart/form-data", className: "upload-form" },
+					{ key: _this3.props.id + "-" + field.name + "-image-uploader", encType: "multipart/form-data", className: "upload-form" },
+					field.label ? React.createElement(
+						"span",
+						null,
+						field.label
+					) : null,
 					field.showImage === undefined || field.showImage ? React.createElement("img", { src: _this3.state.values[field.name], className: "img-rounded", style: { width: 100 }, alt: _this3.state.values[field.name] }) : null,
+					field.showFileName && field.fileNameKey ? React.createElement(
+						"span",
+						null,
+						_this3.state.values[field.fileNameKey] ? _this3.state.values[field.fileNameKey] : "Aucun fichier"
+					) : null,
 					_this3.state.uploading[field.name] ? React.createElement(
 						"span",
-						{ className: "upload-file" },
+						_defineProperty({ className: "upload-file-name" }, "className", "uploading-file"),
 						"T\xE9l\xE9chargement en cours"
 					) : React.createElement(
 						"div",

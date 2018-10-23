@@ -41,7 +41,7 @@ exports.default = function (grantLevels, ComposedComponent) {
     function mapStateToProps(state) {
         return {
             authenticated: state.userState.authenticated,
-            userGrant: state.userState.me ? state.userState.me.role == "admin" ? "admin" : state.userState.me.type : null
+            userGrant: state.userState.me ? state.userState.me.role == "admin" ? "admin" : state.userState.me.type ? state.userState.me.type : state.userState.me.role : null
         };
     }
 

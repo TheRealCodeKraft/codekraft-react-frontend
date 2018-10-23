@@ -187,24 +187,32 @@ class Form extends React.Component {
 
 	buildImageUploaders() {
 		return this.props.fields.filter(field => { return field.type === "image-uploader" }).map(field => {
-			return <form key={`${this.props.id}-image-uploader`} encType='multipart/form-data' className="upload-form">
-			{(field.showImage === undefined || field.showImage)
-				? <img src={this.state.values[field.name]} className={"img-rounded"} style={{width: 100}} alt={this.state.values[field.name]} />
-				: null}
-				{/*<span className="upload-title">{field.label}</span>*/}
-				{this.state.uploading[field.name]
-					? <span className="upload-file">Téléchargement en cours</span>
-					: <div className="upload-file">
-					<FileInput name="sheet"
-					accept={field.accept !== undefined ? field.accept : ".png"}
-					placeholder="Cliquer ici pour choisir un fichier"
-					className="form-control"
-					onChange={this.handleFileChange.bind(this, field)} />
-					</div>
-				}
-				</form>
-			})
+		return <form key={`${this.props.id}-${field.name}-image-uploader`} encType='multipart/form-data' className="upload-form">
+		{ field.label 
+			? <span>{field.label}</span>
+			: null
 		}
+		{(field.showImage === undefined || field.showImage)
+			? <img src={this.state.values[field.name]} className={"img-rounded"} style={{width: 100}} alt={this.state.values[field.name]} />
+			: null}
+		{	field.showFileName && field.fileNameKey
+		 	? <span>{this.state.values[field.fileNameKey] ? this.state.values[field.fileNameKey] : "Aucun fichier"}</span>
+			: null
+		}
+			{/*<span className="upload-title">{field.label}</span>*/}
+			{this.state.uploading[field.name]
+				? <span className="upload-file-name" className="uploading-file">Téléchargement en cours</span>
+				: <div className="upload-file">
+				<FileInput name="sheet"
+				accept={field.accept !== undefined ? field.accept : ".png"}
+				placeholder="Cliquer ici pour choisir un fichier"
+				className="form-control"
+				onChange={this.handleFileChange.bind(this, field)} />
+				</div>
+			}
+			</form>
+		})
+	}
 
 	handleFileChange(field, e) {
 		var file = e.target.files[0]
