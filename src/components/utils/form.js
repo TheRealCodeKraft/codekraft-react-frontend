@@ -374,7 +374,7 @@ class Form extends React.Component {
 				input = <SketchPicker color={value} onChangeComplete={this.handleInputChange.bind(this, field)} />
 				break
 			case "multiple-upload":
-				input = <MultipleUpload onChange={this.handleInputChange.bind(this, field)} showZone={field.showZone} value={value} removeIcon={field.removeIcon} dropComponent={field.dropComponent} mode={field.mode} />
+				input = <MultipleUpload key={`${this.props.id}-multiple-upload-${field.name}`} onChange={this.handleInputChange.bind(this, field)} showZone={field.showZone} value={value} removeIcon={field.removeIcon} dropComponent={field.dropComponent} mode={field.mode} />
 				break
 			default:
 				if (value == null) value = ""
