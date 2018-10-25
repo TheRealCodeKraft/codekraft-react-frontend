@@ -17,6 +17,10 @@ import { Col } from 'react-bootstrap';
 import Loader from "react-loaders"
 
 export default function(config, globalConfig) {
+	let sidebarStyles = () => ({})
+	if (config.sidebar && config.sidebar.styles) {
+		sidebarStyles = config.sidebar.styles
+	}
 
   class AdminPage extends React.Component {
 
@@ -113,7 +117,8 @@ export default function(config, globalConfig) {
             <AdminSidebar ref="sidebar" 
                           onClose={this.handleCloseSidebar}
                           tinify={this.state.mode === "delete" || (this.state.currentAction && this.state.currentAction.tinify)}
-                          title={this.getSidebarTitle()}>
+                          title={this.getSidebarTitle()}
+													styles={sidebarStyles}>
               {this.getSidebarContent()}
             </AdminSidebar>
           </div>
