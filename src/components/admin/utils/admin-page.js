@@ -104,7 +104,7 @@ export default function(config, globalConfig) {
 										: null
 									}
 									{ !this.state.loading && [...Array(parseInt(this.props[pluralName].pagination.totalPages))].map((_, i) => (
-											<a href="javascript:void(0)" onClick={this.handleChangePage.bind(this, i + 1)} className={"page-btn" + (((i + 1) == this.state.current_page) ? " active" : "")}>{i + 1}</a>
+											<a href="javascript:void(0)" key={`pagination-link-${i}`} onClick={this.handleChangePage.bind(this, i + 1)} className={"page-btn" + (((i + 1) == this.state.current_page) ? " active" : "")}>{i + 1}</a>
 										))
 									}
 									{ !this.state.loading && this.props[pluralName].pagination.next !== ""
