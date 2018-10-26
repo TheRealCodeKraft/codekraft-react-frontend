@@ -37,6 +37,10 @@
 	&:nth-child(odd) {
 		background-color: $odd-color;
 	}
+
+	&:hover {
+		background-color: $row-hover-color;
+	}
 }
 
 .admin-list-cell {
