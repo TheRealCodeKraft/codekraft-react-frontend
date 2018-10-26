@@ -163,6 +163,9 @@ console.log(this.props.item.id)
 
   handleCustomAction(action, e) {
     e.preventDefault()
+		if (action.onClick) {
+			return action.onClick(this.props.item)
+		}
     if (this.props.onCustomAction) this.props.onCustomAction(this.props.item.id, action)
   }
 

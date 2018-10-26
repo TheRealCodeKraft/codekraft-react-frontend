@@ -491,7 +491,7 @@ var Form = function (_React$Component) {
 					input = React.createElement(_reactColor.SketchPicker, { color: value, onChangeComplete: this.handleInputChange.bind(this, field) });
 					break;
 				case "multiple-upload":
-					input = React.createElement(_multipleUpload2.default, { onChange: this.handleInputChange.bind(this, field), showZone: field.showZone, value: value, removeIcon: field.removeIcon, dropComponent: field.dropComponent, mode: field.mode });
+					input = React.createElement(_multipleUpload2.default, { key: this.props.id + "-multiple-upload-" + field.name, onChange: this.handleInputChange.bind(this, field), showZone: field.showZone, value: value, removeIcon: field.removeIcon, dropComponent: field.dropComponent, mode: field.mode });
 					break;
 				default:
 					if (value == null) value = "";

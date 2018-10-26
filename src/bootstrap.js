@@ -41,7 +41,7 @@ function launch(config, callback) {
 		}
 	})
 	if (config.listenHistory) {
-		history.listen(config.listenHistory(store))
+		history.listen(config.listenHistory(store, history))
 	}
 
 	let mainComponent = App, bootstrapConfig = BootstrapConfig

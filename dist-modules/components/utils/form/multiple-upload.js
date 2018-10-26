@@ -97,7 +97,7 @@ var MultipleUpload = function (_React$Component) {
           this.state.files.length ? this.state.files.map(function (file, index) {
             return _react2.default.createElement(
               "div",
-              { className: "file-thumbnail" },
+              { className: "file-thumbnail", key: "multiple-upload__files__" + index },
               _react2.default.createElement(
                 "a",
                 { onClick: _this2.handleRemove.bind(_this2, index) },

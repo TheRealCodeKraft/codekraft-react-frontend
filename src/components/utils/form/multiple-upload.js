@@ -52,7 +52,7 @@ class MultipleUpload extends React.Component {
         	: <div className="files">
 							{ this.state.files.length
 								?	this.state.files.map((file, index) => (
-										<div className="file-thumbnail">
+										<div className="file-thumbnail" key={`multiple-upload__files__${index}`}>
 											<a onClick={this.handleRemove.bind(this, index)}>
 												{ this.props.removeIcon
 													? this.props.removeIcon

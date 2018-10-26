@@ -17,6 +17,10 @@ import { Col } from 'react-bootstrap';
 import Loader from "react-loaders"
 
 export default function(config, globalConfig) {
+	let sidebarStyles = () => ({})
+	if (config.sidebar && config.sidebar.styles) {
+		sidebarStyles = config.sidebar.styles
+	}
 
   class AdminPage extends React.Component {
 
@@ -105,7 +109,7 @@ export default function(config, globalConfig) {
 										: null
 									}
 									{ !this.state.loading && [...Array(parseInt(this.props[pluralName].pagination.totalPages))].map((_, i) => (
-											<a href="javascript:void(0)" onClick={this.handleChangePage.bind(this, i + 1)} className={"page-btn" + (((i + 1) == this.state.current_page) ? " active" : "")}>{i + 1}</a>
+											<a href="javascript:void(0)" key={`pagination-link-${i}`} onClick={this.handleChangePage.bind(this, i + 1)} className={"page-btn" + (((i + 1) == this.state.current_page) ? " active" : "")}>{i + 1}</a>
 										))
 									}
 									{ !this.state.loading && this.props[pluralName].pagination.next !== ""
@@ -118,7 +122,8 @@ export default function(config, globalConfig) {
             <AdminSidebar ref="sidebar" 
                           onClose={this.handleCloseSidebar}
                           tinify={this.state.mode === "delete" || (this.state.currentAction && this.state.currentAction.tinify)}
-                          title={this.getSidebarTitle()}>
+                          title={this.getSidebarTitle()}
+													styles={sidebarStyles}>
               {this.getSidebarContent()}
             </AdminSidebar>
           </div>
