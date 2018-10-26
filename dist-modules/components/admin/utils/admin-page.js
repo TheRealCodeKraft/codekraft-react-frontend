@@ -17,13 +17,43 @@ exports.default = function (config, globalConfig) {
 
       var _this = _possibleConstructorReturn(this, (AdminPage.__proto__ || Object.getPrototypeOf(AdminPage)).call(this, props));
 
+      _this._handleSort = function (target, type) {
+        _this.setState({ sort: { target: target, type: type }, loading: true }, function () {
+          _this._handleUpdate();
+        });
+      };
+
+      _this._handleFilter = function (filters) {
+        _this.setState({ filters: filters, loading: true }, function () {
+          _this._handleUpdate();
+        });
+      };
+
+      _this._handleUpdate = function () {
+        var params = { all: true };
+        if (_this.state.filters) {
+          params = Object.assign(params, _this.state.filters);
+        }
+        if (config.pagination) {
+          params["page"] = _this.state.current_page;
+          params["per_page"] = config.pagination.per_page ? config.pagination.per_page : 10;
+        }
+        if (_this.state.sort) {
+          params["sort"] = _this.state.sort.target + '|' + _this.state.sort.type;
+        }
+        config.client["fetchAll"](params, function () {
+          _this.setState({ loading: false });
+        });
+      };
+
       _this.state = {
         loading: true,
         currentId: undefined,
         mode: "list",
         currentAction: undefined,
         current_page: 1,
-        per_page: 10
+        per_page: 10,
+        sort: null
       };
 
       _this.handleCloseSidebar = _this.handleCloseSidebar.bind(_this);
@@ -48,9 +78,7 @@ exports.default = function (config, globalConfig) {
         if (config.client) {
           if (config.client["fetchAll"]) {
             var self = this;
-            config.client["fetchAll"](config.pagination ? { page: this.state.current_page, per_page: config.pagination.per_page ? config.pagination.per_page : 10, all: true } : { all: true }, function () {
-              self.setState({ loading: false });
-            });
+            this._handleUpdate();
           }
         }
       }
@@ -90,6 +118,8 @@ exports.default = function (config, globalConfig) {
             'div',
             null,
             this.props[pluralName] ? React.createElement(_list2.default, { attributes: config.list.attributes,
+              loading: this.state.loading,
+              filters: config.list.filters,
               actions: config.list.actions,
               form: config.form,
               items: config.pagination ? this.props[pluralName].list : this.props[pluralName],
@@ -98,7 +128,9 @@ exports.default = function (config, globalConfig) {
               onEdit: this.handleEdit,
               onCustomAction: this.handleCustomAction,
               config: globalConfig,
-              current_page: this.state.current_page
+              current_page: this.state.current_page,
+              onSort: this._handleSort,
+              onApplyFilters: this._handleFilter
             }) : null,
             config.pagination ? React.createElement(
               'div',
@@ -228,9 +260,7 @@ exports.default = function (config, globalConfig) {
         if (e) e.preventDefault();
         if (this.state.current_page !== i) {
           this.setState({ current_page: i, loading: true }, function () {
-            config.client["fetchAll"]({ page: _this5.state.current_page, per_page: config.pagination.per_page ? config.pagination.per_page : 10 }, function () {
-              _this5.setState({ loading: false });
-            });
+            _this5._handleUpdate();
           });
         }
       }

@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -15,41 +15,64 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var React = require("react");
 
 var AdminPageListHeader = function (_React$Component) {
-  _inherits(AdminPageListHeader, _React$Component);
+	_inherits(AdminPageListHeader, _React$Component);
 
-  function AdminPageListHeader() {
-    _classCallCheck(this, AdminPageListHeader);
+	function AdminPageListHeader() {
+		_classCallCheck(this, AdminPageListHeader);
 
-    return _possibleConstructorReturn(this, (AdminPageListHeader.__proto__ || Object.getPrototypeOf(AdminPageListHeader)).apply(this, arguments));
-  }
+		return _possibleConstructorReturn(this, (AdminPageListHeader.__proto__ || Object.getPrototypeOf(AdminPageListHeader)).apply(this, arguments));
+	}
 
-  _createClass(AdminPageListHeader, [{
-    key: "render",
-    value: function render() {
-      var header = [],
-          label = undefined;
-      for (var attrIndex in this.props.attributes) {
-        label = this.props.attributes[attrIndex];
-        if (label instanceof Object) {
-          if (label.hidden) continue;
-          label = label.label;
-        }
-        header.push(React.createElement(
-          "div",
-          { key: "header-row-attr-" + attrIndex },
-          label
-        ));
-      }
-      header.push(React.createElement("div", { key: "header-row-attr-actions admin-list-header-actions" }));
-      return React.createElement(
-        "div",
-        { className: "admin-list-header" },
-        header
-      );
-    }
-  }]);
+	_createClass(AdminPageListHeader, [{
+		key: "render",
+		value: function render() {
+			var header = [],
+			    attribute,
+			    label = undefined,
+			    name = undefined,
+			    sortable = true;
+			for (var attrIndex in this.props.attributes) {
+				attribute = this.props.attributes[attrIndex];
+				if (attribute instanceof Object) {
+					if (attribute.hidden) continue;
+					name = attribute.name;
+					sortable = attribute.sortable !== undefined ? attribute.sortable : true;
+					label = attribute.label;
+				} else {
+					label = attribute;
+				}
 
-  return AdminPageListHeader;
+				header.push(React.createElement(
+					"div",
+					{ key: "header-row-attr-" + attrIndex },
+					label,
+					sortable ? [React.createElement(
+						"a",
+						{ key: "sort-" + attrIndex + "-up", href: "javascript:void(0)", onClick: this._handleSort.bind(this, name, "up") },
+						React.createElement("i", { className: "fa fa-sort-up" })
+					), React.createElement(
+						"a",
+						{ key: "sort-" + attrIndex + "-down", href: "javascript:void(0)", onClick: this._handleSort.bind(this, name, "down") },
+						React.createElement("i", { className: "fa fa-sort-down" })
+					)] : null
+				));
+			}
+			header.push(React.createElement("div", { key: "header-row-attr-actions admin-list-header-actions" }));
+
+			return React.createElement(
+				"div",
+				{ className: "admin-list-header" },
+				header
+			);
+		}
+	}, {
+		key: "_handleSort",
+		value: function _handleSort(target, type) {
+			if (this.props.onSort) this.props.onSort(target, type);
+		}
+	}]);
+
+	return AdminPageListHeader;
 }(React.Component);
 
 exports.default = AdminPageListHeader;

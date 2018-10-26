@@ -3,18 +3,47 @@ var React = require("react")
 class AdminPageListHeader extends React.Component {
 
   render() {
-    var header = [], label = undefined
+    var header = [], attribute, label = undefined, name = undefined, sortable = true
     for (var attrIndex in this.props.attributes) {
-      label = this.props.attributes[attrIndex]
-      if (label instanceof Object) {
-        if (label.hidden) continue
-        label = label.label
-      }
-      header.push(<div key={"header-row-attr-" + attrIndex}>{label}</div>)
+      attribute = this.props.attributes[attrIndex]
+      if (attribute instanceof Object) {
+        if (attribute.hidden) continue
+				name = attribute.name
+				sortable = (attribute.sortable !== undefined) ? attribute.sortable : true
+        label = attribute.label
+      } else {
+				label = attribute
+			}
+
+      header.push(
+				<div key={"header-row-attr-" + attrIndex}>
+					{label}
+					{ sortable
+						? [
+								<a key={`sort-${attrIndex}-up`} href="javascript:void(0)" onClick={this._handleSort.bind(this, name, "up")}>
+									<i className="fa fa-sort-up" />
+								</a>,
+								<a key={`sort-${attrIndex}-down`} href="javascript:void(0)" onClick={this._handleSort.bind(this, name, "down")}>
+									<i className="fa fa-sort-down" />
+								</a>
+							]
+						: null
+					}
+				</div>
+			)
     }
     header.push(<div key="header-row-attr-actions admin-list-header-actions"></div>)
-    return <div className="admin-list-header">{header}</div>
+
+    return (
+			<div className="admin-list-header">	
+				{header}
+			</div>
+		)
   }
+
+	_handleSort(target, type) {
+		if (this.props.onSort) this.props.onSort(target, type)
+	}
 
 }
 

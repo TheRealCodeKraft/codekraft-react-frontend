@@ -17,12 +17,17 @@ import _ForgotPassword from './components/offline/forgot-password'
 import _Signup from './components/offline/signup'
 import _ResetPassword from './components/offline/reset-password'
 
+import _AdminPage from './components/admin/utils/admin-page'
+import _AdminPageList from './components/admin/utils/admin-page/list'
+
 import _ShowForAcls from './components/utils/show-for-acls'
 
 import _StorageService from './api/client/storage/storage'
 
 exports.Bootstrap = _Bootstrap
 exports.Form = _Form
+exports.AdminPage = _AdminPage
+exports.AdminPageList = _AdminPageList
 exports.ApiClient = _ApiClient
 exports.Header = _Header
 exports.Login = _Login

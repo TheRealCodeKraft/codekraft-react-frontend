@@ -28,7 +28,7 @@ class ShowForAcls extends Component {
 
 function mapStateToProps(state) {
     return { 
-        userGrant: (state.userState.me ? state.userState.me.role : null)
+        userGrant: (state.userState.me ? (state.userState.me.type || state.userState.me.role) : null)
     };
 }
 

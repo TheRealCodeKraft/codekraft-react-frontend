@@ -1,5 +1,6 @@
 var React = require("react")
 
+import Filters from "./list/header/filters"
 import AdminPageListHeader from './list/header'
 import AdminPageListRow from './list/row'
 
@@ -15,7 +16,16 @@ class AdminPageList extends React.Component {
 
   render() {
 		let rows = null
-		if (this.props.items) {
+		if (this.props.loading) {
+			rows = []
+			rows.push(
+				<div className="admin-list-row">
+					<div className="admin-list-cell">
+						<div className="loader-dots" />
+					</div>
+				</div>
+			)
+		} else if (this.props.items) {
 			rows = this.props.items.map((item, index) => (
 				<AdminPageListRow
 					key={"admin-list-row-" + index}
@@ -35,7 +45,18 @@ class AdminPageList extends React.Component {
 
     return (
       <div className="admin-list">
-        <AdminPageListHeader attributes={this.props.attributes} />
+				{ this.props.filters
+					? <Filters
+							filters={this.props.filters}
+							attributes={this.props.attributes}
+							onApply={this.props.onApplyFilters}
+						/>
+					: null
+				}
+        <AdminPageListHeader 
+					attributes={this.props.attributes} 
+					onSort={this.props.onSort}
+				/>
 				<div className="admin-list-body">
 	        {rows}
 				</div>

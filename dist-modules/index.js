@@ -50,6 +50,14 @@ var _resetPassword = require('./components/offline/reset-password');
 
 var _resetPassword2 = _interopRequireDefault(_resetPassword);
 
+var _adminPage = require('./components/admin/utils/admin-page');
+
+var _adminPage2 = _interopRequireDefault(_adminPage);
+
+var _list = require('./components/admin/utils/admin-page/list');
+
+var _list2 = _interopRequireDefault(_list);
+
 var _showForAcls = require('./components/utils/show-for-acls');
 
 var _showForAcls2 = _interopRequireDefault(_showForAcls);
@@ -70,6 +78,8 @@ exports.Bootstrap = _bootstrap2.default; /*
                                          */
 
 exports.Form = _form2.default;
+exports.AdminPage = _adminPage2.default;
+exports.AdminPageList = _list2.default;
 exports.ApiClient = _apiClient2.default;
 exports.Header = _header2.default;
 exports.Login = _login2.default;

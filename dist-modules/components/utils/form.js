@@ -105,7 +105,7 @@ var Form = function (_React$Component) {
 					if (this.props.reduxState[field.values.targetState][field.values.targetValue] && !this.props.reduxState[field.values.targetState][field.values.targetValue].pagination) {
 						loadedData[field.name] = this.props.reduxState[field.values.targetState][field.values.targetValue];
 					} else {
-						this.props.clients[field.values.client][field.values.func]({}, null, field.values.offline || false);
+						this.props.clients[field.values.client][field.values.func](field.values.func == "fetchAll" ? { all: true } : {}, null, field.values.offline || false);
 						loadingData.push(field);
 					}
 				}
@@ -496,7 +496,7 @@ var Form = function (_React$Component) {
 				default:
 					if (value == null) value = "";
 					if (field.component) {
-						input = React.createElement(field.component, { key: this.props.id + "-{field.component.name}-{field.name}", className: "form-control", field: field, name: fieldName, value: value, onChange: this.handleInputChange.bind(this, field) });
+						input = React.createElement(field.component, { key: this.props.id + "-{field.component.name}-{field.name}", className: "form-control", field: field, name: fieldName, value: value, entity: this.state.values, onChange: this.handleInputChange.bind(this, field) });
 					} else {
 						input = React.createElement("input", { key: this.props.id + "-input-default-" + fieldName, className: "form-control", title: field.title, name: fieldName, id: fieldName, type: field.type, value: value, placeholder: field.placeholder, onChange: this.handleInputChange.bind(this, field) });
 					}

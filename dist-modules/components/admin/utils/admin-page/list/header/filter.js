@@ -1,16 +1,14 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+	value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = require('react-redux');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20,50 +18,42 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-/**
- * Show children only if acls match current user grant grant_level
- * eg :
-    <ShowForAcls grants={["staff"]}>
-        <OtherComponents />
-        ...
-    </ShowForAcls>
- * @note You can pass a needAuthenticated param to the component to check if user is logged too
- *       If your url is already protected against not connected user you can leave it ;)
- */
-var ShowForAcls = function (_Component) {
-    _inherits(ShowForAcls, _Component);
+var Filter = function (_React$Component) {
+	_inherits(Filter, _React$Component);
 
-    function ShowForAcls() {
-        _classCallCheck(this, ShowForAcls);
+	function Filter() {
+		var _ref;
 
-        return _possibleConstructorReturn(this, (ShowForAcls.__proto__ || Object.getPrototypeOf(ShowForAcls)).apply(this, arguments));
-    }
+		var _temp, _this, _ret;
 
-    _createClass(ShowForAcls, [{
-        key: 'render',
-        value: function render() {
-            var self = this;
-            if (!this.props.authenticated && this.props.needAuthenticated === true || !this.props.userGrant) {
-                return false;
-            }
+		_classCallCheck(this, Filter);
 
-            var found = this.props.grants ? this.props.grants.filter(function (gl) {
-                return gl === self.props.userGrant;
-            }) : ["ok"];
-            if (found.length === 0) {
-                return false;
-            }
-            return _react2.default.Children.only(this.props.children);
-        }
-    }]);
+		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+			args[_key] = arguments[_key];
+		}
 
-    return ShowForAcls;
-}(_react.Component);
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Filter.__proto__ || Object.getPrototypeOf(Filter)).call.apply(_ref, [this].concat(args))), _this), _this._handleChange = function (e) {
+			_this.props.onChange(_this.props.filter.name, e.target.value);
+		}, _temp), _possibleConstructorReturn(_this, _ret);
+	}
 
-function mapStateToProps(state) {
-    return {
-        userGrant: state.userState.me ? state.userState.me.type || state.userState.me.role : null
-    };
-}
+	_createClass(Filter, [{
+		key: "render",
+		value: function render() {
+			return _react2.default.createElement(
+				"div",
+				{ className: "admin-list-filter-container" },
+				_react2.default.createElement(
+					"span",
+					{ className: "filter-identifier" },
+					this.props.filter.label || this.props.attribute.label
+				),
+				_react2.default.createElement("input", { type: "text", onChange: this._handleChange })
+			);
+		}
+	}]);
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(ShowForAcls);
+	return Filter;
+}(_react2.default.Component);
+
+exports.default = Filter;
