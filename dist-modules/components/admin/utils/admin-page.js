@@ -9,6 +9,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 exports.default = function (config, globalConfig) {
+  var sidebarStyles = function sidebarStyles() {
+    return {};
+  };
+  if (config.sidebar && config.sidebar.styles) {
+    sidebarStyles = config.sidebar.styles;
+  }
+
   var AdminPage = function (_React$Component) {
     _inherits(AdminPage, _React$Component);
 
@@ -112,7 +119,7 @@ exports.default = function (config, globalConfig) {
               !this.state.loading && [].concat(_toConsumableArray(Array(parseInt(this.props[pluralName].pagination.totalPages)))).map(function (_, i) {
                 return React.createElement(
                   'a',
-                  { href: 'javascript:void(0)', onClick: _this2.handleChangePage.bind(_this2, i + 1), className: "page-btn" + (i + 1 == _this2.state.current_page ? " active" : "") },
+                  { href: 'javascript:void(0)', key: 'pagination-link-' + i, onClick: _this2.handleChangePage.bind(_this2, i + 1), className: "page-btn" + (i + 1 == _this2.state.current_page ? " active" : "") },
                   i + 1
                 );
               }),
@@ -127,7 +134,8 @@ exports.default = function (config, globalConfig) {
               { ref: 'sidebar',
                 onClose: this.handleCloseSidebar,
                 tinify: this.state.mode === "delete" || this.state.currentAction && this.state.currentAction.tinify,
-                title: this.getSidebarTitle() },
+                title: this.getSidebarTitle(),
+                styles: sidebarStyles },
               this.getSidebarContent()
             )
           )
