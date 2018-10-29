@@ -31,6 +31,9 @@ var AdminPageListHeader = function (_React$Component) {
 			    label = undefined,
 			    name = undefined,
 			    sortable = true;
+			if (this.props.bulkable) {
+				header.push(React.createElement("div", null));
+			}
 			for (var attrIndex in this.props.attributes) {
 				attribute = this.props.attributes[attrIndex];
 				if (attribute instanceof Object) {

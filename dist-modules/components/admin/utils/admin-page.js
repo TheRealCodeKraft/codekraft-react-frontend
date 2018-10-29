@@ -24,6 +24,19 @@ exports.default = function (config, globalConfig) {
 
       var _this = _possibleConstructorReturn(this, (AdminPage.__proto__ || Object.getPrototypeOf(AdminPage)).call(this, props));
 
+      _this._buildAttributes = function (pluralName) {
+        var attributes = config.list.attributes;
+        var items = config.pagination ? _this.props[pluralName].list : _this.props[pluralName];
+        if (_this.props.attributesBuilder) attributes = _this.props.attributesBuilder(attributes, items);
+        return attributes;
+      };
+
+      _this._buildItems = function (pluralName) {
+        var items = config.pagination ? _this.props[pluralName].list : _this.props[pluralName];
+        if (_this.props.itemsBuilder) items = _this.props.itemsBuilder(items);
+        return items;
+      };
+
       _this._handleSort = function (target, type) {
         _this.setState({ sort: { target: target, type: type }, loading: true }, function () {
           _this._handleUpdate();
@@ -124,12 +137,13 @@ exports.default = function (config, globalConfig) {
           React.createElement(
             'div',
             null,
-            this.props[pluralName] ? React.createElement(_list2.default, { attributes: config.list.attributes,
+            this.props[pluralName] ? React.createElement(_list2.default, { attributes: this._buildAttributes(pluralName),
               loading: this.state.loading,
               filters: config.list.filters,
               actions: config.list.actions,
+              bulkable: config.list.bulkable,
               form: config.form,
-              items: config.pagination ? this.props[pluralName].list : this.props[pluralName],
+              items: this._buildItems(pluralName),
               onDelete: this.handleDelete,
               onSee: this.handleSee,
               onEdit: this.handleEdit,

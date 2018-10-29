@@ -4,6 +4,9 @@ class AdminPageListHeader extends React.Component {
 
   render() {
     var header = [], attribute, label = undefined, name = undefined, sortable = true
+		if (this.props.bulkable) {
+			header.push(<div />)
+		}
     for (var attrIndex in this.props.attributes) {
       attribute = this.props.attributes[attrIndex]
       if (attribute instanceof Object) {

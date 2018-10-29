@@ -66,6 +66,7 @@ var AdminPageList = function (_React$Component) {
 						key: "admin-list-row-" + index,
 						index: index,
 						item: item,
+						bulkable: _this2.props.bulkable,
 						attributes: _this2.props.attributes,
 						actions: _this2.props.actions,
 						form: _this2.props.form,
@@ -87,6 +88,7 @@ var AdminPageList = function (_React$Component) {
 					onApply: this.props.onApplyFilters
 				}) : null,
 				React.createElement(_header2.default, {
+					bulkable: this.props.bulkable,
 					attributes: this.props.attributes,
 					onSort: this.props.onSort
 				}),

@@ -81,12 +81,13 @@ export default function(config, globalConfig) {
           {this.buildWatchers()}
           <div>
 						{ this.props[pluralName]
-            	? <AdminPageList attributes={config.list.attributes} 
+            	? <AdminPageList attributes={this._buildAttributes(pluralName)}
 															 loading={this.state.loading}
 															 filters={config.list.filters}
 															 actions={config.list.actions}
+															 bulkable={config.list.bulkable}
 															 form={config.form}
-															 items={(config.pagination) ? this.props[pluralName].list : this.props[pluralName]}
+															 items={this._buildItems(pluralName)}
 															 onDelete={this.handleDelete}
 															 onSee={this.handleSee}
 															 onEdit={this.handleEdit}
@@ -207,6 +208,19 @@ export default function(config, globalConfig) {
       }
       return content
     }
+
+		_buildAttributes = (pluralName) => {
+			var attributes = config.list.attributes
+			var items = (config.pagination) ? this.props[pluralName].list : this.props[pluralName]
+			if (this.props.attributesBuilder) attributes = this.props.attributesBuilder(attributes, items)
+			return attributes
+		}
+
+		_buildItems = (pluralName) => {
+			var items = (config.pagination) ? this.props[pluralName].list : this.props[pluralName]
+			if (this.props.itemsBuilder) items = this.props.itemsBuilder(items)
+			return items
+		}
 
 		handleChangePage(i, e) {
 			if (e) e.preventDefault()

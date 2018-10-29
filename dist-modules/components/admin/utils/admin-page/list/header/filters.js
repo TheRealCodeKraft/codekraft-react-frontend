@@ -36,14 +36,24 @@ var Filters = function (_React$Component) {
 			args[_key] = arguments[_key];
 		}
 
-		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Filters.__proto__ || Object.getPrototypeOf(Filters)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _this._handleChange = function (target, value) {
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Filters.__proto__ || Object.getPrototypeOf(Filters)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _this._handleChange = function (filter, value) {
 			var state = _this.state;
-			if (value == "" || !value) {
+			var target = filter.name;
+			console.log(target + " : " + value);
+			if (value == "" || !value || value == "off") {
 				if (state[target]) {
 					delete state[target];
 				}
 			} else {
-				state[target] = value;
+				if (filter.type == "checkbox") {
+					if (state[target]) {
+						delete state[target];
+					} else {
+						state[target] = true;
+					}
+				} else {
+					state[target] = value;
+				}
 			}
 			_this.setState(state);
 		}, _this._handleFilter = function () {
@@ -60,6 +70,7 @@ var Filters = function (_React$Component) {
 				"div",
 				{ className: "admin-list-header-filters" },
 				this.props.filters.map(function (filter) {
+					filter = filter instanceof Object ? filter : { name: filter };
 					return _react2.default.createElement(_filter2.default, {
 						attribute: _this2.props.attributes.find(function (a) {
 							return a.name == filter.name;

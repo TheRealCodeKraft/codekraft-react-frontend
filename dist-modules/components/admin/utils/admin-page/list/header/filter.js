@@ -32,8 +32,12 @@ var Filter = function (_React$Component) {
 			args[_key] = arguments[_key];
 		}
 
-		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Filter.__proto__ || Object.getPrototypeOf(Filter)).call.apply(_ref, [this].concat(args))), _this), _this._handleChange = function (e) {
-			_this.props.onChange(_this.props.filter.name, e.target.value);
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Filter.__proto__ || Object.getPrototypeOf(Filter)).call.apply(_ref, [this].concat(args))), _this), _this._buildComponent = function () {
+			var component = _react2.default.createElement("input", { type: _this.props.filter.type, onChange: _this._handleChange });
+			switch (_this.props.filter.type) {}
+			return component;
+		}, _this._handleChange = function (e) {
+			_this.props.onChange(_this.props.filter, e.target.value);
 		}, _temp), _possibleConstructorReturn(_this, _ret);
 	}
 
@@ -48,7 +52,7 @@ var Filter = function (_React$Component) {
 					{ className: "filter-identifier" },
 					this.props.filter.label || this.props.attribute.label
 				),
-				_react2.default.createElement("input", { type: "text", onChange: this._handleChange })
+				this._buildComponent()
 			);
 		}
 	}]);

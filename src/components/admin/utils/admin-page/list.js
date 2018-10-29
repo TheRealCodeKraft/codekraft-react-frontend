@@ -31,6 +31,7 @@ class AdminPageList extends React.Component {
 					key={"admin-list-row-" + index}
 					index={index}
 					item={item}
+					bulkable={this.props.bulkable}
 					attributes={this.props.attributes}
 					actions={this.props.actions}
 					form={this.props.form}
@@ -54,6 +55,7 @@ class AdminPageList extends React.Component {
 					: null
 				}
         <AdminPageListHeader 
+					bulkable={this.props.bulkable}
 					attributes={this.props.attributes} 
 					onSort={this.props.onSort}
 				/>

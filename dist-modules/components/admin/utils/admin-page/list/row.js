@@ -37,6 +37,13 @@ var AdminPageListRow = function (_React$Component) {
           attribute = undefined,
           name = undefined,
           style = undefined;
+      if (this.props.bulkable) {
+        row.push(React.createElement(
+          "div",
+          { key: this.props.item.id + "-bulk-chk" },
+          React.createElement("input", { type: "checkbox" })
+        ));
+      }
       for (var attrIndex in this.props.attributes) {
         attribute = this.props.attributes[attrIndex];
         if (attribute instanceof Object) {

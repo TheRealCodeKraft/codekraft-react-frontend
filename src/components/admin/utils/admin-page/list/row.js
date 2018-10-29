@@ -14,6 +14,9 @@ class AdminPageListRow extends React.Component {
 
   render() {
     var row = [], attribute = undefined, name = undefined, style = undefined
+		if (this.props.bulkable) {
+			row.push(<div key={`${this.props.item.id}-bulk-chk`}><input type="checkbox" /></div>)
+		}
     for (var attrIndex in this.props.attributes) {
       attribute = this.props.attributes[attrIndex]
       if (attribute instanceof Object) {
