@@ -42,43 +42,41 @@ class App extends React.Component {
 	}
 
 	render() {
-		if (!this.state.loaded) return null
+		if (!this.state.loaded) {
+			return null
+		}
+
+		let CableWrapper = ({ children }) => (children)
+		let url
+		if (this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined)) {
+			CableWrapper = ActionCableProvider
+			url = process.env.CABLE_URL + "/?token=" + this.props.token.access_token
+		}
+
+		let footer
+		if (this.props.navigation.footer) {
+			footer = (<this.props.navigation.footer />)
+		}
 
 		return (
 			<this.props.navigation.mainWrapper navigation={this.props.navigation} location={this.props.location}>
-				{this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined)
-				 ? <ActionCableProvider url={process.env.CABLE_URL + "/?token=" + this.props.token.access_token}>
-						<Switch>
-							 <Route path="/dashboard" render={() => <Header menu={this.props.navigation.dashboard.menu} root={this.props.navigation.dashboard.root} custom={this.props.navigation.dashboard.header} location={this.props.location} name="dashboard" mainTitle={this.props.config.mainTitle} />} />
-							 <Route path="/admin" render={() => <Header menu={this.props.navigation.admin.menu} root={this.props.navigation.admin.root} custom={this.props.navigation.admin.header} location={this.props.location} admin={true} name="admin" mainTitle={this.props.config.mainTitle} />} />
-							 <Route path="/" render={() => <Header menu={false ? this.props.navigation.dashboard.menu : this.props.navigation.offline.menu} root={this.props.navigation.offline.root} custom={this.props.navigation.offline.header} location={this.props.location} token={this.props.token} name="offline" mainTitle={this.props.config.mainTitle} />} />
-						</Switch>
-					</ActionCableProvider>
-				: <Switch>
-						 <Route path="/dashboard" render={() => <Header menu={this.props.navigation.dashboard.menu} root={this.props.navigation.dashboard.root} custom={this.props.navigation.dashboard.header} location={this.props.location} name="dashboard" mainTitle={this.props.config.mainTitle} />} />
-						 <Route path="/admin" render={() => <Header menu={this.props.navigation.admin.menu} root={this.props.navigation.admin.root} custom={this.props.navigation.admin.header} location={this.props.location} admin={true} name="admin" mainTitle={this.props.config.mainTitle} />} />
-						 <Route path="/" render={() => <Header menu={false ? this.props.navigation.dashboard.menu : this.props.navigation.offline.menu} root={this.props.navigation.offline.root} custom={this.props.navigation.offline.header} location={this.props.location} token={this.props.token} name="offline" mainTitle={this.props.config.mainTitle} />} />
+				<CableWrapper url={url}>
+					<Switch>
+						<Route path="/dashboard" render={() => <Header menu={this.props.navigation.dashboard.menu} root={this.props.navigation.dashboard.root} custom={this.props.navigation.dashboard.header} location={this.props.location} name="dashboard" mainTitle={this.props.config.mainTitle} />} />
+						<Route path="/admin" render={() => <Header menu={this.props.navigation.admin.menu} root={this.props.navigation.admin.root} custom={this.props.navigation.admin.header} location={this.props.location} admin={true} name="admin" mainTitle={this.props.config.mainTitle} />} />
+						<Route path="/" render={() => <Header menu={false ? this.props.navigation.dashboard.menu : this.props.navigation.offline.menu} root={this.props.navigation.offline.root} custom={this.props.navigation.offline.header} location={this.props.location} token={this.props.token} name="offline" mainTitle={this.props.config.mainTitle} />} />
 					</Switch>
-				}
-
-				{this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined)
-				 ? <ActionCableProvider url={process.env.CABLE_URL + "/?token=" + this.props.token.access_token}>
-						 <Switch>
-							 <Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />
-							 <Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
-							 <Route path="/" component={Root("offline", this.props.navigation.offline)} />
-						 </Switch>
-					 </ActionCableProvider>
-				 : <Switch>
-						 <Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />
-						 <Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
-						 <Route path="/" component={Root("offline", this.props.navigation.offline)} />
-					 </Switch>}
-				{this.props.navigation.footer
-				 ? <this.props.navigation.footer />
-				 : null}
+				</CableWrapper>
+				<CableWrapper url={url}>
+					<Switch>
+						<Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />
+						<Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
+						<Route path="/" component={Root("offline", this.props.navigation.offline, this.props.location)} />
+					</Switch>
+				</CableWrapper>
+				{footer}
 			</this.props.navigation.mainWrapper>
-		);
+		)
 	}
 }
 
