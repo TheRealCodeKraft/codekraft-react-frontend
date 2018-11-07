@@ -249,11 +249,11 @@ var ApiClient = function(store) {
         			if (me.error) {
           			if (callback) callback(data)
         			} else {
+          			if (callback) callback(data)
           			store.dispatch({
             			type: "ME",
             			user: me
           			})
-          			if (callback) callback(data)
         			}
       			})
 					})

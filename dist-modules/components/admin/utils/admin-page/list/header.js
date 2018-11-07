@@ -32,7 +32,11 @@ var AdminPageListHeader = function (_React$Component) {
 			    name = undefined,
 			    sortable = true;
 			if (this.props.bulkable) {
-				header.push(React.createElement("div", null));
+				header.push(React.createElement(
+					"div",
+					null,
+					React.createElement("input", { type: "checkbox", checked: this.props.allSelected, onChange: this.props.onSelectAll })
+				));
 			}
 			for (var attrIndex in this.props.attributes) {
 				attribute = this.props.attributes[attrIndex];

@@ -31,7 +31,7 @@ class Filters extends React.Component {
 		var state = this.state
 		var target = filter.name
 		console.log(target + " : " + value)
-		if (value == "" || !value || value == "off") {
+		if (value == "" || !value || value == "off" || value == -1) {
 			if (state[target]) {
 				delete state[target]
 			}

@@ -34,7 +34,26 @@ var Filter = function (_React$Component) {
 
 		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Filter.__proto__ || Object.getPrototypeOf(Filter)).call.apply(_ref, [this].concat(args))), _this), _this._buildComponent = function () {
 			var component = _react2.default.createElement("input", { type: _this.props.filter.type, onChange: _this._handleChange });
-			switch (_this.props.filter.type) {}
+			switch (_this.props.filter.type) {
+				case "select":
+					console.log(_this.props.filter.values);
+					component = _react2.default.createElement(
+						"select",
+						{ onChange: _this._handleChange },
+						_react2.default.createElement(
+							"option",
+							{ value: -1 },
+							_this.props.filter.placeholder
+						),
+						_this.props.filter.values.map(function (v) {
+							return _react2.default.createElement(
+								"option",
+								{ value: v[_this.props.filter.key] },
+								v[_this.props.filter.value]
+							);
+						})
+					);
+			}
 			return component;
 		}, _this._handleChange = function (e) {
 			_this.props.onChange(_this.props.filter, e.target.value);

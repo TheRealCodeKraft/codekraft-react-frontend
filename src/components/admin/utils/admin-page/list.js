@@ -6,6 +6,10 @@ import AdminPageListRow from './list/row'
 
 class AdminPageList extends React.Component {
 
+	state = {
+		selectedRows: []
+	}
+
   constructor(props) {
     super(props)
     this.handleDelete = this.handleDelete.bind(this)
@@ -31,7 +35,8 @@ class AdminPageList extends React.Component {
 					key={"admin-list-row-" + index}
 					index={index}
 					item={item}
-					bulkable={this.props.bulkable}
+					bulkable={(typeof this.props.bulkable === "function") ? this.props.bulkable() : this.props.bulkable}
+					selected={this.state.selectedRows.find(r => r.id == item.id) !== undefined}
 					attributes={this.props.attributes}
 					actions={this.props.actions}
 					form={this.props.form}
@@ -39,6 +44,7 @@ class AdminPageList extends React.Component {
 					onSee={this.handleSee}
 					onEdit={this.handleEdit}
 					onCustomAction={this.handleCustomAction}
+					onSelected={this._handleRowSelected}
 					config={this.props.config}
 				/>
 			))
@@ -55,9 +61,11 @@ class AdminPageList extends React.Component {
 					: null
 				}
         <AdminPageListHeader 
-					bulkable={this.props.bulkable}
+					bulkable={(typeof this.props.bulkable === "function") ? this.props.bulkable() : this.props.bulkable}
 					attributes={this.props.attributes} 
+					allSelected={this.props.items.length == this.state.selectedRows.length}
 					onSort={this.props.onSort}
+					onSelectAll={this._handleSelectAll}
 				/>
 				<div className="admin-list-body">
 	        {rows}
@@ -81,6 +89,28 @@ class AdminPageList extends React.Component {
   handleCustomAction(id, action) {
     if (this.props.onCustomAction) this.props.onCustomAction(id, action)
   }
+
+	_handleRowSelected = (item) => {
+		var selectedRows = this.state.selectedRows
+		if (selectedRows.find(r => r.id == item.id)) {
+			selectedRows.splice(selectedRows.map(r => r.id).indexOf(item.id), 1)
+		} else {
+			selectedRows.push(item)
+		}
+		this.setState({selectedRows})
+	}
+
+	_handleSelectAll = () => {
+		var selectedRows = []
+		if (this.state.selectedRows.length !== this.props.items.length) {
+			selectedRows = JSON.parse(JSON.stringify(this.props.items))
+		}
+		this.setState({selectedRows})
+	}
+
+	getSelectedRows = () => {
+		return this.state.selectedRows
+	}
 
 }
 

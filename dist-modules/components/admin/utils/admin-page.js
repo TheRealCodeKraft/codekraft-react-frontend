@@ -32,7 +32,9 @@ exports.default = function (config, globalConfig) {
       };
 
       _this._buildItems = function (pluralName) {
-        var items = config.pagination ? _this.props[pluralName].list : _this.props[pluralName];
+        var list = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+        var items = list || (config.pagination ? _this.props[pluralName].list : _this.props[pluralName]);
         if (_this.props.itemsBuilder) items = _this.props.itemsBuilder(items);
         return items;
       };
@@ -44,7 +46,7 @@ exports.default = function (config, globalConfig) {
       };
 
       _this._handleFilter = function (filters) {
-        _this.setState({ filters: filters, loading: true }, function () {
+        _this.setState({ filters: filters, loading: true, current_page: 1 }, function () {
           _this._handleUpdate();
         });
       };
@@ -66,6 +68,14 @@ exports.default = function (config, globalConfig) {
         });
       };
 
+      _this.getSelectedRows = function () {
+        return _this.refs.list.getSelectedRows();
+      };
+
+      _this.getFilters = function () {
+        return _this.state.filters;
+      };
+
       _this.state = {
         loading: true,
         currentId: undefined,
@@ -73,7 +83,8 @@ exports.default = function (config, globalConfig) {
         currentAction: undefined,
         current_page: 1,
         per_page: 10,
-        sort: null
+        sort: null,
+        filters: []
       };
 
       _this.handleCloseSidebar = _this.handleCloseSidebar.bind(_this);
@@ -83,7 +94,6 @@ exports.default = function (config, globalConfig) {
       _this.handleDeleted = _this.handleDeleted.bind(_this);
       _this.handleSee = _this.handleSee.bind(_this);
       _this.handleEdit = _this.handleEdit.bind(_this);
-      _this.handleCustomAction = _this.handleCustomAction.bind(_this);
       _this.handleCustomActionFinished = _this.handleCustomActionFinished.bind(_this);
 
       _this.handleSubmitComplete = _this.handleSubmitComplete.bind(_this);
@@ -131,13 +141,27 @@ exports.default = function (config, globalConfig) {
                 React.createElement('i', { className: this.getIcon("new", "plus") }),
                 ' Nouveau'
               )
-            ) : null
+            ) : null,
+            config.list.actions.filter(function (a) {
+              return a.type == "general";
+            }).map(function (action) {
+              return React.createElement(
+                _reactBootstrap.Col,
+                { xs: 12, className: 'admin-new-button-row' },
+                React.createElement(
+                  'a',
+                  { href: 'javascript:void(0)', onClick: _this2.handleCustomAction.bind(_this2, null, action), className: 'admin-' + name + '-button' },
+                  action.label
+                )
+              );
+            })
           ),
           this.buildWatchers(),
           React.createElement(
             'div',
             null,
             this.props[pluralName] ? React.createElement(_list2.default, { attributes: this._buildAttributes(pluralName),
+              ref: 'list',
               loading: this.state.loading,
               filters: config.list.filters,
               actions: config.list.actions,
@@ -147,7 +171,7 @@ exports.default = function (config, globalConfig) {
               onDelete: this.handleDelete,
               onSee: this.handleSee,
               onEdit: this.handleEdit,
-              onCustomAction: this.handleCustomAction,
+              onCustomAction: this.handleCustomAction.bind(this),
               config: globalConfig,
               current_page: this.state.current_page,
               onSort: this._handleSort,
@@ -267,7 +291,14 @@ exports.default = function (config, globalConfig) {
             if (this.state.currentAction !== undefined) {
               if (this.state.currentAction.component) {
                 var Component = this.state.currentAction.component;
-                content = React.createElement(Component, _extends({}, config, { entity: entity, action: this.state.currentAction.action, onFinished: this.handleCustomActionFinished }));
+                content = React.createElement(Component, _extends({}, config, {
+                  entity: entity,
+                  builtItem: this._buildItems(null, [entity])[0],
+                  action: this.state.currentAction.action,
+                  selectedRows: this.refs.list.getSelectedRows(),
+                  filters: this.state.filters,
+                  onFinished: this.handleCustomActionFinished
+                }));
               }
             }
             break;
@@ -381,7 +412,7 @@ exports.default = function (config, globalConfig) {
     return props;
   }
 
-  return (0, _reactRouter.withRouter)((0, _reactRedux.connect)(mapStateToProps)(AdminPage));
+  return (0, _reactRedux.connect)(mapStateToProps, null, null, { withRef: true })(AdminPage);
 };
 
 var _reactRouter = require('react-router');

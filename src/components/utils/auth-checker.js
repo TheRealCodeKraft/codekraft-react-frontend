@@ -32,16 +32,15 @@ export default function(ComposedComponent, offline=false) {
           if (!this.props.me || this.props.me.email !== emailSplit[1]) {
             Auth.login({email: emailSplit[1], password: stampSplit[1]}, function(data) {
               UserClient.me()
-/*
-            if (data.error) {
-              self.props.history.push("/")
-            } else {
-              self.setState({checking: true}, function () {
-                UserClient.me()
-                self.props.history.push(self.props.location.pathname)
-              })
-            }
-*/
+
+							if (data.error) {
+								self.props.history.push("/")
+							} else {
+								self.setState({checking: true}, function () {
+									UserClient.me()
+									self.props.history.push(self.props.location.pathname)
+								})
+							}
             })
           } else {
             this.props.history.push(this.props.location.pathname)

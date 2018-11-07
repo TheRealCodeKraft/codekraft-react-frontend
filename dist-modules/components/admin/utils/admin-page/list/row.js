@@ -24,6 +24,10 @@ var AdminPageListRow = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (AdminPageListRow.__proto__ || Object.getPrototypeOf(AdminPageListRow)).call(this, props));
 
+    _this._handleRowSelected = function () {
+      _this.props.onSelected(_this.props.item);
+    };
+
     _this.handleDelete = _this.handleDelete.bind(_this);
     _this.handleSee = _this.handleSee.bind(_this);
     _this.handleEdit = _this.handleEdit.bind(_this);
@@ -41,7 +45,7 @@ var AdminPageListRow = function (_React$Component) {
         row.push(React.createElement(
           "div",
           { key: this.props.item.id + "-bulk-chk" },
-          React.createElement("input", { type: "checkbox" })
+          React.createElement("input", { checked: this.props.selected, type: "checkbox", onChange: this._handleRowSelected })
         ));
       }
       for (var attrIndex in this.props.attributes) {
@@ -137,7 +141,9 @@ var AdminPageListRow = function (_React$Component) {
           actions.push(React.createElement("a", { key: "action-edit-" + this.props.item.id, href: "#", onClick: this.handleEdit, className: "admin-action-button" + this.getIcon("edit", "pencil"), alt: "Modifier", title: "Modifier" }));
         }
       } else {
-        this.props.actions.map(function (action) {
+        this.props.actions.filter(function (a) {
+          return !a.type || a.type !== "general";
+        }).map(function (action) {
           if (action instanceof Object) {
             if (_this2.acceptCustomAction(action)) {
               actions.push(React.createElement(
@@ -188,7 +194,7 @@ var AdminPageListRow = function (_React$Component) {
           if (action.displayIf.values) {
             result = action.displayIf.values.indexOf(this.props.item[action.displayIf.property].toString()) === -1;
           } else {
-            result = this.props.item[action.displayIf.property].toString() !== action.displayIf.value.toString();
+            result = !action.displayIf.value && this.props.item[action.displayIf.property] || action.displayIf.value && !this.props.item[action.displayIf.property] || this.props.item[action.displayIf.property] && this.props.item[action.displayIf.property].toString() !== action.displayIf.value.toString();
           }
         } else {
           if (action.displayIf.values) {
@@ -216,7 +222,6 @@ var AdminPageListRow = function (_React$Component) {
     key: "handleEdit",
     value: function handleEdit(e) {
       e.preventDefault();
-      console.log(this.props.item.id);
       if (this.props.onEdit) this.props.onEdit(this.props.item.id);
     }
   }, {

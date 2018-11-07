@@ -34,7 +34,8 @@ export default function(config, globalConfig) {
         currentAction: undefined,
 				current_page: 1,
 				per_page: 10,
-				sort: null
+				sort: null,
+				filters: []
       }
 
       this.handleCloseSidebar = this.handleCloseSidebar.bind(this)
@@ -44,7 +45,6 @@ export default function(config, globalConfig) {
       this.handleDeleted = this.handleDeleted.bind(this)
       this.handleSee = this.handleSee.bind(this)
       this.handleEdit = this.handleEdit.bind(this)
-      this.handleCustomAction = this.handleCustomAction.bind(this)
       this.handleCustomActionFinished = this.handleCustomActionFinished.bind(this)
 
       this.handleSubmitComplete = this.handleSubmitComplete.bind(this)
@@ -71,17 +71,23 @@ export default function(config, globalConfig) {
             ? <globalConfig.subHeader {...globalConfig}  config={config} globalConfig={globalConfig} location={this.props.location} onNew={this.handleNew} />
            :   <div className="admin-page-header">
                  <h1><i className={config.icon ? ((globalConfig.iconSet ? globalConfig.iconSet : "fa fa-") + (config.icon ? config.icon : "terminal") + " text-warning") : ""}></i> {config.title}</h1>
-               {(!config.list.actions || config.list.actions.indexOf("new") !== -1)
+              {(!config.list.actions || config.list.actions.indexOf("new") !== -1)
                 ? <Col xs={12} className="admin-new-button-row">
-                   <a href="#" onClick={this.handleNew} className="admin-new-button"><i className={this.getIcon("new", "plus")} /> Nouveau</a>
-                 </Col>
+                  <a href="#" onClick={this.handleNew} className="admin-new-button"><i className={this.getIcon("new", "plus")} /> Nouveau</a>
+                  </Col>
                 : null
-               }
+              }
+							{ config.list.actions.filter(a => a.type == "general").map(action => (
+									<Col xs={12} className="admin-new-button-row">
+										<a href="javascript:void(0)" onClick={this.handleCustomAction.bind(this, null, action)} className={`admin-${name}-button`}>{action.label}</a>
+									 </Col>
+							))}
                </div>}
           {this.buildWatchers()}
           <div>
 						{ this.props[pluralName]
             	? <AdminPageList attributes={this._buildAttributes(pluralName)}
+															 ref="list"
 															 loading={this.state.loading}
 															 filters={config.list.filters}
 															 actions={config.list.actions}
@@ -91,7 +97,7 @@ export default function(config, globalConfig) {
 															 onDelete={this.handleDelete}
 															 onSee={this.handleSee}
 															 onEdit={this.handleEdit}
-															 onCustomAction={this.handleCustomAction}
+															 onCustomAction={this.handleCustomAction.bind(this)}
 															 config={globalConfig}
 															 current_page={this.state.current_page}
 															 onSort={this._handleSort}
@@ -201,7 +207,15 @@ export default function(config, globalConfig) {
           if (this.state.currentAction !== undefined) {
             if (this.state.currentAction.component) {
               var Component = this.state.currentAction.component
-              content = <Component {...config} entity={entity} action={this.state.currentAction.action} onFinished={this.handleCustomActionFinished} />
+              content = <Component 
+													{...config} 
+													entity={entity} 
+													builtItem={this._buildItems(null, [entity])[0]}
+													action={this.state.currentAction.action} 
+													selectedRows={this.refs.list.getSelectedRows()}
+													filters={this.state.filters}
+													onFinished={this.handleCustomActionFinished} 
+												/>
             }
           }
           break
@@ -216,8 +230,8 @@ export default function(config, globalConfig) {
 			return attributes
 		}
 
-		_buildItems = (pluralName) => {
-			var items = (config.pagination) ? this.props[pluralName].list : this.props[pluralName]
+		_buildItems = (pluralName, list=null) => {
+			var items = list || ((config.pagination) ? this.props[pluralName].list : this.props[pluralName])
 			if (this.props.itemsBuilder) items = this.props.itemsBuilder(items)
 			return items
 		}
@@ -301,7 +315,7 @@ export default function(config, globalConfig) {
 		}
 
 		_handleFilter = (filters) => {
-			this.setState({filters, loading: true}, () => {
+			this.setState({filters, loading: true, current_page: 1}, () => {
 				this._handleUpdate()
 			})
 		}
@@ -324,6 +338,14 @@ export default function(config, globalConfig) {
 
 		}
 
+		getSelectedRows = () => {
+			return this.refs.list.getSelectedRows()
+		}
+
+		getFilters = () => {
+			return this.state.filters
+		}
+
   }
 
   function getPluralName() {
@@ -337,5 +359,5 @@ export default function(config, globalConfig) {
     return props
   }
 
-  return withRouter(connect(mapStateToProps)(AdminPage))
+  return connect(mapStateToProps, null, null, { withRef: true })(AdminPage)
 }

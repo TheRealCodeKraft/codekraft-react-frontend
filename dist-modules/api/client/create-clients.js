@@ -31,14 +31,17 @@ function createClient(name, plural, store, ApiClient, localConfig) {
       var fetchAll = function fetchAll(params, callback) {
         var offline = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
         var append = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+        var dispatch = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : true;
 
         ApiClient.get(plural, params, function (data) {
-          var toDispatch = {
-            type: plural.toUpperCase()
-          };
-          toDispatch[plural] = data;
-          toDispatch["append"] = append;
-          store.dispatch(toDispatch);
+          if (dispatch) {
+            var toDispatch = {
+              type: plural.toUpperCase()
+            };
+            toDispatch[plural] = data;
+            toDispatch["append"] = append;
+            store.dispatch(toDispatch);
+          }
           if (callback) callback(data);
         }, offline);
       };

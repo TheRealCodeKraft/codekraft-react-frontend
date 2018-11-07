@@ -15,7 +15,7 @@ class AdminPageListRow extends React.Component {
   render() {
     var row = [], attribute = undefined, name = undefined, style = undefined
 		if (this.props.bulkable) {
-			row.push(<div key={`${this.props.item.id}-bulk-chk`}><input type="checkbox" /></div>)
+			row.push(<div key={`${this.props.item.id}-bulk-chk`}><input checked={this.props.selected} type="checkbox" onChange={this._handleRowSelected} /></div>)
 		}
     for (var attrIndex in this.props.attributes) {
       attribute = this.props.attributes[attrIndex]
@@ -94,28 +94,28 @@ class AdminPageListRow extends React.Component {
         actions.push(<a key={"action-edit-" + this.props.item.id} href="#" onClick={this.handleEdit} className={"admin-action-button" + this.getIcon("edit", "pencil")} alt="Modifier" title="Modifier"></a>)
       }
     } else {
-      this.props.actions.map(action => {
-        if (action instanceof Object) {
-          if (this.acceptCustomAction(action)) {
-            actions.push(<a href="#" key={"action-" + action.action + "-" + this.props.item.id} onClick={this.handleCustomAction.bind(this, action)} className={"admin-action-button " + this.getIcon(action.icon, "eye")} alt={action.label} title={action.label}>{action.icon ? "" : action.label}</a>)
-          }
-        } else {
-          switch(action) {
-            case "delete":
-              actions.push(<a key={"action-delete-" + this.props.item.id} href="#" onClick={this.handleDelete} className={"admin-action-button" + this.getIcon("trash", "trash")} alt="Supprimer" title="Supprimer"></a>)
-              break
-            case "see":
-              //actions.push(<a key={"action-see-" + this.props.item.id} href="#" onClick={this.handleSee} className={"admin-action-button" + this.getIcon("view", "eye")} alt="Afficher" title="Afficher"></a>)
-              break
-            case "edit":
-              if (this.props.form) {
-                actions.push(<a key={"action-edit-" + this.props.item.id} href="#" onClick={this.handleEdit} className={"admin-action-button" + this.getIcon("edit", "pencil")} alt="Modifier" title="Modifier"></a>)
-              }
-              break
-            default:
-              break
-          }
-        }
+      this.props.actions.filter(a => !a.type || a.type !== "general").map(action => {
+				if (action instanceof Object) {
+					if (this.acceptCustomAction(action)) {
+						actions.push(<a href="#" key={"action-" + action.action + "-" + this.props.item.id} onClick={this.handleCustomAction.bind(this, action)} className={"admin-action-button " + this.getIcon(action.icon, "eye")} alt={action.label} title={action.label}>{action.icon ? "" : action.label}</a>)
+					}
+				} else {
+					switch(action) {
+						case "delete":
+							actions.push(<a key={"action-delete-" + this.props.item.id} href="#" onClick={this.handleDelete} className={"admin-action-button" + this.getIcon("trash", "trash")} alt="Supprimer" title="Supprimer"></a>)
+							break
+						case "see":
+							//actions.push(<a key={"action-see-" + this.props.item.id} href="#" onClick={this.handleSee} className={"admin-action-button" + this.getIcon("view", "eye")} alt="Afficher" title="Afficher"></a>)
+							break
+						case "edit":
+							if (this.props.form) {
+								actions.push(<a key={"action-edit-" + this.props.item.id} href="#" onClick={this.handleEdit} className={"admin-action-button" + this.getIcon("edit", "pencil")} alt="Modifier" title="Modifier"></a>)
+							}
+							break
+						default:
+							break
+					}
+				}
         return true
       })
     }
@@ -135,7 +135,7 @@ class AdminPageListRow extends React.Component {
         if (action.displayIf.values) {
           result = (action.displayIf.values.indexOf(this.props.item[action.displayIf.property].toString()) === -1)
         } else {
-          result = (this.props.item[action.displayIf.property].toString() !== action.displayIf.value.toString())
+          result = ((!action.displayIf.value && this.props.item[action.displayIf.property]) || (action.displayIf.value && !this.props.item[action.displayIf.property]) || (this.props.item[action.displayIf.property] && this.props.item[action.displayIf.property].toString() !== action.displayIf.value.toString()))
         }
       } else {
         if (action.displayIf.values) {
@@ -160,7 +160,6 @@ class AdminPageListRow extends React.Component {
 
   handleEdit(e) {
     e.preventDefault()
-console.log(this.props.item.id)
     if (this.props.onEdit) this.props.onEdit(this.props.item.id)
   }
 
@@ -171,6 +170,10 @@ console.log(this.props.item.id)
 		}
     if (this.props.onCustomAction) this.props.onCustomAction(this.props.item.id, action)
   }
+
+	_handleRowSelected = () => {
+		this.props.onSelected(this.props.item)
+	}
 
 }
 

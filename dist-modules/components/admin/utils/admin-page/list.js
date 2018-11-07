@@ -36,6 +36,36 @@ var AdminPageList = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (AdminPageList.__proto__ || Object.getPrototypeOf(AdminPageList)).call(this, props));
 
+		_this.state = {
+			selectedRows: []
+		};
+
+		_this._handleRowSelected = function (item) {
+			var selectedRows = _this.state.selectedRows;
+			if (selectedRows.find(function (r) {
+				return r.id == item.id;
+			})) {
+				selectedRows.splice(selectedRows.map(function (r) {
+					return r.id;
+				}).indexOf(item.id), 1);
+			} else {
+				selectedRows.push(item);
+			}
+			_this.setState({ selectedRows: selectedRows });
+		};
+
+		_this._handleSelectAll = function () {
+			var selectedRows = [];
+			if (_this.state.selectedRows.length !== _this.props.items.length) {
+				selectedRows = JSON.parse(JSON.stringify(_this.props.items));
+			}
+			_this.setState({ selectedRows: selectedRows });
+		};
+
+		_this.getSelectedRows = function () {
+			return _this.state.selectedRows;
+		};
+
 		_this.handleDelete = _this.handleDelete.bind(_this);
 		_this.handleSee = _this.handleSee.bind(_this);
 		_this.handleEdit = _this.handleEdit.bind(_this);
@@ -66,7 +96,10 @@ var AdminPageList = function (_React$Component) {
 						key: "admin-list-row-" + index,
 						index: index,
 						item: item,
-						bulkable: _this2.props.bulkable,
+						bulkable: typeof _this2.props.bulkable === "function" ? _this2.props.bulkable() : _this2.props.bulkable,
+						selected: _this2.state.selectedRows.find(function (r) {
+							return r.id == item.id;
+						}) !== undefined,
 						attributes: _this2.props.attributes,
 						actions: _this2.props.actions,
 						form: _this2.props.form,
@@ -74,6 +107,7 @@ var AdminPageList = function (_React$Component) {
 						onSee: _this2.handleSee,
 						onEdit: _this2.handleEdit,
 						onCustomAction: _this2.handleCustomAction,
+						onSelected: _this2._handleRowSelected,
 						config: _this2.props.config
 					});
 				});
@@ -88,9 +122,11 @@ var AdminPageList = function (_React$Component) {
 					onApply: this.props.onApplyFilters
 				}) : null,
 				React.createElement(_header2.default, {
-					bulkable: this.props.bulkable,
+					bulkable: typeof this.props.bulkable === "function" ? this.props.bulkable() : this.props.bulkable,
 					attributes: this.props.attributes,
-					onSort: this.props.onSort
+					allSelected: this.props.items.length == this.state.selectedRows.length,
+					onSort: this.props.onSort,
+					onSelectAll: this._handleSelectAll
 				}),
 				React.createElement(
 					"div",

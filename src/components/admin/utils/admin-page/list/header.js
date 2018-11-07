@@ -5,7 +5,7 @@ class AdminPageListHeader extends React.Component {
   render() {
     var header = [], attribute, label = undefined, name = undefined, sortable = true
 		if (this.props.bulkable) {
-			header.push(<div />)
+			header.push(<div><input type="checkbox" checked={this.props.allSelected} onChange={this.props.onSelectAll} /></div>)
 		}
     for (var attrIndex in this.props.attributes) {
       attribute = this.props.attributes[attrIndex]
