@@ -83,10 +83,10 @@ class Signup extends React.Component {
       <div>
         <Form id="signup-form" 
               labels={this.props.labels}
-              fields={this.fields} 
-              submitLabel="M'enregistrer"
-              submitClass={this.props.submitClass ? this.props.submitClass : "btn btn-accent btn-signup"}  
-              onSubmit={this.handleSubmit} 
+              fields={this.fields}
+              submitLabel={this.props.submitLabel || "M'enregistrer"}
+              submitClass={this.props.submitClass ? this.props.submitClass : "btn btn-accent btn-signup"}
+              onSubmit={this.handleSubmit}
               service={{client: this.props.clients.UserClient, func: "signup"}}
               onSubmitComplete={this.handleSubmitComplete}
               onSubmitError={this.handleSubmitError}

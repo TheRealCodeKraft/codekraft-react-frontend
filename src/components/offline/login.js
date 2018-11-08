@@ -60,8 +60,9 @@ class Login extends React.Component {
         <Form id="login-form" 
               labels={this.props.labels}
               clients={this.props.clients}
-              fields={this.fields} 
-              submitLabel="Me connecter" 
+              fields={this.fields}
+              submitLabel={this.props.submitLabel ? this.props.submitLabel : "Me connecter"}
+              className={this.props.className}
               onSubmit={this.handleSubmit}
               onSubmitError={this.handleSubmitError}
               submitClass={this.props.submitClass ? this.props.submitClass : "btn btn-accent btn-signup"}
