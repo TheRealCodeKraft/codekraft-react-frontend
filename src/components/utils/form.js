@@ -163,7 +163,7 @@ class Form extends React.Component {
 			return (
 				<div className={"form-container " + (this.props.className ? this.props.className : "")}>
 				{this.props.entityId ? this.buildImageUploaders() : null}
-				<form encType='multipart/form-data' id={this.props.id} onSubmit={this.handleFormSubmit}>
+				<form encType='multipart/form-data' id={this.props.id} onSubmit={this.handleFormSubmit} className={this.props.className}>
 				{wrapper(this.props.fields.map(field => {
 					if (field.show === false) { return null }
 					if (field.type === "image-uploader") { return null }
