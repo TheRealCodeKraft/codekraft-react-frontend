@@ -40,7 +40,7 @@ class ResetPassword extends React.Component {
           <span>Nous n'avons pas réussi à vous authentifier</span>
           {!this.props.stamp.stamp_expiration_ok
            ? <div>
-               <span>Le lien que vous avez utilisé à expiré, il n'est valable que 2 jours.</span>
+               <span>Le lien que vous avez utilisé a expiré, il n'est valable que 2 jours.</span>
                <span>Cliquer <Link to="/forgot-password">ici</Link> pour recevoir un nouveau mail de réinitialisation de mot de passe</span>
              </div>
            : <div>
