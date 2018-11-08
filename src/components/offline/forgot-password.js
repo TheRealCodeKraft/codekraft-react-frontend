@@ -65,7 +65,7 @@ class ForgotPassword extends React.Component {
 
   found() {
     return [
-      <span>Yay! Un email vous a été envoyé pour vous permettre de réinitialiser votre mot de passe</span>,
+      <span>{this.props.sentString || Yay! Un email vous a été envoyé pour vous permettre de réinitialiser votre mot de passe}</span>,
       <Link to='/'>Retour à la page d'accueil</Link>]
   }
 
