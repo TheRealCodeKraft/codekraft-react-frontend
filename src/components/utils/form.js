@@ -179,6 +179,7 @@ class Form extends React.Component {
 				? <div className="submit-container">{submitButton}</div>
 				: null
 			}
+			{this.props.children}
 			</form>
 			{this.state.loadingData.length > 0 ? <div className="form-loader">{this.props.loadingComponent ? <this.props.loadingComponent /> : <Loader type="ball-pulse" />}</div> : null}
 			</div>
