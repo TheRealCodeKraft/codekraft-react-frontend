@@ -293,7 +293,7 @@ exports.default = function (config, globalConfig) {
                 var Component = this.state.currentAction.component;
                 content = React.createElement(Component, _extends({}, config, {
                   entity: entity,
-                  builtItem: this._buildItems(null, [entity])[0],
+                  builtItem: entity ? this._buildItems(null, [entity])[0] : null,
                   action: this.state.currentAction.action,
                   selectedRows: this.refs.list.getSelectedRows(),
                   filters: this.state.filters,

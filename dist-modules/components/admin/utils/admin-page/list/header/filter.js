@@ -36,7 +36,6 @@ var Filter = function (_React$Component) {
 			var component = _react2.default.createElement("input", { type: _this.props.filter.type, onChange: _this._handleChange });
 			switch (_this.props.filter.type) {
 				case "select":
-					console.log(_this.props.filter.values);
 					component = _react2.default.createElement(
 						"select",
 						{ onChange: _this._handleChange },

@@ -77,11 +77,13 @@ export default function(config, globalConfig) {
                   </Col>
                 : null
               }
-							{ config.list.actions.filter(a => a.type == "general").map(action => (
-									<Col xs={12} className="admin-new-button-row">
-										<a href="javascript:void(0)" onClick={this.handleCustomAction.bind(this, null, action)} className={`admin-${name}-button`}>{action.label}</a>
-									 </Col>
-							))}
+							{ config.list.actions
+								 ? config.list.actions.filter(a => a.type == "general").map(action => (
+										<Col xs={12} className="admin-new-button-row">
+											<a href="javascript:void(0)" onClick={this.handleCustomAction.bind(this, null, action)} className={`admin-${name}-button`}>{action.label}</a>
+										 </Col>
+									))
+							}
                </div>}
           {this.buildWatchers()}
           <div>
@@ -210,7 +212,7 @@ export default function(config, globalConfig) {
               content = <Component 
 													{...config} 
 													entity={entity} 
-													builtItem={this._buildItems(null, [entity])[0]}
+													builtItem={entity ? this._buildItems(null, [entity])[0] : null}
 													action={this.state.currentAction.action} 
 													selectedRows={this.refs.list.getSelectedRows()}
 													filters={this.state.filters}

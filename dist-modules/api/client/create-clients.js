@@ -48,13 +48,16 @@ function createClient(name, plural, store, ApiClient, localConfig) {
 
       var fetchOne = function fetchOne(id, callback) {
         var offline = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+        var dispatch = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
 
         ApiClient.get(plural + "/" + id, {}, function (data) {
-          var toDispatch = {
-            type: name.toUpperCase()
-          };
-          toDispatch[name] = data;
-          store.dispatch(toDispatch);
+          if (dispatch) {
+            var toDispatch = {
+              type: name.toUpperCase()
+            };
+            toDispatch[name] = data;
+            store.dispatch(toDispatch);
+          }
           if (callback) callback(data);
         }, offline);
       };

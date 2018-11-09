@@ -15,7 +15,6 @@ class Filter extends React.Component {
 		var component = <input type={this.props.filter.type} onChange={this._handleChange} />
 		switch(this.props.filter.type) {
 			case "select":
-				console.log(this.props.filter.values)
 				component = <select onChange={this._handleChange}>
 											<option value={-1}>{this.props.filter.placeholder}</option>
 											{this.props.filter.values.map(v => (
