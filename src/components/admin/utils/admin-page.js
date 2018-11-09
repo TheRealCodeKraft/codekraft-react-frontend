@@ -63,7 +63,7 @@ export default function(config, globalConfig) {
 
     render() {
       const pluralName = getPluralName()
-
+console.log("ah")
       return (
         <Grid fluid className="admin-page container">
 
@@ -83,6 +83,7 @@ export default function(config, globalConfig) {
 											<a href="javascript:void(0)" onClick={this.handleCustomAction.bind(this, null, action)} className={`admin-${name}-button`}>{action.label}</a>
 										 </Col>
 									))
+								: null
 							}
                </div>}
           {this.buildWatchers()}

@@ -118,7 +118,7 @@ exports.default = function (config, globalConfig) {
         var _this2 = this;
 
         var pluralName = getPluralName();
-
+        console.log("ah");
         return React.createElement(
           _reactBootstrap.Grid,
           { fluid: true, className: 'admin-page container' },
@@ -142,7 +142,7 @@ exports.default = function (config, globalConfig) {
                 ' Nouveau'
               )
             ) : null,
-            config.list.actions.filter(function (a) {
+            config.list.actions ? config.list.actions.filter(function (a) {
               return a.type == "general";
             }).map(function (action) {
               return React.createElement(
@@ -154,7 +154,7 @@ exports.default = function (config, globalConfig) {
                   action.label
                 )
               );
-            })
+            }) : null
           ),
           this.buildWatchers(),
           React.createElement(
