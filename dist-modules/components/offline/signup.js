@@ -112,7 +112,7 @@ var Signup = function (_React$Component) {
         React.createElement(_form2.default, { id: "signup-form",
           labels: this.props.labels,
           fields: this.fields,
-          submitLabel: "M'enregistrer",
+          submitLabel: this.props.submitLabel || "M'enregistrer",
           submitClass: this.props.submitClass ? this.props.submitClass : "btn btn-accent btn-signup",
           onSubmit: this.handleSubmit,
           service: { client: this.props.clients.UserClient, func: "signup" },

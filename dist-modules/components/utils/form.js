@@ -237,7 +237,7 @@ var Form = function (_React$Component) {
 				this.props.entityId ? this.buildImageUploaders() : null,
 				React.createElement(
 					"form",
-					{ encType: "multipart/form-data", id: this.props.id, onSubmit: this.handleFormSubmit },
+					{ encType: "multipart/form-data", id: this.props.id, onSubmit: this.handleFormSubmit, className: this.props.className },
 					wrapper(this.props.fields.map(function (field) {
 						if (field.show === false) {
 							return null;
@@ -261,7 +261,8 @@ var Form = function (_React$Component) {
 						"div",
 						{ className: "submit-container" },
 						submitButton
-					) : null
+					) : null,
+					this.props.children
 				),
 				this.state.loadingData.length > 0 ? React.createElement(
 					"div",

@@ -77,16 +77,22 @@ var Login = function (_React$Component) {
           React.createElement("i", { className: "pe pe-7s-door-lock", style: { fontSize: "3em", marginRight: 15 } }),
           "Votre mot de passe a bien \xE9t\xE9 modifi\xE9, vous pouvez maintenant vous connecter"
         ) : null,
-        React.createElement(_form2.default, { id: "login-form",
-          labels: this.props.labels,
-          clients: this.props.clients,
-          fields: this.fields,
-          submitLabel: "Me connecter",
-          onSubmit: this.handleSubmit,
-          submitClass: this.props.submitClass ? this.props.submitClass : "btn btn-accent btn-signup",
-          service: { client: this.props.clients.ApiClient, func: "login" },
-          onSubmitComplete: this.handleSubmitComplete
-        }),
+        React.createElement(
+          _form2.default,
+          { id: "login-form",
+            labels: this.props.labels,
+            clients: this.props.clients,
+            fields: this.fields,
+            submitLabel: this.props.submitLabel ? this.props.submitLabel : "Me connecter",
+            className: this.props.className,
+            onSubmit: this.handleSubmit,
+            onSubmitError: this.handleSubmitError,
+            submitClass: this.props.submitClass ? this.props.submitClass : "btn btn-accent btn-signup",
+            service: { client: this.props.clients.ApiClient, func: "login" },
+            onSubmitComplete: this.handleSubmitComplete
+          },
+          this.props.children
+        ),
         this.props.showLoseLinks !== false ? [React.createElement(
           _reactRouterDom.Link,
           { key: "signup-button", className: "btn btn-default", to: "/signup" },
@@ -107,6 +113,11 @@ var Login = function (_React$Component) {
       if (this.props.onLoggedIn) this.props.onLoggedIn();else {
         this.setState({ loggedIn: true });
       }
+    }
+  }, {
+    key: "handleSubmitError",
+    value: function handleSubmitError(data) {
+      console.log("submit error !");
     }
   }]);
 
