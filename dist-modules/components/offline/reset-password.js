@@ -80,7 +80,7 @@ var ResetPassword = function (_React$Component) {
             _react2.default.createElement(
               'span',
               null,
-              'Le lien que vous avez utilis\xE9 \xE0 expir\xE9, il n\'est valable que 2 jours.'
+              'Le lien que vous avez utilis\xE9 a expir\xE9, il n\'est valable que 2 jours.'
             ),
             _react2.default.createElement(
               'span',

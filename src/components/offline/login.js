@@ -60,13 +60,17 @@ class Login extends React.Component {
         <Form id="login-form" 
               labels={this.props.labels}
               clients={this.props.clients}
-              fields={this.fields} 
-              submitLabel="Me connecter" 
+              fields={this.fields}
+              submitLabel={this.props.submitLabel ? this.props.submitLabel : "Me connecter"}
+              className={this.props.className}
               onSubmit={this.handleSubmit}
-              submitClass={this.props.submitClass ? this.props.submitClass : "btn btn-accent btn-signup"} 
+              onSubmitError={this.handleSubmitError}
+              submitClass={this.props.submitClass ? this.props.submitClass : "btn btn-accent btn-signup"}
               service={{client: this.props.clients.ApiClient, func: "login"}}
               onSubmitComplete={this.handleSubmitComplete}
-        />
+        >
+				{this.props.children}
+				</Form>
         { this.props.showLoseLinks !== false
           ? [<Link key="signup-button" className={"btn btn-default"} to="/signup">Créer un compte</Link>,
              <Link key="forgot-password-button" to="/forgot-password">Mot de passe oublié</Link>]
@@ -83,6 +87,10 @@ class Login extends React.Component {
 		else {
 	    this.setState({loggedIn: true})
 		}
+  }
+
+  handleSubmitError(data) {
+    console.log("submit error !")
   }
 }
 
