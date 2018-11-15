@@ -118,7 +118,6 @@ exports.default = function (config, globalConfig) {
         var _this2 = this;
 
         var pluralName = getPluralName();
-        console.log("ah");
         return React.createElement(
           _reactBootstrap.Grid,
           { fluid: true, className: 'admin-page container' },
