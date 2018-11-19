@@ -36,64 +36,73 @@ exports.default = function (ComposedComponent) {
         var Auth = this.props.clients.ApiClient;
         var UserClient = this.props.clients.UserClient;
 
-        if (this.props.location.search.indexOf("stamp") !== -1) {
-          var self = this;
-          this.setState({ loggingIn: true }, function () {
-            var splitted = this.props.location.search.replace("?", "").split("&");
-            var emailSplit = splitted[0].split("=");
-            var stampSplit = splitted[1].split("=");
-            if (!this.props.me || this.props.me.email !== emailSplit[1]) {
-              Auth.login({ email: emailSplit[1], password: stampSplit[1] }, function (data) {
-                UserClient.me();
+        //if (this.state.loggingIn) return
 
-                if (data.error) {
-                  self.props.history.push("/");
-                } else {
-                  self.setState({ checking: true }, function () {
-                    UserClient.me();
-                    self.props.history.push(self.props.location.pathname);
-                  });
-                }
-              });
-            } else {
-              this.props.history.push(this.props.location.pathname);
-            }
-          });
-        } else if (!this.state.loggingIn) {
-          if (Auth.checkForToken() === true) {
-            // I HAVE A TOKEN
-            if (offline) {
-              // I NEED OFFLINE GRANTS
-              this.props.history.push("/");
-            } else {
-              // I NEED ONLINE GRANTS
-              /*
-                          if (this.props.me === null) {
-              */
-              // NOT ME DATA
-              this.setState({ checking: true }, function () {
-                UserClient.me();
-              });
-              /*
-                          } else {
-                           // RESETTING ME DATA
-                            this.setState({resetting: true}, function() {
-                              UserClient.resetMe()
-                            })
-                          }
-              */
-            }
+        /*console.log("SEARCHING FOR STAMP")
+              if (this.props.location.search.indexOf("stamp") !== -1) {
+        console.log("STAMP FOUND")
+                var self = this
+                this.setState({loggingIn: true}, function() {
+                  var splitted = this.props.location.search.replace("?", "").split("&")
+                  var emailSplit = splitted[0].split("=")
+                  var stampSplit = splitted[1].split("=")
+                  if (!this.props.me || this.props.me.email !== emailSplit[1]) {
+        						console.log("LOGGING IN")
+                    Auth.login({email: emailSplit[1], password: stampSplit[1]}, function(data) {
+        console.log("LOGGED IN")
+                      UserClient.me()
+        
+        console.log("DATA")
+        							console.log(data)
+        							if (data.error) {
+        								self.props.history.push("/")
+        							} else {
+        								self.setState({checking: true}, function () {
+        									UserClient.me()
+        									self.props.history.push(self.props.location.pathname)
+        								})
+        							}
+                    })
+                  } else {
+        console.log("REDIRECT TO BASE PATH")
+                    this.props.history.push(this.props.location.pathname)
+                  }
+                })
+              } else if (!this.state.loggingIn) {*/
+        if (Auth.checkForToken() === true) {
+          // I HAVE A TOKEN
+          if (offline) {
+            // I NEED OFFLINE GRANTS
+            this.props.history.push("/");
           } else {
-            // I HAVE NO TOKEN
-            if (offline) {
-              // I NEED OFFLINE GRANTS
-              this.setState({ connectionOk: true });
-            } else {
-              // I NEED ONLINE GRANTS
-              this.props.history.push('/login');
-            }
+            // I NEED ONLINE GRANTS
+            /*
+                        if (this.props.me === null) {
+            */
+            // NOT ME DATA
+            this.setState({ checking: true }, function () {
+              UserClient.me();
+            });
+            /*
+                        } else {
+                         // RESETTING ME DATA
+                          this.setState({resetting: true}, function() {
+                            UserClient.resetMe()
+                          })
+                        }
+            */
+          }
+        } else {
+          // I HAVE NO TOKEN
+          if (offline) {
+            // I NEED OFFLINE GRANTS
+            this.setState({ connectionOk: true });
+          } else {
+            // I NEED ONLINE GRANTS
+            this.props.history.push('/login');
           }
         }
+        //}
       }
     }, {
       key: "componentWillReceiveProps",
@@ -115,21 +124,22 @@ exports.default = function (ComposedComponent) {
             // CONNECTION FAILED
             this.props.history.push("/login");
           }
-        } else if (this.state.loggingIn && props.token) {
-          /*
-                  if (!props.token) {
-                    console.log("BLUP")
-                    Auth.getToken()
-                  }
-                  this.props.history.push(this.props.location.pathname)
-          */
-          this.setState({ loggingIn: false });
-        }
+        } //else if (this.state.loggingIn && props.token) {
+        /*
+                if (!props.token) {
+                  console.log("BLUP")
+                  Auth.getToken()
+                }
+                this.props.history.push(this.props.location.pathname)
+        */
+        //this.setState({loggingIn: false})
+        //}
       }
     }, {
       key: "render",
       value: function render() {
-        if (!this.state.connectionOk || this.state.loggingIn === true) {
+        if (!this.state.connectionOk) {
+          // || this.state.loggingIn === true) {
           return React.createElement(
             "section",
             { className: "content" },

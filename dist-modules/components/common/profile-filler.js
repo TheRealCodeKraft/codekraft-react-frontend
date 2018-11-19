@@ -75,11 +75,12 @@ var ProfileFiller = function (_React$Component) {
       required: true,
       wanted: true,
       inputClass: "checkbox",
-      className: "test"
-    }, {
-      name: "temp",
-      type: "hidden",
-      defaultValue: false
+      className: "test" /*,
+                        {
+                         name: "temp",
+                         type: "hidden",
+                         defaultValue: false
+                        }*/
     }];
 
     _this.state = {
@@ -150,6 +151,7 @@ var ProfileFiller = function (_React$Component) {
     key: 'handleSubmitComplete',
     value: function handleSubmitComplete(data) {
       this.setState({ submitted: true }, function () {
+        this.props.onFinished(data);
         this.props.history.push("/");
       });
     }

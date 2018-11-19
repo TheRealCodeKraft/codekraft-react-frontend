@@ -23,16 +23,24 @@ export default function(ComposedComponent, offline=false) {
       const Auth = this.props.clients.ApiClient
       const UserClient = this.props.clients.UserClient
 
+			//if (this.state.loggingIn) return
+
+/*console.log("SEARCHING FOR STAMP")
       if (this.props.location.search.indexOf("stamp") !== -1) {
+console.log("STAMP FOUND")
         var self = this
         this.setState({loggingIn: true}, function() {
           var splitted = this.props.location.search.replace("?", "").split("&")
           var emailSplit = splitted[0].split("=")
           var stampSplit = splitted[1].split("=")
           if (!this.props.me || this.props.me.email !== emailSplit[1]) {
+						console.log("LOGGING IN")
             Auth.login({email: emailSplit[1], password: stampSplit[1]}, function(data) {
+console.log("LOGGED IN")
               UserClient.me()
 
+console.log("DATA")
+							console.log(data)
 							if (data.error) {
 								self.props.history.push("/")
 							} else {
@@ -43,10 +51,11 @@ export default function(ComposedComponent, offline=false) {
 							}
             })
           } else {
+console.log("REDIRECT TO BASE PATH")
             this.props.history.push(this.props.location.pathname)
           }
         })
-      } else if (!this.state.loggingIn) {
+      } else if (!this.state.loggingIn) {*/
         if (Auth.checkForToken() === true) {
           // I HAVE A TOKEN
           if (offline) { 
@@ -82,7 +91,7 @@ export default function(ComposedComponent, offline=false) {
             this.props.history.push('/login')
           }
         }
-      }
+      //}
     }
 
     componentWillReceiveProps(props) {
@@ -103,7 +112,7 @@ export default function(ComposedComponent, offline=false) {
           // CONNECTION FAILED
           this.props.history.push("/login")
         }
-      } else if (this.state.loggingIn && props.token) {
+      } //else if (this.state.loggingIn && props.token) {
 /*
         if (!props.token) {
           console.log("BLUP")
@@ -111,12 +120,12 @@ export default function(ComposedComponent, offline=false) {
         }
         this.props.history.push(this.props.location.pathname)
 */
-        this.setState({loggingIn: false})
-      }
+        //this.setState({loggingIn: false})
+      //}
     }
 
     render() {
-      if (!this.state.connectionOk || this.state.loggingIn === true) {
+      if (!this.state.connectionOk) { // || this.state.loggingIn === true) {
         return (
           <section className="content">
             <div className="loader-dots"></div>

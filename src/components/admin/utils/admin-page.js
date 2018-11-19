@@ -375,7 +375,7 @@ export default function(config, globalConfig) {
 		}
 
 		_handleUpdate = () => {
-			var params = {all: true}
+			var params = {}
 			if (this.state.filters) {
 				params = this._buildFiltersParams(this.state.filters)
 			}
@@ -386,6 +386,9 @@ export default function(config, globalConfig) {
 			if (this.state.sort) {
 				params["sort"] = `${this.state.sort.target}|${this.state.sort.type}`
 			}
+
+			params["all"] = true
+
 			config.client["fetchAll"](params, () => {
 				this.setState({loading: false})
 			})

@@ -86,7 +86,7 @@ exports.default = function (config, globalConfig) {
 						};
 
 						_this._handleUpdate = function () {
-								var params = { all: true };
+								var params = {};
 								if (_this.state.filters) {
 										params = _this._buildFiltersParams(_this.state.filters);
 								}
@@ -97,6 +97,9 @@ exports.default = function (config, globalConfig) {
 								if (_this.state.sort) {
 										params["sort"] = _this.state.sort.target + '|' + _this.state.sort.type;
 								}
+
+								params["all"] = true;
+
 								config.client["fetchAll"](params, function () {
 										_this.setState({ loading: false });
 								});

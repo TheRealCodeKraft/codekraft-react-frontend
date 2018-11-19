@@ -57,6 +57,8 @@ class Header extends React.Component {
 	}
 
 	getRawItems(menuKey) {
+		if (!this.props.menu[menuKey]) return null
+
 		return getRawItems({
 			items: this.props.menu[menuKey].items,
 			token: this.props.token,

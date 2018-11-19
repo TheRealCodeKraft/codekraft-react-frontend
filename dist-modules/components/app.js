@@ -16,6 +16,10 @@ var _reactRouter = require('react-router');
 
 var _reactRouterDom = require('react-router-dom');
 
+var _profileFiller = require('./common/profile-filler');
+
+var _profileFiller2 = _interopRequireDefault(_profileFiller);
+
 var _reactActioncableProvider = require('react-actioncable-provider');
 
 var _reactActioncableProvider2 = _interopRequireDefault(_reactActioncableProvider);
@@ -47,6 +51,10 @@ var App = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
+		_this._handleFillerFinished = function (me) {
+			_this.setState({ me: me });
+		};
+
 		_this.state = {
 			loaded: false,
 			token: null
@@ -58,12 +66,14 @@ var App = function (_React$Component) {
 		key: 'componentWillMount',
 		value: function componentWillMount() {
 			var self = this;
-			this.props.clients.UserClient.me(function (me) {
-				if (me && !me.error) {
-					self.props.clients.ApiClient.getToken();
-				}
-				self.setState({ loaded: true });
-			});
+			if (!this.props.me) {
+				this.props.clients.UserClient.me(function (me) {
+					if (me && !me.error) {
+						self.props.clients.ApiClient.getToken();
+					}
+					self.setState({ me: me, loaded: true });
+				});
+			}
 		}
 	}, {
 		key: 'componentWillReceiveProps',
@@ -114,7 +124,7 @@ var App = function (_React$Component) {
 							return _react2.default.createElement(_header2.default, { menu: false ? _this2.props.navigation.dashboard.menu : _this2.props.navigation.offline.menu, root: _this2.props.navigation.offline.root, custom: _this2.props.navigation.offline.header, location: _this2.props.location, token: _this2.props.token, name: 'offline', mainTitle: _this2.props.config.mainTitle });
 						} })
 				),
-				this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined) ? _react2.default.createElement(
+				this.state.me.no_password ? this.buildProfileFiller() : this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined) ? _react2.default.createElement(
 					_reactActioncableProvider2.default,
 					{ url: process.env.CABLE_URL + "/?token=" + this.props.token.access_token },
 					_react2.default.createElement(
@@ -134,17 +144,38 @@ var App = function (_React$Component) {
 				this.props.navigation.footer ? _react2.default.createElement(this.props.navigation.footer, null) : null
 			);
 		}
+	}, {
+		key: 'buildProfileFiller',
+		value: function buildProfileFiller() {
+			var Component = this.props.config.profileFiller;
+			if (Component) {
+				return _react2.default.createElement(Component, {
+					onFinished: this._handleFillerFinished
+				});
+			} else {
+				return _react2.default.createElement(_profileFiller2.default, {
+					onFinished: this._handleFillerFinished
+				});
+			}
+		}
 	}]);
 
 	return App;
 }(_react2.default.Component);
 
-function mapStateToProps(state) {
-	return {
+function mapStateToProps(state, ownProps) {
+	var result = {
 		clients: state.bootstrap.clients,
 		token: state.authState.token || null,
 		navigation: state.bootstrap.navigation
-	};
+		/*
+  console.log(ownProps)
+  console.log(state)
+  if (!ownProps.me || state.userState.me.id !== ownProps.me.id) {
+  	result.me = state.userState.me
+  }
+  */
+	};return result;
 }
 
 exports.default = (0, _reactRouter.withRouter)((0, _reactRedux.connect)(mapStateToProps)(App));

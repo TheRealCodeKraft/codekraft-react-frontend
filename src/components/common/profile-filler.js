@@ -56,12 +56,12 @@ class ProfileFiller extends React.Component {
         wanted: true,
         inputClass:"checkbox",
         className:"test"
-      },
+      }/*,
       {
         name: "temp",
         type: "hidden",
         defaultValue: false
-      }
+      }*/
     ];
 
     this.state = {
@@ -111,6 +111,7 @@ class ProfileFiller extends React.Component {
 
   handleSubmitComplete(data) {
     this.setState({submitted: true}, function() {
+			this.props.onFinished(data)
       this.props.history.push("/")
     })
   }

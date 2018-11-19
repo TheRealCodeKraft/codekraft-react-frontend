@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 
 import { Route, Switch } from 'react-router-dom'
+import ProfileFiller from './common/profile-filler'
 
 import ActionCableProvider from 'react-actioncable-provider'
 
@@ -24,12 +25,14 @@ class App extends React.Component {
 
 	componentWillMount() {
 		var self = this
-		this.props.clients.UserClient.me(function(me) {
-			if (me && !me.error) {
-				self.props.clients.ApiClient.getToken()
-			}
-			self.setState({loaded: true})
-		})
+		if (!this.props.me) {
+			this.props.clients.UserClient.me(function(me) {
+				if (me && !me.error) {
+					self.props.clients.ApiClient.getToken()
+				}
+				self.setState({me, loaded: true})
+			})
+		}
 	}
 
 	componentWillReceiveProps(props) {
@@ -61,33 +64,66 @@ class App extends React.Component {
 					</Switch>
 				}
 
-				{this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined)
-				 ? <ActionCableProvider url={process.env.CABLE_URL + "/?token=" + this.props.token.access_token}>
-						 <Switch>
-							 <Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />
-							 <Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
-							 <Route path="/" component={Root("offline", this.props.navigation.offline)} />
-						 </Switch>
-					 </ActionCableProvider>
-				 : <Switch>
-						 <Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />
-						 <Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
-						 <Route path="/" component={Root("offline", this.props.navigation.offline)} />
-					 </Switch>}
+				{ this.state.me.no_password
+					? this.buildProfileFiller()
+					: this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined)
+						 ? <ActionCableProvider url={process.env.CABLE_URL + "/?token=" + this.props.token.access_token}>
+								 <Switch>
+									 <Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />
+									 <Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
+									 <Route path="/" component={Root("offline", this.props.navigation.offline)} />
+								 </Switch>
+							 </ActionCableProvider>
+						 : <Switch>
+								 <Route path="/dashboard" component={Root("dashboard", this.props.navigation.dashboard)} />
+								 <Route path="/admin" component={Root("admin", this.props.navigation.admin)} />
+								 <Route path="/" component={Root("offline", this.props.navigation.offline)} />
+							 </Switch>
+				}
 				{this.props.navigation.footer
 				 ? <this.props.navigation.footer />
 				 : null}
 			</this.props.navigation.mainWrapper>
 		);
 	}
+
+	buildProfileFiller() {
+		var Component = this.props.config.profileFiller
+		if (Component) {
+			return (
+				<Component 
+					onFinished={this._handleFillerFinished}	
+				/>
+			)
+		} else {
+			return (
+				<ProfileFiller
+					onFinished={this._handleFillerFinished}	
+			  />
+			)
+		}
+	}
+
+	_handleFillerFinished = (me) => {
+		this.setState({me})
+	}
+
 }
 
-function mapStateToProps(state) {
-	return {
+function mapStateToProps(state, ownProps) {
+	var result = {
 		clients: state.bootstrap.clients,
 		token: state.authState.token || null,
 		navigation: state.bootstrap.navigation,
 	}
+	/*
+	console.log(ownProps)
+	console.log(state)
+	if (!ownProps.me || state.userState.me.id !== ownProps.me.id) {
+		result.me = state.userState.me
+	}
+	*/
+	return result
 }
 
 export default withRouter(connect(mapStateToProps)(App))

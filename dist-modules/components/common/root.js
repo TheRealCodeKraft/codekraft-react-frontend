@@ -22,6 +22,23 @@ exports.default = function (name, config) {
     _createClass(Root, [{
       key: "componentWillMount",
       value: function componentWillMount() {
+        var _this2 = this;
+
+        if (this.props.location.search.indexOf("stamp") !== -1) {
+          var Auth = this.props.clients.ApiClient;
+          var UserClient = this.props.clients.UserClient;
+          var splitted = this.props.location.search.replace("?", "").split("&");
+          var emailSplit = splitted[0].split("=");
+          var stampSplit = splitted[1].split("=");
+          Auth.login({ email: emailSplit[1], password: stampSplit[1] }, function (data) {
+            UserClient.me();
+            if (data.error) {
+              _this2.props.history.push("/");
+            } else {
+              _this2.props.history.push(_this2.props.location.pathname);
+            }
+          });
+        }
 
         var groups = config.menu;
         var pages = [],
@@ -54,9 +71,7 @@ exports.default = function (name, config) {
       value: function render() {
 
         var content = null;
-        if (this.state.me && this.state.me.temp) {
-          content = this.buildProfileFiller();
-        } else {
+        if (this.state.me && this.state.me.temp) {} else {
           content = React.createElement(
             _reactRouter.Switch,
             null,
@@ -114,16 +129,6 @@ exports.default = function (name, config) {
           );
         }
       }
-    }, {
-      key: "buildProfileFiller",
-      value: function buildProfileFiller() {
-        var Component = config.profileFiller;
-        if (Component) {
-          return React.createElement(Component, null);
-        } else {
-          return React.createElement(_profileFiller2.default, null);
-        }
-      }
     }]);
 
     return Root;
@@ -143,10 +148,6 @@ var _authChecker2 = _interopRequireDefault(_authChecker);
 var _checkForAcls = require("../utils/check-for-acls");
 
 var _checkForAcls2 = _interopRequireDefault(_checkForAcls);
-
-var _profileFiller = require("../common/profile-filler");
-
-var _profileFiller2 = _interopRequireDefault(_profileFiller);
 
 var _adminPage = require("../admin/utils/admin-page");
 
@@ -169,6 +170,7 @@ var React = require("react");
 
 function mapStateToProps(state) {
   return {
+    //me: state.userState.me,
     clients: state.bootstrap.clients || {},
     navigation: state.bootstrap.navigation || { dashboard: { items: [] } }
   };

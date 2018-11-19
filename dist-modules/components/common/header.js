@@ -103,6 +103,8 @@ var Header = function (_React$Component) {
   }, {
     key: "getRawItems",
     value: function getRawItems(menuKey) {
+      if (!this.props.menu[menuKey]) return null;
+
       return _getRawItems({
         items: this.props.menu[menuKey].items,
         token: this.props.token,

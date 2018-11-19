@@ -8266,3 +8266,73 @@ src/components/admin/utils/admin-page/list/header/filters.js -> dist-modules/com
 src/components/admin/utils/admin-page/list/header/filters.js -> dist-modules/components/admin/utils/admin-page/list/header/filters.js
 src/components/admin/utils/admin-page/list/header/filters.js -> dist-modules/components/admin/utils/admin-page/list/header/filters.js
 src/components/admin/utils/admin-page/list/header/filters.js -> dist-modules/components/admin/utils/admin-page/list/header/filters.js
+src/components/common/header.js -> dist-modules/components/common/header.js
+src/components/admin/utils/admin-page.js -> dist-modules/components/admin/utils/admin-page.js
+src/components/utils/auth-checker.js -> dist-modules/components/utils/auth-checker.js
+src/components/utils/auth-checker.js -> dist-modules/components/utils/auth-checker.js
+src/components/utils/auth-checker.js -> dist-modules/components/utils/auth-checker.js
+src/components/utils/auth-checker.js -> dist-modules/components/utils/auth-checker.js
+src/api/client/api-client.js -> dist-modules/api/client/api-client.js
+src/components/utils/auth-checker.js -> dist-modules/components/utils/auth-checker.js
+src/api/client/api-client.js -> dist-modules/api/client/api-client.js
+src/api/client/api-client.js -> dist-modules/api/client/api-client.js
+src/components/utils/auth-checker.js -> dist-modules/components/utils/auth-checker.js
+src/components/utils/auth-checker.js -> dist-modules/components/utils/auth-checker.js
+src/components/utils/auth-checker.js -> dist-modules/components/utils/auth-checker.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/components/utils/auth-checker.js -> dist-modules/components/utils/auth-checker.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/components/utils/auth-checker.js -> dist-modules/components/utils/auth-checker.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/components/utils/auth-checker.js -> dist-modules/components/utils/auth-checker.js
+src/components/utils/auth-checker.js -> dist-modules/components/utils/auth-checker.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/api/client/api-client.js -> dist-modules/api/client/api-client.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/api/client/api-client.js -> dist-modules/api/client/api-client.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/components/app.js -> dist-modules/components/app.js
+src/components/app.js -> dist-modules/components/app.js
+src/components/app.js -> dist-modules/components/app.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/components/common/root.js -> dist-modules/components/common/root.js
+src/components/app.js -> dist-modules/components/app.js
+src/components/app.js -> dist-modules/components/app.js
+src/components/app.js -> dist-modules/components/app.js
+src/components/common/profile-filler.js -> dist-modules/components/common/profile-filler.js
+src/components/app.js -> dist-modules/components/app.js
+src/components/app.js -> dist-modules/components/app.js
+SyntaxError: src/components/app.js: Unexpected token, expected ; (100:12)
+   98 | 
+   99 | function mapStateToProps(state, ownProps) {
+> 100 | 	var result {
+      | 	           ^
+  101 | 		clients: state.bootstrap.clients,
+  102 | 		token: state.authState.token || null,
+  103 | 		navigation: state.bootstrap.navigation,
+src/components/app.js -> dist-modules/components/app.js
+src/components/app.js -> dist-modules/components/app.js
+src/components/app.js -> dist-modules/components/app.js
+src/components/app.js -> dist-modules/components/app.js
+src/components/app.js -> dist-modules/components/app.js
+src/components/common/profile-filler.js -> dist-modules/components/common/profile-filler.js
+SyntaxError: src/components/app.js: Unexpected token, expected , (101:5)
+   99 | 			return (
+  100 | 				<ProfileFiller />
+> 101 | 					onFinished={this._handleFillerFinished}	
+      | 					^
+  102 | 			)
+  103 | 		}
+  104 | 	}
+src/components/app.js -> dist-modules/components/app.js

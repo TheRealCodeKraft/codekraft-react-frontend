@@ -117,7 +117,6 @@ var ApiClient = function(store) {
   }
 
   var post = function(endpoint, params, callback, offline=false, defaultParams=false) {
-		console.log(params)
     var ps = new FormData()
     var keys = Object.keys(params), key
     var formData = false
@@ -251,10 +250,10 @@ var ApiClient = function(store) {
           			if (callback) callback(data)
         			} else {
           			if (callback) callback(data)
-          			store.dispatch({
-            			type: "ME",
-            			user: me
-          			})
+								store.dispatch({
+									type: "ME",
+									user: me
+								})
         			}
       			})
 					})
