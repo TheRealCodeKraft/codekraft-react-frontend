@@ -74,6 +74,14 @@ var Form = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, props));
 
+		_this.getValues = function () {
+			return _this.state.values;
+		};
+
+		_this.getLoadedData = function () {
+			return _this.state.loadedData;
+		};
+
 		_this.state = {
 			errors: {},
 			submitting: false,
@@ -203,6 +211,10 @@ var Form = function (_React$Component) {
 					currentValue = props.fields[index].defaultValue;
 				}
 
+				if (props.fields[index].type == "checkbox" && !currentValue) {
+					currentValue = false;
+				}
+
 				if (props.fields[index].type == "wysiwyg") {
 					valuesState[props.fields[index].name + "_raw"] = currentValue;
 					valuesState[props.fields[index].name + "_html"] = currentHtmlValue;
@@ -228,7 +240,7 @@ var Form = function (_React$Component) {
 			), this.props.cancelButton === true ? React.createElement(
 				"button",
 				{ key: this.props.id + "-cancel", className: this.props.submitClass, onClick: this.handleCancelButton },
-				"Ignorer"
+				this.props.cancelLabel || "Ignorer"
 			) : null] : null;
 
 			return React.createElement(
@@ -527,7 +539,7 @@ var Form = function (_React$Component) {
 					return _this5.props.fieldWrapper(children, field, _this5);
 				};
 			}
-			input = wrapper([field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off" ? React.createElement(
+			input = wrapper([field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off" && field.type !== "hidden" ? React.createElement(
 				"label",
 				{ key: "label-for-" + field.name, className: "control-label " + field.labelClassName, htmlFor: field.name },
 				field.label
@@ -604,6 +616,7 @@ var Form = function (_React$Component) {
 		key: "submit",
 		value: function submit() {
 			var extraData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+			var callback = arguments[1];
 
 			var errors = this.validate();
 			this.setState({ errors: errors });
@@ -655,7 +668,11 @@ var Form = function (_React$Component) {
 						}
 					});
 				}
-				if (this.props.onSubmit) this.props.onSubmit(currentValues);
+				if (callback) {
+					callback(currentValues);
+				} else if (this.props.onSubmit) {
+					this.props.onSubmit(currentValues);
+				}
 			} else {
 				this.props.onSubmitError({ error: true, message: "Validation failed" });
 			}

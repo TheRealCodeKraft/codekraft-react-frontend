@@ -140,6 +140,10 @@ class Form extends React.Component {
 				currentValue = props.fields[index].defaultValue
 			}
 
+			if (props.fields[index].type == "checkbox" && !currentValue) {
+				currentValue = false
+			}
+
 			if (props.fields[index].type == "wysiwyg") {
 				valuesState[props.fields[index].name + "_raw"] = currentValue
 				valuesState[props.fields[index].name + "_html"] = currentHtmlValue
@@ -157,7 +161,7 @@ class Form extends React.Component {
 		? <div className="loader-dots"></div>
 		: (this.props.hideSubmit !== true
 			? [<button key={`${this.props.id}-button`} type="submit" className={this.props.submitClass}>{this.props.submitLabel !== undefined ? this.props.submitLabel : "Enregistrer"}</button>,
-			this.props.cancelButton === true ? <button key={`${this.props.id}-cancel`} className={this.props.submitClass} onClick={this.handleCancelButton}>Ignorer</button> : null]
+			this.props.cancelButton === true ? <button key={`${this.props.id}-cancel`} className={this.props.submitClass} onClick={this.handleCancelButton}>{this.props.cancelLabel || "Ignorer"}</button> : null]
 			: null)
 
 			return (
@@ -402,7 +406,7 @@ class Form extends React.Component {
 			}
 		}
 		input = wrapper([
-			(field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off")
+			(field.label !== undefined && field.type !== "checkbox" && this.props.labels !== "off" && field.type !== "hidden")
 			? <label key={`label-for-${field.name}`} className={`control-label ${field.labelClassName}`} htmlFor={field.name}>{field.label}</label>
 			: null,
 			input,
@@ -469,7 +473,7 @@ class Form extends React.Component {
 		this.submit()
 	}
 
-	submit(extraData={}) {
+	submit(extraData={}, callback) {
 		var errors = this.validate()
 		this.setState({errors: errors})
 		if (Object.keys(errors).length === 0) {
@@ -520,7 +524,11 @@ class Form extends React.Component {
 					}
 				})
 			}
-			if (this.props.onSubmit) this.props.onSubmit(currentValues)
+			if (callback) {
+				callback(currentValues)
+			} else if (this.props.onSubmit) {
+				this.props.onSubmit(currentValues)
+			}
 		} else {
 			this.props.onSubmitError({error: true, message: "Validation failed"})
 		}
@@ -579,6 +587,14 @@ class Form extends React.Component {
 
 	getValue(fieldName) {
 		return this.state.values[fieldName]
+	}
+
+	getValues = () => {
+		return this.state.values
+	}
+
+	getLoadedData = () => {
+		return this.state.loadedData
 	}
 
 	reset() {

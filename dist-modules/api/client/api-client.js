@@ -136,6 +136,7 @@ var ApiClient = function ApiClient(store) {
     var offline = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
     var defaultParams = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
+    console.log(params);
     var ps = new FormData();
     var keys = Object.keys(params),
         key;

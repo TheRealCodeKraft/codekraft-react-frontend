@@ -33,12 +33,12 @@ var Filter = function (_React$Component) {
 		}
 
 		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Filter.__proto__ || Object.getPrototypeOf(Filter)).call.apply(_ref, [this].concat(args))), _this), _this._buildComponent = function () {
-			var component = _react2.default.createElement("input", { type: _this.props.filter.type, onChange: _this._handleChange });
+			var component = _react2.default.createElement("input", { type: _this.props.filter.type, value: _this.props.value, onChange: _this._handleChange });
 			switch (_this.props.filter.type) {
 				case "select":
 					component = _react2.default.createElement(
 						"select",
-						{ onChange: _this._handleChange },
+						{ onChange: _this._handleChange, value: _this.props.value },
 						_react2.default.createElement(
 							"option",
 							{ value: -1 },

@@ -117,6 +117,7 @@ var ApiClient = function(store) {
   }
 
   var post = function(endpoint, params, callback, offline=false, defaultParams=false) {
+		console.log(params)
     var ps = new FormData()
     var keys = Object.keys(params), key
     var formData = false

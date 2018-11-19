@@ -54,9 +54,13 @@ class AdminPageList extends React.Component {
       <div className="admin-list">
 				{ this.props.filters
 					? <Filters
+							currentFilter={this.props.currentFilter}
 							filters={this.props.filters}
+							category={this.props.filtersCategory}
+							savable={this.props.filtersSavable}
 							attributes={this.props.attributes}
 							onApply={this.props.onApplyFilters}
+							onSave={this.props.onSaveFilters}
 						/>
 					: null
 				}

@@ -8,6 +8,8 @@ import AdminSidebar from './admin-page/sidebar'
 import CreateEditForm from './form/create-edit'
 import DeleteForm from './form/delete'
 
+import FiltersSaver from './admin-page/list/header/filters-saver'
+
 import {ActionCable} from 'react-actioncable-provider'
 
 import { Grid } from 'react-bootstrap';
@@ -35,7 +37,8 @@ export default function(config, globalConfig) {
 				current_page: 1,
 				per_page: 10,
 				sort: null,
-				filters: []
+				filters: {},
+				namedFilters: {}
       }
 
       this.handleCloseSidebar = this.handleCloseSidebar.bind(this)
@@ -92,6 +95,9 @@ export default function(config, globalConfig) {
 															 ref="list"
 															 loading={this.state.loading}
 															 filters={config.list.filters}
+															 filtersSavable={config.list.filtersSavable}
+															 filtersCategory={getPluralName()}
+															 currentFilter={this.state.currentFilter}
 															 actions={config.list.actions}
 															 bulkable={config.list.bulkable}
 															 form={config.form}
@@ -104,6 +110,7 @@ export default function(config, globalConfig) {
 															 current_page={this.state.current_page}
 															 onSort={this._handleSort}
 															 onApplyFilters={this._handleFilter}
+															 onSaveFilters={this._handleSaveFilters}
 								/>
 							: null
 						}
@@ -130,7 +137,7 @@ export default function(config, globalConfig) {
 						}
             <AdminSidebar ref="sidebar" 
                           onClose={this.handleCloseSidebar}
-                          tinify={this.state.mode === "delete" || (this.state.currentAction && this.state.currentAction.tinify)}
+                          tinify={this.state.mode == "savefilters" || this.state.mode === "delete" || (this.state.currentAction && this.state.currentAction.tinify)}
                           title={this.getSidebarTitle()}
 													styles={sidebarStyles}>
               {this.getSidebarContent()}
@@ -177,6 +184,9 @@ export default function(config, globalConfig) {
         case "delete":
           title = "Supprimer" + (config.delete ? " " + config.delete.labels.entity : "")
           break
+				case "savefilters":
+					title = "Enregistrer le filtre"
+					break
         default:
           if (this.state.currentAction !== undefined) {
             title = this.state.currentAction.label
@@ -205,6 +215,16 @@ export default function(config, globalConfig) {
         case "delete":
           content = <DeleteForm {...config} entity={entity} onDeleted={this.handleDeleted} />
           break
+				case "savefilters":
+					content = <FiltersSaver
+											category={getPluralName()}
+											filters={this.state.filters}
+											current={this.state.currentFilter}
+											namedFilters={this.state.namedFilters}
+											attributes={config.list.filters}
+											onSaved={this._handleFiltersSaved}
+										/>
+					break
         default:
           if (this.state.currentAction !== undefined) {
             if (this.state.currentAction.component) {
@@ -322,10 +342,42 @@ export default function(config, globalConfig) {
 			})
 		}
 
+		_buildFiltersParams = (state) => {
+			var params = {}
+			Object.keys(state).forEach(key => {
+				params = Object.assign(params, this._buildFilter(key, state[key]))
+			})
+
+			var result = {}
+			Object.keys(params).forEach(key => {
+				if (params[key] !== undefined && params[key] !== null && params[key] !== -1 && params[key] !== "" && params[key] !== false) {
+					result[key] = params[key]
+				}
+			})
+
+			return result
+		}
+
+		_buildFilter = (key, value, sub=false) => {
+			var element = {}
+			if (value instanceof Object) {
+				Object.keys(value).forEach(subkey => {
+					element[`${key}[${subkey}]`] = this._buildFilter(subkey, value[subkey], true)
+				})
+			} else {
+				if (sub) {
+					element = value
+				} else {
+					element[`${key}`] = value
+				}
+			}
+			return element
+		}
+
 		_handleUpdate = () => {
 			var params = {all: true}
 			if (this.state.filters) {
-				params = Object.assign(params, this.state.filters)
+				params = this._buildFiltersParams(this.state.filters)
 			}
       if (config.pagination) {
 				params["page"] = this.state.current_page
@@ -346,6 +398,14 @@ export default function(config, globalConfig) {
 
 		getFilters = () => {
 			return this.state.filters
+		}
+
+		_handleSaveFilters = (filters, namedFilters, currentFilter) => {
+			this.setState({mode: "savefilters", filters, namedFilters, currentFilter}, this.openSidebar)
+		}
+
+		_handleFiltersSaved = (filter) => {
+			this.setState({currentFilter: filter}, this.closeSidebar)
 		}
 
   }

@@ -117,9 +117,13 @@ var AdminPageList = function (_React$Component) {
 				"div",
 				{ className: "admin-list" },
 				this.props.filters ? React.createElement(_filters2.default, {
+					currentFilter: this.props.currentFilter,
 					filters: this.props.filters,
+					category: this.props.filtersCategory,
+					savable: this.props.filtersSavable,
 					attributes: this.props.attributes,
-					onApply: this.props.onApplyFilters
+					onApply: this.props.onApplyFilters,
+					onSave: this.props.onSaveFilters
 				}) : null,
 				React.createElement(_header2.default, {
 					bulkable: typeof this.props.bulkable === "function" ? this.props.bulkable() : this.props.bulkable,
