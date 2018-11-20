@@ -239,7 +239,7 @@ var Form = function (_React$Component) {
 				this.props.submitLabel !== undefined ? this.props.submitLabel : "Enregistrer"
 			), this.props.cancelButton === true ? React.createElement(
 				"button",
-				{ key: this.props.id + "-cancel", className: this.props.submitClass, onClick: this.handleCancelButton },
+				{ key: this.props.id + "-cancel", className: this.props.cancelClass || this.props.submitClass, onClick: this.handleCancelButton },
 				this.props.cancelLabel || "Ignorer"
 			) : null] : null;
 

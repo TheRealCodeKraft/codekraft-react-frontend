@@ -154,7 +154,7 @@ var ApiClient = function(store) {
             ps.append("attachments[]", params[key][j]["id"] ? JSON.stringify(params[key][j]) : params[key][j])
           }
         } else {
-          ps.append("attachments", "")
+          ps.append("attachments[]", params[key])
         }
 			} else if (key == "attachment") {
 				formData=true
