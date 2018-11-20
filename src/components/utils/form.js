@@ -161,7 +161,7 @@ class Form extends React.Component {
 		? <div className="loader-dots"></div>
 		: (this.props.hideSubmit !== true
 			? [<button key={`${this.props.id}-button`} type="submit" className={this.props.submitClass}>{this.props.submitLabel !== undefined ? this.props.submitLabel : "Enregistrer"}</button>,
-			this.props.cancelButton === true ? <button key={`${this.props.id}-cancel`} className={this.props.submitClass} onClick={this.handleCancelButton}>{this.props.cancelLabel || "Ignorer"}</button> : null]
+			this.props.cancelButton === true ? <button key={`${this.props.id}-cancel`} className={this.props.cancelClass || this.props.submitClass} onClick={this.handleCancelButton}>{this.props.cancelLabel || "Ignorer"}</button> : null]
 			: null)
 
 			return (
