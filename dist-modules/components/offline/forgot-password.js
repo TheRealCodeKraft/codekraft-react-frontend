@@ -102,7 +102,7 @@ var ForgotPassword = function (_React$Component) {
       return [_react2.default.createElement(
         'span',
         null,
-        'Yay! Un email vous a \xE9t\xE9 envoy\xE9 pour vous permettre de r\xE9initialiser votre mot de passe'
+        this.props.sentString || "Yay! Un email vous a été envoyé pour vous permettre de réinitialiser votre mot de passe"
       ), _react2.default.createElement(
         _reactRouterDom.Link,
         { to: '/' },

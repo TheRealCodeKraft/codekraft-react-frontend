@@ -38,7 +38,7 @@ var config = {
       required: true
     }, {
       name: "lastname",
-      label: "Npm",
+      label: "Nom",
       placeholder: "Nom",
       type: "text",
       required: true
