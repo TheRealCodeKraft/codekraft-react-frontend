@@ -596,6 +596,8 @@ var Form = function (_React$Component) {
 						break;
 				}
 
+				console.log("VALUES");
+				console.log(values);
 				this.setState({ values: values }, function () {
 					if (_this6.props.onInputChange) _this6.props.onInputChange(values);
 				});

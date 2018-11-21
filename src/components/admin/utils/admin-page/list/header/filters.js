@@ -104,7 +104,7 @@ class Filters extends React.Component {
 	_clean = (filters) => {
 		var result = {}
 		Object.keys(filters).forEach(key => {
-			if (filters[key] instanceof Object) {
+			if (filters[key] instanceof Object && !(filters[key] instanceof Array)) {
 				result[key] = this._clean(filters[key])
 				if (Object.keys(result[key]).length == 0) {
 					delete result[key]

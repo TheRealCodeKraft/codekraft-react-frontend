@@ -71,11 +71,14 @@ exports.default = function (config, globalConfig) {
 								var sub = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
 								var element = {};
-								if (value instanceof Object) {
+								if (value instanceof Object && !(value instanceof Array)) {
 										Object.keys(value).forEach(function (subkey) {
 												element[key + '[' + subkey + ']'] = _this._buildFilter(subkey, value[subkey], true);
 										});
 								} else {
+										if (value instanceof Object) {
+												value = JSON.stringify(value);
+										}
 										if (sub) {
 												element = value;
 										} else {

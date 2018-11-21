@@ -53,8 +53,9 @@ class FiltersSaver extends React.Component {
 				/>
 				<div className="filters-description">
 					{ Object.keys(this.props.filters).map(key => {
-							var attr, value
-							if (this.props.filters[key] instanceof Object) {
+							var value
+							var attr = this.props.attributes.find(a => a.name == key)
+							if (!attr && this.props.filters[key] instanceof Object) {
 								return Object.keys(this.props.filters[key]).map(subkey => {
 									attr = this.props.attributes.find(a => a.name == `${key}[${subkey}]`)
 									value = this.props.filters[key][subkey]
@@ -69,14 +70,13 @@ class FiltersSaver extends React.Component {
 									)
 								})
 							} else {
-								attr = this.props.attributes.find(a => a.name == key)
 								value = this.props.filters[key]
 								if (this.props.namedFilters[attr.name]) {
 									value = this.props.namedFilters[attr.name]
 								}
 								return (
 									<div className="filter-description">
-										{attr.label} {value}
+										{attr.label} {attr.filterViewer ? attr.filterViewer(value) : value}
 									</div>
 								)
 							}

@@ -98,7 +98,7 @@ var Filters = function (_React$Component) {
 		}, _this._clean = function (filters) {
 			var result = {};
 			Object.keys(filters).forEach(function (key) {
-				if (filters[key] instanceof Object) {
+				if (filters[key] instanceof Object && !(filters[key] instanceof Array)) {
 					result[key] = _this._clean(filters[key]);
 					if (Object.keys(result[key]).length == 0) {
 						delete result[key];

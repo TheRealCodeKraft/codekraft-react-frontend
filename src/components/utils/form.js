@@ -458,7 +458,9 @@ class Form extends React.Component {
 					break
 			}
 
-			this.setState({values: values}, () => {
+console.log("VALUES")
+console.log(values)
+			this.setState({values}, () => {
 				if (this.props.onInputChange) this.props.onInputChange(values)
 			})
 		}

@@ -96,8 +96,11 @@ var FiltersSaver = function (_React$Component) {
 					"div",
 					{ className: "filters-description" },
 					Object.keys(this.props.filters).map(function (key) {
-						var attr, value;
-						if (_this2.props.filters[key] instanceof Object) {
+						var value;
+						var attr = _this2.props.attributes.find(function (a) {
+							return a.name == key;
+						});
+						if (!attr && _this2.props.filters[key] instanceof Object) {
 							return Object.keys(_this2.props.filters[key]).map(function (subkey) {
 								attr = _this2.props.attributes.find(function (a) {
 									return a.name == key + "[" + subkey + "]";
@@ -122,9 +125,6 @@ var FiltersSaver = function (_React$Component) {
 								);
 							});
 						} else {
-							attr = _this2.props.attributes.find(function (a) {
-								return a.name == key;
-							});
 							value = _this2.props.filters[key];
 							if (_this2.props.namedFilters[attr.name]) {
 								value = _this2.props.namedFilters[attr.name];
@@ -134,7 +134,7 @@ var FiltersSaver = function (_React$Component) {
 								{ className: "filter-description" },
 								attr.label,
 								" ",
-								value
+								attr.filterViewer ? attr.filterViewer(value) : value
 							);
 						}
 					})

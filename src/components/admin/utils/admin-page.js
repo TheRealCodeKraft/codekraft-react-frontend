@@ -360,11 +360,14 @@ export default function(config, globalConfig) {
 
 		_buildFilter = (key, value, sub=false) => {
 			var element = {}
-			if (value instanceof Object) {
+			if (value instanceof Object && !(value instanceof Array)) {
 				Object.keys(value).forEach(subkey => {
 					element[`${key}[${subkey}]`] = this._buildFilter(subkey, value[subkey], true)
 				})
 			} else {
+				if (value instanceof Object) {
+					value = JSON.stringify(value)
+				}
 				if (sub) {
 					element = value
 				} else {
