@@ -367,7 +367,7 @@ exports.default = function (config, globalConfig) {
 						break;
 					case "export":
 						content = React.createElement(_export2.default, {
-							attributes: config.list.attributes,
+							attributes: this._buildAttributes(getPluralName()),
 							items: this._buildItems(getPluralName())
 						});
 						break;

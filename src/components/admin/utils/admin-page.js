@@ -238,7 +238,7 @@ export default function(config, globalConfig) {
 					break
 				case "export":
 					content = <Export
-											attributes={config.list.attributes}
+											attributes={this._buildAttributes(getPluralName())}
 											items={this._buildItems(getPluralName())}
 										/>
 					break
