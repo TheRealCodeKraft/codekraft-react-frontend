@@ -1,0 +1,93 @@
+.export {
+	display: flex;
+	flex-direction: column;
+
+	.title {
+		font-size: 22px;
+		font-weight: bold;
+		margin: 15px;
+	}
+
+	.checkers {
+		display: flex;
+		flex-direction: column;
+		.attr-checker {
+
+		}
+	}
+
+	.data-container {
+
+		max-height: 300px;
+		margin: 10px;
+		overflow: scroll;
+		padding: 10px;
+		border: 1px solid gray;
+
+		.data-table {
+			display: table;
+			min-width: 100%;
+
+			.row {
+
+				&:nth-child(even) { background-color: #00000020; }
+				display: flex;
+				display: table-row;
+				.cell {
+					padding: 5px;
+					display: table-cell;
+
+				}
+
+				&.header {
+					font-weight: bold;
+					font-size: 1.2em;
+				}
+			}
+		}
+	}
+
+	.export-container {
+		display: flex;
+		flex: 1;
+
+		.export-action {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			margin: 10px;
+
+			background: lightgray;
+			.csv-input-container {
+				display: flex;
+				width: 100%;
+				flex: 1;
+				margin: 10px;
+				min-height: 200px;
+
+				textarea {
+					width: 100%;
+					margin: 20px;
+					margin-top: 0;
+					border: none;
+					padding: 5px;
+					font-size: 15px;
+				}
+			}
+		}
+
+	}
+}
+
+/*
+.admin-sidebar-container {
+			width: 600px;
+	&.export {
+		.sidebar-content {
+			width: 600px;
+		}
+	}
+}
+*/

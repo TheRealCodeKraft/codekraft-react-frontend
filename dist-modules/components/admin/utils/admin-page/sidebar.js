@@ -46,7 +46,7 @@ var AdminSidebar = function (_React$Component) {
           open: this.state.sidebarOpen,
           onSetOpen: this.handleSetSidebarOpen,
           rootClassName: "admin-sidebar",
-          sidebarClassName: "admin-sidebar-container" + (this.props.tinify ? " tiny-sidebar" : ""),
+          sidebarClassName: "admin-sidebar-container" + (this.props.tinify ? " tiny-sidebar" : "") + (this.props.className ? " " + this.props.className : ""),
           overlayClassName: "admin-sidebar-overlay",
           pullRight: true,
           styles: Object.assign({ top: 90 }, this.props.styles()) },

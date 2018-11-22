@@ -9,6 +9,7 @@ import CreateEditForm from './form/create-edit'
 import DeleteForm from './form/delete'
 
 import FiltersSaver from './admin-page/list/header/filters-saver'
+import Export from "./admin-page/list/export.js"
 
 import {ActionCable} from 'react-actioncable-provider'
 
@@ -73,21 +74,27 @@ export default function(config, globalConfig) {
             ? <globalConfig.subHeader {...globalConfig}  config={config} globalConfig={globalConfig} location={this.props.location} onNew={this.handleNew} />
            :   <div className="admin-page-header">
                  <h1><i className={config.icon ? ((globalConfig.iconSet ? globalConfig.iconSet : "fa fa-") + (config.icon ? config.icon : "terminal") + " text-warning") : ""}></i> {config.title}</h1>
-              {(!config.list.actions || config.list.actions.indexOf("new") !== -1)
-                ? <Col xs={12} className="admin-new-button-row">
-                  <a href="#" onClick={this.handleNew} className="admin-new-button"><i className={this.getIcon("new", "plus")} /> Nouveau</a>
-                  </Col>
-                : null
-              }
-							{ config.list.actions
-								 ? config.list.actions.filter(a => a.type == "general").map(action => (
-										<Col xs={12} className="admin-new-button-row">
-											<a href="javascript:void(0)" onClick={this.handleCustomAction.bind(this, null, action)} className={`admin-${name}-button`}>{action.label}</a>
-										 </Col>
-									))
-								: null
-							}
-               </div>}
+								{(!config.list.actions || config.list.actions.indexOf("new") !== -1 || (config.list.actions && config.list.actions.filter(a => a.type == "general").length > 0))
+									? <Col xs={12} className="admin-new-button-row">
+											{ config.list.actions && config.list.actions.indexOf("new") !== -1
+												? <a href="#" onClick={this.handleNew} className="admin-new-button"><i className={this.getIcon("new", "plus")} /> Nouveau</a>
+												: null
+											}
+											{ config.list.actions && config.list.actions.indexOf("export") !== -1
+												? <a href="#" onClick={this.handleExport} className="admin-new-button"><i className={this.getIcon("export", "archive")} /> Exporter</a>
+												: null
+											}
+											{ config.list.actions 
+												? config.list.actions.filter(a => a.type == "general").map(action => (
+														<a href="javascript:void(0)" onClick={this.handleCustomAction.bind(this, null, action)} className={`admin-${name}-button`}>{action.label}</a>
+													))
+												: null
+											}
+										</Col>
+									: null
+								}
+							</div>
+           }
           {this.buildWatchers()}
           <div>
 						{ this.props[pluralName]
@@ -136,8 +143,9 @@ export default function(config, globalConfig) {
 							: null
 						}
             <AdminSidebar ref="sidebar" 
+													className={this.state.mode}
                           onClose={this.handleCloseSidebar}
-                          tinify={this.state.mode == "savefilters" || this.state.mode === "delete" || (this.state.currentAction && this.state.currentAction.tinify)}
+                          tinify={this.state.mode == "savefilters" || this.state.mode === "delete" || (this.state.currentAction && this.state.currentAction.tinify)}
                           title={this.getSidebarTitle()}
 													styles={sidebarStyles}>
               {this.getSidebarContent()}
@@ -187,6 +195,9 @@ export default function(config, globalConfig) {
 				case "savefilters":
 					title = "Enregistrer le filtre"
 					break
+				case "export":
+					title = "Exporter en csv"
+					break
         default:
           if (this.state.currentAction !== undefined) {
             title = this.state.currentAction.label
@@ -223,6 +234,12 @@ export default function(config, globalConfig) {
 											namedFilters={this.state.namedFilters}
 											attributes={config.list.filters}
 											onSaved={this._handleFiltersSaved}
+										/>
+					break
+				case "export":
+					content = <Export
+											attributes={config.list.attributes}
+											items={this._buildItems(getPluralName())}
 										/>
 					break
         default:
@@ -294,6 +311,11 @@ export default function(config, globalConfig) {
       if (e) e.preventDefault()
       this.setState({currentId: undefined, mode: "create"}, this.openSidebar)
     }
+
+		handleExport = (e) => {
+			e.preventDefault()
+			this.setState({mode: "export"}, this.openSidebar)
+		}
 
     handleDelete(id) {
       this.setState({currentId: id, mode: "delete"}, this.openSidebar)
