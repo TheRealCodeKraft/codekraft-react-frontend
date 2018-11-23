@@ -423,6 +423,7 @@ exports.default = function (config, globalConfig) {
 			key: 'closeSidebar',
 			value: function closeSidebar() {
 				this.refs.sidebar.close();
+				_reactPopup2.default.close();
 			}
 		}, {
 			key: 'handleCableReceived',
@@ -469,13 +470,14 @@ exports.default = function (config, globalConfig) {
 			key: 'handleSubmitComplete',
 			value: function handleSubmitComplete(data) {
 				if (!data.error) {
-					this.refs.sidebar.close();
+					this.closeSidebar();
 				}
 			}
 		}, {
 			key: 'handleCloseSidebar',
 			value: function handleCloseSidebar() {
 				var self = this;
+				_reactPopup2.default.close();
 				setTimeout(function () {
 					self.setState({ currentId: undefined, mode: "list", currentAction: undefined });
 				}, 500);
@@ -530,6 +532,10 @@ var _export2 = _interopRequireDefault(_export);
 var _reactActioncableProvider = require('react-actioncable-provider');
 
 var _reactBootstrap = require('react-bootstrap');
+
+var _reactPopup = require('react-popup');
+
+var _reactPopup2 = _interopRequireDefault(_reactPopup);
 
 var _reactLoaders = require('react-loaders');
 

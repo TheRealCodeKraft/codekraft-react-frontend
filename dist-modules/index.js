@@ -50,6 +50,10 @@ var _resetPassword = require('./components/offline/reset-password');
 
 var _resetPassword2 = _interopRequireDefault(_resetPassword);
 
+var _home = require('./components/admin/home');
+
+var _home2 = _interopRequireDefault(_home);
+
 var _adminPage = require('./components/admin/utils/admin-page');
 
 var _adminPage2 = _interopRequireDefault(_adminPage);
@@ -72,12 +76,14 @@ var _reducersConfig2 = _interopRequireDefault(_reducersConfig);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.Bootstrap = _bootstrap2.default; /*
-                                         import _createStore from './api/client/reducer/create-store'
-                                         exports.createStore = _createStore
-                                         */
+/*
+import _createStore from './api/client/reducer/create-store'
+exports.createStore = _createStore
+*/
 
+exports.Bootstrap = _bootstrap2.default;
 exports.Form = _form2.default;
+exports.AdminHome = _home2.default;
 exports.AdminPage = _adminPage2.default;
 exports.AdminPageList = _list2.default;
 exports.ApiClient = _apiClient2.default;

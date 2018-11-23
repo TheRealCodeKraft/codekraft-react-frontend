@@ -7,6 +7,8 @@ exports.getRawItems = exports.getRawItem = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+exports.getRawGroup = getRawGroup;
+
 var _lodash = require("lodash.clone");
 
 var _lodash2 = _interopRequireDefault(_lodash);
@@ -106,6 +108,7 @@ var Header = function (_React$Component) {
       if (!this.props.menu[menuKey]) return null;
 
       return _getRawItems({
+        groups: this.props.menu[menuKey].groups,
         items: this.props.menu[menuKey].items,
         token: this.props.token,
         root: this.props.root
@@ -244,15 +247,36 @@ function _getRawItem(_ref) {
 }
 
 exports.getRawItem = _getRawItem;
-function _getRawItems(_ref2) {
-  var items = _ref2.items,
+function getRawGroup(_ref2) {
+  var group = _ref2.group,
       token = _ref2.token,
       root = _ref2.root;
 
-  return items.map(function (item) {
+  return {
+    type: "group",
+    label: group.label,
+    items: group.items.map(function (item) {
+      return _getRawItem({ item: item, token: token, root: root });
+    }).filter(function (item) {
+      return item && item.display !== false;
+    })
+  };
+}
+
+function _getRawItems(_ref3) {
+  var groups = _ref3.groups,
+      items = _ref3.items,
+      token = _ref3.token,
+      root = _ref3.root;
+
+  var g = groups ? groups.map(function (group) {
+    return getRawGroup({ group: group, token: token, root: root });
+  }) : [];
+  var i = items ? items.map(function (item) {
     return _getRawItem({ item: item, token: token, root: root });
   }).filter(function (item) {
     return item && item.display !== false;
-  });
+  }) : [];
+  return g.concat(i);
 }
 exports.getRawItems = _getRawItems;

@@ -17,6 +17,7 @@ import _ForgotPassword from './components/offline/forgot-password'
 import _Signup from './components/offline/signup'
 import _ResetPassword from './components/offline/reset-password'
 
+import _AdminHome from './components/admin/home'
 import _AdminPage from './components/admin/utils/admin-page'
 import _AdminPageList from './components/admin/utils/admin-page/list'
 
@@ -26,6 +27,7 @@ import _StorageService from './api/client/storage/storage'
 
 exports.Bootstrap = _Bootstrap
 exports.Form = _Form
+exports.AdminHome = _AdminHome
 exports.AdminPage = _AdminPage
 exports.AdminPageList = _AdminPageList
 exports.ApiClient = _ApiClient

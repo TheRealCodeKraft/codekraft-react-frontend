@@ -33,7 +33,11 @@ var Home = function (_React$Component) {
 
       var groups = [];
       for (var key in this.props.navigation.admin.menu) {
-        groups.push(this.props.navigation.admin.menu[key]);
+        if (this.props.navigation.admin.menu[key].groups) {
+          groups = groups.concat(this.props.navigation.admin.menu[key].groups);
+        } else {
+          groups.push(this.props.navigation.admin.menu[key]);
+        }
       }
 
       if (groups.filter(function (group) {

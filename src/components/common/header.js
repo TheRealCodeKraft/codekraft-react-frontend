@@ -60,6 +60,7 @@ class Header extends React.Component {
 		if (!this.props.menu[menuKey]) return null
 
 		return getRawItems({
+			groups: this.props.menu[menuKey].groups,
 			items: this.props.menu[menuKey].items,
 			token: this.props.token,
 			root: this.props.root
@@ -176,6 +177,16 @@ export function getRawItem({ item, token, root }) {
 	}
 }
 
-export function getRawItems({ items, token, root }) {
-	return items.map(item => (getRawItem({ item, token, root }))).filter(item => (item && item.display !== false))
+export function getRawGroup({group, token, root}) {
+	return {
+		type: "group",
+		label: group.label,
+		items: group.items.map(item => (getRawItem({ item, token, root }))).filter(item => (item && item.display !== false))
+	}
+}
+
+export function getRawItems({ groups, items, token, root }) {
+	const g = groups ? groups.map(group =>(getRawGroup({group, token, root}))) : []
+	const i = items ? items.map(item => (getRawItem({ item, token, root }))).filter(item => (item && item.display !== false)) : []
+	return g.concat(i)
 }

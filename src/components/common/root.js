@@ -39,24 +39,29 @@ export default function(name, config) {
       var groups = config.menu
       var pages = [], pageIndex=0
       for (var index in groups) {
-        if (groups[index] && groups[index].items && !groups[index].items.error) {
-          for (var pIndex in groups[index].items) {
-            pages.push(groups[index].items[pIndex])
-            if (!(pages[pageIndex].client instanceof Object)) {
-              pages[pageIndex].client = this.props.clients[pages[pageIndex].client]
-            }
-            pageIndex++
-          }
+				console.log(index)
+        if (groups[index]) {
+					if (groups[index].items && !groups[index].items.error) {
+						for (var pIndex in groups[index].items) {
+							pages.push(groups[index].items[pIndex])
+							if (!(pages[pageIndex].client instanceof Object)) {
+								pages[pageIndex].client = this.props.clients[pages[pageIndex].client]
+							}
+							pageIndex++
+						}
+					}
 
-          for (var gIndex in groups[index].groups) {
-            for (var pi in groups[index].groups[gIndex].items) {
-              pages.push(groups[index].groups[gIndex].items[pi])
-              if (!(pages[pages.length - 1].client instanceof Object)) {
-                pages[pages.length - 1].client = this.props.clients[pages[pages.length - 1].client]
-              }
-              pageIndex++
-            }
-          }
+					if (groups[index].groups) {
+						for (var gIndex in groups[index].groups) {
+							for (var pi in groups[index].groups[gIndex].items) {
+								pages.push(groups[index].groups[gIndex].items[pi])
+								if (!(pages[pages.length - 1].client instanceof Object)) {
+									pages[pages.length - 1].client = this.props.clients[pages[pages.length - 1].client]
+								}
+								pageIndex++
+							}
+						}
+					}
         }
       }
       this.setState({pages: pages})

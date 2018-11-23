@@ -7,9 +7,13 @@ class Home extends React.Component {
 
   render() {
 
-    const groups = []
+    var groups = []
     for (var key in this.props.navigation.admin.menu) {
-      groups.push(this.props.navigation.admin.menu[key])
+			if (this.props.navigation.admin.menu[key].groups) {
+				groups = groups.concat(this.props.navigation.admin.menu[key].groups)
+			} else {
+	      groups.push(this.props.navigation.admin.menu[key])
+			}
     }
 
     if (groups.filter(group => { return group.hiddenOnHome === true }).length === groups.length) {

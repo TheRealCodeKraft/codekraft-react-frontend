@@ -17,6 +17,8 @@ import { Grid } from 'react-bootstrap';
 import { Row } from 'react-bootstrap';
 import { Col } from 'react-bootstrap';
 
+import Popup from "react-popup"
+
 import Loader from "react-loaders"
 
 export default function(config, globalConfig) {
@@ -301,6 +303,7 @@ export default function(config, globalConfig) {
 
     closeSidebar() {
       this.refs.sidebar.close()
+			Popup.close()	
     }
 
     handleCableReceived(data) {
@@ -343,12 +346,13 @@ export default function(config, globalConfig) {
 
     handleSubmitComplete(data) {
       if (!data.error) {
-        this.refs.sidebar.close()
+				this.closeSidebar()
       }
     }
 
     handleCloseSidebar() {
       var self = this
+			Popup.close()
       setTimeout(function() { self.setState({currentId: undefined, mode: "list", currentAction: undefined}) }, 500)
     }
 
