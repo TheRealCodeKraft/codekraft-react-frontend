@@ -66,8 +66,8 @@ class AdminPageList extends React.Component {
 				}
         <AdminPageListHeader 
 					bulkable={(typeof this.props.bulkable === "function") ? this.props.bulkable() : this.props.bulkable}
-					attributes={this.props.attributes} 
-					allSelected={this.props.items.length == this.state.selectedRows.length}
+					attributes={this.props.attributes}
+					allSelected={this.props.loading || this.props.items.length == this.state.selectedRows.length}
 					onSort={this.props.onSort}
 					onSelectAll={this._handleSelectAll}
 				/>
