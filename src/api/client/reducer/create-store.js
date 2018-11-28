@@ -87,12 +87,14 @@ function createReducer(reducerName, plural, extension, insertOn) {
           items = pushNewEntityToState(action[reducerName], state, plural, insertOn)
           newState[plural] = items
           newState["new" + capitalizeFirstLetter(reducerName)] = action[reducerName]
+          newState[reducerName] = action[reducerName]
           break
         case "UPDATE_" + reducerName.toUpperCase():
           items = mergeEntityAndState(action[reducerName], state, plural)
           newState[plural] = items
           newState[reducerName] = action[reducerName]
           newState["updated" + capitalizeFirstLetter(reducerName)] = action[reducerName]
+          newState[reducerName] = action[reducerName]
           break
         case "DESTROY_" + reducerName.toUpperCase():
           if (state[plural]) {

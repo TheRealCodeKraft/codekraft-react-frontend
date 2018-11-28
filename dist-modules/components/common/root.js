@@ -44,7 +44,6 @@ exports.default = function (name, config) {
         var pages = [],
             pageIndex = 0;
         for (var index in groups) {
-          console.log(index);
           if (groups[index]) {
             if (groups[index].items && !groups[index].items.error) {
               for (var pIndex in groups[index].items) {

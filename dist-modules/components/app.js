@@ -92,12 +92,14 @@ var App = function (_React$Component) {
 
 			if (!this.state.loaded) return null;
 
+			var cable_url = '' + process.env.CABLE_URL + (this.props.token ? "/?token=" + this.props.token.access_token : "");
+
 			return _react2.default.createElement(
 				this.props.navigation.mainWrapper,
 				{ navigation: this.props.navigation, location: this.props.location },
-				this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined) ? _react2.default.createElement(
+				_react2.default.createElement(
 					_reactActioncableProvider2.default,
-					{ url: process.env.CABLE_URL + "/?token=" + this.props.token.access_token },
+					{ url: cable_url },
 					_react2.default.createElement(
 						_reactRouterDom.Switch,
 						null,
@@ -111,22 +113,10 @@ var App = function (_React$Component) {
 								return _react2.default.createElement(_header2.default, { menu: false ? _this2.props.navigation.dashboard.menu : _this2.props.navigation.offline.menu, root: _this2.props.navigation.offline.root, custom: _this2.props.navigation.offline.header, location: _this2.props.location, token: _this2.props.token, name: 'offline', mainTitle: _this2.props.config.mainTitle });
 							} })
 					)
-				) : _react2.default.createElement(
-					_reactRouterDom.Switch,
-					null,
-					_react2.default.createElement(_reactRouterDom.Route, { path: '/dashboard', render: function render() {
-							return _react2.default.createElement(_header2.default, { menu: _this2.props.navigation.dashboard.menu, root: _this2.props.navigation.dashboard.root, custom: _this2.props.navigation.dashboard.header, location: _this2.props.location, name: 'dashboard', mainTitle: _this2.props.config.mainTitle });
-						} }),
-					_react2.default.createElement(_reactRouterDom.Route, { path: '/admin', render: function render() {
-							return _react2.default.createElement(_header2.default, { menu: _this2.props.navigation.admin.menu, root: _this2.props.navigation.admin.root, custom: _this2.props.navigation.admin.header, location: _this2.props.location, admin: true, name: 'admin', mainTitle: _this2.props.config.mainTitle });
-						} }),
-					_react2.default.createElement(_reactRouterDom.Route, { path: '/', render: function render() {
-							return _react2.default.createElement(_header2.default, { menu: false ? _this2.props.navigation.dashboard.menu : _this2.props.navigation.offline.menu, root: _this2.props.navigation.offline.root, custom: _this2.props.navigation.offline.header, location: _this2.props.location, token: _this2.props.token, name: 'offline', mainTitle: _this2.props.config.mainTitle });
-						} })
 				),
-				this.state.me.no_password ? this.buildProfileFiller() : this.props.token && (this.props.config.websocket || this.props.config.websocket == undefined) ? _react2.default.createElement(
+				this.state.me.no_password ? this.buildProfileFiller() : _react2.default.createElement(
 					_reactActioncableProvider2.default,
-					{ url: process.env.CABLE_URL + "/?token=" + this.props.token.access_token },
+					{ url: cable_url },
 					_react2.default.createElement(
 						_reactRouterDom.Switch,
 						null,
@@ -134,12 +124,6 @@ var App = function (_React$Component) {
 						_react2.default.createElement(_reactRouterDom.Route, { path: '/admin', component: (0, _root2.default)("admin", this.props.navigation.admin) }),
 						_react2.default.createElement(_reactRouterDom.Route, { path: '/', component: (0, _root2.default)("offline", this.props.navigation.offline) })
 					)
-				) : _react2.default.createElement(
-					_reactRouterDom.Switch,
-					null,
-					_react2.default.createElement(_reactRouterDom.Route, { path: '/dashboard', component: (0, _root2.default)("dashboard", this.props.navigation.dashboard) }),
-					_react2.default.createElement(_reactRouterDom.Route, { path: '/admin', component: (0, _root2.default)("admin", this.props.navigation.admin) }),
-					_react2.default.createElement(_reactRouterDom.Route, { path: '/', component: (0, _root2.default)("offline", this.props.navigation.offline) })
 				),
 				this.props.navigation.footer ? _react2.default.createElement(this.props.navigation.footer, null) : null
 			);

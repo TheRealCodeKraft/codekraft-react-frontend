@@ -97,7 +97,7 @@ class AdminPageListRow extends React.Component {
       this.props.actions.filter(a => !a.type || a.type !== "general").map(action => {
 				if (action instanceof Object) {
 					if (this.acceptCustomAction(action)) {
-						actions.push(<a href="#" key={"action-" + action.action + "-" + this.props.item.id} onClick={this.handleCustomAction.bind(this, action)} className={"admin-action-button " + this.getIcon(action.icon, "eye")} alt={action.label} title={action.label}>{action.icon ? "" : action.label}</a>)
+						actions.push(<a href="#" key={"action-" + action.name + "-" + this.props.item.id} onClick={this.handleCustomAction.bind(this, action)} className={"admin-action-button " + this.getIcon(action.icon, "eye")} alt={action.label} title={action.label}>{action.icon ? "" : action.label}</a>)
 					}
 				} else {
 					switch(action) {
