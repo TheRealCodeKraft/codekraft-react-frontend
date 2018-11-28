@@ -128,7 +128,7 @@ var AdminPageList = function (_React$Component) {
 				React.createElement(_header2.default, {
 					bulkable: typeof this.props.bulkable === "function" ? this.props.bulkable() : this.props.bulkable,
 					attributes: this.props.attributes,
-					allSelected: this.props.items.length == this.state.selectedRows.length,
+					allSelected: this.props.loading || this.props.items.length == this.state.selectedRows.length,
 					onSort: this.props.onSort,
 					onSelectAll: this._handleSelectAll
 				}),
