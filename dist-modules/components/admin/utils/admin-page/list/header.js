@@ -53,15 +53,20 @@ var AdminPageListHeader = function (_React$Component) {
 					"div",
 					{ key: "header-row-attr-" + attrIndex },
 					label,
-					sortable ? [React.createElement(
-						"a",
-						{ key: "sort-" + attrIndex + "-up", href: "javascript:void(0)", onClick: this._handleSort.bind(this, name, "up") },
-						React.createElement("i", { className: "fa fa-sort-up" })
-					), React.createElement(
-						"a",
-						{ key: "sort-" + attrIndex + "-down", href: "javascript:void(0)", onClick: this._handleSort.bind(this, name, "down") },
-						React.createElement("i", { className: "fa fa-sort-down" })
-					)] : null
+					sortable ? React.createElement(
+						"div",
+						{ className: "sort-container" },
+						React.createElement(
+							"a",
+							{ key: "sort-" + attrIndex + "-up", href: "javascript:void(0)", onClick: this._handleSort.bind(this, name, "up") },
+							React.createElement("i", { className: "fa fa-sort-up" })
+						),
+						React.createElement(
+							"a",
+							{ key: "sort-" + attrIndex + "-down", href: "javascript:void(0)", onClick: this._handleSort.bind(this, name, "down") },
+							React.createElement("i", { className: "fa fa-sort-down" })
+						)
+					) : null
 				));
 			}
 			header.push(React.createElement("div", { key: "header-row-attr-actions admin-list-header-actions" }));

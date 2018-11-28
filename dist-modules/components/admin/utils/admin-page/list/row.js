@@ -148,7 +148,7 @@ var AdminPageListRow = function (_React$Component) {
             if (_this2.acceptCustomAction(action)) {
               actions.push(React.createElement(
                 "a",
-                { href: "#", key: "action-" + action.name + "-" + _this2.props.item.id, onClick: _this2.handleCustomAction.bind(_this2, action), className: "admin-action-button " + _this2.getIcon(action.icon, "eye"), alt: action.label, title: action.label },
+                { href: "#", key: "action-" + action.action + "-" + _this2.props.item.id, onClick: _this2.handleCustomAction.bind(_this2, action), className: "admin-action-button " + _this2.getIcon(action.icon, "eye"), alt: action.label, title: action.label },
                 action.icon ? "" : action.label
               ));
             }

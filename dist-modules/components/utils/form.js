@@ -266,7 +266,7 @@ var Form = function (_React$Component) {
 					})),
 					this.state.submitError ? [React.createElement(
 						"span",
-						null,
+						{ className: "submit-error" },
 						this.state.submitError
 					), React.createElement("br", null)] : null,
 					this.props.submitLabel !== "none" ? React.createElement(

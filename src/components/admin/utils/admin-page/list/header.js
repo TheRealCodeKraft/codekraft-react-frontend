@@ -22,14 +22,14 @@ class AdminPageListHeader extends React.Component {
 				<div key={"header-row-attr-" + attrIndex}>
 					{label}
 					{ sortable
-						? [
+						? <div className="sort-container">
 								<a key={`sort-${attrIndex}-up`} href="javascript:void(0)" onClick={this._handleSort.bind(this, name, "up")}>
 									<i className="fa fa-sort-up" />
-								</a>,
+								</a>
 								<a key={`sort-${attrIndex}-down`} href="javascript:void(0)" onClick={this._handleSort.bind(this, name, "down")}>
 									<i className="fa fa-sort-down" />
 								</a>
-							]
+							</div>
 						: null
 					}
 				</div>
