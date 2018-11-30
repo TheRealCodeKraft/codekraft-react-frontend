@@ -52,6 +52,7 @@ class ForgotPassword extends React.Component {
             ]}
             submitLabel="Envoyer"
             onSubmit={this.handleSubmit}
+						onSubmitError={this.handleSubmitError}
             submitClass={"btn btn-accent btn-signup"}
             service={{client: this.props.clients.UserClient, func: "forgotPassword"}}
             onSubmitComplete={this.handleSubmitComplete}
@@ -76,6 +77,12 @@ class ForgotPassword extends React.Component {
 			this.props.onSubmitComplete(data)
 		} else {
 	    this.setState({found: data.found})
+		}
+  }
+
+  handleSubmitError = (data) => {
+		if (this.props.onSubmitError) {
+			this.props.onSubmitError(data)
 		}
   }
 
