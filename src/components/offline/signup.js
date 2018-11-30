@@ -111,8 +111,10 @@ class Signup extends React.Component {
 		}
   }
 
-  handleSubmitError(data) {
-    console.log("submit error !")
+  handleSubmitError = (data) => {
+		if (this.props.onSubmitError) {
+			this.props.onSubmitError(data)
+		}
   }
 
   resetForm(e) {
