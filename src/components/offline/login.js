@@ -65,6 +65,7 @@ class Login extends React.Component {
               className={this.props.className}
               onSubmit={this.handleSubmit}
               onSubmitError={this.handleSubmitError}
+							errors={this.props.errors}
               submitClass={this.props.submitClass ? this.props.submitClass : "btn btn-accent btn-signup"}
               service={{client: this.props.clients.ApiClient, func: "login"}}
               onSubmitComplete={this.handleSubmitComplete}

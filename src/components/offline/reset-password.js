@@ -89,10 +89,12 @@ class ResetPassword extends React.Component {
                     required: true,
                     confirmFor: "password"
                   }
-                ]} 
-                submitLabel="Envoyer" 
+                ]}
+                submitLabel="Envoyer"
                 onSubmit={this.handleSubmit}
-                submitClass={"btn btn-accent btn-signup"} 
+								errors={this.props.errors}
+              	onSubmitError={this.handleSubmitError}
+                submitClass={"btn btn-accent btn-signup"}
                 service={{client: this.props.clients.UserClient, func: "updatePassword"}}
                 onSubmitComplete={this.handleSubmitComplete}
            />
@@ -103,6 +105,12 @@ class ResetPassword extends React.Component {
 
   handleSubmitComplete(data) {
     this.props.history.push("/login")
+  }
+
+  handleSubmitError = (data) => {
+		if (this.props.onSubmitError) {
+			this.props.onSubmitError(data)
+		}
   }
 
 }
