@@ -38,7 +38,7 @@ class ForgotPassword extends React.Component {
 
   form() {
     return [
-      <Form id="login-form" 
+      <Form id="login-form" key="login-form"
             clients={this.props.clients}
             fields={[
               {
@@ -49,13 +49,15 @@ class ForgotPassword extends React.Component {
                 type: "text",
                 required: true
               }
-            ]} 
-            submitLabel="Envoyer" 
+            ]}
+            submitLabel="Envoyer"
             onSubmit={this.handleSubmit}
-            submitClass={"btn btn-accent btn-signup"} 
+            submitClass={"btn btn-accent btn-signup"}
             service={{client: this.props.clients.UserClient, func: "forgotPassword"}}
             onSubmitComplete={this.handleSubmitComplete}
-       />,
+       >
+				{this.props.children}
+			</Form>,
 			 this.props.showLoseLinks
 	      ? [<Link className={"btn btn-default"} to="/login">J'ai déjà un compte</Link>,
       		<Link className={"btn btn-default"} to="/signup">Créer un compte</Link>]
