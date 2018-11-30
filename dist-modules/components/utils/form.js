@@ -83,7 +83,7 @@ var Form = function (_React$Component) {
 		};
 
 		_this.state = {
-			errors: {},
+			errors: _this.props.errors || {},
 			submitting: false,
 			submitError: undefined,
 			submitClass: {},
@@ -674,7 +674,7 @@ var Form = function (_React$Component) {
 					this.props.onSubmit(currentValues);
 				}
 			} else {
-				this.props.onSubmitError({ error: true, message: "Validation failed" });
+				this.props.onSubmitError({ error: true, message: "Validation failed", errors: errors });
 			}
 		}
 	}, {

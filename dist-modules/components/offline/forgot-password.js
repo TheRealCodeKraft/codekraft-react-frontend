@@ -34,6 +34,12 @@ var ForgotPassword = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (ForgotPassword.__proto__ || Object.getPrototypeOf(ForgotPassword)).call(this, props));
 
+    _this.handleSubmitError = function (data) {
+      if (_this.props.onSubmitError) {
+        _this.props.onSubmitError(data);
+      }
+    };
+
     _this.state = {
       found: undefined
     };
@@ -71,22 +77,28 @@ var ForgotPassword = function (_React$Component) {
   }, {
     key: 'form',
     value: function form() {
-      return [_react2.default.createElement(_form2.default, { id: 'login-form',
-        clients: this.props.clients,
-        fields: [{
-          name: "email",
-          label: "Email",
-          title: "Email",
-          placeholder: "Email",
-          type: "text",
-          required: true
-        }],
-        submitLabel: 'Envoyer',
-        onSubmit: this.handleSubmit,
-        submitClass: "btn btn-accent btn-signup",
-        service: { client: this.props.clients.UserClient, func: "forgotPassword" },
-        onSubmitComplete: this.handleSubmitComplete
-      }), this.props.showLoseLinks ? [_react2.default.createElement(
+      return [_react2.default.createElement(
+        _form2.default,
+        { id: 'login-form', key: 'login-form',
+          clients: this.props.clients,
+          fields: [{
+            name: "email",
+            label: "Email",
+            title: "Email",
+            placeholder: "Email",
+            type: "text",
+            required: true
+          }],
+          submitLabel: 'Envoyer',
+          onSubmit: this.handleSubmit,
+          onSubmitError: this.handleSubmitError,
+          errors: this.props.errors,
+          submitClass: "btn btn-accent btn-signup",
+          service: { client: this.props.clients.UserClient, func: "forgotPassword" },
+          onSubmitComplete: this.handleSubmitComplete
+        },
+        this.props.children
+      ), this.props.showLoseLinks ? [_react2.default.createElement(
         _reactRouterDom.Link,
         { className: "btn btn-default", to: '/login' },
         'J\'ai d\xE9j\xE0 un compte'

@@ -32,6 +32,12 @@ var Signup = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Signup.__proto__ || Object.getPrototypeOf(Signup)).call(this, props));
 
+    _this.handleSubmitError = function (data) {
+      if (_this.props.onSubmitError) {
+        _this.props.onSubmitError(data);
+      }
+    };
+
     var termsOfUseLabel = "J'accepte les condition générales d'utilisation";
     if (_this.props.termsOfUseLink) {
       termsOfUseLabel = React.createElement(
@@ -109,12 +115,13 @@ var Signup = function (_React$Component) {
       return React.createElement(
         "div",
         null,
-        React.createElement(_form2.default, { id: "signup-form",
+        React.createElement(_form2.default, { id: "signup-form", key: "signup-form",
           labels: this.props.labels,
           fields: this.fields,
           submitLabel: this.props.submitLabel || "M'enregistrer",
           submitClass: this.props.submitClass ? this.props.submitClass : "btn btn-accent btn-signup",
           onSubmit: this.handleSubmit,
+          errors: this.props.errors,
           service: { client: this.props.clients.UserClient, func: "signup" },
           onSubmitComplete: this.handleSubmitComplete,
           onSubmitError: this.handleSubmitError
@@ -143,11 +150,6 @@ var Signup = function (_React$Component) {
       } else {
         this.props.history.push("/login");
       }
-    }
-  }, {
-    key: "handleSubmitError",
-    value: function handleSubmitError(data) {
-      console.log("submit error !");
     }
   }, {
     key: "resetForm",
