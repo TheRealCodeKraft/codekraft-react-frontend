@@ -53,6 +53,7 @@ class ForgotPassword extends React.Component {
             submitLabel="Envoyer"
             onSubmit={this.handleSubmit}
 						onSubmitError={this.handleSubmitError}
+						errors={this.props.errors}
             submitClass={"btn btn-accent btn-signup"}
             service={{client: this.props.clients.UserClient, func: "forgotPassword"}}
             onSubmitComplete={this.handleSubmitComplete}
