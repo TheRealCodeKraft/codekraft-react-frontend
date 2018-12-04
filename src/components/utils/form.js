@@ -43,8 +43,9 @@ class Form extends React.Component {
 
 	componentWillMount() {
 		var field=undefined, loadingData=[], loadedData=[]
-		for (var index in this.props.fields) {
-			field = this.props.fields[index]
+		const fields = this._getFields()
+		for (var index in fields) {
+			field = fields[index]
 			if (field.values && field.values.targetState !== undefined) {
 				// Hook to reload data if paginated data already loaded
 				if (this.props.reduxState[field.values.targetState][field.values.targetValue] && !this.props.reduxState[field.values.targetState][field.values.targetValue].pagination) {
@@ -111,10 +112,12 @@ class Form extends React.Component {
 		var valuesState = {}
 		var currentValue = undefined, currentHtmlValue = undefined
 
-		for (var index in props.fields) {
+		const fields = this._getFields(props.fields)
+
+		for (var index in fields) {
 			if (props.values) {
-				if (props.fields[index].name.indexOf("[") !== -1) {
-					var splitted = props.fields[index].name.split('[')
+				if (fields[index].name.indexOf("[") !== -1) {
+					var splitted = fields[index].name.split('[')
 					if (props.values[splitted[0]]) {
 						if (splitted.length === 2) {
 							currentValue = props.values[splitted[0]][splitted[1].replace(']', '')]
@@ -124,31 +127,31 @@ class Form extends React.Component {
 					} else {
 						currentValue = undefined
 					}
-				} else if (props.fields[index].type == "wysiwyg") {
-					currentValue = props.values[props.fields[index].name + "_raw"]
+				} else if (fields[index].type == "wysiwyg") {
+					currentValue = props.values[fields[index].name + "_raw"]
 					if (currentValue && !(currentValue instanceof Object) && !(currentValue == "")) {
 						currentValue = JSON.parse(currentValue)
 					}
-					currentHtmlValue = props.values[props.fields[index].name + "_html"]
+					currentHtmlValue = props.values[fields[index].name + "_html"]
 				} else {
-					currentValue = props.values[props.fields[index].name]
+					currentValue = props.values[fields[index].name]
 				}
-				if (currentValue instanceof Array && !props.fields[index].component && props.fields[index].type !== "multiple-upload") {
+				if (currentValue instanceof Array && !fields[index].component && fields[index].type !== "multiple-upload") {
 					currentValue = currentValue.map(value => { return value.id })
 				}
 			} else {
-				currentValue = props.fields[index].defaultValue
+				currentValue = fields[index].defaultValue
 			}
 
-			if (props.fields[index].type == "checkbox" && !currentValue) {
+			if (fields[index].type == "checkbox" && !currentValue) {
 				currentValue = false
 			}
 
-			if (props.fields[index].type == "wysiwyg") {
-				valuesState[props.fields[index].name + "_raw"] = currentValue
-				valuesState[props.fields[index].name + "_html"] = currentHtmlValue
+			if (fields[index].type == "wysiwyg") {
+				valuesState[fields[index].name + "_raw"] = currentValue
+				valuesState[fields[index].name + "_html"] = currentHtmlValue
 			} else {
-				valuesState[props.fields[index].name] = currentValue
+				valuesState[fields[index].name] = currentValue
 			}
 		}
 
@@ -164,34 +167,25 @@ class Form extends React.Component {
 			this.props.cancelButton === true ? <button key={`${this.props.id}-cancel`} className={this.props.cancelClass || this.props.submitClass} onClick={this.handleCancelButton}>{this.props.cancelLabel || "Ignorer"}</button> : null]
 			: null)
 
-			return (
-				<div className={"form-container " + (this.props.className ? this.props.className : "")}>
+		return (
+			<div className={"form-container " + (this.props.className ? this.props.className : "")}>
 				{this.props.entityId ? this.buildImageUploaders() : null}
 				<form encType='multipart/form-data' id={this.props.id} onSubmit={this.handleFormSubmit} className={this.props.className}>
-				{wrapper(this.props.fields.map(field => {
-					if (field.show === false) { return null }
-					if (field.type === "image-uploader") { return null }
-
-					if (field.displayIf && this.state.values[field.displayIf.name] !== field.displayIf.value) {
-						return null
+					{wrapper(this.getInputs(this.props.fields))}
+					{(this.state.submitError) ? [<span className="submit-error">{this.state.submitError}</span>, <br />] : null}
+					{ this.props.submitLabel !== "none"
+						? <div className="submit-container">{submitButton}</div>
+						: null
 					}
-
-					return this.getInputs(field)
-				}))}
-				{(this.state.submitError) ? [<span className="submit-error">{this.state.submitError}</span>, <br />] : null}
-				{this.props.submitLabel !== "none"
-				? <div className="submit-container">{submitButton}</div>
-				: null
-			}
-			{this.props.children}
-			</form>
-			{this.state.loadingData.length > 0 ? <div className="form-loader">{this.props.loadingComponent ? <this.props.loadingComponent /> : <Loader type="ball-pulse" />}</div> : null}
+					{this.props.children}
+				</form>
+				{this.state.loadingData.length > 0 ? <div className="form-loader">{this.props.loadingComponent ? <this.props.loadingComponent /> : <Loader type="ball-pulse" />}</div> : null}
 			</div>
 		)
 	}
 
 	buildImageUploaders() {
-		return this.props.fields.filter(field => { return field.type === "image-uploader" }).map(field => {
+		return this._getFields().filter(field => { return field.type === "image-uploader" }).map(field => {
 		return <form key={`${this.props.id}-${field.name}-image-uploader`} encType='multipart/form-data' className="upload-form">
 		{ field.label 
 			? <span>{field.label}</span>
@@ -236,55 +230,25 @@ class Form extends React.Component {
 		})
 	}
 
-	getInputs(field) {
-		var inputs = null
-		if (field.type === "component") {
-			// inputs = []
-			//
-			// if (field.multiple) {
-			// 	var occurences = field.occurences
-			// 	if (occurences.indexOf("/") !== -1) {
-			// 		var splitted = occurences.split("/")
-			// 		var dividing = parseInt(splitted[0])
-			// 		var key = splitted[1].replace(' ', '')
-			// 		occurences = dividing / this.state.values[key]
-			// 	} else {
-			// 		occurences = this.state.values[field.occurences]
-			// 	}
-			//
-			// 	var input = null
-			// 	for (var i=0; i < occurences; i++) {
-			// 		input = []
-			// 		for (var j in field.components) {
-			// 			field.components[j].name = field.name + "[" + i + "][" + field.components[j].name + "]"
-			// 			field.components[j].parent = field
-			// 			input.push(this.getInput(field.components[j]))
-			// 		}
-			// 		input = <div className={field.name}>{input}</div>
-			// 		inputs.push(input)
-			// 	}
-			// } else {
-			// 	var input = []
-			// 	for (var i in field.components) {
-			// 		input.push(this.getInput(field.components[i]))
-			// 	}
-			// 	input = <div className={field.name}>{input}</div>
-			// 	inputs.push(input)
-			// }
-			// inputs = []
-			// for (var i=0; i < occurences; i++) {
-			// 	for (var component in field.components) {
-			// 		inputs.push(this.getInput())
-			// 	}
-			// }
-		} else {
-			inputs = this.getInput(field)
-		}
-
-		return inputs
+	getInputs(fields) {
+		const groups = fields.filter(f => f.group).map(group => (
+			<div className="form-group">
+				<span className="form-group-title">{group.label}</span>
+				<div className="form-group-items">{this.getInputs(group.items)}</div>
+			</div>
+		))
+		const singles = fields.filter(f => !f.group).map(field => this.getInput(field))
+		return groups.concat(singles)
 	}
 
 	getInput(field) {
+		if (field.show === false) { return null }
+		if (field.type === "image-uploader") { return null }
+
+		if (field.displayIf && this.state.values[field.displayIf.name] !== field.displayIf.value) {
+			return null
+		}
+
 		var input = null, value = this.state.values[field.name], options = []
 		var fieldName = field.name
 
@@ -474,20 +438,21 @@ class Form extends React.Component {
 	}
 
 	submit(extraData={}, callback) {
+		const fields = this._getFields()
 		var errors = this.validate()
 		this.setState({errors: errors})
 		if (Object.keys(errors).length === 0) {
 			var currentValues = extraData
 
-			for (var fIndex in this.props.fields) {
-				if (this.props.fields[fIndex].type !== "image-uploader" && this.props.fields[fIndex].show !== false) {
-					if (this.props.fields[fIndex].name.indexOf('[') !== -1) {
-						var splitted = this.props.fields[fIndex].name.split("[")
+			for (var fIndex in fields) {
+				if (fields[fIndex].type !== "image-uploader" && fields[fIndex].show !== false) {
+					if (fields[fIndex].name.indexOf('[') !== -1) {
+						var splitted = fields[fIndex].name.split("[")
 						if (splitted.length === 2) {
 							if (!currentValues[splitted[0]]) {
 								currentValues[splitted[0]] = {}
 							}
-							currentValues[splitted[0]][splitted[1].replace(']', '')] = this.state.values[this.props.fields[fIndex].name]
+							currentValues[splitted[0]][splitted[1].replace(']', '')] = this.state.values[fields[fIndex].name]
 						} else {
 							if (!currentValues[splitted[0]]) {
 								currentValues[splitted[0]] = {}
@@ -495,20 +460,20 @@ class Form extends React.Component {
 							if (!currentValues[splitted[0]][splitted[2]]) {
 								currentValues[splitted[0]][splitted[1].replace(']', '')] = {}
 							}
-							currentValues[splitted[0]][splitted[1]][splitted[2].replace(']', '')] = this.state.values[this.props.fields[fIndex].name]
+							currentValues[splitted[0]][splitted[1]][splitted[2].replace(']', '')] = this.state.values[fields[fIndex].name]
 						}
 					} else {
-						if (this.props.fields[fIndex].type == "wysiwyg") {
-							currentValues[this.props.fields[fIndex].name + "_raw"] = this.state.values[this.props.fields[fIndex].name + "_raw"]
-							currentValues[this.props.fields[fIndex].name + "_html"] = this.state.values[this.props.fields[fIndex].name + "_html"]
+						if (fields[fIndex].type == "wysiwyg") {
+							currentValues[fields[fIndex].name + "_raw"] = this.state.values[fields[fIndex].name + "_raw"]
+							currentValues[fields[fIndex].name + "_html"] = this.state.values[fields[fIndex].name + "_html"]
 						} else {
-							if (this.props.fields[fIndex].type == "datehour") {
-								currentValues[this.props.fields[fIndex].name] = moment(this.state.values[this.props.fields[fIndex].name]).format("DD/MM/YYYY HH:mm")
+							if (fields[fIndex].type == "datehour") {
+								currentValues[fields[fIndex].name] = moment(this.state.values[fields[fIndex].name]).format("DD/MM/YYYY HH:mm")
 							} else {
-								if (this.props.fields[fIndex].type == "date") {
-									currentValues[this.props.fields[fIndex].name] = moment(this.state.values[this.props.fields[fIndex].name]).format("DD/MM/YYYY") + " 00:00"
+								if (fields[fIndex].type == "date") {
+									currentValues[fields[fIndex].name] = moment(this.state.values[fields[fIndex].name]).format("DD/MM/YYYY") + " 00:00"
 								} else {
-									currentValues[this.props.fields[fIndex].name] = this.state.values[this.props.fields[fIndex].name]
+									currentValues[fields[fIndex].name] = this.state.values[fields[fIndex].name]
 								}
 							}
 						}
@@ -547,8 +512,9 @@ class Form extends React.Component {
 	validate() {
 		var textTypes = ["text", "password", "email"]
 		var field = undefined, errors = {};
-		for (var index in this.props.fields) {
-			field = this.props.fields[index]
+		const fields = this._getFields()
+		for (var index in fields) {
+			field = fields[index]
 			if (field.required && field.show !== false) {
 				if (!field.displayIf || (this.state.values[field.displayIf["name"]] == field.displayIf["value"])) {
 					if (textTypes.indexOf(field.type) >= 0 && (this.state.values[field.name] === "" || this.state.values[field.name] === undefined)) {
@@ -585,6 +551,15 @@ class Form extends React.Component {
 		return errors;
 	}
 
+	_getFields = (fields) => {
+		if (!fields) fields = this.props.fields
+		var fields = this.props.fields.filter(f => !f.group)
+		this.props.fields.filter(f => f.group).forEach(group => {
+			fields = fields.concat(group.items)
+		})
+		return fields
+	}
+
 	getValue(fieldName) {
 		return this.state.values[fieldName]
 	}
@@ -599,13 +574,14 @@ class Form extends React.Component {
 
 	reset() {
 		var newValues = {}
-		for (var key in this.props.fields) {
-			if (this.props.fields[key].type == "wysiwyg") {
-				newValues[this.props.fields[key].name + "_raw"] = "RESET"
-			} else if (this.props.fields[key].type == "multiple-upload") {
-				newValues[this.props.fields[key].name] = "RESET"
-			} else if (this.props.fields[key].defaultValue) {
-				newValues[this.props.fields[key].name] = this.props.fields[key].defaultValue
+		const fields = this._getFields()
+		for (var key in fields) {
+			if (fields[key].type == "wysiwyg") {
+				newValues[fields[key].name + "_raw"] = "RESET"
+			} else if (fields[key].type == "multiple-upload") {
+				newValues[fields[key].name] = "RESET"
+			} else if (fields[key].defaultValue) {
+				newValues[fields[key].name] = fields[key].defaultValue
 			}
 		}
 		this.setState({values: newValues})
