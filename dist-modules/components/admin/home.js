@@ -88,7 +88,7 @@ var Home = function (_React$Component) {
                   { to: "/admin/" + item.route },
                   React.createElement(
                     "div",
-                    { className: "admin-home-item", key: "admin-home-item-" + index },
+                    { className: "admin-home-item " + (item.class || item.faIcon), key: "admin-home-item-" + index },
                     React.createElement(
                       "h2",
                       null,

@@ -8,19 +8,22 @@
 }
 
 .admin-list-header {
-  display: table-row;
-  color: #ffffff;
+  display: table-row-group;
+	.admin-list-header-row {
+		display: table-row;
+		color: #ffffff;
 
-  div {
-    display: table-cell;
-    background: $grey-text;
-		padding: 5px;
-    color: #fff;
-
-		&.admin-list-header-actions {
+		div {
+			display: table-cell;
+			background: $grey-text;
 			padding: 5px;
+			color: #fff;
+
+			&.admin-list-header-actions {
+				padding: 5px;
+			}
 		}
-  }
+	}
 }
 
 .admin-list-body {

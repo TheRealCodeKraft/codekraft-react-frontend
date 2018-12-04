@@ -43,7 +43,7 @@ class Filters extends React.Component {
 							</select>
 						: null
 					}
-					<a href="javascript:void(0)" onClick={this._handleToggleFilters}>Toggle</a>
+					<a href="javascript:void(0)" className="filters-toggle-btn" onClick={this._handleToggleFilters}>Toggle</a>
 				</div>
 				<div className={`filters-content ${this.state.open ? "open" : ""}`}>
 					<Form
@@ -53,9 +53,9 @@ class Filters extends React.Component {
 						values={this.state.filters}
 						hideSubmit={true}
 					/>
-					<button onClick={this._handleFilter}>Appliquer</button>
+					<button className="filters-apply-btn" onClick={this._handleFilter}>Appliquer</button>
 					{ this.props.savable
-						? <button onClick={this._handleSave}>Enregistrer</button>
+						? <button className="filters-save-btn" onClick={this._handleSave}>Enregistrer</button>
 						: null
 					}
 				</div>

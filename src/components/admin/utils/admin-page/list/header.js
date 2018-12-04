@@ -20,7 +20,7 @@ class AdminPageListHeader extends React.Component {
 
       header.push(
 				<div key={"header-row-attr-" + attrIndex}>
-					{label}
+					<span className="header-title">{label}</span>
 					{ sortable
 						? <div className="sort-container">
 								<a key={`sort-${attrIndex}-up`} href="javascript:void(0)" onClick={this._handleSort.bind(this, name, "up")}>

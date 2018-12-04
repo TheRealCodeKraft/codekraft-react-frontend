@@ -155,7 +155,7 @@ var Filters = function (_React$Component) {
 					) : null,
 					_react2.default.createElement(
 						"a",
-						{ href: "javascript:void(0)", onClick: this._handleToggleFilters },
+						{ href: "javascript:void(0)", className: "filters-toggle-btn", onClick: this._handleToggleFilters },
 						"Toggle"
 					)
 				),
@@ -171,12 +171,12 @@ var Filters = function (_React$Component) {
 					}),
 					_react2.default.createElement(
 						"button",
-						{ onClick: this._handleFilter },
+						{ className: "filters-apply-btn", onClick: this._handleFilter },
 						"Appliquer"
 					),
 					this.props.savable ? _react2.default.createElement(
 						"button",
-						{ onClick: this._handleSave },
+						{ className: "filters-save-btn", onClick: this._handleSave },
 						"Enregistrer"
 					) : null
 				)

@@ -52,7 +52,11 @@ var AdminPageListHeader = function (_React$Component) {
 				header.push(React.createElement(
 					"div",
 					{ key: "header-row-attr-" + attrIndex },
-					label,
+					React.createElement(
+						"span",
+						{ className: "header-title" },
+						label
+					),
 					sortable ? React.createElement(
 						"div",
 						{ className: "sort-container" },
