@@ -17,6 +17,10 @@ class ResetPassword extends React.Component {
   }
 
   componentDidMount() {
+		if (this.props.me) {
+      this.props.clients.ApiClient.logout()
+		}
+
     if (this.props.location.search.indexOf("email") !== -1 && this.props.location.search.indexOf("key") !== -1) {
       var splitted = this.props.location.search.replace("?", "").split("&")
       var emailSplit = splitted[0].split("=")
@@ -85,10 +89,12 @@ class ResetPassword extends React.Component {
                     required: true,
                     confirmFor: "password"
                   }
-                ]} 
-                submitLabel="Envoyer" 
+                ]}
+                submitLabel="Envoyer"
                 onSubmit={this.handleSubmit}
-                submitClass={"btn btn-accent btn-signup"} 
+								errors={this.props.errors}
+              	onSubmitError={this.handleSubmitError}
+                submitClass={"btn btn-accent btn-signup"}
                 service={{client: this.props.clients.UserClient, func: "updatePassword"}}
                 onSubmitComplete={this.handleSubmitComplete}
            />
@@ -101,11 +107,18 @@ class ResetPassword extends React.Component {
     this.props.history.push("/login")
   }
 
+  handleSubmitError = (data) => {
+		if (this.props.onSubmitError) {
+			this.props.onSubmitError(data)
+		}
+  }
+
 }
 
 function mapStateToProps(state) {
   return {
     clients: state.bootstrap.clients,
+		me: state.userState.me,
     stamp: state.userState.stamp || null,
     password_updated: state.userState.password_updated || undefined
   }

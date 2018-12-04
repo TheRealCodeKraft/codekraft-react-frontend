@@ -25,7 +25,7 @@ class Form extends React.Component {
 		super(props)
 
 		this.state = {
-			errors: {},
+			errors: this.props.errors || {},
 			submitting: false,
 			submitError: undefined,
 			submitClass:{},
@@ -530,7 +530,7 @@ class Form extends React.Component {
 				this.props.onSubmit(currentValues)
 			}
 		} else {
-			this.props.onSubmitError({error: true, message: "Validation failed"})
+			this.props.onSubmitError({error: true, message: "Validation failed", errors })
 		}
 	}
 

@@ -36,6 +36,12 @@ var ResetPassword = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (ResetPassword.__proto__ || Object.getPrototypeOf(ResetPassword)).call(this, props));
 
+    _this.handleSubmitError = function (data) {
+      if (_this.props.onSubmitError) {
+        _this.props.onSubmitError(data);
+      }
+    };
+
     _this.state = {};
 
     _this.handleSubmitComplete = _this.handleSubmitComplete.bind(_this);
@@ -45,6 +51,10 @@ var ResetPassword = function (_React$Component) {
   _createClass(ResetPassword, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      if (this.props.me) {
+        this.props.clients.ApiClient.logout();
+      }
+
       if (this.props.location.search.indexOf("email") !== -1 && this.props.location.search.indexOf("key") !== -1) {
         var splitted = this.props.location.search.replace("?", "").split("&");
         var emailSplit = splitted[0].split("=");
@@ -152,6 +162,8 @@ var ResetPassword = function (_React$Component) {
             }],
             submitLabel: 'Envoyer',
             onSubmit: this.handleSubmit,
+            errors: this.props.errors,
+            onSubmitError: this.handleSubmitError,
             submitClass: "btn btn-accent btn-signup",
             service: { client: this.props.clients.UserClient, func: "updatePassword" },
             onSubmitComplete: this.handleSubmitComplete
@@ -172,6 +184,7 @@ var ResetPassword = function (_React$Component) {
 function mapStateToProps(state) {
   return {
     clients: state.bootstrap.clients,
+    me: state.userState.me,
     stamp: state.userState.stamp || null,
     password_updated: state.userState.password_updated || undefined
   };

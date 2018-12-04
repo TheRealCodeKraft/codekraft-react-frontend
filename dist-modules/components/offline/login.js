@@ -32,6 +32,12 @@ var Login = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Login.__proto__ || Object.getPrototypeOf(Login)).call(this, props));
 
+    _this.handleSubmitError = function (data) {
+      if (_this.props.onSubmitError) {
+        _this.props.onSubmitError(data);
+      }
+    };
+
     _this.state = {
       loggedIn: false,
       error: false
@@ -87,6 +93,7 @@ var Login = function (_React$Component) {
             className: this.props.className,
             onSubmit: this.handleSubmit,
             onSubmitError: this.handleSubmitError,
+            errors: this.props.errors,
             submitClass: this.props.submitClass ? this.props.submitClass : "btn btn-accent btn-signup",
             service: { client: this.props.clients.ApiClient, func: "login" },
             onSubmitComplete: this.handleSubmitComplete
@@ -113,11 +120,6 @@ var Login = function (_React$Component) {
       if (this.props.onLoggedIn) this.props.onLoggedIn();else {
         this.setState({ loggedIn: true });
       }
-    }
-  }, {
-    key: "handleSubmitError",
-    value: function handleSubmitError(data) {
-      console.log("submit error !");
     }
   }]);
 

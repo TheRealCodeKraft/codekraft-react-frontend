@@ -65,6 +65,7 @@ class Login extends React.Component {
               className={this.props.className}
               onSubmit={this.handleSubmit}
               onSubmitError={this.handleSubmitError}
+							errors={this.props.errors}
               submitClass={this.props.submitClass ? this.props.submitClass : "btn btn-accent btn-signup"}
               service={{client: this.props.clients.ApiClient, func: "login"}}
               onSubmitComplete={this.handleSubmitComplete}
@@ -89,8 +90,10 @@ class Login extends React.Component {
 		}
   }
 
-  handleSubmitError(data) {
-    console.log("submit error !")
+  handleSubmitError = (data) => {
+		if (this.props.onSubmitError) {
+			this.props.onSubmitError(data)
+		}
   }
 }
 
