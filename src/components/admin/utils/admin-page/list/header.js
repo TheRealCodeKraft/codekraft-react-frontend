@@ -39,9 +39,7 @@ class AdminPageListHeader extends React.Component {
 
     return (
 			<div className="admin-list-header">	
-				<div className="admin-list-header-row">
-					{header}
-				</div>
+				{header}
 			</div>
 		)
   }

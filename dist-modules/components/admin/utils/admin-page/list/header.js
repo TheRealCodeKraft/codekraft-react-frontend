@@ -78,11 +78,7 @@ var AdminPageListHeader = function (_React$Component) {
 			return React.createElement(
 				"div",
 				{ className: "admin-list-header" },
-				React.createElement(
-					"div",
-					{ className: "admin-list-header-row" },
-					header
-				)
+				header
 			);
 		}
 	}, {
