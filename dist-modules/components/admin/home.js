@@ -81,7 +81,7 @@ var Home = function (_React$Component) {
               "div",
               { className: "admin-home-group-items" },
               group.items.filter(function (item) {
-                return item.display !== false;
+                return item.display !== false && item.displayOnHome !== false;
               }).map(function (item, index) {
                 return [React.createElement(
                   _reactRouterDom.Link,
